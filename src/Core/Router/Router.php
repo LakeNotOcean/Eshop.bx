@@ -106,7 +106,7 @@ class Router
                 ];
             }
         }
-        throw new Errors\RoutingException();
+        throw new Errors\RoutingException("Не найдена ручка соответствующая урлу {$url} и методу {$method}");
     }
 
     /**
