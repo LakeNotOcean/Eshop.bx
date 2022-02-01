@@ -2,6 +2,8 @@
 
 namespace Up\Core\Router\Errors;
 
-class URLParameterTypeException extends \Exception
+use Exception;
+
+class URLParameterTypeException extends Exception
 {
 }

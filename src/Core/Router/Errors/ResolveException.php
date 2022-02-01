@@ -2,6 +2,8 @@
 
 namespace Up\Core\Router\Errors;
 
-class ResolveException extends \Exception
+use Exception;
+
+class ResolveException extends Exception
 {
 }
