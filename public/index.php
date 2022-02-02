@@ -3,7 +3,9 @@
 require '../Autoloader.php';
 
 $autoloader = Autoloader::getInstance();
+$autoloader->addVendorNamespacePath('Up\\',$_SERVER['DOCUMENT_ROOT'] . '/..');
 
-$autoloader->addVendorNamespacePath('Up\\', __DIR__ . '/../src/');
 
-var_dump(\Up\Core\Message\Request::createFromGlobals());
+var_dump(\Up\Core\Test::test());
+/*$App = Up\Core\Application::run();
+var_dump($App);*/
