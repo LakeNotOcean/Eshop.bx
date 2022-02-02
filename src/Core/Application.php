@@ -6,9 +6,11 @@ use Up\Core\Message\Response;
 class Application
 {
 
-	public static function run(): void
+	public static function run(): bool
 	{
 		$mode = 'Dev';
+		$result = false;
+
 
 		if ($mode === 'Dev')
 		{
@@ -23,11 +25,17 @@ class Application
 		}
 		catch (Router\Errors\RoutingException $e)
 		{
-			$response->withStatus(404);
+			$response->withStatus(418);
 			//todo залогировали
+			$result = false;
+			return $result;
 		}
 
+		$params = $callback['params'];
 
+
+
+		return false;
 	}
 
 
