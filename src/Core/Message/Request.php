@@ -12,6 +12,7 @@ class Request
 	private $session = [];
 	private $method = '';
 	private $headers = [];
+	private $requestUrl = '';
 
 	/**
 	 * @return Request
@@ -25,6 +26,7 @@ class Request
 		$request->files = $_FILES;
 		$request->session = $_SESSION;
 		$request->method = $_SERVER['REQUEST_METHOD'];
+		$request->requestUrl = $_SERVER['REQUEST_URI'];
 		$headersLines = getallheaders(); //apache only
 		foreach ($headersLines as $header => $line)
 		{
@@ -40,6 +42,11 @@ class Request
 	public function getMethod(): string
 	{
 		return $this->method;
+	}
+
+	public function getRequestUrl(): string
+	{
+		return $this->requestUrl;
 	}
 
 	/**
