@@ -23,6 +23,7 @@ class Application
 		//Инициализация роутера
 
 		$router = Router\Router::getInstance();
+		$router->post('/home',[\Up\Controller\CatalogController::class, 'getItems'],'home');
 		$response = new Response();
 
 		try
