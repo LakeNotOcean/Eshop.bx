@@ -1,12 +1,12 @@
 <?php
 
-namespace Service;
+namespace Up\Service;
 
-use Model\Item;
+use Up\Model\Item;
 
 class CatalogService
 {
-	public function getItems(): array
+	public static function getItems(): array
 	{
 		return [new Item([
 			'ID' => 1,
@@ -25,7 +25,7 @@ class CatalogService
 		])];
 	}
 
-	public function getResultCount(): int
+	public static function getResultCount(): int
 	{
 		return 2;
 	}

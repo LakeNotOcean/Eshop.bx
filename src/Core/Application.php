@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace Up\Core;
 use Exception;
 use Up\Core\Message\Response;
@@ -23,12 +25,12 @@ class Application
 		//Инициализация роутера
 
 		$router = Router\Router::getInstance();
-		$router->post('/home',[\Up\Controller\CatalogController::class, 'getItems'],'home');
+		$router->get('/home',[\Up\Controller\CatalogController::class, 'getItems'],'/home');
 		$response = new Response();
 
 		try
 		{
-			$callback = $router->route($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+			$method = $router->route($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
 		}
 
 		catch (Router\Errors\RoutingException $e)
@@ -39,13 +41,13 @@ class Application
 			return false;
 		}
 
-		$params = $callback['params'];
+		$params = $method['params'];
 
-		if (is_array($callback['callback']))
+		if (is_array($method['callback']))
 		{
 			try
 			{
-				$callbackReflection = new \ReflectionMethod($callback['callback'][0], $callback['callback'][1]);
+				$callbackReflection = new \ReflectionMethod($method['callback'][0], $method['callback'][1]);
 			}
 			catch (\ReflectionException $e)
 			{
@@ -55,11 +57,11 @@ class Application
 				return false;
 			}
 		}
-		else if (is_string($callback['callback']) || is_callable($callback['callback']))
+		else if (is_string($method['callback']) || is_callable($method['callback']))
 		{
 			try
 			{
-				$callbackReflection = new \ReflectionFunction($callback['callback']);
+				$callbackReflection = new \ReflectionFunction($method['callback']);
 			}
 			catch (\ReflectionException $e)
 			{
@@ -94,33 +96,16 @@ class Application
 		}
 		try
 		{
-			$result = call_user_func_array($callback['callback'], $args);
+			$response = call_user_func_array($method['callback'], $args);
 		}
 		catch (Exception $e)
 		{
 			// TODO: журналируем и выводим исключение
 			return false;
 		}
-		if ($result instanceof Response)
-		{
-			$result->flush();
-			return true;
-		}
-		if (is_array($result))
-		{
-			$response->withBodyJSON($result);
-			$response->flush();
-			return true;
-		}
-		if (is_string($result))
-		{
-			$response->withBodyHTML($result);
-			$response->flush();
-			return true;
-		}
-		$response->withStatus(418);
+
 		$response->flush();
-		return false;
+		return true;
 	}
 
 

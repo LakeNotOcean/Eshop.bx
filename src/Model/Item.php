@@ -1,15 +1,15 @@
 <?php
 
-namespace Model;
+namespace Up\Model;
 
 class Item
 {
-	private int $id;
-	private string $title;
-	private float $price;
-	private string $shortDesc;
-	private string $fullDesc;
-	private array $specs;
+	private $id;
+	private $title;
+	private $price;
+	private $shortDesc;
+	private $fullDesc;
+	private $specs;
 
 	public function __construct(array $itemData)
 	{

@@ -8,9 +8,9 @@ class TemplateProcessor
 	{
 		if (file_exists($templatePath))
 		{
-			ob_start();
 			extract($templateParams, EXTR_OVERWRITE);
 
+			ob_start();
 			require_once $templatePath;
 
 			return ob_get_clean();
