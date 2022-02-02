@@ -15,7 +15,7 @@ class Settings
 
 	protected function __construct()
 	{
-		$config=parse_ini_file('../config.ini');
+		$config=parse_ini_file('config.ini');
 		$this->databaseConfig = new DataBaseConfig(
 			$config['host'],
 			$config['user'],
