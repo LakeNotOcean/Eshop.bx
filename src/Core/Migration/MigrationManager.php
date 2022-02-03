@@ -12,7 +12,7 @@ class MigrationManager
 	private $migrationDir;
 
 	private $createTableScript = 'CREATE TABLE IF NOT EXISTS up_migration (LAST_MIGRATION text NOT NULL)';
-	private $removeLastMigrationScript = 'TRUNCATE TABLE migration;';
+	private $removeLastMigrationScript = 'TRUNCATE TABLE up_migration;';
 	const dateFormat = 'Y_m_d_H-i-s';
 	private $getLastMigrationScript = 'SELECT * FROM up_migration LIMIT 1;';
 	private $minMigrationDate = '1900_01_01_00-00-00_minimum';
@@ -94,7 +94,7 @@ class MigrationManager
 			$result = $this->database->query($this->getLastMigrationScript);
 			if ($result)
 			{
-				$resultString = $result->fetch_all()[0]['migration_name'];
+				$resultString = $result->fetch_all()[0][0];
 				$resultString = $resultString ? : "";
 			}
 		}
@@ -170,7 +170,7 @@ class MigrationManager
 		$addNewMigrationScript = "INSERT INTO up_migration (LAST_MIGRATION) VALUES ('$time')";
 		$this->executeQuery($addNewMigrationScript, 'failed to add new migration script ' . $migrationName);
 		$name = $this->formatMigrationName($migrationName);
-		file_put_contents($_SERVER['DOCUMENT_ROOT'] . $this->migrationDir . $name . '.sql', $changeDatabaseScript);
+		file_put_contents($this->migrationDir . $name . '.sql', $changeDatabaseScript);
 
 	}
 }
