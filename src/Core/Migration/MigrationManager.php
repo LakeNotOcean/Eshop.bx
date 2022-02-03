@@ -29,7 +29,7 @@ class MigrationManager
 	{
 		try
 		{
-			$result=$this->database->MultiQuery($query);
+			$result = $this->database->MultiQuery($query);
 			if (!$result)
 			{
 				$this->triggerError($errorMessage);
@@ -49,23 +49,31 @@ class MigrationManager
 
 	private function triggerError(string $errorMessage = "")
 	{
-		trigger_error($errorMessage .$this->database->getErrorMessage(), E_USER_ERROR);
+		trigger_error($errorMessage . $this->database->getErrorMessage(), E_USER_ERROR);
 	}
 
 	private function createMigrationScriptsDir()
 	{
-		$path = $_SERVER['DOCUMENT_ROOT'] . $this->migrationDir;
-		if (!file_exists($path))
+		$path = $this->migrationDir;
+		if (!file_exists($path) && !mkdir($path, 0777, true) && !is_dir($path))
 		{
-			mkdir($path, 0777, true);
+			throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
 		}
 	}
 
-	protected function formatMigrationName(string $migrationName = ""): string
-{
-	return date(self::dateFormat) . '_' . $migrationName;
-}
+	private function getLastSuccessfulMigrationDate(string $migrationString, int $formatLen):string
+	{
+		if (empty($migrationString))
+		{
+			return $this->minMigrationDate;
+		}
+		return substr($migrationString, 0, $formatLen);
+	}
 
+	protected function formatMigrationName(string $migrationName = ""): string
+	{
+		return date(self::dateFormat) . '_' . $migrationName;
+	}
 
 	public function updateDatabase()
 	{
@@ -83,27 +91,20 @@ class MigrationManager
 			$result = $this->database->query($this->getLastMigrationScript);
 			if ($result)
 			{
-				$resultString = mysqli_fetch_all($result, MYSQLI_ASSOC)[0]['migration_name'];
+				$resultString = $result->fetch_all()[0]['migration_name'];
+				$resultString=$resultString?:"";
 			}
 		}
 		catch (\Exception $exception)
 		{
 			$this->triggerError('fail to get last migration script ');
 		}
-		if (empty($resultString))
-		{
-			$lastSuccessfulMigrationDate = $this->minMigrationDate;
-		}
-		else
-		{
-			$lastSuccessfulMigrationDate = substr($resultString, 0, $len);
-
-		}
+		$lastSuccessfulMigrationDate=$this->getLastSuccessfulMigrationDate($resultString,$len);
 		$currentMigrationDate = $lastSuccessfulMigrationDate;
 		$databaseMigrationDate = $lastSuccessfulMigrationDate;
 
 		$this->createMigrationScriptsDir();
-		$directoryIterator = new \RecursiveDirectoryIterator($_SERVER['DOCUMENT_ROOT'] . $this->migrationDir);
+		$directoryIterator = new \RecursiveDirectoryIterator($this->migrationDir);
 		foreach ($directoryIterator as $fileInfo)
 		{
 			$fileDate = substr($fileInfo->getFilename(), 0, $len);
