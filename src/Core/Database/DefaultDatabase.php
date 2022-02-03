@@ -2,7 +2,7 @@
 
 namespace Up\Core\DataBase;
 
-use Up\Core\DataBase\DNSBuilder\MysqlDSNBuilder;
+use Up\Core\DataBase\DSNBuilder\MysqlDSNBuilder;
 use Up\Core\Settings;
 
 class DefaultDatabase extends BaseDatabase

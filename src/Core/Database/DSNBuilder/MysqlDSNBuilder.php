@@ -1,6 +1,6 @@
 <?php
 
-namespace Up\Core\DataBase\DNSBuilder;
+namespace Up\Core\DataBase\DSNBuilder;
 
 class MysqlDSNBuilder extends ConnectableDatabaseDSNBuilder
 {
