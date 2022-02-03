@@ -4,14 +4,17 @@ namespace Up\Core;
 
 class TemplateProcessor
 {
+	public $viewPath = '../src/View/';
+
 	public static function renderTemplate($templatePath, $templateParams): string
 	{
-		if (file_exists($templatePath))
+		$fullTemplateName = self::$viewPath . $templatePath;
+		if (file_exists($fullTemplateName))
 		{
 			ob_start();
 			extract($templateParams, EXTR_OVERWRITE);
 
-			require_once $templatePath;
+			require_once $fullTemplateName;
 
 			return ob_get_clean();
 		}
