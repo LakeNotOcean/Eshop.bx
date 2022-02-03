@@ -10,7 +10,7 @@ abstract class ConnectableDatabaseDSNBuilder implements DSNBuilder
 
 	/**
 	 * @param DatabaseConfig $databaseConfig
-	 * @param array{charset:string}|null $options
+	 * @param array{charset:string} $options
 	 *
 	 * @return string
 	 */
