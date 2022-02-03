@@ -11,11 +11,10 @@ class MigrationManager
 	private $database;
 	private $migrationDir;
 
-	private $createTableScript = 'CREATE TABLE IF NOT EXISTS migration (
-    migration_name text NOT NULL)';
+	private $createTableScript = 'CREATE TABLE IF NOT EXISTS up_migration (LAST_MIGRATION text NOT NULL)';
 	private $removeLastMigrationScript = 'TRUNCATE TABLE migration;';
 	const dateFormat = 'Y_m_d_H-i-s';
-	private $getLastMigrationScript = 'SELECT * FROM migration LIMIT 1;';
+	private $getLastMigrationScript = 'SELECT * FROM up_migration LIMIT 1;';
 	private $minMigrationDate = '1900_01_01_00-00-00_minimum';
 
 	public function __construct(DefaultDatabase $database)
@@ -43,7 +42,7 @@ class MigrationManager
 
 	private function writeLastMigrationRecord(string $migrationDate)
 	{
-		$addNewMigrationScript = "INSERT INTO migration (migration_name) VALUES ('$migrationDate')";
+		$addNewMigrationScript = "INSERT INTO up_migration (LAST_MIGRATION) VALUES ('$migrationDate')";
 		$this->executeQuery($addNewMigrationScript, 'failed to apply migration ' . $migrationDate);
 	}
 
@@ -52,21 +51,25 @@ class MigrationManager
 		trigger_error($errorMessage . $this->database->getErrorMessage(), E_USER_ERROR);
 	}
 
+	/**
+	 * @throws \MigrationException
+	 */
 	private function createMigrationScriptsDir()
 	{
 		$path = $this->migrationDir;
 		if (!file_exists($path) && !mkdir($path, 0777, true) && !is_dir($path))
 		{
-			throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
+			throw new \MigrationException(sprintf('Directory "%s" was not created', $path));
 		}
 	}
 
-	private function getLastSuccessfulMigrationDate(string $migrationString, int $formatLen):string
+	private function getLastSuccessfulMigrationDate(string $migrationString, int $formatLen): string
 	{
 		if (empty($migrationString))
 		{
 			return $this->minMigrationDate;
 		}
+
 		return substr($migrationString, 0, $formatLen);
 	}
 
@@ -92,14 +95,14 @@ class MigrationManager
 			if ($result)
 			{
 				$resultString = $result->fetch_all()[0]['migration_name'];
-				$resultString=$resultString?:"";
+				$resultString = $resultString ? : "";
 			}
 		}
 		catch (\Exception $exception)
 		{
 			$this->triggerError('fail to get last migration script ');
 		}
-		$lastSuccessfulMigrationDate=$this->getLastSuccessfulMigrationDate($resultString,$len);
+		$lastSuccessfulMigrationDate = $this->getLastSuccessfulMigrationDate($resultString, $len);
 		$currentMigrationDate = $lastSuccessfulMigrationDate;
 		$databaseMigrationDate = $lastSuccessfulMigrationDate;
 
@@ -164,7 +167,7 @@ class MigrationManager
 
 		$time = $this->formatMigrationName();
 
-		$addNewMigrationScript = "INSERT INTO migration (migration_name) VALUES ('$time')";
+		$addNewMigrationScript = "INSERT INTO up_migration (LAST_MIGRATION) VALUES ('$time')";
 		$this->executeQuery($addNewMigrationScript, 'failed to add new migration script ' . $migrationName);
 		$name = $this->formatMigrationName($migrationName);
 		file_put_contents($_SERVER['DOCUMENT_ROOT'] . $this->migrationDir . $name . '.sql', $changeDatabaseScript);

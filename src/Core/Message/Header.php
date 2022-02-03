@@ -18,17 +18,17 @@ class Header
 		$this->values = array_unique(array_merge($values, $this->values));
 	}
 
-	public function getName() : string
+	public function getName(): string
 	{
 		return $this->name;
 	}
 
-	public function getValues() : array
+	public function getValues(): array
 	{
 		return $this->values;
 	}
 
-	public function getValuesLine() : string
+	public function getValuesLine(): string
 	{
 		return implode(',', $this->values);
 	}
