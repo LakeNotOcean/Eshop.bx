@@ -20,7 +20,8 @@ class Settings
 			$config['host'],
 			$config['user'],
 			$config['password'],
-			$config['dbName']
+			$config['dbName'],
+			(int)$config['port']
 		);
 		$this->isDev=$config['isDev'];
 		$this->sessionLifetime=$config['sessionLifetime'];
@@ -58,8 +59,4 @@ class Settings
 	{
 		return $this->migrationDirPath;
 	}
-
-
-
-
 }

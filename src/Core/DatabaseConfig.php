@@ -11,14 +11,15 @@ class DatabaseConfig
 	private $user;
 	private $password;
 	private $dbName;
+	private $port;
 
-	public function __construct(string $host,string $user, string $password, string $dbName)
+	public function __construct(string $host,string $user, string $password, string $dbName, int $port)
 	{
 		$this->host=$host;
 		$this->user=$user;
 		$this->password=$password;
 		$this->dbName=$dbName;
-
+		$this->port = $port;
 	}
 	public function getHost():string
 	{
@@ -38,5 +39,8 @@ class DatabaseConfig
 	{
 		return $this->password;
 	}
-
+	public function getPort():int
+	{
+		return $this->port;
+	}
 }
