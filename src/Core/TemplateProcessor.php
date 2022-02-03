@@ -4,7 +4,7 @@ namespace Up\Core;
 
 class TemplateProcessor
 {
-	public static $viewPath = '../src/View/';
+	private static $viewPath = '../src/View/';
 
 	public static function renderTemplate($templatePath, $templateParams): string
 	{
@@ -26,8 +26,10 @@ class TemplateProcessor
 	{
 		$content = self::renderTemplate($contentPath, $contentParams);
 
-		return self::renderTemplate($layoutPath, [
-			'content' => $content,
-			'params' => $layoutParams]);
+		$params = array_merge($layoutParams, [
+			'content' => $content
+		]);
+
+		return self::renderTemplate($layoutPath, $params);
 	}
 }
