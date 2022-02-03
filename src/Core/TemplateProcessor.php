@@ -4,7 +4,7 @@ namespace Up\Core;
 
 class TemplateProcessor
 {
-	public $viewPath = '../src/View/';
+	public static $viewPath = '../src/View/';
 
 	public static function renderTemplate($templatePath, $templateParams): string
 	{
