@@ -23,14 +23,14 @@ DROP TABLE IF EXISTS `up_image`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `up_image` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `PATH` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `WIDTH` int(11) DEFAULT NULL,
-  `HEIGHT` int(11) DEFAULT NULL,
-  `ITEM_ID` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `up_image_up_item_ID_fk` (`ITEM_ID`),
-  CONSTRAINT `up_image_up_item_ID_fk` FOREIGN KEY (`ITEM_ID`) REFERENCES `up_item` (`ID`)
+	                        `ID` int(11) NOT NULL AUTO_INCREMENT,
+	                        `PATH` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `WIDTH` int(11) DEFAULT NULL,
+	                        `HEIGHT` int(11) DEFAULT NULL,
+	                        `ITEM_ID` int(11) DEFAULT NULL,
+	                        PRIMARY KEY (`ID`),
+	                        KEY `up_image_up_item_ID_fk` (`ITEM_ID`),
+	                        CONSTRAINT `up_image_up_item_ID_fk` FOREIGN KEY (`ITEM_ID`) REFERENCES `up_item` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -49,16 +49,16 @@ DROP TABLE IF EXISTS `up_item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `up_item` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `TITLE` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `PRICE` int(11) DEFAULT NULL,
-  `SHORT_DESC` text COLLATE utf8mb4_unicode_ci,
-  `FULL_DESC` text COLLATE utf8mb4_unicode_ci,
-  `SORT_ORDER` int(11) DEFAULT NULL,
-  `ACTIVE` tinyint(1) DEFAULT NULL,
-  `DATE_CREATE` datetime DEFAULT NULL,
-  `DATE_UPDATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`ID`)
+	                       `ID` int(11) NOT NULL AUTO_INCREMENT,
+	                       `TITLE` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                       `PRICE` int(11) DEFAULT NULL,
+	                       `SHORT_DESC` text COLLATE utf8mb4_unicode_ci,
+	                       `FULL_DESC` text COLLATE utf8mb4_unicode_ci,
+	                       `SORT_ORDER` int(11) DEFAULT NULL,
+	                       `ACTIVE` tinyint(1) DEFAULT NULL,
+	                       `DATE_CREATE` datetime DEFAULT NULL,
+	                       `DATE_UPDATE` datetime DEFAULT NULL,
+	                       PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -78,12 +78,12 @@ DROP TABLE IF EXISTS `up_item_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `up_item_tag` (
-  `ITEM_ID` int(11) DEFAULT NULL,
-  `TAG_ID` int(11) DEFAULT NULL,
-  KEY `up_item_tag_up_item_ID_fk` (`ITEM_ID`),
-  KEY `up_item_tag_up_tag_ID_fk` (`TAG_ID`),
-  CONSTRAINT `up_item_tag_up_item_ID_fk` FOREIGN KEY (`ITEM_ID`) REFERENCES `up_item` (`ID`) ON DELETE CASCADE,
-  CONSTRAINT `up_item_tag_up_tag_ID_fk` FOREIGN KEY (`TAG_ID`) REFERENCES `up_tag` (`ID`) ON DELETE CASCADE
+	                           `ITEM_ID` int(11) DEFAULT NULL,
+	                           `TAG_ID` int(11) DEFAULT NULL,
+	                           KEY `up_item_tag_up_item_ID_fk` (`ITEM_ID`),
+	                           KEY `up_item_tag_up_tag_ID_fk` (`TAG_ID`),
+	                           CONSTRAINT `up_item_tag_up_item_ID_fk` FOREIGN KEY (`ITEM_ID`) REFERENCES `up_item` (`ID`) ON DELETE CASCADE,
+	                           CONSTRAINT `up_item_tag_up_tag_ID_fk` FOREIGN KEY (`TAG_ID`) REFERENCES `up_tag` (`ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -103,7 +103,7 @@ DROP TABLE IF EXISTS `up_migration`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `up_migration` (
-  `LAST_MIG` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+	`LAST_MIGRATION` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -122,17 +122,17 @@ DROP TABLE IF EXISTS `up_order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `up_order` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `EMAIL` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `PHONE` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `COMMENT` text COLLATE utf8mb4_unicode_ci,
-  `STATUS` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ITEM_ID` int(11) DEFAULT NULL,
-  `DATE_CREATE` datetime DEFAULT NULL,
-  `DATE_UPDATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `up_order_up_item_ID_fk` (`ITEM_ID`),
-  CONSTRAINT `up_order_up_item_ID_fk` FOREIGN KEY (`ITEM_ID`) REFERENCES `up_item` (`ID`)
+	                        `ID` int(11) NOT NULL AUTO_INCREMENT,
+	                        `EMAIL` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `PHONE` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `COMMENT` text COLLATE utf8mb4_unicode_ci,
+	                        `STATUS` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `ITEM_ID` int(11) DEFAULT NULL,
+	                        `DATE_CREATE` datetime DEFAULT NULL,
+	                        `DATE_UPDATE` datetime DEFAULT NULL,
+	                        PRIMARY KEY (`ID`),
+	                        KEY `up_order_up_item_ID_fk` (`ITEM_ID`),
+	                        CONSTRAINT `up_order_up_item_ID_fk` FOREIGN KEY (`ITEM_ID`) REFERENCES `up_item` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -151,27 +151,27 @@ DROP TABLE IF EXISTS `up_specs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `up_specs` (
-  `ITEM_ID` int(11) DEFAULT NULL,
-  `MANUFACTURER` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `COUNTRY` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `WARRANTY` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `RELEASE_YEAR` year(4) DEFAULT NULL,
-  `MEMORY_SIZE` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `MEMORY_TYPE` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `BUS_WIDTH` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `TECHNICAL_PROCESS` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `CHIP_FREQ` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `MEM_FREQ` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `MAX_RESOLUTION` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `OUT_CONNECTORS` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `INTERFACE` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ADDITIONAL_POWER` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `REQUIRED_POWER` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `FANS_NUM` int(11) DEFAULT NULL,
-  `LENGTH` int(11) DEFAULT NULL,
-  `THICKNESS` int(11) DEFAULT NULL,
-  KEY `up_specs_up_item_ID_fk` (`ITEM_ID`),
-  CONSTRAINT `up_specs_up_item_ID_fk` FOREIGN KEY (`ITEM_ID`) REFERENCES `up_item` (`ID`) ON DELETE CASCADE
+	                        `ITEM_ID` int(11) DEFAULT NULL,
+	                        `MANUFACTURER` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `COUNTRY` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `WARRANTY` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `RELEASE_YEAR` year(4) DEFAULT NULL,
+	                        `MEMORY_SIZE` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `MEMORY_TYPE` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `BUS_WIDTH` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `TECHNICAL_PROCESS` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `CHIP_FREQ` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `MEM_FREQ` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `MAX_RESOLUTION` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `OUT_CONNECTORS` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `INTERFACE` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `ADDITIONAL_POWER` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `REQUIRED_POWER` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                        `FANS_NUM` int(11) DEFAULT NULL,
+	                        `LENGTH` int(11) DEFAULT NULL,
+	                        `THICKNESS` int(11) DEFAULT NULL,
+	                        KEY `up_specs_up_item_ID_fk` (`ITEM_ID`),
+	                        CONSTRAINT `up_specs_up_item_ID_fk` FOREIGN KEY (`ITEM_ID`) REFERENCES `up_item` (`ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -191,9 +191,9 @@ DROP TABLE IF EXISTS `up_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `up_tag` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `TITLE` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`)
+	                      `ID` int(11) NOT NULL AUTO_INCREMENT,
+	                      `TITLE` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                      PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -213,10 +213,10 @@ DROP TABLE IF EXISTS `up_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `up_user` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `LOGIN` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `PASSWORD` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`)
+	                       `ID` int(11) NOT NULL AUTO_INCREMENT,
+	                       `LOGIN` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                       `PASSWORD` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+	                       PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

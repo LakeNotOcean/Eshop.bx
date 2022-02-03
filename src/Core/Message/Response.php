@@ -83,41 +83,50 @@ class Response
 	 * be implemented such that they retain the internal state of the current
 	 * message and return an instance that contains the changed state.
 	 **/
-	public function withAddedHeader(string $name, string $value) : Response
+	public function withAddedHeader(string $name, string $value): Response
 	{
 		$copy = clone $this;
 		$copy->addHeader($name, $value);
+
 		return $copy;
 	}
-	public function withoutHeader(string $name) : Response
+
+	public function withoutHeader(string $name): Response
 	{
 		$copy = clone $this;
 		$nameLowerCase = strtolower($name);
 		unset($copy->headers[$nameLowerCase]);
+
 		return $copy;
 	}
-	public function withStatus(int $status) : Response
+
+	public function withStatus(int $status): Response
 	{
 		$copy = clone $this;
 		$copy->statusCode = $status;
-		if(isset(Response::$statusTexts[$status]))
+		if (isset(Response::$statusTexts[$status]))
 		{
 			$copy->reason = Response::$statusTexts[$status];
 		}
+
 		return $copy;
 	}
-	public function withBodyHTML(string $body) : Response
+
+	public function withBodyHTML(string $body): Response
 	{
 		$copy = clone $this;
 		$copy->body = $body;
 		$copy->setHeader('Content-Type', 'text/html');
+
 		return $copy;
 	}
-	public function withBodyJSON(array $data) : Response
+
+	public function withBodyJSON(array $data): Response
 	{
 		$copy = clone $this;
 		$copy->body = json_encode($data);
 		$copy->setHeader('Content-Type', 'application/json');
+
 		return $copy;
 	}
 
@@ -136,7 +145,7 @@ class Response
 	private function addHeader(string $name, string $value)
 	{
 		$nameLowerCase = strtolower($name);
-		if(!isset($this->headers[$nameLowerCase]))
+		if (!isset($this->headers[$nameLowerCase]))
 		{
 			$this->headers[$nameLowerCase] = new Header($name);
 		}
