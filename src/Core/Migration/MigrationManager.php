@@ -2,7 +2,10 @@
 
 namespace Up\Core\Migration;
 
+use Exception;
 use MigrationException;
+use PDOException;
+use RecursiveDirectoryIterator;
 use Up\Core\DataBase\DefaultDatabase;
 use Up\Core\Settings;
 
@@ -30,7 +33,7 @@ class MigrationManager
 		{
 			$this->database->query($query);
 		}
-		catch (\PDOException $exception)
+		catch (PDOException $exception)
 		{
 			$this->triggerError($errorMessage);
 		}
@@ -44,7 +47,10 @@ class MigrationManager
 
 	private function triggerError(string $errorMessage = ""): void
 	{
-		trigger_error($errorMessage . ':' . $this->database->errorCode() . ':' . $this->database->errorInfo()[2], E_USER_ERROR);
+		trigger_error(
+			$errorMessage . ':' . $this->database->errorCode() . ':' . $this->database->errorInfo()[2],
+			E_USER_ERROR
+		);
 	}
 
 	/**
@@ -97,7 +103,7 @@ class MigrationManager
 				$resultString = $resultString ? : "";
 			}
 		}
-		catch (\Exception $exception)
+		catch (Exception $exception)
 		{
 			$this->triggerError('fail to get last migration script ');
 		}
@@ -106,7 +112,7 @@ class MigrationManager
 		$databaseMigrationDate = $lastSuccessfulMigrationDate;
 
 		$this->createMigrationScriptsDir();
-		$directoryIterator = new \RecursiveDirectoryIterator($this->migrationDir);
+		$directoryIterator = new RecursiveDirectoryIterator($this->migrationDir);
 		foreach ($directoryIterator as $fileInfo)
 		{
 			$fileDate = substr($fileInfo->getFilename(), 0, $len);
@@ -126,7 +132,7 @@ class MigrationManager
 						$this->writeLastMigrationRecord($currentMigrationDate);
 					}
 				}
-				catch (\Exception $exception)
+				catch (Exception $exception)
 				{
 					if ($databaseMigrationDate !== $lastSuccessfulMigrationDate)
 					{
