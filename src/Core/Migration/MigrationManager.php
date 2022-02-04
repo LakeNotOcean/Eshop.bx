@@ -89,10 +89,6 @@ class MigrationManager
 	{
 		$len = strlen(date(self::dateFormat));
 
-		if (!Settings::getInstance()->isDev())
-		{
-			return;
-		}
 		$this->executeQuery($this->createTableScript, 'fail to create migration table ');
 
 		$resultString = "";
