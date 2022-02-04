@@ -2,6 +2,7 @@
 
 namespace Up\Core\DAO;
 
+use Up\Core\DataBase\BaseDatabase;
 use Up\Core\Entity\Item;
 use Up\Core\Entity\ItemDetail;
 use Up\Core\Entity\ItemsImage;
@@ -13,7 +14,7 @@ class ItemDAOmysql
 	private const PAGE_SIZE = 10;
 	private $DBConnection;
 
-	public function __construct(\Up\Core\DataBase\DefaultDatabase $DBConnection)
+	public function __construct(BaseDatabase $DBConnection)
 	{
 		$this->DBConnection = $DBConnection;
 	}
@@ -24,7 +25,7 @@ class ItemDAOmysql
 		$to = ($page + 1) * self::PAGE_SIZE;
 		$result = $this->DBConnection->query($this->getItemsQuery($from, $to));
 		$items = [];
-		while ($row = mysqli_fetch_assoc($result))
+		while ($row = $result->fetch())
 		{
 			$item = new Item();
 			$this->mapItemCommonInfo($item, $row);
@@ -42,7 +43,7 @@ class ItemDAOmysql
 		$item = new ItemDetail();
 		$tags = [];
 		$imagesId = '';
-		while ($row = mysqli_fetch_assoc($result))
+		while ($row = $result->fetch())
 		{
 			if($item->getId() === 0) //если еще не установили id, т.е если это первая итерация
 			{
@@ -61,7 +62,7 @@ class ItemDAOmysql
 		$item->setTags($tags);
 		$result = $this->DBConnection->query($this->getImagesByIdQuery($imagesId));
 		$images = [];
-		while ($row = mysqli_fetch_assoc($result))
+		while ($row = $result->fetch())
 		{
 			$image = new ItemsImage();
 			$this->mapItemsImageInfo($image, $row);
