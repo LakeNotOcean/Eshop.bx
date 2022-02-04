@@ -1,8 +1,8 @@
 <?php
 
-namespace Controller;
+namespace Up\Controller;
 
-use Service\CatalogService;
+use Up\Service\CatalogService;
 
 function renderTemplate(string $path, array $templateData = []): string
 {
@@ -34,10 +34,11 @@ class CatalogController
 	{
 		$content = renderTemplate($this->path . 'catalog.php', [
 			'result_count' => $this->getResultCount(),
-			'items' => $this->getItems()
+			'items' => $this->getItems(),
 		]);
+
 		return renderTemplate($this->path . 'main.php', [
-			'content' => $content
+			'content' => $content,
 		]);
 	}
 

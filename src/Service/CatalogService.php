@@ -1,8 +1,8 @@
 <?php
 
-namespace Service;
+namespace Up\Service;
 
-use Model\Item;
+use Up\Model\Item;
 
 class CatalogService
 {
