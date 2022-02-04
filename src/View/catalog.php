@@ -5,10 +5,11 @@
 
 <link rel="stylesheet" href="./css/catalog.css">
 <div class="container">
-	<div class="search_result_count">Компьютерные мыши: найдено <?= $result_count?> штук</div>
+	<div class="search_result_count">Компьютерные мыши: найдено <?= 6?> штук</div>
 	<div class="filters-item-list-row">
 		<div class="filters-column">
 			<div class="filters">
+				Фильтры
 				<div class="filter-category">
 					<div class="price-category"></div>
 				</div>
@@ -22,7 +23,7 @@
 				<picture>
 					<source srcset="../img/<?= $item->getId()?>.webp" type="image/webp">
 					<source srcset="../img/<?= $item->getId()?>.png" type="image/jpG">
-					<img src="../img/<?= $item->getId()?>.png" alt="Alt Text!">
+					<img class="item-image" src="../img/<?= $item->getId()?>.png" alt="Alt Text!">
 				</picture>
 				<div class="item-other">
 					<div class="item-other-to-top">
