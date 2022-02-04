@@ -5,7 +5,7 @@
 namespace Up\Core;
 use Exception;
 use Up\Controller\CatalogController;
-use Up\Core\DAO\ItemDAOmysql;
+use Up\DAO\ItemDAOmysql;
 use Up\Core\DataBase\DefaultDatabase;
 use Up\Core\Message\Response;
 use Up\Core\Migration\MigrationManager;

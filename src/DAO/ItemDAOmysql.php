@@ -1,14 +1,14 @@
 <?php
 
-namespace Up\Core\DAO;
+namespace Up\DAO;
 
 use Up\Core\DataBase\BaseDatabase;
 use Up\Core\DataBase\DefaultDatabase;
-use Up\Core\Entity\Item;
-use Up\Core\Entity\ItemDetail;
-use Up\Core\Entity\ItemsImage;
-use Up\Core\Entity\ItemsSpecification;
-use Up\Core\Entity\ItemsTag;
+use Up\Entity\Item;
+use Up\Entity\ItemDetail;
+use Up\Entity\ItemsImage;
+use Up\Entity\ItemsSpecification;
+use Up\Entity\ItemsTag;
 
 class ItemDAOmysql implements ItemDAO
 {

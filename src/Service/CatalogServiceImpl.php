@@ -2,11 +2,11 @@
 
 namespace Up\Service;
 
-use Up\Core\DAO\ItemDAO;
-use Up\Core\DAO\ItemDAOmysql;
+use Up\DAO\ItemDAO;
+use Up\DAO\ItemDAOmysql;
 use Up\Core\DataBase\BaseDatabase;
 use Up\Core\DataBase\DefaultDatabase;
-use Up\Core\Entity\ItemDetail;
+use Up\Entity\ItemDetail;
 
 class CatalogServiceImpl implements CatalogService
 {

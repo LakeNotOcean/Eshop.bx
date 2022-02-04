@@ -1,6 +1,6 @@
 <?php
 
-namespace Up\Core\Entity;
+namespace Up\Entity;
 
 class ItemsImage
 {
