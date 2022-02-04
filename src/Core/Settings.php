@@ -2,9 +2,7 @@
 
 namespace Up\Core;
 
-
 /** Синглтон, используется для получения информации конфигурации */
-
 class Settings
 {
 	private static $instance;
@@ -15,16 +13,13 @@ class Settings
 
 	protected function __construct()
 	{
-		$config=parse_ini_file('config.ini');
+		$config = parse_ini_file('config.ini');
 		$this->databaseConfig = new DataBaseConfig(
-			$config['host'],
-			$config['user'],
-			$config['password'],
-			$config['dbName']
+			$config['host'], $config['user'], $config['password'], $config['dbName'], (int)$config['port']
 		);
-		$this->isDev=$config['isDev'];
-		$this->sessionLifetime=$config['sessionLifetime'];
-		$this->migrationDirPath=$config['migrationDirPath'];
+		$this->isDev = $config['isDev'];
+		$this->sessionLifetime = $config['sessionLifetime'];
+		$this->migrationDirPath = $config['migrationDirPath'];
 	}
 
 	public static function getInstance(): Settings
@@ -58,8 +53,4 @@ class Settings
 	{
 		return $this->migrationDirPath;
 	}
-
-
-
-
 }

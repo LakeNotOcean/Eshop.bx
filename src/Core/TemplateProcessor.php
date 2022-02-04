@@ -27,7 +27,7 @@ class TemplateProcessor
 		$content = self::renderTemplate($contentPath, $contentParams);
 
 		$params = array_merge($layoutParams, [
-			'content' => $content
+			'content' => $content,
 		]);
 
 		return self::renderTemplate($layoutPath, $params);
