@@ -41,6 +41,7 @@ class MigrationManager
 
 	private function writeLastMigrationRecord(string $migrationDate): void
 	{
+		$this->executeQuery($this->removeLastMigrationScript, 'failed to remove last migration script');
 		$addNewMigrationScript = "INSERT INTO up_migration (LAST_MIGRATION) VALUES ('$migrationDate')";
 		$this->executeQuery($addNewMigrationScript, 'failed to apply migration ' . $migrationDate);
 	}
@@ -79,6 +80,7 @@ class MigrationManager
 	{
 		return date(self::dateFormat) . '_' . $migrationName;
 	}
+
 
 	/**
 	 * @throws MigrationException
@@ -136,6 +138,7 @@ class MigrationManager
 				{
 					if ($databaseMigrationDate !== $lastSuccessfulMigrationDate)
 					{
+
 						$this->writeLastMigrationRecord($currentMigrationDate);
 					}
 					$this->triggerError('failed to apply migration ' . $fileDate);
