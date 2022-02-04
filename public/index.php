@@ -1,17 +1,17 @@
 <?php
 
-require '../Autoloader.php';
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
+
+require '../Autoloader.php';
 
 $autoloader = Autoloader::getInstance();
 
 $autoloader->addVendorNamespacePath('Up\\', __DIR__ . '/../src/');
 
-$migration= new \Up\Core\Migration\MigrationManager(\Up\Core\DataBase\DefaultDatabase::getInstance());
-$migration->updateDatabase();
 
-$dao = new \Up\Core\DAO\ItemDAOmysql(\Up\Core\DataBase\DefaultDatabase::getInstance());
 
-var_dump($dao->getItems(0));
 
-//var_dump($dao->getItemDetailById(2));
+
+$App = Up\Core\Application::run();
+var_dump($App);
