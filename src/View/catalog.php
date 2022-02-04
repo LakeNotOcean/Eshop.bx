@@ -1,5 +1,5 @@
 <?php
-/** @var array<Model\Item> $items */
+/** @var array<Entity\Item> $items */
 /** @var int $result_count */
 ?>
 
@@ -29,7 +29,7 @@
 							</svg>
 						</div>
 						<div class="item-short-description">
-							<?= $item->getShortDesc()?>
+							<?= $item->getShortDescription()?>
 						</div>
 					</div>
 					<div class="item-other-footer">
@@ -40,7 +40,7 @@
 							<div class="rating-value"><?= (float)random_int(40,50)/10?></div>
 							<div class="review-count">(<?= random_int(5,50)?> отзывов)</div>
 						</div>
-						<div class="price"><?= $item->getFormattedPrice()?> ₽</div>
+						<div class="price"><?= $item->getPrice()?> ₽</div>
 					</div>
 				</div>
 			</div>

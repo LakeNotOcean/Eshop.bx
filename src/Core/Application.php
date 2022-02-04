@@ -6,6 +6,7 @@ namespace Up\Core;
 use Exception;
 use Up\Core\Message\Response;
 use Up\Core\Migration\MigrationManager;
+use Up\Core\Router\Errors\RoutingException;
 use Up\Core\Router\Router;
 
 class Application
@@ -44,7 +45,7 @@ class Application
 			$method = $router->route($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
 		}
 
-		catch (Router\Errors\RoutingException $e)
+		catch (RoutingException $e)
 		{
 			$response->withStatus(418);
 			$response->flush();

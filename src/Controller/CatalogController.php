@@ -16,7 +16,7 @@ class CatalogController
 
 	public static function getItems(): Response
 	{
-		$items = CatalogService::getItems(BaseDatabase::getInstance() );
+		$items = CatalogService::getItems();
 		$pages = TemplateProcessor::Render('catalog.php',  ['items'=>$items], 'main.php',[]);
 		$response = new Response();
 		$response = $response->withBodyHTML($pages);
