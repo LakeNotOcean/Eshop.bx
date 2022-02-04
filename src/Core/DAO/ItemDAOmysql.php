@@ -9,7 +9,7 @@ use Up\Core\Entity\ItemsImage;
 use Up\Core\Entity\ItemsSpecification;
 use Up\Core\Entity\ItemsTag;
 
-class ItemDAOmysql
+class ItemDAOmysql implements ItemDAO
 {
 	private const PAGE_SIZE = 10;
 	private $DBConnection;
