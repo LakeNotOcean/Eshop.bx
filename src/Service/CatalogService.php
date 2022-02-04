@@ -2,23 +2,11 @@
 
 namespace Up\Service;
 
-use Up\Core\DAO\ItemDAOmysql;
-use Up\Core\DataBase\BaseDatabase;
-use Up\Core\DataBase\DefaultDatabase;
-use Up\Model\Item;
+use Up\Core\Entity\ItemDetail;
 
-class CatalogService
+interface CatalogService
 {
-	public static function getItems(): array
-	{
-		$DAO = new ItemDAOmysql(DefaultDatabase::getInstance());
-		$items = $DAO->getItems(0);
-		return $items;
-	}
-
-	public static function getResultCount(): int
-	{
-		return 2;
-	}
-
+	public function getItems(): array;
+	public function getItemById(int $id): ItemDetail;
+	public function getResultCount(): int;
 }
