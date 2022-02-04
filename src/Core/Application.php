@@ -1,16 +1,18 @@
 <?php
 
-
-
 namespace Up\Core;
+
 use Exception;
+use MigrationException;
+use ReflectionException;
+use ReflectionFunction;
+use ReflectionMethod;
 use Up\Controller\CatalogController;
-use Up\DAO\ItemDAOmysql;
 use Up\Core\DataBase\DefaultDatabase;
-use Up\Core\Message\Response;
 use Up\Core\Migration\MigrationManager;
 use Up\Core\Router\Errors\RoutingException;
 use Up\Core\Router\Router;
+use Up\DAO\ItemDAOmysql;
 use Up\Service\CatalogServiceImpl;
 
 class Application
@@ -32,7 +34,7 @@ class Application
 
 		###############БЛОК ПРОПИСЫВАНИЯ МАРШРУТОВ###################
 		$router = Router::getInstance();
-		$router->get('/',[$catalogController, 'getItems'],'home');
+		$router->get('/', [$catalogController, 'getItems'], 'home');
 		#############################################################
 
 		###############БЛОК ПРИМЕНЕНИЯ МИГРАЦИЙ######################
@@ -40,12 +42,12 @@ class Application
 		$isDev = $settings->isDev();
 		if ($isDev === true)
 		{
-			$migration= new \Up\Core\Migration\MigrationManager(\Up\Core\DataBase\DefaultDatabase::getInstance());
+			$migration = new MigrationManager(DefaultDatabase::getInstance());
 			try
 			{
 				$migration->updateDatabase();
 			}
-			catch (\MigrationException $e)
+			catch (MigrationException $e)
 			{
 				//todo Залогировали
 				var_dump('Миграция не удалась!');
@@ -53,13 +55,10 @@ class Application
 		}
 		############################################################
 
-		//$response = new Response(); вроде не нужен
-
 		try
 		{
 			$method = $router->route($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
 		}
-
 		catch (RoutingException $e)
 		{
 			//todo вызов отдельного контроллера ошибок
@@ -75,9 +74,9 @@ class Application
 		{
 			try
 			{
-				$callbackReflection = new \ReflectionMethod($method['callback'][0], $method['callback'][1]);
+				$callbackReflection = new ReflectionMethod($method['callback'][0], $method['callback'][1]);
 			}
-			catch (\ReflectionException $e)
+			catch (ReflectionException $e)
 			{
 				//todo вызов отдельного контроллера ошибок
 				//$response->withStatus(997);
@@ -86,13 +85,13 @@ class Application
 				return false;
 			}
 		}
-		else if (is_string($method['callback']) || is_callable($method['callback']))
+		elseif (is_string($method['callback']) || is_callable($method['callback']))
 		{
 			try
 			{
-				$callbackReflection = new \ReflectionFunction($method['callback']);
+				$callbackReflection = new ReflectionFunction($method['callback']);
 			}
-			catch (\ReflectionException $e)
+			catch (ReflectionException $e)
 			{
 				//todo вызов отдельного контроллера ошибок
 				//$response->withStatus(999);
@@ -136,8 +135,8 @@ class Application
 		}
 
 		$response->flush();
+
 		return true;
 	}
-
 
 }

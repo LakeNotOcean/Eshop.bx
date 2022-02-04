@@ -84,7 +84,6 @@ class Router
 		$this->register('DELETE', $urlTemplate, $callback, $name);
 	}
 
-
 	public function getUrlTemplateByName(string $name): ?string
 	{
 		foreach ($this->routes as $route)

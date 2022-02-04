@@ -1,5 +1,6 @@
 <?php
 /** @var string $content */
+
 ?>
 
 <!doctype html>
@@ -27,7 +28,7 @@
 </nav>
 
 <main>
-	<?= $content?>
+	<?= $content ?>
 </main>
 
 </body>

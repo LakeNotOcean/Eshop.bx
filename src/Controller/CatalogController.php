@@ -2,13 +2,9 @@
 
 namespace Up\Controller;
 
-use Up\Core\DataBase\BaseDatabase;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessor;
-use Up\Core\TemplateProcessorImpl;
 use Up\Service\CatalogService;
-use Up\Service\CatalogServiceImpl;
-
 
 class CatalogController
 {
@@ -24,9 +20,10 @@ class CatalogController
 	public function getItems(): Response
 	{
 		$items = $this->catalogService->getItems();
-		$pages = $this->templateProcessor->render('catalog.php', ['items'=>$items], 'main.php', []);
+		$pages = $this->templateProcessor->render('catalog.php', ['items' => $items], 'main.php', []);
 		$response = new Response();
 		$response = $response->withBodyHTML($pages);
+
 		return $response;
 	}
 

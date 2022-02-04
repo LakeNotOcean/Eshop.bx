@@ -81,7 +81,6 @@ class MigrationManager
 		return date(self::dateFormat) . '_' . $migrationName;
 	}
 
-
 	/**
 	 * @throws MigrationException
 	 */
