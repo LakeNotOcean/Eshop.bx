@@ -67,6 +67,7 @@ function specsToArray(string $specsStr): array
 		background: #AFAFAF;
 		padding: 10px;
 		border-radius: 15px;
+		margin: 10px;
 	}
 </style>
 
