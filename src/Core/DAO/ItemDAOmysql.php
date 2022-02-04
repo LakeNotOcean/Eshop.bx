@@ -3,6 +3,7 @@
 namespace Up\Core\DAO;
 
 use Up\Core\DataBase\BaseDatabase;
+use Up\Core\DataBase\DefaultDatabase;
 use Up\Core\Entity\Item;
 use Up\Core\Entity\ItemDetail;
 use Up\Core\Entity\ItemsImage;
@@ -14,7 +15,7 @@ class ItemDAOmysql implements ItemDAO
 	private const PAGE_SIZE = 10;
 	private $DBConnection;
 
-	public function __construct(BaseDatabase $DBConnection)
+	public function __construct(DefaultDatabase $DBConnection)
 	{
 		$this->DBConnection = $DBConnection;
 	}
