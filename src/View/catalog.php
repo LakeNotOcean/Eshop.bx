@@ -19,7 +19,11 @@
 			<?php foreach($items as $item) :?>
 
 			<div class="item">
-				<img src="../img/<?= $item->getId()?>.png" alt="item-image" class="item-image">
+				<picture>
+					<source srcset="../img/<?= $item->getId()?>.webp" type="image/webp">
+					<source srcset="../img/<?= $item->getId()?>.png" type="image/jpG">
+					<img src="../img/<?= $item->getId()?>.png" alt="Alt Text!">
+				</picture>
 				<div class="item-other">
 					<div class="item-other-to-top">
 						<div class="item-other-header">

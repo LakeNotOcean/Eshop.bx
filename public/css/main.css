@@ -6,6 +6,8 @@ body {
 	font-size: 15px;
 	color: #333333;
 	--nav-height: 70px;
+	max-width: 100%;
+	overflow-x: hidden;
 }
 
 /*==========================
