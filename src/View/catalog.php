@@ -1,14 +1,15 @@
 <?php
-/** @var array<Model\Item> $items */
+/** @var array<Entity\Item> $items */
 /** @var int $result_count */
 ?>
 
 <link rel="stylesheet" href="./css/catalog.css">
 <div class="container">
-	<div class="search_result_count">Компьютерные мыши: найдено <?= $result_count?> штук</div>
+	<div class="search_result_count">Компьютерные мыши: найдено <?= 6?> штук</div>
 	<div class="filters-item-list-row">
 		<div class="filters-column">
 			<div class="filters">
+				Фильтры
 				<div class="filter-category">
 					<div class="price-category"></div>
 				</div>
@@ -19,7 +20,11 @@
 			<?php foreach($items as $item) :?>
 
 			<div class="item">
-				<img src="../img/<?= $item->getId()?>.png" alt="item-image" class="item-image">
+				<picture>
+					<source srcset="../img/<?= $item->getId()?>.webp" type="image/webp">
+					<source srcset="../img/<?= $item->getId()?>.png" type="image/jpG">
+					<img class="item-image" src="../img/<?= $item->getId()?>.png" alt="Alt Text!">
+				</picture>
 				<div class="item-other">
 					<div class="item-other-to-top">
 						<div class="item-other-header">
@@ -29,7 +34,7 @@
 							</svg>
 						</div>
 						<div class="item-short-description">
-							<?= $item->getShortDesc()?>
+							<?= $item->getShortDescription()?>
 						</div>
 					</div>
 					<div class="item-other-footer">
@@ -40,7 +45,7 @@
 							<div class="rating-value"><?= (float)random_int(40,50)/10?></div>
 							<div class="review-count">(<?= random_int(5,50)?> отзывов)</div>
 						</div>
-						<div class="price"><?= $item->getFormattedPrice()?> ₽</div>
+						<div class="price"><?= $item->getPrice()?> ₽</div>
 					</div>
 				</div>
 			</div>

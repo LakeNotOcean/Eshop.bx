@@ -38,7 +38,7 @@ class Router
 	 * @param string $method HTTP request method (GET|POST|PUT|DELETE).
 	 * @param string $urlTemplate URL template with parameters placeholders, like (/user/:user_id).
 	 * @param callable $callback Handler for this route.
-	 * @param string $name name of the route
+	 * @param string $name name of the route.
 	 *
 	 * @return void
 	 */
@@ -83,6 +83,7 @@ class Router
 	{
 		$this->register('DELETE', $urlTemplate, $callback, $name);
 	}
+
 
 	public function getUrlTemplateByName(string $name): ?string
 	{

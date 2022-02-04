@@ -2,52 +2,35 @@
 
 namespace Up\Controller;
 
+use Up\Core\DataBase\BaseDatabase;
+use Up\Core\Message\Response;
+use Up\Core\TemplateProcessor;
+use Up\Core\TemplateProcessorImpl;
 use Up\Service\CatalogService;
+use Up\Service\CatalogServiceImpl;
 
-function renderTemplate(string $path, array $templateData = []): string
-{
-	if (!file_exists($path))
-	{
-		return "";
-	}
-
-	extract($templateData, EXTR_OVERWRITE);
-
-	ob_start();
-
-	include $path;
-
-	return ob_get_clean();
-}
 
 class CatalogController
 {
-	private string $path = '../src/layout/';
-	private CatalogService $catalogService;
+	protected $templateProcessor;
+	protected $catalogService;
 
-	public function __construct()
+	public function __construct(TemplateProcessor $templateProcessor, CatalogService $catalogService)
 	{
-		$this->catalogService = new CatalogService();
+		$this->templateProcessor = $templateProcessor;
+		$this->catalogService = $catalogService;
 	}
 
-	public function getTemplate(): string
+	public function getItems(): Response
 	{
-		$content = renderTemplate($this->path . 'catalog.php', [
-			'result_count' => $this->getResultCount(),
-			'items' => $this->getItems(),
-		]);
-
-		return renderTemplate($this->path . 'main.php', [
-			'content' => $content,
-		]);
+		$items = $this->catalogService->getItems();
+		$pages = $this->templateProcessor->render('catalog.php', ['items'=>$items], 'main.php', []);
+		$response = new Response();
+		$response = $response->withBodyHTML($pages);
+		return $response;
 	}
 
-	private function getItems(): array
-	{
-		return $this->catalogService->getItems();
-	}
-
-	private function getResultCount(): int
+	public function getResultCount(): int
 	{
 		return $this->catalogService->getResultCount();
 	}
