@@ -6,30 +6,33 @@ namespace Up\Core;
 use Exception;
 use Up\Core\Message\Response;
 use Up\Core\Migration\MigrationManager;
+use Up\Core\Router\Router;
 
 class Application
 {
 
 	public static function run(): bool
 	{
+		//Прописывание маршрутов
+		include '../src/routes.php';
 		//Применение миграции если включен режим разработчика
 		$settings = Settings::getInstance();
 		$isDev = $settings->isDev();
 		if ($isDev === true)
 		{
-			$dataBase = DataBaseConnect::getInstance();
-			$migrationManager = new MigrationManager($dataBase->getDataBase());
-			$migrationManager->updateDatabase();
+			$migration= new \Up\Core\Migration\MigrationManager(\Up\Core\DataBase\DefaultDatabase::getInstance());
+			$migration->updateDatabase();
 		}
 
 		//Инициализация роутера
 
-		$router = Router\Router::getInstance();
-		$router->get('/home',[\Up\Controller\CatalogController::class, 'getItems'],'/home');
+
+
 		$response = new Response();
 
 		try
 		{
+			/** @var Router $router */
 			$method = $router->route($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
 		}
 
