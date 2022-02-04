@@ -5,7 +5,7 @@
 
 <link rel="stylesheet" href="./css/catalog.css">
 <div class="container">
-	<div class="search_result_count">Компьютерные мыши: найдено <?= 6?> штук</div>
+	<div class="search_result_count">Видеокарты: найдено <?= 5?> штук</div>
 	<div class="filters-item-list-row">
 		<div class="filters-column">
 			<div class="filters">

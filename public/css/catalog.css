@@ -78,6 +78,7 @@ items
 	width: 30px;
 	height: 25px;
 
+	min-width: 30px;
 	fill: none;
 	stroke: #222222;
 }
@@ -88,7 +89,6 @@ items
 }
 
 .item-short-description {
-	margin: 10px 0;
 	color: #7D7D7D;
 }
 

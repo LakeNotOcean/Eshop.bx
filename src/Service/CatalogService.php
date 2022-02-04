@@ -2,7 +2,7 @@
 
 namespace Up\Service;
 
-use Up\Core\Entity\ItemDetail;
+use Up\Entity\ItemDetail;
 
 interface CatalogService
 {

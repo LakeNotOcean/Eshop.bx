@@ -1,8 +1,8 @@
 <?php
 
-namespace Up\Core\DAO;
+namespace Up\DAO;
 
-use Up\Core\Entity\ItemDetail;
+use Up\Entity\ItemDetail;
 
 Interface ItemDAO
 {
