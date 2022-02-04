@@ -21,7 +21,15 @@ class Application
 		if ($isDev === true)
 		{
 			$migration= new \Up\Core\Migration\MigrationManager(\Up\Core\DataBase\DefaultDatabase::getInstance());
-			$migration->updateDatabase();
+			try
+			{
+				$migration->updateDatabase();
+			}
+			catch (\MigrationException $e)
+			{
+				//todo Залогировали
+				var_dump('Миграция не удалась!');
+			}
 		}
 
 		//Инициализация роутера

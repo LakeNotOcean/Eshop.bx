@@ -2,6 +2,7 @@
 
 namespace Up\Controller;
 
+use Up\Core\DataBase\BaseDatabase;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessor;
 use Up\Service\CatalogService;
@@ -15,7 +16,7 @@ class CatalogController
 
 	public static function getItems(): Response
 	{
-		$items = CatalogService::getItems();
+		$items = CatalogService::getItems(BaseDatabase::getInstance() );
 		$pages = TemplateProcessor::Render('catalog.php',  ['items'=>$items], 'main.php',[]);
 		$response = new Response();
 		$response = $response->withBodyHTML($pages);
