@@ -2,7 +2,10 @@
 
 namespace Up\Core\Migration;
 
-use mysql_xdevapi\Exception;
+use Exception;
+use MigrationException;
+use PDOException;
+use RecursiveDirectoryIterator;
 use Up\Core\DataBase\DefaultDatabase;
 use Up\Core\Settings;
 
@@ -13,7 +16,7 @@ class MigrationManager
 
 	private $createTableScript = 'CREATE TABLE IF NOT EXISTS up_migration (LAST_MIGRATION text NOT NULL)';
 	private $removeLastMigrationScript = 'TRUNCATE TABLE up_migration;';
-	const dateFormat = 'Y_m_d_H-i-s';
+	public const dateFormat = 'Y_m_d_H-i-s';
 	private $getLastMigrationScript = 'SELECT * FROM up_migration LIMIT 1;';
 	private $minMigrationDate = '1900_01_01_00-00-00_minimum';
 
@@ -24,42 +27,41 @@ class MigrationManager
 		$this->migrationDir = $configService->getMigrationDirPath();
 	}
 
-	private function executeQuery(string $query, string $errorMessage = "")
+	private function executeQuery(string $query, string $errorMessage = ""): void
 	{
 		try
 		{
-			$result = $this->database->MultiQuery($query);
-			if (!$result)
-			{
-				$this->triggerError($errorMessage);
-			}
+			$this->database->query($query);
 		}
-		catch (Exception $exception)
+		catch (PDOException $exception)
 		{
 			$this->triggerError($errorMessage);
 		}
 	}
 
-	private function writeLastMigrationRecord(string $migrationDate)
+	private function writeLastMigrationRecord(string $migrationDate): void
 	{
 		$addNewMigrationScript = "INSERT INTO up_migration (LAST_MIGRATION) VALUES ('$migrationDate')";
 		$this->executeQuery($addNewMigrationScript, 'failed to apply migration ' . $migrationDate);
 	}
 
-	private function triggerError(string $errorMessage = "")
+	private function triggerError(string $errorMessage = ""): void
 	{
-		trigger_error($errorMessage . $this->database->getErrorMessage(), E_USER_ERROR);
+		trigger_error(
+			$errorMessage . ':' . $this->database->errorCode() . ':' . $this->database->errorInfo()[2],
+			E_USER_ERROR
+		);
 	}
 
 	/**
-	 * @throws \MigrationException
+	 * @throws MigrationException
 	 */
-	private function createMigrationScriptsDir()
+	private function createMigrationScriptsDir(): void
 	{
 		$path = $this->migrationDir;
 		if (!file_exists($path) && !mkdir($path, 0777, true) && !is_dir($path))
 		{
-			throw new \MigrationException(sprintf('Directory "%s" was not created', $path));
+			throw new MigrationException(sprintf('Directory "%s" was not created', $path));
 		}
 	}
 
@@ -78,7 +80,10 @@ class MigrationManager
 		return date(self::dateFormat) . '_' . $migrationName;
 	}
 
-	public function updateDatabase()
+	/**
+	 * @throws MigrationException
+	 */
+	public function updateDatabase(): void
 	{
 		$len = strlen(date(self::dateFormat));
 
@@ -94,11 +99,11 @@ class MigrationManager
 			$result = $this->database->query($this->getLastMigrationScript);
 			if ($result)
 			{
-				$resultString = $result->fetch_all()[0][0];
+				$resultString = $result->fetchAll()[0][0];
 				$resultString = $resultString ? : "";
 			}
 		}
-		catch (\Exception $exception)
+		catch (Exception $exception)
 		{
 			$this->triggerError('fail to get last migration script ');
 		}
@@ -107,7 +112,7 @@ class MigrationManager
 		$databaseMigrationDate = $lastSuccessfulMigrationDate;
 
 		$this->createMigrationScriptsDir();
-		$directoryIterator = new \RecursiveDirectoryIterator($this->migrationDir);
+		$directoryIterator = new RecursiveDirectoryIterator($this->migrationDir);
 		foreach ($directoryIterator as $fileInfo)
 		{
 			$fileDate = substr($fileInfo->getFilename(), 0, $len);
@@ -121,13 +126,13 @@ class MigrationManager
 				$query = file_get_contents($fileInfo->getPathname());
 				try
 				{
-					$result = $this->database->multiQuery($query);
+					$result = $this->database->query($query);
 					if (!$result && $databaseMigrationDate !== $lastSuccessfulMigrationDate)
 					{
 						$this->writeLastMigrationRecord($currentMigrationDate);
 					}
 				}
-				catch (\Exception $exception)
+				catch (Exception $exception)
 				{
 					if ($databaseMigrationDate !== $lastSuccessfulMigrationDate)
 					{
@@ -146,8 +151,10 @@ class MigrationManager
 		}
 	}
 
-	/** Перед применением выполняет все предыдущие миграции*/
-	public function addAndApplyMigration(string $changeDatabaseScript, string $migrationName)
+	/** Перед применением выполняет все предыдущие миграции
+	 * @throws MigrationException
+	 */
+	public function addAndApplyMigration(string $changeDatabaseScript, string $migrationName): void
 	{
 		if (!Settings::getInstance()->isDev())
 		{
@@ -159,7 +166,10 @@ class MigrationManager
 		$this->addMigrationRecord($changeDatabaseScript, $migrationName);
 	}
 
-	public function addMigrationRecord(string $changeDatabaseScript, $migrationName)
+	/**
+	 * @throws MigrationException
+	 */
+	public function addMigrationRecord(string $changeDatabaseScript, $migrationName): void
 	{
 		$this->updateDatabase();
 
@@ -171,7 +181,6 @@ class MigrationManager
 		$this->executeQuery($addNewMigrationScript, 'failed to add new migration script ' . $migrationName);
 		$name = $this->formatMigrationName($migrationName);
 		file_put_contents($this->migrationDir . $name . '.sql', $changeDatabaseScript);
-
 	}
 }
 

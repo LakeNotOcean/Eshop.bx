@@ -1,5 +1,5 @@
 <?php
 
-class MigrationException extends \Exception
+class MigrationException extends Exception
 {
 }
