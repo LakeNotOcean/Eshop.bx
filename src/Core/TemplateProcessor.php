@@ -4,14 +4,17 @@ namespace Up\Core;
 
 class TemplateProcessor
 {
+	private static $viewPath = '../src/View/';
+
 	public static function renderTemplate($templatePath, $templateParams): string
 	{
-		if (file_exists($templatePath))
+		$fullTemplateName = self::$viewPath . $templatePath;
+		if (file_exists($fullTemplateName))
 		{
+			ob_start();
 			extract($templateParams, EXTR_OVERWRITE);
 
-			ob_start();
-			require_once $templatePath;
+			require_once $fullTemplateName;
 
 			return ob_get_clean();
 		}
@@ -23,8 +26,10 @@ class TemplateProcessor
 	{
 		$content = self::renderTemplate($contentPath, $contentParams);
 
-		return self::renderTemplate($layoutPath, [
-			'content' => $content,
-			'params' => $layoutParams]);
+		$params = array_merge($layoutParams, [
+			'content' => $content
+		]);
+
+		return self::renderTemplate($layoutPath, $params);
 	}
 }
