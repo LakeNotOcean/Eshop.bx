@@ -12,4 +12,6 @@ $migration->updateDatabase();
 
 $dao = new \Up\Core\DAO\ItemDAOmysql(\Up\Core\DataBase\DefaultDatabase::getInstance());
 
-var_dump($dao->getItems(0));
+//var_dump($dao->getItems(0));
+
+var_dump($dao->getItemDetailById(2));

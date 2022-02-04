@@ -7,6 +7,7 @@ class ItemDetail extends Item
 	private $fullDescription = '';
 	private $tags = [];
 	private $specification;
+	private $images = [];
 
 	/**
 	 * @return string
@@ -54,5 +55,21 @@ class ItemDetail extends Item
 	public function setSpecification(ItemsSpecification $specification): void
 	{
 		$this->specification = $specification;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getImages(): array
+	{
+		return $this->images;
+	}
+
+	/**
+	 * @param array $images
+	 */
+	public function setImages(array $images): void
+	{
+		$this->images = $images;
 	}
 }

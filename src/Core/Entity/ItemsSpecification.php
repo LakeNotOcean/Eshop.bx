@@ -13,6 +13,7 @@ class ItemsSpecification
 	private $busWidth = 0;
 	private $technicalProcess = 0;
 	private $chipFrequency = 0;
+	private $memoryFrequency = 0;
 	private $maxResolution = '';
 	private $outConnectors = '';
 	private $interface = '';
@@ -292,5 +293,21 @@ class ItemsSpecification
 	public function setThickness(int $thickness): void
 	{
 		$this->thickness = $thickness;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getMemoryFrequency(): int
+	{
+		return $this->memoryFrequency;
+	}
+
+	/**
+	 * @param int $memoryFrequency
+	 */
+	public function setMemoryFrequency(int $memoryFrequency): void
+	{
+		$this->memoryFrequency = $memoryFrequency;
 	}
 }

@@ -10,6 +10,7 @@ class Item
 	protected $shortDescription = '';
 	protected $sortOrder = 0;
 	protected $isActive = 0;
+	protected $mainImage;
 
 	/**
 	 * @return string
@@ -105,6 +106,22 @@ class Item
 	public function setId(int $id): void
 	{
 		$this->id = $id;
+	}
+
+	/**
+	 * @return ItemsImage
+	 */
+	public function getMainImage(): ItemsImage
+	{
+		return $this->mainImage;
+	}
+
+	/**
+	 * @param ItemsImage $mainImage
+	 */
+	public function setMainImage(ItemsImage $mainImage): void
+	{
+		$this->mainImage = $mainImage;
 	}
 
 }
