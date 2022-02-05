@@ -9,4 +9,9 @@ $autoloader = Autoloader::getInstance();
 
 $autoloader->addVendorNamespacePath('Up\\', __DIR__ . '/../src/');
 
-Up\Core\Application::run();
+//Up\Core\Application::run();
+
+$container = new \Up\Core\DI\Container(new \Up\Core\DI\DIConfigPHP());
+
+$controller = $container->get('catalogController');
+var_dump($controller);
