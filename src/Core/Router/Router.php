@@ -27,7 +27,7 @@ class Router
 		return self::$instance;
 	}
 
-	public function get(string $urlTemplate, callable $callback, string $name): void
+	public function get(string $urlTemplate, array $callback, string $name): void
 	{
 		$this->register('GET', $urlTemplate, $callback, $name);
 	}
@@ -42,7 +42,7 @@ class Router
 	 *
 	 * @return void
 	 */
-	public function register(string $method, string $urlTemplate, callable $callback, string $name): void
+	public function register(string $method, string $urlTemplate, array $callback, string $name): void
 	{
 		$this->routes[] = [
 			'method' => $method,

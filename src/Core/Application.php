@@ -9,6 +9,8 @@ use ReflectionFunction;
 use ReflectionMethod;
 use Up\Controller\CatalogController;
 use Up\Core\DataBase\DefaultDatabase;
+use Up\Core\DI\Error\DIException;
+use Up\Core\Message\Request;
 use Up\Core\Migration\MigrationManager;
 use Up\Core\Router\Errors\RoutingException;
 use Up\Core\Router\Router;
@@ -20,25 +22,17 @@ class Application
 
 	public static function run(): bool
 	{
-		###############БЛОК ИНИЦИАЛИЗАЦИЙ############################
-		$templateProcessor = new TemplateProcessorImpl();
-		$itemDAO = new ItemDAOmysql(DefaultDatabase::getInstance());
-		$catalogService = new CatalogServiceImpl($itemDAO);
-		$catalogController = new CatalogController($templateProcessor, $catalogService);
-		#############################################################
-
+		$settings = Settings::getInstance();
 		//Прописывание маршрутов
-		//include '../src/routes.php'; т.к теперь контроллеры это обычные объекты, а не статические, то для
-		//                             прописывания маршрутов нужны их экземпляры. Таким образом,
-		//                             прописывание маршрутов должно делаться в run()
+		/** @var Router $router */
+		include '../src/routes.php';
 
-		###############БЛОК ПРОПИСЫВАНИЯ МАРШРУТОВ###################
-		$router = Router::getInstance();
-		$router->get('/', [$catalogController, 'getItems'], 'home');
-		#############################################################
+		$container = new \Up\Core\DI\Container(
+			new \Up\Core\DI\DIConfigPHP($settings->getDIConfigPath())
+		);
 
 		###############БЛОК ПРИМЕНЕНИЯ МИГРАЦИЙ######################
-		$settings = Settings::getInstance();
+
 		$isDev = $settings->isDev();
 		if ($isDev === true)
 		{
@@ -62,49 +56,31 @@ class Application
 		catch (RoutingException $e)
 		{
 			//todo вызов отдельного контроллера ошибок
-			//$response->withStatus(418);
-			//$response->flush();
 			//todo залогировали
 			return false;
 		}
 
 		$params = $method['params'];
+		$params['request'] = Request::createFromGlobals();
 
-		if (is_array($method['callback']))
+		try
 		{
-			try
-			{
-				$callbackReflection = new ReflectionMethod($method['callback'][0], $method['callback'][1]);
-			}
-			catch (ReflectionException $e)
-			{
-				//todo вызов отдельного контроллера ошибок
-				//$response->withStatus(997);
-				//$response->flush();
-				//todo залогировали
-				return false;
-			}
+			$controller = $container->get($method['callback'][0]);
 		}
-		elseif (is_string($method['callback']) || is_callable($method['callback']))
+		catch (ReflectionException $e)
 		{
-			try
-			{
-				$callbackReflection = new ReflectionFunction($method['callback']);
-			}
-			catch (ReflectionException $e)
-			{
-				//todo вызов отдельного контроллера ошибок
-				//$response->withStatus(999);
-				//$response->flush();
-				//todo залогировали
-				return false;
-			}
 		}
-		else
+		catch (DIException $e)
+		{
+		}
+
+		try
+		{
+			$callbackReflection = new ReflectionMethod($controller, $method['callback'][1]);
+		}
+		catch (ReflectionException $e)
 		{
 			//todo вызов отдельного контроллера ошибок
-			//$response->withStatus(998);
-			//$response->flush();
 			//todo залогировали
 			return false;
 		}
@@ -126,7 +102,7 @@ class Application
 		}
 		try
 		{
-			$response = call_user_func_array($method['callback'], $args);
+			$response = $callbackReflection->invokeArgs($controller ,$args);
 		}
 		catch (Exception $e)
 		{
@@ -138,5 +114,4 @@ class Application
 
 		return true;
 	}
-
 }

@@ -4,53 +4,73 @@ namespace Up\Core\DI;
 
 use Up\Core\DI\Error\DIException;
 
-class Container
+class Container implements ContainerInterface
 {
 	protected $services = [];
 	protected $config = [];
 
 	public function __construct(DIConfigInterface $config)
 	{
-		$this->config = $config->getConfig('');
+		$this->config = $config->getConfig();
 	}
 
 	/**
-	 * @throws DIException
+	 * @throws DIException|\ReflectionException
 	 */
 	public function get(string $name)
 	{
-		if(isset($this->service[$name]))
+		if (isset($this->service[$name]))
 		{
 			return $this->service[$name];
 		}
-		if(!isset($this->config[$name]))
+		if (!isset($this->config[$name]))
 		{
 			throw new DIException('Wrong config. Not found: ' . $name);
 		}
 		$args = [];
 		foreach ($this->config[$name]['initArgs'] as $arg)
 		{
-			if($arg[0] == 'class')
+			switch ($arg[0])
 			{
-				$args[] = $this->get($arg[1]);
-			}
-			if($arg[0] == 'var')
-			{
-				$args[] = $arg[1];
+				case 'class':
+					$args[] = $this->get($arg[1]);
+					break;
+				case 'var':
+					$args[] = $arg[1];
+					break;
+				default:
+					throw new DIException(
+						'Wrong type of dependencies in '
+						. $name
+						. ' class. '
+						. $arg[1]
+						. ' should be only \'var\' or \'class\''
+					);
 			}
 		}
-		$service = null;
-		if($this->config[$name]['initType'] == 'constructor')
+
+		if (!isset($this->config[$name]['initType']))
 		{
-			$service = (new \ReflectionClass($this->config[$name]['classPath']))->newInstanceArgs($args);
+			throw new DIException('Missed initType in ' . $name . ' class');
 		}
-		if($this->config[$name]['initType'] == 'singleton')
+
+		switch ($this->config[$name]['initType'])
 		{
-			$service = (new \ReflectionMethod($this->config[$name]['classPath'],
-											 $this->config[$name]['initMethod'])
-			)->invokeArgs(null, $args);
+			case 'constructor':
+				$reflectionClass = new \ReflectionClass($this->config[$name]['classPath']);
+				$service = $reflectionClass->newInstanceArgs($args);
+				break;
+			case 'singleton':
+				$reflectionMethod = new \ReflectionMethod(
+					$this->config[$name]['classPath'], $this->config[$name]['initMethod']
+				);
+				$service = $reflectionMethod->invokeArgs(null, $args);
+				break;
+			default:
+				throw new DIException('Wrong init type in ' . $name . ' class');
 		}
 		$this->services[$name] = $service;
+
 		return $service;
 	}
 

@@ -4,5 +4,5 @@ namespace Up\Core\DI;
 
 interface DIConfigInterface
 {
-	public function getConfig(string $path): array;
+	public function getConfig(): array;
 }
