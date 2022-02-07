@@ -10,6 +10,7 @@ class Settings
 	private $isDev;
 	private $sessionLifetime;
 	private $migrationDirPath;
+	private $DIConfigPath;
 
 	protected function __construct()
 	{
@@ -20,6 +21,7 @@ class Settings
 		$this->isDev = $config['isDev'];
 		$this->sessionLifetime = $config['sessionLifetime'];
 		$this->migrationDirPath = $config['migrationDirPath'];
+		$this->DIConfigPath = $config['DIConfigPath'];
 	}
 
 	public static function getInstance(): Settings
@@ -52,5 +54,10 @@ class Settings
 	public function getMigrationDirPath(): string
 	{
 		return $this->migrationDirPath;
+	}
+
+	public function getDIConfigPath(): string
+	{
+		return $this->DIConfigPath;
 	}
 }

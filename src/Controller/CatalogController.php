@@ -2,6 +2,7 @@
 
 namespace Up\Controller;
 
+use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessor;
 use Up\Service\CatalogService;
@@ -17,7 +18,7 @@ class CatalogController
 		$this->catalogService = $catalogService;
 	}
 
-	public function getItems(): Response
+	public function getItems(Request $request): Response
 	{
 		$items = $this->catalogService->getItems();
 		$pages = $this->templateProcessor->render('catalog.php', ['items' => $items], 'main.php', []);
@@ -27,7 +28,7 @@ class CatalogController
 		return $response;
 	}
 
-	public function getResultCount(): int
+	public function getResultCount(Request $request): int
 	{
 		return $this->catalogService->getResultCount();
 	}

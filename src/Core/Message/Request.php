@@ -29,9 +29,7 @@ class Request
 		$headersLines = getallheaders(); //apache only
 		foreach ($headersLines as $header => $line)
 		{
-			$values = array_map(function($val) {
-				return trim($val);
-			}, preg_split("/[;,]/", $line));
+			$values = array_map('trim', preg_split("/[;,]/", $line));
 			$request->headers[strtolower($header)] = new Header($header, $values);
 		}
 		$request->headers['user-agent'] = new Header('User-Agent', $headersLines['User-Agent']);
