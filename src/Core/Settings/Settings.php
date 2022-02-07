@@ -10,7 +10,7 @@ class Settings
 
 	protected function __construct()
 	{
-		$this->settingsList = parse_ini_file(__DIR__.'/../config.ini');
+		$this->settingsList = parse_ini_file(__DIR__.'/../config.ini',false,INI_SCANNER_TYPED);
 		$this->settingsList['databaseConfig'] = new DatabaseConfig(
 			$this->settingsList['host'],
 			$this->settingsList['user'],
