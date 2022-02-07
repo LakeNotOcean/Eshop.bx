@@ -8,7 +8,7 @@ use ReflectionException;
 use ReflectionFunction;
 use ReflectionMethod;
 use Up\Controller\CatalogController;
-use Up\Core\DataBase\DefaultDatabase;
+use Up\Core\Database\DefaultDatabase;
 use Up\Core\Migration\MigrationManager;
 use Up\Core\Router\Errors\RoutingException;
 use Up\Core\Router\Router;

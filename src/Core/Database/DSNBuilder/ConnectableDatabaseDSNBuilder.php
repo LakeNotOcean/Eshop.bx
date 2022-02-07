@@ -1,6 +1,6 @@
 <?php
 
-namespace Up\Core\DataBase\DSNBuilder;
+namespace Up\Core\Database\DSNBuilder;
 
 use Up\Core\DatabaseConfig;
 

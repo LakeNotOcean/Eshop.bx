@@ -6,7 +6,7 @@ use DirectoryIterator;
 use Exception;
 use MigrationException;
 use PDOException;
-use Up\Core\DataBase\DefaultDatabase;
+use Up\Core\Database\DefaultDatabase;
 use Up\Core\Settings;
 
 class MigrationManager
