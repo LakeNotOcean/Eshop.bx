@@ -1,0 +1,32 @@
+.container {
+	display: flex;
+	flex-direction: column;
+}
+
+.item-header {
+	display: flex;
+	flex-direction: row;
+}
+
+.item-title {
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.item-main {
+	display: flex;
+	flex-direction: row;
+}
+
+.item-main-sidebar {
+	width: 30%;
+}
+
+.item-main-container {
+	flex-direction: column;
+}
+
+.item-main-header {
+	display: flex;
+	flex-direction: row;
+}
