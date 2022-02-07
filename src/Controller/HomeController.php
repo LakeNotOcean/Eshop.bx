@@ -7,7 +7,7 @@ use Up\Core\Message\Response;
 use Up\Core\TemplateProcessor;
 use Up\Service\CatalogService;
 
-class CatalogController
+class HomeController
 {
 	protected $templateProcessor;
 	protected $catalogService;
@@ -18,19 +18,11 @@ class CatalogController
 		$this->catalogService = $catalogService;
 	}
 
-	public function getItems(Request $request): Response
+	public function get(Request $request): Response
 	{
 		$items = $this->catalogService->getItems();
 		$pages = $this->templateProcessor->render('catalog.php', ['items' => $items], 'main.php', []);
-		$response = new Response();
-		$response = $response->withBodyHTML($pages);
 
-		return $response;
+		return (new Response())->withBodyHTML($pages);
 	}
-
-	public function getResultCount(Request $request): int
-	{
-		return $this->catalogService->getResultCount();
-	}
-
 }

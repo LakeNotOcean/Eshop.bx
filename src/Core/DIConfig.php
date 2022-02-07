@@ -13,7 +13,7 @@
  */
 $config = [
 	'catalogController' => [
-		'classPath' => \Up\Controller\CatalogController::class,
+		'classPath' => \Up\Controller\HomeController::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'templateProcessor'],
