@@ -2,7 +2,7 @@
 
 namespace Up\DAO;
 
-use Up\Core\DataBase\DefaultDatabase;
+use Up\Core\Database\DefaultDatabase;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\ItemsImage;

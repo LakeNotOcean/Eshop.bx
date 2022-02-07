@@ -1,8 +1,8 @@
 <?php
 
-namespace Up\Core\DataBase;
+namespace Up\Core\Database;
 
-use Up\Core\DataBase\DSNBuilder\MysqlDSNBuilder;
+use Up\Core\Database\DSNBuilder\MysqlDSNBuilder;
 use Up\Core\Settings;
 
 class DefaultDatabase extends BaseDatabase

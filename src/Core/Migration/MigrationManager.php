@@ -2,11 +2,11 @@
 
 namespace Up\Core\Migration;
 
+use DirectoryIterator;
 use Exception;
 use MigrationException;
 use PDOException;
-use RecursiveDirectoryIterator;
-use Up\Core\DataBase\DefaultDatabase;
+use Up\Core\Database\DefaultDatabase;
 use Up\Core\Settings;
 
 class MigrationManager
@@ -19,12 +19,14 @@ class MigrationManager
 	public const dateFormat = 'Y_m_d_H-i-s';
 	private $getLastMigrationScript = 'SELECT * FROM up_migration LIMIT 1;';
 	private $minMigrationDate = '1900_01_01_00-00-00_minimum';
+	private $migrationDateLen;
 
 	public function __construct(DefaultDatabase $database)
 	{
 		$this->database = $database;
 		$configService = Settings::getInstance();
 		$this->migrationDir = $configService->getMigrationDirPath();
+		$this->migrationDateLen=strlen(date(self::dateFormat));
 	}
 
 	private function executeQuery(string $query, string $errorMessage = ""): void
@@ -66,6 +68,20 @@ class MigrationManager
 		}
 	}
 
+	private function getMigrationFilesList(): array
+	{
+		$directoryIterator = new DirectoryIterator($this->migrationDir);
+		$migrationFilesArray = [];
+		foreach ($directoryIterator as $fileInfo)
+		{
+			$migrationFilesArray[] =clone $fileInfo;
+		}
+		uasort($migrationFilesArray, function($a,$b) {
+			return strncmp($a->getFilename(),$b->getFilename(),$this->migrationDateLen);
+		});
+		return $migrationFilesArray;
+	}
+
 	private function getLastSuccessfulMigrationDate(string $migrationString, int $formatLen): string
 	{
 		if (empty($migrationString))
@@ -86,8 +102,6 @@ class MigrationManager
 	 */
 	public function updateDatabase(): void
 	{
-		$len = strlen(date(self::dateFormat));
-
 		$this->executeQuery($this->createTableScript, 'fail to create migration table ');
 
 		$resultString = "";
@@ -104,21 +118,21 @@ class MigrationManager
 		{
 			$this->triggerError('fail to get last migration script ');
 		}
-		$lastSuccessfulMigrationDate = $this->getLastSuccessfulMigrationDate($resultString, $len);
+		$lastSuccessfulMigrationDate = $this->getLastSuccessfulMigrationDate($resultString, $this->migrationDateLen);
 		$currentMigrationDate = $lastSuccessfulMigrationDate;
 		$databaseMigrationDate = $lastSuccessfulMigrationDate;
 
 		$this->createMigrationScriptsDir();
-		$directoryIterator = new RecursiveDirectoryIterator($this->migrationDir);
-		foreach ($directoryIterator as $fileInfo)
+		$directoryFilesList = $this->getMigrationFilesList();
+		foreach ($directoryFilesList as $fileInfo)
 		{
-			$fileDate = substr($fileInfo->getFilename(), 0, $len);
+			$fileDate = substr($fileInfo->getFilename(), 0, $this->migrationDateLen);
 
 			if ($fileDate === '.' || $fileDate === '..')
 			{
 				continue;
 			}
-			if (strncmp($currentMigrationDate, $fileDate, $len) < 0)
+			if (strncmp($currentMigrationDate, $fileDate, $this->migrationDateLen) < 0)
 			{
 				$query = file_get_contents($fileInfo->getPathname());
 				try
