@@ -1,0 +1,64 @@
+.form-add-item {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	background: #F6F6F6;
+}
+
+input::placeholder {
+	color: #BBBBBB;
+}
+
+input {
+	width: 450px;
+	line-height: 40px;
+	flex: 1;
+	padding: 0 10px;
+	margin: 5px;
+	border-radius: 10px;
+	border: 2px solid #D9D9D9;
+	background: transparent;
+	outline: none;
+	font-size: 15px;
+	font-family: 'Montserrat', sans-serif;
+	color: #333333;
+}
+
+.specifications {
+	display: flex;
+	flex-direction: column;
+}
+
+.category {
+	display: flex;
+}
+
+.input-category {
+	font-weight: 700;
+}
+
+.btn-delete {
+	margin: 15px 50px;
+	height: 40px;
+	width: 200px;
+	line-height: 40px;
+	text-align: center;
+	border-radius: 10px;
+	border: 2px solid #D9D9D9;
+	color: #DF0310;
+}
+
+.btn-add {
+	margin: 15px 50px;
+	height: 40px;
+	width: 200px;
+	line-height: 40px;
+	text-align: center;
+	border-radius: 10px;
+	border: 2px solid #D9D9D9;
+	color: #009AFF;
+}
+
+.spec {
+	display: flex;
+}
