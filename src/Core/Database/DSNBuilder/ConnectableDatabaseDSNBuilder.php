@@ -2,7 +2,7 @@
 
 namespace Up\Core\Database\DSNBuilder;
 
-use Up\Core\DatabaseConfig;
+use Up\Core\Settings\DatabaseConfig;
 
 abstract class ConnectableDatabaseDSNBuilder implements DSNBuilder
 {

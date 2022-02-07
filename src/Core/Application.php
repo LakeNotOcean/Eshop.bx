@@ -5,17 +5,15 @@ namespace Up\Core;
 use Exception;
 use MigrationException;
 use ReflectionException;
-use ReflectionFunction;
 use ReflectionMethod;
-use Up\Controller\CatalogController;
 use Up\Core\Database\DefaultDatabase;
 use Up\Core\DI\Error\DIException;
 use Up\Core\Message\Request;
 use Up\Core\Migration\MigrationManager;
 use Up\Core\Router\Errors\RoutingException;
 use Up\Core\Router\Router;
-use Up\DAO\ItemDAOmysql;
-use Up\Service\CatalogServiceImpl;
+use Up\Core\Settings\Settings;
+
 
 class Application
 {
@@ -28,12 +26,12 @@ class Application
 		include '../src/routes.php';
 
 		$container = new \Up\Core\DI\Container(
-			new \Up\Core\DI\DIConfigPHP($settings->getDIConfigPath())
+			new \Up\Core\DI\DIConfigPHP($settings->getSettings('DIConfigPath'))
 		);
 
 		###############БЛОК ПРИМЕНЕНИЯ МИГРАЦИЙ######################
 
-		$isDev = $settings->isDev();
+		$isDev = $settings->getSettings('isDev');
 		if ($isDev === true)
 		{
 			$migration = new MigrationManager(DefaultDatabase::getInstance());
@@ -102,7 +100,7 @@ class Application
 		}
 		try
 		{
-			$response = $callbackReflection->invokeArgs($controller ,$args);
+			$response = $callbackReflection->invokeArgs($controller, $args);
 		}
 		catch (Exception $e)
 		{

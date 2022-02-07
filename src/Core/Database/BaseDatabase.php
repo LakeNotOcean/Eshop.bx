@@ -4,7 +4,7 @@ namespace Up\Core\Database;
 
 use PDO;
 use Up\Core\Database\DSNBuilder\DSNBuilder;
-use Up\Core\DatabaseConfig;
+use Up\Core\Settings\DatabaseConfig;
 
 abstract class BaseDatabase extends PDO
 {
