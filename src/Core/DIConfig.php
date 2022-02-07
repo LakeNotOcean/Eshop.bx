@@ -40,7 +40,7 @@ $config = [
 		],
 	],
 	'DB' => [
-		'classPath' => \Up\Core\DataBase\DefaultDatabase::class,
+		'classPath' => \Up\Core\Database\DefaultDatabase::class,
 		'initType' => 'singleton',
 		'initArgs' => [],
 		'initMethod' => 'getInstance'
