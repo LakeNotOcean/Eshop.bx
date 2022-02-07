@@ -7,7 +7,7 @@ use Exception;
 use MigrationException;
 use PDOException;
 use Up\Core\Database\DefaultDatabase;
-use Up\Core\Settings;
+use Up\Core\Settings\Settings;
 
 class MigrationManager
 {
@@ -25,7 +25,7 @@ class MigrationManager
 	{
 		$this->database = $database;
 		$configService = Settings::getInstance();
-		$this->migrationDir = $configService->getMigrationDirPath();
+		$this->migrationDir = $configService->getSettings('migrationDirPath');
 		$this->migrationDateLen=strlen(date(self::dateFormat));
 	}
 
@@ -168,7 +168,7 @@ class MigrationManager
 	 */
 	public function addAndApplyMigration(string $changeDatabaseScript, string $migrationName): void
 	{
-		if (!Settings::getInstance()->isDev())
+		if (!Settings::getInstance()->getSettings('isDev'))
 		{
 			return;
 		}

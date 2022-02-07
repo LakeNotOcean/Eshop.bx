@@ -1,6 +1,6 @@
 <?php
 
-namespace Up\Core;
+namespace Up\Core\Settings;
 
 /** Содержит всю необходимую информацию для подключения к БД */
 class DatabaseConfig
