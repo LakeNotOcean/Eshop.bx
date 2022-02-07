@@ -11,7 +11,7 @@ $template = ['Заводские данные'=>['Гарантия', 'Стран
 <link rel="stylesheet" href="/public/css/add-item.css">
 
 <form action="/" method="post" enctype="multipart/form-data" class="form-add-item">
-	<label for="type">Выбрать тип товара
+	<label for="item-type">Выбрать тип товара
 		<input list="type-data" id="item-type" name="item-type" placeholder="Тип товара">
 		<datalist id="type-data">
 			<?php foreach ($itemTypes as $itemType):?>
@@ -20,24 +20,24 @@ $template = ['Заводские данные'=>['Гарантия', 'Стран
 		</datalist>
 	</label>
 
-	<label for="title">Название товара
-		<input id="title" name="title" placeholder="Ввести название товара">
+	<label for="item-title">Название товара
+		<input id="item-title" name="item-title" placeholder="Ввести название товара">
 	</label>
 
 	<label for="price">Стоимость товара
-		<input id="price" name="price" placeholder="Ввести стоимость товара">
+		<input id="item-price" name="item-price" placeholder="Ввести стоимость товара">
 	</label>
 
-	<label for="short-description">Краткое описание
-		<input id="short-description" name="short-description" placeholder="Ввести краткое описание товара">
+	<label for="item-short-description">Краткое описание
+		<input id="item-short-description" name="item-short-description" placeholder="Ввести краткое описание товара">
 	</label>
 
-	<label for="full-description">Описание
-		<input id="full-description" name="full-description" placeholder="Ввести полное описание товара">
+	<label for="item-full-description">Описание
+		<input id="item-full-description" name="item-full-description" placeholder="Ввести полное описание товара">
 	</label>
 
-	<label for="tags">Теги
-		<input id="tags" name="tags" placeholder="Ввести теги через запятую">
+	<label for="item-tags">Теги
+		<input id="item-tags" name="item-tags" placeholder="Ввести теги через запятую">
 	</label>
 
 	<div class="images">
@@ -55,11 +55,11 @@ $template = ['Заводские данные'=>['Гарантия', 'Стран
 	</div>
 
 	<div class="specifications">
-		<div class="specifications-title"></div>
+		<div class="specifications-title">Характеристики</div>
 
 		<?php foreach ($template as $categoryName => $category):?>
 			<div class="category">
-				<input list="category-data" class="input-category" placeholder="Ввести название категории" value="<?= $categoryName?>">
+				<input list="category-data" class="input-category" placeholder="Выбрать название категории" value="<?= $categoryName?>">
 				<datalist id="category-data">
 					<?php foreach ($categories as $categoryData):?>
 						<option value="<?= $categoryData?>"></option>
@@ -70,7 +70,7 @@ $template = ['Заводские данные'=>['Гарантия', 'Стран
 
 			<?php foreach ($category as $spec):?>
 				<div class="spec">
-					<input list="spec-data" placeholder="Ввести название спецификации" value="<?= $spec?>">
+					<input list="spec-data" placeholder="Выбрать название спецификации" value="<?= $spec?>">
 					<datalist id="spec-data">
 						<?php foreach ($specs as $specData):?>
 							<option value="<?= $specData?>"></option>
