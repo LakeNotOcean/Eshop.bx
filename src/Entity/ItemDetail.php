@@ -5,9 +5,37 @@ namespace Up\Entity;
 class ItemDetail extends Item
 {
 	private $fullDescription = '';
-	private $tags = [];
-	private $specification;
 	private $images = [];
+	protected $specificationCategoriesList=[];
+	protected $itemType;
+
+	public function __construct()
+	{
+		$this->itemType=new ItemType();
+	}
+
+	public function getItemType():ItemType
+	{
+		return $this->itemType;
+	}
+
+
+	public function setItemType(ItemType $itemType): void
+	{
+		$this->itemType = $itemType;
+	}
+
+
+	public function getSpecificationCategoriesList(): array
+	{
+		return $this->specificationCategoriesList;
+	}
+
+
+	public function setSpecificationCategoryList(array $specificationCategoriesList): void
+	{
+		$this->specificationCategoriesList = $specificationCategoriesList;
+	}
 
 	/**
 	 * @return string
@@ -25,37 +53,6 @@ class ItemDetail extends Item
 		$this->fullDescription = $fullDescription;
 	}
 
-	/**
-	 * @return array
-	 */
-	public function getTags(): array
-	{
-		return $this->tags;
-	}
-
-	/**
-	 * @param array $tags
-	 */
-	public function setTags(array $tags): void
-	{
-		$this->tags = $tags;
-	}
-
-	/**
-	 * @return ItemsSpecification
-	 */
-	public function getSpecification(): ItemsSpecification
-	{
-		return $this->specification;
-	}
-
-	/**
-	 * @param ItemsSpecification $specification
-	 */
-	public function setSpecification(ItemsSpecification $specification): void
-	{
-		$this->specification = $specification;
-	}
 
 	/**
 	 * @return array

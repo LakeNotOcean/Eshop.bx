@@ -6,8 +6,7 @@ use Up\Core\Database\DefaultDatabase;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\ItemsImage;
-use Up\Entity\ItemsSpecification;
-use Up\Entity\ItemsTag;
+use Up\Entity\ItemType;
 
 class ItemDAOmysql implements ItemDAO
 {
@@ -42,7 +41,6 @@ class ItemDAOmysql implements ItemDAO
 	{
 		$result = $this->DBConnection->query($this->getItemDetailByIdQuery($id));
 		$item = new ItemDetail();
-		$tags = [];
 		$imagesId = '';
 		while ($row = $result->fetch())
 		{
@@ -50,17 +48,14 @@ class ItemDAOmysql implements ItemDAO
 			{
 				$this->mapItemCommonInfo($item, $row);
 				$item->setFullDescription($row['FULL_DESC']);
-				$specification = new ItemsSpecification();
-				$this->mapItemsSpecificationInfo($specification, $row);
-				$item->setSpecification($specification);
+				$item->setItemType(new ItemType($row['ITEM_TYPE_ID'], $row['TYPE_NAME']));
 				$imagesId = $row['IMAGES_ID'];
 			}
-			$tag = new ItemsTag();
-			$tag->setId($row['TAG_ID']);
-			$tag->setName($row['TAG']);
-			$tags[] = $tag;
 		}
-		$item->setTags($tags);
+		if (is_null($imagesId))
+		{
+			$imagesId = '0';
+		}
 		$result = $this->DBConnection->query($this->getImagesByIdQuery($imagesId));
 		$images = [];
 		while ($row = $result->fetch())
@@ -105,34 +100,12 @@ class ItemDAOmysql implements ItemDAO
 					   SORT_ORDER,
 					   SHORT_DESC,
 					   FULL_DESC,
-					   ACTIVE,
-					   ut.ID TAG_ID,
-					   ut.TITLE TAG,
-                       MANUFACTURER,
-					   COUNTRY,
-					   WARRANTY,
-					   RELEASE_YEAR,
-					   MEMORY_SIZE,
-					   MEMORY_TYPE,
-					   BUS_WIDTH,
-					   TECHNICAL_PROCESS,
-					   CHIP_FREQ,
-					   MEM_FREQ,
-					   MAX_RESOLUTION,
-					   OUT_CONNECTORS,
-					   INTERFACE,
-					   ADDITIONAL_POWER,
-					   REQUIRED_POWER,
-					   FANS_NUM,
-					   LENGTH,
-					   THICKNESS,
+					   ACTIVE,ITEM_TYPE_ID, uit.NAME as TYPE_NAME,
 					   (SELECT GROUP_CONCAT(up_image.ID)
 					   FROM up_image
-					   WHERE up_image.ITEM_ID = 2) IMAGES_ID
-				FROM up_item ui
-				INNER JOIN up_item_tag ON ui.ID = up_item_tag.ITEM_ID AND ui.ID = 2
-				INNER JOIN up_tag ut on up_item_tag.TAG_ID = ut.ID
-				INNER JOIN up_specs us on ui.ID = us.ITEM_ID;";
+					   WHERE up_image.ITEM_ID = {$id}) IMAGES_ID
+				FROM up_item ui left join up_item_type uit on ui.ITEM_TYPE_ID = uit.ID
+				WHERE ui.ID={$id};";
 	}
 
 	private function getImagesByIdQuery(string $imagesId): string
@@ -163,27 +136,5 @@ class ItemDAOmysql implements ItemDAO
 		$image->setHeight($row['IMAGE_HEIGHT']);
 		$image->setWidth($row['IMAGE_WIDTH']);
 		$image->setIsMain($row['IMAGE_IS_MAIN']);
-	}
-
-	private function mapItemsSpecificationInfo(ItemsSpecification $specification, array $row)
-	{
-		$specification->setManufacturer($row['MANUFACTURER']);
-		$specification->setCountry($row['COUNTRY']);
-		$specification->setWarranty($row['WARRANTY']);
-		$specification->setReleaseYear($row['RELEASE_YEAR']);
-		$specification->setMemorySize($row['MEMORY_SIZE']);
-		$specification->setMemoryType($row['MEMORY_TYPE']);
-		$specification->setBusWidth($row['BUS_WIDTH']);
-		$specification->setTechnicalProcess($row['TECHNICAL_PROCESS']);
-		$specification->setChipFrequency($row['CHIP_FREQ']);
-		$specification->setMemoryFrequency($row['MEM_FREQ']);
-		$specification->setMaxResolution($row['MAX_RESOLUTION']);
-		$specification->setOutConnectors($row['OUT_CONNECTORS']);
-		$specification->setInterface($row['INTERFACE']);
-		$specification->setAdditionalPower($row['ADDITIONAL_POWER']);
-		$specification->setRequiredPower($row['REQUIRED_POWER']);
-		$specification->setFansNum($row['FANS_NUM']);
-		$specification->setLength($row['LENGTH']);
-		$specification->setThickness($row['THICKNESS']);
 	}
 }

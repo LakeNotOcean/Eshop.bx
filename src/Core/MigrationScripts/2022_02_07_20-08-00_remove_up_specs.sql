@@ -1,0 +1,1 @@
+DROP TABLE up_specs;
