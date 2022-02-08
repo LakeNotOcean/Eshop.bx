@@ -33,4 +33,12 @@ class CatalogController
 		return $this->catalogService->getResultCount();
 	}
 
+	public function getItem(Request $request):Response
+	{
+		$item=$this->catalogService->getItemById(7);
+		$response = new Response();
+		$response = $response->withBodyHTML(serialize($item));
+		return $response;
+	}
+
 }
