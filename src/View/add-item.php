@@ -11,12 +11,23 @@ $template = ['Заводские данные'=>['Гарантия', 'Стран
 <link rel="stylesheet" href="/public/css/add-item.css">
 
 <form action="/" method="post" enctype="multipart/form-data" class="form-add-item">
+	<datalist id="spec-data">
+		<?php foreach ($specs as $specData):?>
+			<option value="<?= $specData?>"></option>
+		<?php endforeach;?>
+	</datalist>
+	<datalist id="category-data">
+		<?php foreach ($categories as $categoryData):?>
+			<option value="<?= $categoryData?>"></option>
+		<?php endforeach;?>
+	</datalist>
 
 	<div class="main-fields-and-images">
 		<div class="main-fields">
 			<label for="item-type" class="field">
 				<span class="label-title">Тип товара</span>
 				<input type="text" list="type-data" id="item-type" name="item-type" placeholder="Выбрать тип товара">
+				<span class="arrow"></span>
 				<datalist id="type-data">
 					<?php foreach ($itemTypes as $itemType):?>
 						<option value="<?= $itemType?>"></option>
@@ -81,29 +92,28 @@ $template = ['Заводские данные'=>['Гарантия', 'Стран
 
 		<?php foreach ($template as $categoryName => $category):?>
 			<div class="category">
-				<input type="text" list="category-data" class="input-category" placeholder="Выбрать название категории" value="<?= $categoryName?>">
-				<datalist id="category-data">
-					<?php foreach ($categories as $categoryData):?>
-						<option value="<?= $categoryData?>"></option>
-					<?php endforeach;?>
-				</datalist>
-				<div class="btn delete">Удалить</div>
-			</div>
-
-			<?php foreach ($category as $spec):?>
-				<div class="spec">
-					<input type="text" list="spec-data" placeholder="Выбрать название спецификации" value="<?= $spec?>">
-					<datalist id="spec-data">
-						<?php foreach ($specs as $specData):?>
-							<option value="<?= $specData?>"></option>
-						<?php endforeach;?>
-					</datalist>
-					<input type="text" placeholder="Ввести значение спецификации">
+				<div class="category-field">
+					<div class="field">
+						<input type="text" list="category-data" class="input-category" placeholder="Выбрать название категории" value="<?= $categoryName?>">
+						<span class="arrow"></span>
+					</div>
 					<div class="btn delete">Удалить</div>
 				</div>
-			<?php endforeach;?>
-			<div class="btn add">Добавить спецификацию</div>
+
+				<?php foreach ($category as $spec):?>
+					<div class="spec">
+						<div class="field">
+							<input type="text" list="spec-data" placeholder="Выбрать название спецификации" value="<?= $spec?>">
+							<span class="arrow"></span>
+						</div>
+						<input type="text" placeholder="Ввести значение спецификации">
+						<div class="btn delete">Удалить</div>
+					</div>
+				<?php endforeach;?>
+				<div class="btn add">Добавить спецификацию</div>
+			</div>
 		<?php endforeach;?>
+
 		<div class="btn add add-category">Добавить категорию</div>
 	</div>
 
@@ -111,3 +121,6 @@ $template = ['Заводские данные'=>['Гарантия', 'Стран
 </form>
 <!--<script src="./js/preview-images.js"></script>-->
 <script src="../../public/js/preview-images.js"></script>
+
+<!--<script src="./js/build-specs.js"></script>-->
+<script src="../../public/js/build-specs.js"></script>
