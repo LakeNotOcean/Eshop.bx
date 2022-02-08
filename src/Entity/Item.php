@@ -12,6 +12,7 @@ class Item
 	protected $isActive = 0;
 	protected $mainImage;
 
+
 	/**
 	 * @return string
 	 */

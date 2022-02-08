@@ -6,9 +6,9 @@
  * 'classPath'* - название класса с полным неймспейсом(в php реализации конфигурации можно использовать ::class)
  * 'initType'* - тип инициализации. Может принимать значения {constructor|singleton}
  * 'initArgs'* - зависимости, нужные для создания класса.
- * 				Указываются в виде ['типЗависимости', 'названиеЗависимости'].
- * 				'типЗависимости' может принимать значения {class|var(обычная переменная)}
- * 				В случае если зависимостей нет нужно указать пустой массив
+ *                Указываются в виде ['типЗависимости', 'названиеЗависимости'].
+ *                'типЗависимости' может принимать значения {class|var(обычная переменная)}
+ *                В случае если зависимостей нет нужно указать пустой массив
  * 'initMethod' - если initType=singleton, то необходимо указать метод, вызываемый для инстанцирования класса
  */
 $config = [
@@ -18,7 +18,7 @@ $config = [
 		'initArgs' => [
 			['class', 'templateProcessor'],
 			['class', 'catalogService'],
-		]
+		],
 	],
 	'templateProcessor' => [
 		'classPath' => \Up\Core\TemplateProcessorImpl::class,
@@ -30,6 +30,7 @@ $config = [
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'itemDAO'],
+			['class', 'specificationDAO'],
 		],
 	],
 	'itemDAO' => [
@@ -39,10 +40,17 @@ $config = [
 			['class', 'DB'],
 		],
 	],
+	'specificationDAO' => [
+		'classPath' => \Up\DAO\SpecificationDAOmysql::class,
+		'initType' => 'constructor',
+		'initArgs' => [
+			['class', 'DB'],
+		],
+	],
 	'DB' => [
 		'classPath' => \Up\Core\Database\DefaultDatabase::class,
 		'initType' => 'singleton',
 		'initArgs' => [],
-		'initMethod' => 'getInstance'
+		'initMethod' => 'getInstance',
 	],
 ];
