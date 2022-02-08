@@ -7,16 +7,16 @@ class Specification
 	protected $id = 1;
 	protected $name = '';
 	protected $value='';
-	protected $type = '';
+	//protected $type = '';
 	protected $displayOrder = 0;
 
 
-	public function __construct(int $id=1, string $name='', string $type='', int $displayOrder=0,string $value='')
+	public function __construct(int $id=1, string $name='', int $displayOrder=0,string $value='')
 	{
 		$this->id = $id;
 		$this->name = $name;
 		$this->value = $value;
-		$this->type = $type;
+		//$this->type = $type;
 		$this->displayOrder = $displayOrder;
 	}
 
@@ -42,15 +42,6 @@ class Specification
 		$this->value = $value;
 	}
 
-	public function getType(): string
-	{
-		return $this->type;
-	}
-
-	public function setType(string $type): void
-	{
-		$this->type = $type;
-	}
 
 	public function getId(): int
 	{
