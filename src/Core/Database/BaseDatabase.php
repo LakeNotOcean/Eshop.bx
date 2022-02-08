@@ -1,10 +1,10 @@
 <?php
 
-namespace Up\Core\DataBase;
+namespace Up\Core\Database;
 
 use PDO;
-use Up\Core\DataBase\DSNBuilder\DSNBuilder;
-use Up\Core\DatabaseConfig;
+use Up\Core\Database\DSNBuilder\DSNBuilder;
+use Up\Core\Settings\DatabaseConfig;
 
 abstract class BaseDatabase extends PDO
 {

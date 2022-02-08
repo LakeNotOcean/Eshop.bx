@@ -27,7 +27,7 @@ class Router
 		return self::$instance;
 	}
 
-	public function get(string $urlTemplate, callable $callback, string $name): void
+	public function get(string $urlTemplate, array $callback, string $name): void
 	{
 		$this->register('GET', $urlTemplate, $callback, $name);
 	}
@@ -37,12 +37,12 @@ class Router
 	 *
 	 * @param string $method HTTP request method (GET|POST|PUT|DELETE).
 	 * @param string $urlTemplate URL template with parameters placeholders, like (/user/:user_id).
-	 * @param callable $callback Handler for this route.
+	 * @param array $callback Handler for this route.
 	 * @param string $name name of the route.
 	 *
 	 * @return void
 	 */
-	public function register(string $method, string $urlTemplate, callable $callback, string $name): void
+	public function register(string $method, string $urlTemplate, array $callback, string $name): void
 	{
 		$this->routes[] = [
 			'method' => $method,
@@ -69,21 +69,20 @@ class Router
 		return is_null($regexBody) ? null : "#^" . $regexBody . "$#D";
 	}
 
-	public function post(string $urlTemplate, callable $callback, string $name): void
+	public function post(string $urlTemplate, array $callback, string $name): void
 	{
 		$this->register('POST', $urlTemplate, $callback, $name);
 	}
 
-	public function put(string $urlTemplate, callable $callback, string $name): void
+	public function put(string $urlTemplate, array $callback, string $name): void
 	{
 		$this->register('PUT', $urlTemplate, $callback, $name);
 	}
 
-	public function delete(string $urlTemplate, callable $callback, string $name): void
+	public function delete(string $urlTemplate, array $callback, string $name): void
 	{
 		$this->register('DELETE', $urlTemplate, $callback, $name);
 	}
-
 
 	public function getUrlTemplateByName(string $name): ?string
 	{
@@ -101,12 +100,13 @@ class Router
 	/**
 	 * @throws Errors\RoutingException
 	 */
-	public function route(string $method, string $url): array
+	public function route(string $method, string $path): array
 	{
+		$path = $this->removeIfExistGetParametersFromPath($path);
 		foreach ($this->routes as $route)
 		{
 			$matches = [];
-			if ($method === $route['method'] && preg_match($route['urlRegex'], $url, $matches))
+			if ($method === $route['method'] && preg_match($route['urlRegex'], $path, $matches))
 			{
 				return [
 					'callback' => $route['callback'],
@@ -114,7 +114,7 @@ class Router
 				];
 			}
 		}
-		throw new Errors\RoutingException("Не найдена ручка соответствующая урлу {$url} и методу {$method}");
+		throw new Errors\RoutingException("Не найдена ручка соответствующая пути {$path} и методу {$method}");
 	}
 
 	/**
@@ -130,5 +130,14 @@ class Router
 		}
 
 		return '(?<' . $variableName . '>' . $this->typeToRegex[$type] . ')';
+	}
+
+	private function removeIfExistGetParametersFromPath(string $path): string
+	{
+		if (($queryParamsIndex = strpos($path, '?')))
+		{
+			$path = mb_substr($path, 0, $queryParamsIndex);
+		}
+		return $path;
 	}
 }

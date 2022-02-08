@@ -2,8 +2,7 @@
 
 namespace Up\DAO;
 
-use Up\Core\DataBase\BaseDatabase;
-use Up\Core\DataBase\DefaultDatabase;
+use Up\Core\Database\DefaultDatabase;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\ItemsImage;
@@ -35,6 +34,7 @@ class ItemDAOmysql implements ItemDAO
 			$item->setMainImage($image);
 			$items[] = $item;
 		}
+
 		return $items;
 	}
 
@@ -46,7 +46,7 @@ class ItemDAOmysql implements ItemDAO
 		$imagesId = '';
 		while ($row = $result->fetch())
 		{
-			if($item->getId() === 0) //если еще не установили id, т.е если это первая итерация
+			if ($item->getId() === 0) //если еще не установили id, т.е если это первая итерация
 			{
 				$this->mapItemCommonInfo($item, $row);
 				$item->setFullDescription($row['FULL_DESC']);
@@ -74,9 +74,9 @@ class ItemDAOmysql implements ItemDAO
 			$images[] = $image;
 		}
 		$item->setImages($images);
+
 		return $item;
 	}
-
 
 	private function getItemsQuery(int $from, int $to): string
 	{
@@ -155,6 +155,7 @@ class ItemDAOmysql implements ItemDAO
 		$item->setSortOrder($row['SORT_ORDER']);
 		$item->setIsActive($row['ACTIVE']);
 	}
+
 	private function mapItemsImageInfo(ItemsImage $image, array $row)
 	{
 		$image->setId($row['IMAGE_ID']);
@@ -163,6 +164,7 @@ class ItemDAOmysql implements ItemDAO
 		$image->setWidth($row['IMAGE_WIDTH']);
 		$image->setIsMain($row['IMAGE_IS_MAIN']);
 	}
+
 	private function mapItemsSpecificationInfo(ItemsSpecification $specification, array $row)
 	{
 		$specification->setManufacturer($row['MANUFACTURER']);

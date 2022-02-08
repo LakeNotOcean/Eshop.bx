@@ -1,9 +1,9 @@
 <?php
 
-namespace Up\Core\DataBase;
+namespace Up\Core\Database;
 
-use Up\Core\DataBase\DSNBuilder\MysqlDSNBuilder;
-use Up\Core\Settings;
+use Up\Core\Database\DSNBuilder\MysqlDSNBuilder;
+use Up\Core\Settings\Settings;
 
 class DefaultDatabase extends BaseDatabase
 {
@@ -13,7 +13,7 @@ class DefaultDatabase extends BaseDatabase
 
 	protected function __construct()
 	{
-		self::$databaseConfig = Settings::getInstance()->getDataBaseConfig();
+		self::$databaseConfig = Settings::getInstance()->getSettings('databaseConfig');
 		self::$dnsBuilder = new MysqlDSNBuilder();
 		parent::__construct();
 	}
