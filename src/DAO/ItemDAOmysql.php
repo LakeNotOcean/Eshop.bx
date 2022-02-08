@@ -52,7 +52,7 @@ class ItemDAOmysql implements ItemDAO
 				$imagesId = $row['IMAGES_ID'];
 			}
 		}
-		if (is_null($imagesId))
+		if (empty($imagesId))
 		{
 			$imagesId = '0';
 		}
@@ -116,7 +116,7 @@ class ItemDAOmysql implements ItemDAO
                         u.HEIGHT IMAGE_HEIGHT,
                         u.IS_MAIN IMAGE_IS_MAIN
 				FROM up_image u
-				WHERE ID in ({$imagesId})";
+				WHERE ID in ({$imagesId});";
 	}
 
 	private function mapItemCommonInfo(Item $item, array $row)

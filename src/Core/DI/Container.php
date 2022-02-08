@@ -2,6 +2,9 @@
 
 namespace Up\Core\DI;
 
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
 use Up\Core\DI\Error\DIException;
 
 class Container implements ContainerInterface
@@ -15,7 +18,7 @@ class Container implements ContainerInterface
 	}
 
 	/**
-	 * @throws DIException|\ReflectionException
+	 * @throws DIException|ReflectionException
 	 */
 	public function get(string $name)
 	{
@@ -57,11 +60,11 @@ class Container implements ContainerInterface
 		switch ($this->config[$name]['initType'])
 		{
 			case 'constructor':
-				$reflectionClass = new \ReflectionClass($this->config[$name]['classPath']);
+				$reflectionClass = new ReflectionClass($this->config[$name]['classPath']);
 				$service = $reflectionClass->newInstanceArgs($args);
 				break;
 			case 'singleton':
-				$reflectionMethod = new \ReflectionMethod(
+				$reflectionMethod = new ReflectionMethod(
 					$this->config[$name]['classPath'], $this->config[$name]['initMethod']
 				);
 				$service = $reflectionMethod->invokeArgs(null, $args);

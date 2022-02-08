@@ -6,7 +6,10 @@ use Exception;
 use MigrationException;
 use ReflectionException;
 use ReflectionMethod;
+use RuntimeException;
 use Up\Core\Database\DefaultDatabase;
+use Up\Core\DI\Container;
+use Up\Core\DI\DIConfigPHP;
 use Up\Core\DI\Error\DIException;
 use Up\Core\Message\Request;
 use Up\Core\Migration\MigrationManager;
@@ -18,6 +21,9 @@ use Up\Core\Settings\Settings;
 class Application
 {
 
+	/**
+	 * @throws Exception
+	 */
 	public static function run(): bool
 	{
 		$settings = Settings::getInstance();
@@ -25,12 +31,11 @@ class Application
 		/** @var Router $router */
 		include '../src/routes.php';
 
-		$container = new \Up\Core\DI\Container(
-			new \Up\Core\DI\DIConfigPHP($settings->getSettings('DIConfigPath'))
+		$container = new Container(
+			new DIConfigPHP($settings->getSettings('DIConfigPath'))
 		);
 
-		###############БЛОК ПРИМЕНЕНИЯ МИГРАЦИЙ######################
-
+		############### БЛОК ПРИМЕНЕНИЯ МИГРАЦИЙ ######################
 		$isDev = $settings->getSettings('isDev');
 		if ($isDev === true)
 		{
@@ -90,12 +95,9 @@ class Application
 			{
 				$args[] = $params[$parameter->getName()];
 			}
-			else
+			elseif (!$parameter->isDefaultValueAvailable())
 			{
-				if (!$parameter->isDefaultValueAvailable())
-				{
-					throw new Exception("No value for parameter $" . $parameter->getName());
-				}
+				throw new RuntimeException("No value for parameter $" . $parameter->getName());
 			}
 		}
 		try
