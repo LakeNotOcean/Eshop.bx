@@ -42,24 +42,25 @@ class SpecificationDAOmysql implements SpecificationDAO
 
 	public function getItemCategoriesByItem(ItemDetail $item): array
 	{
-		$CategoriesList = $this->getCategoriesByItemTypeId(($item->getItemType()->getId()));
+		$categoriesList = [];
 		$queryResult = $this->DBConnection->query($this->getCategoriesByItemIdQuery($item->getId()));
 		while ($row = $queryResult->fetch())
 		{
 			$categoryId = $row['CAT_ID'];
-			if (!array_key_exists($categoryId, $CategoriesList))
+			if (!array_key_exists($categoryId, $categoriesList))
 			{
-				continue;
+				$categoriesList[$categoryId] = new SpecificationCategory(
+					$categoryId, $row['CAT_NAME'], $row['CAT_ORDER']
+				);
 			}
 			$specificationId = $row['SPEC_ID'];
-			if (!$CategoriesList[$categoryId]->isSpecificationExist($specificationId))
+			if (!$categoriesList[$categoryId]->isSpecificationExist($specificationId))
 			{
-				continue;
+				$categoriesList[$categoryId]->addToSpecificationList($this->createSpecificationByRow($row));
 			}
-			$CategoriesList[$categoryId]->setSpecificationValueById($specificationId,$row['SPEC_VALUE']);
 		}
 
-		return $CategoriesList;
+		return $categoriesList;
 
 	}
 
@@ -84,11 +85,23 @@ class SpecificationDAOmysql implements SpecificationDAO
 	{
 		return "SELECT
 			usc.ID as CAT_ID,
-            uis.SPEC_TYPE_ID as SPEC_ID,
+            usc.NAME as CAT_NAME,
+            usc.DISPLAY_ORDER as CAT_ORDER,
+            ust.ID as SPEC_ID,
+            ust.NAME as SPEC_NAME,
+            ust.DISPLAY_ORDER as SPEC_ORDER,
+            ust.TYPE as SPEC_TYPE,
 			uis.VALUE as SPEC_VALUE
 		FROM up_item_spec uis
 		INNER JOIN up_spec_type ust on uis.SPEC_TYPE_ID = ust.ID
 		INNER JOIN up_spec_category usc on ust.SPEC_CATEGORY_ID = usc.ID
 		WHERE uis.ITEM_ID={$itemId}";
+	}
+
+	private function createSpecificationByRow(array $row): Specification
+	{
+		return new Specification(
+			$row['SPEC_ID'], $row['SPEC_NAME'], $row['SPEC_TYPE'], $row['SPEC_ORDER'], $row['SPEC_VALUE']
+		);
 	}
 }

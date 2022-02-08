@@ -66,7 +66,7 @@ class ItemDAOmysql implements ItemDAO
 
 		}
 		$item->setTags($tags);
-		if (is_null($imagesId) || $imagesId === '')
+		if (empty($imagesId))
 		{
 			return $item;
 		}
