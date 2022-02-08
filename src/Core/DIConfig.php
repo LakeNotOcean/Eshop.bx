@@ -12,7 +12,7 @@
  * 'initMethod' - если initType=singleton, то необходимо указать метод, вызываемый для инстанцирования класса
  */
 $config = [
-	'catalogController' => [
+	'homeController' => [
 		'classPath' => \Up\Controller\HomeController::class,
 		'initType' => 'constructor',
 		'initArgs' => [
