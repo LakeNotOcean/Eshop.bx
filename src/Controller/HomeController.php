@@ -23,9 +23,8 @@ class HomeController
 		$items = $this->catalogService->getItems();
 		$pages = $this->templateProcessor->render('catalog.php', ['items' => $items], 'main.php', []);
 		$response = new Response();
-		$response = $response->withBodyHTML($pages);
 
-		return $response;
+		return $response->withBodyHTML($pages);
 	}
 
 	public function getResultCount(Request $request): int
@@ -37,8 +36,8 @@ class HomeController
 	{
 		$item=$this->catalogService->getItemById(7);
 		$response = new Response();
-		$response = $response->withBodyHTML(serialize($item));
-		return $response;
+
+		return $response->withBodyHTML(serialize($item));
 	}
 
 }

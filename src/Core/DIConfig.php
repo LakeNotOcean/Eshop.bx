@@ -20,6 +20,14 @@ $config = [
 			['class', 'catalogService'],
 		],
 	],
+	'addItemController' => [
+		'classPath' => \Up\Controller\AddItemController::class,
+		'initType' => 'constructor',
+		'initArgs' => [
+			['class', 'templateProcessor'],
+			['class', 'specificationService']
+		]
+	],
 	'templateProcessor' => [
 		'classPath' => \Up\Core\TemplateProcessorImpl::class,
 		'initType' => 'constructor',
@@ -32,6 +40,11 @@ $config = [
 			['class', 'itemDAO'],
 			['class', 'specificationDAO'],
 		],
+	],
+	'specificationService' => [
+		'classPath' => \Up\Service\SpecificationsServiceHardcode::class,
+		'initType' => 'constructor',
+		'initArgs' => [],
 	],
 	'itemDAO' => [
 		'classPath' => \Up\DAO\ItemDAOmysql::class,
