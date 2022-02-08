@@ -125,4 +125,8 @@ class Item
 		$this->mainImage = $mainImage;
 	}
 
+	public function isSetMainImage(): bool
+	{
+		return isset($this->mainImage);
+	}
 }
