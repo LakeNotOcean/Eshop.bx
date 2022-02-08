@@ -1,7 +1,7 @@
 <?php
 
-use Up\Controller\CatalogController;
+use Up\Controller\HomeController;
 
 $router = Up\Core\Router\Router::getInstance();
-$router->get('/', ['catalogController', 'getItems'], 'home');
-$router->get('/getItem',['catalogController','getItem'],'home');
+$router->get('/', ['homeController', 'getItems'], 'home');
+$router->get('/getItem',['homeController','getItem'],'home');
