@@ -6,8 +6,10 @@ class ItemDetail extends Item
 {
 	private $fullDescription = '';
 	private $images = [];
+	private $tags = [];
 	protected $specificationCategoriesList=[];
 	protected $itemType;
+
 
 	public function __construct()
 	{
@@ -36,6 +38,23 @@ class ItemDetail extends Item
 	{
 		$this->specificationCategoriesList = $specificationCategoriesList;
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getTags(): array
+	{
+		return $this->tags;
+	}
+
+	/**
+	 * @param array $tags
+	 */
+	public function setTags(array $tags): void
+	{
+		$this->tags = $tags;
+	}
+
 
 	/**
 	 * @return string
