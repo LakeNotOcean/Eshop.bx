@@ -8,7 +8,7 @@ let navNode = document.querySelector('nav');
 let navStyle = window.getComputedStyle(navNode);
 let offset = parseInt(navStyle.height) + parseInt(countStyle.marginTop);
 
-document.addEventListener('scroll', function() {
+document.addEventListener('scroll', () => {
 	if (window.scrollY >= y) {
 		filters.style.position = "fixed";
 		filters.style.top = offset + "px";

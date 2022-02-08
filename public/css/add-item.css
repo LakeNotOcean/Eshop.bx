@@ -3,6 +3,37 @@
 	display: flex;
 	flex-direction: column;
 	background: #F6F6F6;
+	padding: 20px 50px;
+}
+
+/*==========================
+main fields and images
+==========================*/
+
+.main-fields-and-images {
+	flex: 1;
+	display: flex;
+}
+
+.main-fields {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+/*==========================
+input fields
+==========================*/
+
+.field {
+	display: flex;
+	align-items: center;
+}
+
+.label-title {
+	display: inline-block;
+	width: 200px;
+	font-weight: 600;
 }
 
 input::placeholder {
@@ -10,55 +41,133 @@ input::placeholder {
 }
 
 input {
-	width: 450px;
-	line-height: 40px;
 	flex: 1;
+	display: block;
+	line-height: 40px;
 	padding: 0 10px;
-	margin: 5px;
+	margin: 5px 10px 5px 0;
 	border-radius: 10px;
 	border: 2px solid #D9D9D9;
-	background: transparent;
+	background: #ffffff;
 	outline: none;
 	font-size: 15px;
 	font-family: 'Montserrat', sans-serif;
 	color: #333333;
 }
 
-.specifications {
+input::-webkit-calendar-picker-indicator {
+	opacity: 0;
+}
+
+/*==========================
+images
+==========================*/
+
+.images {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	margin-left: 10px;
+}
+
+.images-title {
+	font-size: 18px;
+	font-weight: 700;
+}
+
+.main-image {
+	margin: 10px 0;
 	display: flex;
 	flex-direction: column;
 }
 
+.input-image-header {
+	display: flex;
+	justify-content: space-between;
+}
+
+.upload-image {
+	display: none;
+}
+
+.btn-change {
+	color: #107F84;
+	font-weight: 500;
+}
+
+.btn-change:hover {
+	text-decoration: underline;
+}
+
+.image-img {
+	width: 130px;
+	height: 130px;
+	margin: 10px;
+	object-fit: contain;
+	border-radius: 10px;
+	background: #ffffff;
+}
+
+.no-images-title {
+	margin-top: 10px;
+}
+
+/*==========================
+specifications
+==========================*/
+
+.specifications {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+}
+
+.specifications-title {
+	font-size: 18px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
 .category {
 	display: flex;
+	align-items: center;
 }
 
 .input-category {
 	font-weight: 700;
 }
 
-.btn-delete {
-	margin: 15px 50px;
+.btn {
 	height: 40px;
-	width: 200px;
 	line-height: 40px;
 	text-align: center;
 	border-radius: 10px;
 	border: 2px solid #D9D9D9;
+	background: #fff;
+}
+
+.delete {
+	width: 200px;
 	color: #DF0310;
 }
 
-.btn-add {
-	margin: 15px 50px;
-	height: 40px;
-	width: 200px;
-	line-height: 40px;
-	text-align: center;
-	border-radius: 10px;
-	border: 2px solid #D9D9D9;
+.add {
+	margin-top: 5px;
+	margin-bottom: 20px;
+	width: 300px;
 	color: #009AFF;
+}
+
+.add-category {
+	margin: auto;
 }
 
 .spec {
 	display: flex;
+	align-items: center;
+}
+
+.save {
+	margin-top: 20px;
+	color: #00AC47;
 }
