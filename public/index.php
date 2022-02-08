@@ -13,8 +13,8 @@ $autoloader = Autoloader::getInstance();
 $autoloader->addVendorNamespacePath('Up\\', __DIR__ . '/../src/');
 
 
-$dao = new \Up\DAO\ItemDAOmysql(\Up\Core\Database\DefaultDatabase::getInstance());
-var_dump($dao->getItemDetailById(2));
+//$dao = new \Up\DAO\ItemDAOmysql(\Up\Core\Database\DefaultDatabase::getInstance());
+//var_dump($dao->getItemDetailById(2));
 
 
 $App = Up\Core\Application::run();
