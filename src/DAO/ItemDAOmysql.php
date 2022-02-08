@@ -6,6 +6,7 @@ use Up\Core\Database\DefaultDatabase;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\ItemsImage;
+use Up\Entity\ItemsTag;
 use Up\Entity\ItemType;
 
 class ItemDAOmysql implements ItemDAO
@@ -42,6 +43,7 @@ class ItemDAOmysql implements ItemDAO
 		$result = $this->DBConnection->query($this->getItemDetailByIdQuery($id));
 		$item = new ItemDetail();
 		$imagesId = '';
+		$tags = [];
 		while ($row = $result->fetch())
 		{
 			if ($item->getId() === 0) //если еще не установили id, т.е если это первая итерация
@@ -51,8 +53,20 @@ class ItemDAOmysql implements ItemDAO
 				$item->setItemType(new ItemType($row['ITEM_TYPE_ID'], $row['TYPE_NAME']));
 				$imagesId = $row['IMAGES_ID'];
 			}
+
+			if (!isset($row['TAG_ID']))
+			{
+				continue;
+			}
+
+			$tag = new ItemsTag();
+			$tag->setId($row['TAG_ID']);
+			$tag->setName($row['TAG']);
+			$tags[] = $tag;
+
 		}
-		if (is_null($imagesId))
+		$item->setTags($tags);
+		if (is_null($imagesId) || $imagesId === '')
 		{
 			$imagesId = '0';
 		}
@@ -95,17 +109,20 @@ class ItemDAOmysql implements ItemDAO
 	private function getItemDetailByIdQuery(int $id): string
 	{
 		return "SELECT ui.ID,
-					   ui.TITLE,
-					   PRICE,
-					   SORT_ORDER,
-					   SHORT_DESC,
-					   FULL_DESC,
-					   ACTIVE,ITEM_TYPE_ID, uit.NAME as TYPE_NAME,
-					   (SELECT GROUP_CONCAT(up_image.ID)
-					   FROM up_image
-					   WHERE up_image.ITEM_ID = {$id}) IMAGES_ID
-				FROM up_item ui left join up_item_type uit on ui.ITEM_TYPE_ID = uit.ID
-				WHERE ui.ID={$id};";
+			ui.TITLE,
+			PRICE,
+			up_tag.ID TAG_ID,
+			up_tag.TITLE TAG,
+			SORT_ORDER,
+			SHORT_DESC,
+			FULL_DESC,
+			ACTIVE,ITEM_TYPE_ID, uit.NAME as TYPE_NAME,
+			(SELECT GROUP_CONCAT(up_image.ID)
+				FROM up_image
+				WHERE up_image.ITEM_ID = {$id}) IMAGES_ID
+				FROM up_item ui inner join up_item_type uit on ui.ITEM_TYPE_ID = uit.ID AND ui.ID={$id}
+				LEFT JOIN up_item_tag ut on ut.ITEM_ID = ui.ID
+				LEFT JOIN up_tag on up_tag.ID=ut.TAG_ID";
 	}
 
 	private function getImagesByIdQuery(string $imagesId): string
