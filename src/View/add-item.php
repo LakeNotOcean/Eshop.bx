@@ -7,9 +7,7 @@ $specs = ['Гарантия', 'Страна-производитель', 'Осн
 $template = ['Заводские данные'=>['Гарантия', 'Страна-производитель'], 'Внешний вид' => ['Основной цвет', 'Дополнительный цвет', 'Подсветка']];
 ?>
 
-<!--<link rel="stylesheet" href="./css/add-item.css">-->
-<link rel="stylesheet" href="/public/css/add-item.css">
-
+<link rel="stylesheet" href="./css/add-item.css">
 <form action="/" method="post" enctype="multipart/form-data" class="form-add-item">
 	<datalist id="spec-data">
 		<?php foreach ($specs as $specData):?>
@@ -70,8 +68,7 @@ $template = ['Заводские данные'=>['Гарантия', 'Стран
 					<label for="main-image" class="btn-change">Изменить</label>
 				</div>
 				<div id="main-image-preview" class="preview">
-<!--					<img src="./img/default_image.webp" alt="main-image">-->
-					<img src="../../public/img/default_image.webp" alt="main-image" class="image-img">
+					<img src="./img/default_image.webp" alt="main-image">
 				</div>
 			</div>
 			<div class="other-images">
@@ -119,8 +116,5 @@ $template = ['Заводские данные'=>['Гарантия', 'Стран
 
 	<input type="submit" value="Сохранить товар в базу данных" class="btn save">
 </form>
-<!--<script src="./js/preview-images.js"></script>-->
-<script src="../../public/js/preview-images.js"></script>
-
-<!--<script src="./js/build-specs.js"></script>-->
-<script src="../../public/js/build-specs.js"></script>
+<script src="./js/preview-images.js"></script>
+<script src="./js/build-specs.js"></script>

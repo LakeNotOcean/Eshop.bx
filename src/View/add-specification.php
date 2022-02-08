@@ -2,9 +2,7 @@
 $categories = ['Заводские данные', 'Внешний вид'];
 ?>
 
-<!--<link rel="stylesheet" href="./css/add-item.css">-->
-<link rel="stylesheet" href="/public/css/add-item.css">
-
+<link rel="stylesheet" href="./css/add-item.css">
 <form action="/" method="post" enctype="multipart/form-data" class="form-add-item">
 	<label for="category">Категория
 		<input list="category-data" id="category" name="category" placeholder="Выберите категорию">

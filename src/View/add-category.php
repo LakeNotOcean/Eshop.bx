@@ -2,9 +2,7 @@
 
 ?>
 
-<!--<link rel="stylesheet" href="./css/add-item.css">-->
-<link rel="stylesheet" href="/public/css/add-item.css">
-
+<link rel="stylesheet" href="./css/add-item.css">
 <form action="/" method="post" enctype="multipart/form-data" class="form-add-item">
 	<label for="item-type">Категория
 		<input type="text" id="item-type" name="item-type" placeholder="Введите название категории спецификаций">

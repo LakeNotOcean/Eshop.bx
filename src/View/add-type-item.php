@@ -6,9 +6,7 @@ $specs = ['Гарантия', 'Страна-производитель', 'Осн
 $template = [''=>['']];
 ?>
 
-<!--<link rel="stylesheet" href="./css/add-item.css">-->
-<link rel="stylesheet" href="/public/css/add-item.css">
-
+<link rel="stylesheet" href="./css/add-item.css">
 <form action="/" method="post" enctype="multipart/form-data" class="form-add-item">
 	<label for="item-type">Тип товара
 		<input type="text" id="item-type" name="item-type" placeholder="Введите название типа товара">
