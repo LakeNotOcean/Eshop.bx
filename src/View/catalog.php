@@ -2,7 +2,7 @@
 /** @var array<Entity\Item> $items */
 
 /** @var int $result_count */
-
+$pref = '_big';
 use Up\Core\Router\URLResolver;
 
 ?>
@@ -26,8 +26,8 @@ use Up\Core\Router\URLResolver;
 
 				<a class="item" href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>">
 					<picture>
-						<source srcset="../img/<?= $item->getId() ?>.webp" type="image/webp">
-						<source srcset="../img/<?= $item->getId() ?>.png" type="image/jpG">
+						<source srcset="../img/<?= $item->getId() . $pref  ?>.webp" type="image/webp">
+						<source srcset="../img/<?= $item->getId()  . $pref  ?>.png" type="image/jpG">
 						<img class="item-image" src="../img/<?= $item->getId() ?>.png" alt="Alt Text!">
 					</picture>
 					<div class="item-other">
