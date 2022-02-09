@@ -15,7 +15,7 @@ interface SpecificationsService
 
 	public function getItemTemplate(int $templateId): array;
 
-	public function specificationsSort(array &$categories): void;
+	//public function specificationsSort(array &$categories): void;
 
 	public function addCategory(SpecificationCategory $category):void;
 

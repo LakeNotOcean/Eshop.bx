@@ -20,6 +20,11 @@ class SpecificationCategory extends Entity
 		$this->specificationList = new EntityArray();
 	}
 
+	public function addToSpecificationList(Specification $specification): void
+	{
+		$this->specificationList->addEntity($specification);
+	}
+
 	public function getDisplayOrder(): int
 	{
 		return $this->displayOrder;
