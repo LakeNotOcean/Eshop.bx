@@ -2,6 +2,9 @@
 
 namespace Up\DAO\SpecificationDAO;
 
+use Up\Entity\Specification;
+use Up\Entity\SpecificationCategory;
+
 interface SpecificationDAO
 {
 	public function getCategoriesByItemTypeId(int $itemTypeId): array;
@@ -10,9 +13,16 @@ interface SpecificationDAO
 
 	public function addSpecificationsToItemById(int $itemId, array $specificationsList): void;
 
-	public function getCategories(): array;
+	public function getCategoriesWithSpecifications(): array;
 
 	public function getCategoriesByTypes(): array;
 
 	public function getTypes(): array;
+
+	public function addCategory(SpecificationCategory $category):void;
+
+	public function getCategories():array;
+
+	public function addSpecification(int $categoryId, Specification $specification):void;
+
 }
