@@ -1,38 +1,38 @@
 <?php
-$itemTypes = ['Компьютерные мыши', 'Видеокарты', 'Клавиатуры', 'Процессоры'];
 
-$categories = ['Заводские данные', 'Внешний вид'];
-$specs = ['Гарантия', 'Страна-производитель', 'Основной цвет', 'Дополнительный цвет', 'Подсветка'];
+$allCategories = [1 => new \Up\Entity\SpecificationCategory(
+	1,'Заводские данные',0, [
+		new \Up\Entity\Specification(1, 'Гарантия', 0),
+		new \Up\Entity\Specification(2, 'Страна-производитель', 1),
+	]
+), new \Up\Entity\SpecificationCategory(
+	2,'Внешний вид',1, [
+		 new \Up\Entity\Specification(3, 'Основной цвет', 0),
+		 new \Up\Entity\Specification(4, 'Дополнительный цвет', 1),
+		 new \Up\Entity\Specification(5, 'Подсветка', 2),
+	 ]
+)];
 
-$template = ['Заводские данные'=>['Гарантия', 'Страна-производитель'], 'Внешний вид' => ['Основной цвет', 'Дополнительный цвет', 'Подсветка']];
+$template = $allCategories;
 ?>
 
-<link rel="stylesheet" href="./css/add-item.css">
+<link rel="stylesheet" href="/css/add-item.css">
 <form action="/" method="post" enctype="multipart/form-data" class="form-add-item">
-	<datalist id="spec-data">
-		<?php foreach ($specs as $specData):?>
-			<option value="<?= $specData?>"></option>
-		<?php endforeach;?>
-	</datalist>
 	<datalist id="category-data">
-		<?php foreach ($categories as $categoryData):?>
-			<option value="<?= $categoryData?>"></option>
+		<?php foreach ($allCategories as $categoryId => $category):?>
+			<option value="<?= $category->getName()?>"></option>
 		<?php endforeach;?>
 	</datalist>
+	<?php foreach ($allCategories as $categoryId => $category):?>
+		<datalist id="<?= $category->getName()?>-spec-data">
+			<?php foreach ($category->getSpecificationList() as $specId => $spec):?>
+				<option value="<?= $spec->getName()?>"></option>
+			<?php endforeach;?>
+		</datalist>
+	<?php endforeach;?>
 
 	<div class="main-fields-and-images">
 		<div class="main-fields">
-			<label for="item-type" class="field">
-				<span class="label-title">Тип товара</span>
-				<input type="text" list="type-data" id="item-type" name="item-type" placeholder="Выбрать тип товара">
-				<span class="arrow"></span>
-				<datalist id="type-data">
-					<?php foreach ($itemTypes as $itemType):?>
-						<option value="<?= $itemType?>"></option>
-					<?php endforeach;?>
-				</datalist>
-			</label>
-
 			<label for="item-title" class="field">
 				<span class="label-title">Название товара</span>
 				<input type="text" id="item-title" name="item-title" placeholder="Ввести название товара">
@@ -68,7 +68,7 @@ $template = ['Заводские данные'=>['Гарантия', 'Стран
 					<label for="main-image" class="btn-change">Изменить</label>
 				</div>
 				<div id="main-image-preview" class="preview">
-					<img src="./img/default_image.webp" alt="main-image">
+					<img src="/img/default_image.webp" alt="main-image" class="image-img">
 				</div>
 			</div>
 			<div class="other-images">
@@ -87,20 +87,20 @@ $template = ['Заводские данные'=>['Гарантия', 'Стран
 	<div class="specifications">
 		<div class="specifications-title">Характеристики</div>
 
-		<?php foreach ($template as $categoryName => $category):?>
+		<?php foreach ($template as $categoryId => $category):?>
 			<div class="category">
 				<div class="category-field">
 					<div class="field">
-						<input type="text" list="category-data" class="input-category" placeholder="Выбрать название категории" value="<?= $categoryName?>">
+						<input type="text" list="category-data" class="input-category" placeholder="Выбрать название категории" value="<?= $category->getName()?>">
 						<span class="arrow"></span>
 					</div>
 					<div class="btn delete">Удалить</div>
 				</div>
 
-				<?php foreach ($category as $spec):?>
+				<?php foreach ($category->getSpecificationList() as $specId => $spec):?>
 					<div class="spec">
 						<div class="field">
-							<input type="text" list="spec-data" placeholder="Выбрать название спецификации" value="<?= $spec?>">
+							<input type="text" list="<?= $category->getName()?>-spec-data" class="input-spec-name" name="specs[<?= $specId?>]" placeholder="Выбрать название спецификации" value="<?= $spec->getName()?>">
 							<span class="arrow"></span>
 						</div>
 						<input type="text" placeholder="Ввести значение спецификации">
@@ -118,3 +118,4 @@ $template = ['Заводские данные'=>['Гарантия', 'Стран
 </form>
 <script src="./js/preview-images.js"></script>
 <script src="./js/build-specs.js"></script>
+<script src="./js/listen-category.js"></script>

@@ -15,10 +15,11 @@
 
 <nav>
 	<div class="start">
-		<svg class="logo">
-			<use xlink:href="./img/sprites.svg#logo"></use>
-		</svg>
-
+		<a href="/">
+			<svg class="logo">
+				<use xlink:href="./img/sprites.svg#logo"></use>
+			</svg>
+		</a>
 		<div class="nav-item nav-item-active">Добавить товар
 			<div class="menu-container">
 				<div class="menu">

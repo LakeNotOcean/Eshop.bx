@@ -2,6 +2,9 @@
 /** @var array<Entity\Item> $items */
 
 /** @var int $result_count */
+
+use Up\Core\Router\URLResolver;
+
 ?>
 
 <link rel="stylesheet" href="./css/catalog.css">
@@ -21,7 +24,7 @@
 			<?php
 			foreach ($items as $item) : ?>
 
-				<div class="item">
+				<a class="item" href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>">
 					<picture>
 						<source srcset="../img/<?= $item->getId() ?>.webp" type="image/webp">
 						<source srcset="../img/<?= $item->getId() ?>.png" type="image/jpG">
@@ -32,7 +35,7 @@
 							<div class="item-other-header">
 								<div class="item-title"><?= $item->getTitle() ?></div>
 								<svg class="add-to-favorites">
-									<use xlink:href="./img/sprites.svg#heart"></use>
+									<use xlink:href="/img/sprites.svg#heart"></use>
 								</svg>
 							</div>
 							<div class="item-short-description">
@@ -50,7 +53,7 @@
 							<div class="price"><?= $item->getPrice() ?> ₽</div>
 						</div>
 					</div>
-				</div>
+				</a>
 
 			<?php
 			endforeach; ?>
