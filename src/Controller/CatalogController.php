@@ -34,7 +34,7 @@ class CatalogController
 
 	public function getItem(Request $request):Response
 	{
-		$item=$this->catalogService->getItemById(7);
+		$item=$this->catalogService->getItemById(2);
 		$response = new Response();
 
 		return $response->withBodyHTML(serialize($item));
