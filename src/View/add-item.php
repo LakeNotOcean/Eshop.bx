@@ -1,24 +1,25 @@
 <?php
 $itemTypes = ['Компьютерные мыши', 'Видеокарты', 'Клавиатуры', 'Процессоры'];
 
-$categories = ['Заводские данные', 'Внешний вид'];
-$specs = ['Гарантия', 'Страна-производитель', 'Основной цвет', 'Дополнительный цвет', 'Подсветка'];
+$categories = ['Заводские данные'=>['Гарантия', 'Страна-производитель'], 'Внешний вид' => ['Основной цвет', 'Дополнительный цвет', 'Подсветка']];
 
 $template = ['Заводские данные'=>['Гарантия', 'Страна-производитель'], 'Внешний вид' => ['Основной цвет', 'Дополнительный цвет', 'Подсветка']];
 ?>
 
 <link rel="stylesheet" href="./css/add-item.css">
 <form action="/" method="post" enctype="multipart/form-data" class="form-add-item">
-	<datalist id="spec-data">
-		<?php foreach ($specs as $specData):?>
-			<option value="<?= $specData?>"></option>
-		<?php endforeach;?>
-	</datalist>
 	<datalist id="category-data">
-		<?php foreach ($categories as $categoryData):?>
-			<option value="<?= $categoryData?>"></option>
+		<?php foreach ($categories as $categoryName => $categoryData):?>
+			<option value="<?= $categoryName?>"></option>
 		<?php endforeach;?>
 	</datalist>
+	<?php foreach ($categories as $categoryName => $categoryData):?>
+		<datalist id="<?= $categoryName?>-spec-data">
+			<?php foreach ($categoryData as $specName):?>
+				<option value="<?= $specName?>"></option>
+			<?php endforeach;?>
+		</datalist>
+	<?php endforeach;?>
 
 	<div class="main-fields-and-images">
 		<div class="main-fields">
@@ -100,7 +101,7 @@ $template = ['Заводские данные'=>['Гарантия', 'Стран
 				<?php foreach ($category as $spec):?>
 					<div class="spec">
 						<div class="field">
-							<input type="text" list="spec-data" placeholder="Выбрать название спецификации" value="<?= $spec?>">
+							<input type="text" list="<?= $categoryName?>-spec-data" class="input-spec-name" name="spec[<?= $categoryName?>][<?= $spec?>]" placeholder="Выбрать название спецификации" value="<?= $spec?>">
 							<span class="arrow"></span>
 						</div>
 						<input type="text" placeholder="Ввести значение спецификации">
@@ -118,3 +119,4 @@ $template = ['Заводские данные'=>['Гарантия', 'Стран
 </form>
 <script src="./js/preview-images.js"></script>
 <script src="./js/build-specs.js"></script>
+<script src="./js/listen-category.js"></script>
