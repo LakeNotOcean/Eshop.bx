@@ -6,8 +6,7 @@ use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessor;
-use Up\Service\SpecificationsService;
-
+use Up\Service\SpecificationService\SpecificationsService;
 
 class AddItemController
 {
