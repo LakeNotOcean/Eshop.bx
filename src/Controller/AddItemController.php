@@ -6,6 +6,8 @@ use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessor;
+use Up\Entity\Specification;
+use Up\Entity\SpecificationCategory;
 use Up\Service\SpecificationService\SpecificationsService;
 
 class AddItemController
@@ -25,8 +27,9 @@ class AddItemController
 	public function addItem(Request $request): Response
 	{
 		$itemTypes = $this->specificationsService->getItemTypes();
-		$categories = $this->specificationsService->getCategories();
+		$categories = $this->specificationsService->getCategoriesWithSpecifications();
 		$template = $this->specificationsService->getItemTemplate(intval('$request->getQueriesByName()'));
+
 
 		$page = $this->templateProcessor->render('add-item.php', [
 			'itemTypes' => $itemTypes,
