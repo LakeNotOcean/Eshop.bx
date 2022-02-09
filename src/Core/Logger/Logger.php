@@ -1,0 +1,173 @@
+<?php
+
+namespace Up\Core\Logger;
+
+use Exception;
+use Up\Core\Logger\Error\DirectoryNotExist;
+use Up\Core\Logger\Error\InvalidArgumentException;
+
+class Logger implements LoggerInterface
+{
+	protected const ORIGINAL_PATH = '../src/Log/';
+	protected $PATH;
+	protected $file;
+
+	protected static $level = [
+		0 => 'emergency' ,
+		1 => 'alert'     ,
+		2 => 'critical'  ,
+		3 => 'error'     ,
+		4 => 'warning'   ,
+		5 => 'notice'    ,
+		6 => 'info'      ,
+		7 => 'debug'     ,
+	];
+
+	/**
+	 * @param string $PATH
+	 */
+	public function __construct(string $PATH = self::ORIGINAL_PATH,$fileName = null)
+	{
+		if (is_dir($PATH))
+		{
+			$this->PATH = $PATH;
+		}
+		else
+		{
+			$this->PATH = self::ORIGINAL_PATH;
+		}
+	}
+
+	public function log(int $loglevel, $message, array $context = []): void
+	{
+		$levelName = self::$level[$loglevel];
+		if (!isset($levelName))
+		{
+			throw new InvalidArgumentException();
+		}
+		if (isset($this->fileName))
+		{
+			$this->open($this->fileName);
+		}
+		else
+		{
+			$this->open($levelName);
+		}
+		call_user_func(array($this,$levelName),$message,$context);
+	}
+
+	private function open($fileName): void
+	{
+		$filePATH = $this->PATH . $fileName . '.txt';
+		$this->file = fopen($filePATH, 'a+') ;
+	}
+	private function interpolate($message, array $context = array()): string
+	{
+		$replace = array();
+		foreach ($context as $key => $val) {
+			if (!is_array($val) && (!is_object($val) || method_exists($val, '__toString'))) {
+				$replace['{' . $key . '}'] = $val;
+			}
+		}
+		return strtr($message, $replace);
+	}
+
+	private function trace(): string
+	{
+		$record = '';
+		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+		foreach ($backtrace as $key => $el) {
+			if ($key > 0) {
+				$record .= '#' . $key . ' ' . $el['class'] . $el['type'] . $el['function'] . '() called at [' . $el['file'] . ':' . $el['line'] . ']' . PHP_EOL;
+			}
+		}
+		return $record;
+	}
+
+	private function createMessage($message,array $context,bool $isTrace = false): string
+	{
+		$dataTime = '['.date('D M d H:i:s Y',time()).'] ';
+		$body = '';
+		if (($message instanceof Exception) && $isTrace )
+		{
+			$body = $message;
+		}
+		elseif ($message instanceof Exception && $isTrace === false)
+		{
+			$body = $message->getMessage();
+		}
+		elseif (method_exists($message, '__toString'))
+		{
+			$body = $message;
+		}
+		elseif (is_string($message) && $isTrace)
+		{
+			$body = $this->interpolate($message,$context);
+			$trace = $this->trace();
+			$body = $body . ' ' . $trace;
+		}
+		elseif (is_string($message) && $isTrace === false)
+		{
+			$body = $this->interpolate($message,$context);
+		}
+		$message = $dataTime . ' ' . $body . PHP_EOL;
+		return $message;
+	}
+
+
+
+	public function emergency($message, array $context = array())
+	{
+
+		$finalMessage = $this->createMessage($message,$context,1);
+		fwrite($this->file,$finalMessage);
+		LoggerMonitor::warn();
+	}
+
+
+	public function alert($message, array $context = array())
+	{
+
+	}
+
+
+	public function critical($message, array $context = array())
+	{
+
+	}
+
+
+	public function error($message, array $context = array())
+	{
+
+	}
+
+
+	public function warning($message, array $context = array())
+	{
+		$finalMessage = $this->createMessage($message,$context,1);
+		fwrite($this->file,$finalMessage);
+	}
+
+
+	public function notice($message, array $context = array())
+	{
+		$finalMessage = $this->createMessage($message,$context,0);
+		fwrite($this->file,$finalMessage);
+	}
+
+
+	public function info($message, array $context = array())
+	{
+		$finalMessage = $this->createMessage($message,$context,1);
+		fwrite($this->file,$finalMessage);
+	}
+
+
+	public function debug($message, array $context = array())
+	{
+
+	}
+
+
+}
