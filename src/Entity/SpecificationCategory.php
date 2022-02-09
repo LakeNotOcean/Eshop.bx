@@ -9,7 +9,7 @@ class SpecificationCategory
 	protected $specificationList;
 	protected $displayOrder;
 
-	public function __construct(int $id=1, string $name='',int $displayOrder=0, array $specificationList=[])
+	public function __construct(int $id = 1, string $name = '', int $displayOrder = 0, array $specificationList = [])
 	{
 		$this->id = $id;
 		$this->name = $name;
@@ -31,26 +31,31 @@ class SpecificationCategory
 	{
 		return $this->specificationList;
 	}
-	public function addToSpecificationList(Specification $specification):void
+
+	public function addToSpecificationList(Specification $specification): void
 	{
-		$this->specificationList[$specification->getId()]=$specification;
+		$this->specificationList[$specification->getId()] = $specification;
 	}
-	public function getSpecificationById(int $specificationId):Specification
+
+	public function getSpecificationById(int $specificationId): Specification
 	{
 		return $this->specificationList[$specificationId];
 	}
-	public function setSpecificationValueById(int $specificationId,string $value):void
+
+	public function setSpecificationValueById(int $specificationId, string $value): void
 	{
 		$this->specificationList[$specificationId]->setValue($value);
 	}
-	public function isSpecificationExist(int $specificationId):bool
+
+	public function isSpecificationExist(int $specificationId): bool
 	{
 		return isset($this->specificationList[$specificationId]);
 	}
-	public function specificationsSort():void
+
+	public function specificationsSort(): void
 	{
-		usort($this->specificationList,function($a,$b){
-			return $a->getDisplayOrder()<=>$b->getDisplayOrder();
+		usort($this->specificationList, function($a, $b) {
+			return $a->getDisplayOrder() <=> $b->getDisplayOrder();
 		});
 	}
 

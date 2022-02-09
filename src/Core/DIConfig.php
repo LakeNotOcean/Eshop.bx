@@ -41,7 +41,7 @@ $config = [
 		],
 	],
 	'specificationDAO' => [
-		'classPath' => \Up\DAO\SpecificationDAOmysql::class,
+		'classPath' => \Up\DAO\SpecificationDAO\SpecificationDAOmysql::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'DB'],

@@ -3,8 +3,9 @@
 namespace Up\Service;
 
 use Up\DAO\ItemDAO;
-use Up\DAO\SpecificationDAO;
+use Up\DAO\SpecificationDAO\SpecificationDAO;
 use Up\Entity\ItemDetail;
+use Up\Entity\Specification;
 
 class CatalogServiceImpl implements CatalogService
 {
@@ -28,9 +29,15 @@ class CatalogServiceImpl implements CatalogService
 	public function getItemById(int $id): ItemDetail
 	{
 		$item = $this->itemDAO->getItemDetailById($id);
-		$itemCategories = $this->specificationDAO->getItemCategoriesByItem($item);
-		$this->specificationsSort($itemCategories);
-		$item->setSpecificationCategoryList($itemCategories);
+		// $itemCategories = $this->specificationDAO->getItemCategoriesByItem($item);
+		// $this->specificationsSort($itemCategories);
+		// $item->setSpecificationCategoryList($itemCategories);
+		$specifications = [
+			new Specification(3, '123', 0, 1),
+			new Specification(2, '456', '0', 23),
+		];
+		$this->specificationDAO->addSpecificationsToItemById(2,$specifications);
+
 		return $item;
 	}
 
@@ -39,13 +46,12 @@ class CatalogServiceImpl implements CatalogService
 		return 2;
 	}
 
-	private function specificationsSort(array &$categories):void
+	private function specificationsSort(array &$categories): void
 	{
-		usort($categories, function($a,$b)
-		{
-			return $a->getDisplayOrder()<=>$b->getDisplayOrder();
+		usort($categories, function($a, $b) {
+			return $a->getDisplayOrder() <=> $b->getDisplayOrder();
 		});
-		foreach ($categories as $id=>&$category)
+		foreach ($categories as $id => &$category)
 		{
 			$category->specificationsSort();
 		}
