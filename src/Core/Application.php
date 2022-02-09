@@ -48,7 +48,7 @@ class Application
 			}
 			catch (MigrationException $e)
 			{
-				$logger->log('info',$e);
+				$logger->log(6,$e);
 				var_dump('Миграция не удалась!');
 			}
 		}
@@ -61,7 +61,7 @@ class Application
 		catch (RoutingException $e)
 		{
 			//todo вызов отдельного контроллера ошибок
-			$logger->log('info',$e);
+			$logger->log(6,$e);
 			return false;
 		}
 
@@ -74,11 +74,11 @@ class Application
 		}
 		catch (ReflectionException $e)
 		{
-			$logger->log('info',$e);
+			$logger->log(6,$e);
 		}
 		catch (DIException $e)
 		{
-			$logger->log('info',$e);
+			$logger->log(6,$e);
 		}
 
 		try
@@ -88,7 +88,7 @@ class Application
 		catch (ReflectionException $e)
 		{
 			//todo вызов отдельного контроллера ошибок
-			$logger->log('info',$e);
+			$logger->log(6,$e);
 			return false;
 		}
 
@@ -110,12 +110,12 @@ class Application
 		}
 		catch (Exception $e)
 		{
-			$logger->log('info',$e);
+			$logger->log(6,$e);
 			return false;
 		}
 
 		$response->flush();
-		$logger->log('notice','Посещение страницы {domain}{url}',['domain' => $settings->getSettings('domainName'),'url' => $_SERVER['REQUEST_URI']]);
+		$logger->log(5,'Посещение страницы {domain}{url}',['domain' => $settings->getSettings('domainName'),'url' => $_SERVER['REQUEST_URI']]);
 		return true;
 	}
 }
