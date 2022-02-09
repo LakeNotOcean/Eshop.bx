@@ -5,14 +5,14 @@ namespace Up\Controller;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessor;
-use Up\Service\CatalogService;
+use Up\Service\CatalogService\CatalogServiceInterface;
 
 class CatalogController
 {
 	protected $templateProcessor;
 	protected $catalogService;
 
-	public function __construct(TemplateProcessor $templateProcessor, CatalogService $catalogService)
+	public function __construct(TemplateProcessor $templateProcessor, CatalogServiceInterface $catalogService)
 	{
 		$this->templateProcessor = $templateProcessor;
 		$this->catalogService = $catalogService;

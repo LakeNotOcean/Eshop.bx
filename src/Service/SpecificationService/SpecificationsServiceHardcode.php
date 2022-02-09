@@ -1,6 +1,6 @@
 <?php
 
-namespace Up\Service;
+namespace Up\Service\SpecificationService;
 
 
 class SpecificationsServiceHardcode implements SpecificationsService

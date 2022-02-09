@@ -1,12 +1,12 @@
 <?php
 
-namespace Up\Service;
+namespace Up\Service\CatalogService;
 
-use Up\DAO\ItemDAO;
-use Up\DAO\SpecificationDAO;
+use Up\DAO\ItemDAO\ItemDAO;
+use Up\DAO\SpecificationDAO\SpecificationDAO;
 use Up\Entity\ItemDetail;
 
-class CatalogServiceImpl implements CatalogService
+class CatalogServiceImpl implements CatalogServiceInterface
 {
 	protected $itemDAO;
 	protected $specificationDAO;

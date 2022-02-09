@@ -1,6 +1,6 @@
 <?php
 
-namespace Up\DAO;
+namespace Up\DAO\ItemDAO;
 
 use Up\Core\Database\DefaultDatabase;
 use Up\Entity\Item;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Up\DAO;
+namespace Up\DAO\ItemDAO;
 
 use Up\Entity\ItemDetail;
 

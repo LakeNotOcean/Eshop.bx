@@ -34,7 +34,7 @@ $config = [
 		'initArgs' => [],
 	],
 	'catalogService' => [
-		'classPath' => \Up\Service\CatalogServiceImpl::class,
+		'classPath' => \Up\Service\CatalogService\CatalogServiceImpl::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'itemDAO'],
@@ -42,12 +42,12 @@ $config = [
 		],
 	],
 	'specificationService' => [
-		'classPath' => \Up\Service\SpecificationsServiceHardcode::class,
+		'classPath' => Up\Service\SpecificationService\SpecificationsServiceHardcode::class,
 		'initType' => 'constructor',
 		'initArgs' => [],
 	],
 	'itemDAO' => [
-		'classPath' => \Up\DAO\ItemDAOmysql::class,
+		'classPath' => \Up\DAO\ItemDAO\ItemDAOmysql::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'DB'],
