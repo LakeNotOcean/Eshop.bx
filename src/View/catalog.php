@@ -21,7 +21,7 @@
 			<?php
 			foreach ($items as $item) : ?>
 
-				<div class="item">
+				<a class="item" href="/getItem">
 					<picture>
 						<source srcset="../img/<?= $item->getId() ?>.webp" type="image/webp">
 						<source srcset="../img/<?= $item->getId() ?>.png" type="image/jpG">
@@ -50,7 +50,7 @@
 							<div class="price"><?= $item->getPrice() ?> ₽</div>
 						</div>
 					</div>
-				</div>
+				</a>
 
 			<?php
 			endforeach; ?>
