@@ -32,12 +32,12 @@ class CatalogController
 		return $this->catalogService->getResultCount();
 	}
 
-	public function getItem(Request $request):Response
+	public function getItem(Request $request,$id):Response
 	{
-		$item=$this->catalogService->getItemById(2);
+		$item=$this->catalogService->getItemById($id);
+		$pages = $this->templateProcessor->render('item.php', ['item' => $item], 'main.php', []);
 		$response = new Response();
-
-		return $response->withBodyHTML(serialize($item));
+		return $response->withBodyHTML($pages);
 	}
 
 }
