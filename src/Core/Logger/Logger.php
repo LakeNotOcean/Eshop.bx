@@ -6,6 +6,22 @@ use Exception;
 use Up\Core\Logger\Error\DirectoryNotExist;
 use Up\Core\Logger\Error\InvalidArgumentException;
 
+
+	/**
+	* В месте, где необходимо залогировать происшествие требуется создать объект логгер,
+	* конструктор принимает необязательный параметр, который отвечает за путь к месту логирование.
+	* Существует 8 уровней событий логгирования по PSR-3, они описанны в LoggerInterface.
+	* Для записи в лог файл нужно вызвать метод log обьекта logger.
+	* log принимает 3 параметра.Первый - loglevel, уровень события ('emergency','alert','critical',
+	* 'error','warning','notice','info','debug'). Второй - сообщение, если логируется исключение,
+	* то необходимо передать само исключение, а не его сообщение(метод getMessage класса Exception),
+	* если передавать строку, тогда можно в строке указать место для параметра ("Пользоватьель {userName} посетил {url}")
+	* Третий - контекст, это массив, который включает в себе ключ параметра в сообщении и его значение,
+	* для примера выше (['userName' => $userName], ['url' => 'eshop' . $url]).
+ 	*/
+
+
+
 class Logger implements LoggerInterface
 {
 	protected const ORIGINAL_PATH = '../src/Log/';
@@ -13,20 +29,20 @@ class Logger implements LoggerInterface
 	protected $file;
 
 	protected static $level = [
-		0 => 'emergency' ,
-		1 => 'alert'     ,
-		2 => 'critical'  ,
-		3 => 'error'     ,
-		4 => 'warning'   ,
-		5 => 'notice'    ,
-		6 => 'info'      ,
-		7 => 'debug'     ,
+		'emergency' ,
+		'alert'     ,
+		'critical'  ,
+		'error'     ,
+		'warning'   ,
+		'notice'    ,
+		'info'      ,
+		'debug'     ,
 	];
 
 	/**
 	 * @param string $PATH
 	 */
-	public function __construct(string $PATH = self::ORIGINAL_PATH,$fileName = null)
+	public function __construct(string $PATH = self::ORIGINAL_PATH)
 	{
 		if (is_dir($PATH))
 		{
@@ -38,7 +54,7 @@ class Logger implements LoggerInterface
 		}
 	}
 
-	public function log(int $loglevel, $message, array $context = []): void
+	public function log(string $loglevel, $message, array $context = []): void
 	{
 		$levelName = self::$level[$loglevel];
 		if (!isset($levelName))

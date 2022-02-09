@@ -88,6 +88,6 @@ interface LoggerInterface
 	 * @param array $context
 	 * @return void
 	 */
-	public function log(int $loglevel, $message, array $context = array());
+	public function log(string $loglevel, $message, array $context = array());
 
 }
