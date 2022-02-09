@@ -56,20 +56,16 @@ class Logger implements LoggerInterface
 
 	public function log(string $loglevel, $message, array $context = []): void
 	{
-		$levelName = self::$level[$loglevel];
-		if (!isset($levelName))
+
+		if (!in_array($loglevel,self::$level))
 		{
 			throw new InvalidArgumentException();
 		}
-		if (isset($this->fileName))
-		{
-			$this->open($this->fileName);
-		}
 		else
 		{
-			$this->open($levelName);
+			$this->open($loglevel);
 		}
-		call_user_func(array($this,$levelName),$message,$context);
+		call_user_func(array($this,$loglevel),$message,$context);
 	}
 
 	private function open($fileName): void
