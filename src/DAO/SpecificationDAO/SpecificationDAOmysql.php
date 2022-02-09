@@ -3,6 +3,7 @@
 namespace Up\DAO\SpecificationDAO;
 
 use Up\Core\Database\DefaultDatabase;
+use Up\Entity\EntityArray;
 use Up\Entity\ItemDetail;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
@@ -39,30 +40,39 @@ class SpecificationDAOmysql implements SpecificationDAO
 		return $resultArray;
 	}
 
-	// public function getItemCategoriesByItem(ItemDetail $item): array
-	// {
-	// 	$categoriesList = [];
-	// 	$queryResult = $this->DBConnection->query($this->getCategoriesByItemIdQuery($item->getId()));
-	// 	while ($row = $queryResult->fetch())
-	// 	{
-	// 		$categoryId = $row['CAT_ID'];
-	// 		if (!array_key_exists($categoryId, $categoriesList))
-	// 		{
-	// 			$categoriesList[$categoryId] = new SpecificationCategory(
-	// 				$categoryId, $row['CAT_NAME'], $row['CAT_ORDER']
-	// 			);
-	// 		}
-	// 		$specificationId = $row['SPEC_ID'];
-	// 		if (!$categoriesList[$categoryId]->isSpecificationExist($specificationId))
-	// 		{
-	// 			$categoriesList[$categoryId]->addToSpecificationList($this->createSpecificationByRow($row));
-	// 		}
-	// 	}
-	//
-	// 	return $categoriesList;
-	// }
+	public function getSpecificationCategoryByName(array $categoryNames, array $typeNames): EntityArray
+	{
+		$categories = new EntityArray();
+		$result = $this->DBConnection->query($this->getSpecificationCategoryByNameQuery($categoryNames, $typeNames));
+		while ($row = $result->fetch())
+		{
+			if(!$categories->contains($row['C_ID']))
+			{
+				$categories->addEntity(new SpecificationCategory($row['C_ID'], $row['C_NAME'], $row['C_DISPLAY_ORDER']));
+			}
+			if(!$categories->getEntity($row['C_ID'])->getSpecificationList()->contain($row['T_ID']))
+			{
+				$categories->getEntity($row['C_ID'])
+						   ->getSpecificationList()
+						   ->addEntity(new Specification($row['T_ID'], $row['T_NAME'], $row['T_DISPLAY_ORDER']));
+			}
+		}
+		return $categories;
+	}
 
 
+
+	private function getSpecificationCategoryByNameQuery(array $categoryNames, array $typeNames): string
+	{
+		$implodeC = implode(',', array_map(function($str) {return "'$str'";}, $categoryNames));
+		$implodeT = implode(',', array_map(function($str) {return "'$str'";}, $typeNames));
+		$whereInC = (empty($categoryNames) ? '' : "AND usc.ID IN ({$implodeC})");
+		$whereInT = (empty($typeNames) ? '' : "AND ust.ID IN ({$implodeT})");
+		return "SELECT usc.ID C_ID, usc.NAME C_NAME, usc.DISPLAY_ORDER C_DISPLAY_ORDER, ust.ID T_ID, 
+                        ust.NAME T_NAME, ust.DISPLAY_ORDER T_DISPLAY_ORDER
+				FROM up_spec_category usc
+				INNER JOIN up_spec_type ust on usc.ID = ust.SPEC_CATEGORY_ID {$whereInC} {$whereInT};";
+	}
 
 	private function getCategoriesByItemTypeIdQuery(int $itemTypeId): string
 	{
