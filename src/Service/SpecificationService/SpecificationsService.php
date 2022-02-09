@@ -8,7 +8,7 @@ interface SpecificationsService
 
 	public function getCategories(): array;
 
-	public function getSpecifications(): array;
+	public function getItemTemplate(int $templateId): array;
 
-	public function getItemTemplate(string $itemType): array;
+	public function specificationsSort(array &$categories): void;
 }

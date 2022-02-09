@@ -3,3 +3,15 @@ Stack trace:
 #0 /Users/petrpopov/server/eshop/src/Core/Application.php(59): Up\Core\Router\Router->route('GET', '/favicon.ico')
 #1 /Users/petrpopov/server/eshop/public/index.php(20): Up\Core\Application::run()
 #2 {main}
+
+[Wed Feb 09 18:29:43 2022]  Up\Core\DI\Error\DIException: Wrong type of dependencies in specificationService class. l should be only 'var' or 'class' in C:\Users\Vlad\server\OpenServer\domains\Eshop.bx\src\Core\DI\Container.php:45
+Stack trace:
+#0 C:\Users\Vlad\server\OpenServer\domains\Eshop.bx\src\Core\DI\Container.php(39): Up\Core\DI\Container->get('specificationSe...')
+#1 C:\Users\Vlad\server\OpenServer\domains\Eshop.bx\src\Core\Application.php(73): Up\Core\DI\Container->get('addItemControll...')
+#2 C:\Users\Vlad\server\OpenServer\domains\Eshop.bx\public\index.php(12): Up\Core\Application::run()
+#3 {main}
+[Wed Feb 09 18:29:45 2022]  ReflectionException: The parameter class is expected to be either a string or an object in C:\Users\Vlad\server\OpenServer\domains\Eshop.bx\src\Core\Application.php:86
+Stack trace:
+#0 C:\Users\Vlad\server\OpenServer\domains\Eshop.bx\src\Core\Application.php(86): ReflectionMethod->__construct(NULL, 'addItem')
+#1 C:\Users\Vlad\server\OpenServer\domains\Eshop.bx\public\index.php(12): Up\Core\Application::run()
+#2 {main}
