@@ -19,6 +19,7 @@ class SpecificationDAOqueries
 		WHERE ITEM_TYPE_ID={$itemTypeId}
 		";
 	}
+
 	public static function getCategoriesByItemIdQuery(int $itemId): string
 	{
 		return "SELECT
@@ -35,14 +36,15 @@ class SpecificationDAOqueries
 		WHERE uis.ITEM_ID={$itemId}";
 	}
 
-	public static function getTypesQuery():string
+	public static function getTypesQuery(): string
 	{
 		return "SELECT 
        upit.ID as TYPE_ID,
        upit.NAME as TYPE_NAME
 		FROM up_item_type upit;";
 	}
-	public static function getCategoriesByTypesIdQuery():string
+
+	public static function getCategoriesByTypesIdQuery(): string
 	{
 		return "SELECT
 			usc.ID as CAT_ID,
@@ -56,7 +58,8 @@ class SpecificationDAOqueries
 		INNER JOIN up_spec_type u on ust.SPEC_TYPE_ID = u.ID
 		INNER JOIN up_spec_category usc on u.SPEC_CATEGORY_ID = usc.ID;";
 	}
-	public static function getCategories():string
+
+	public static function getCategoriesWithSpecQuery(): string
 	{
 		return "SELECT
 			usc.ID as CAT_ID,
@@ -67,5 +70,14 @@ class SpecificationDAOqueries
             ust.DISPLAY_ORDER as SPEC_ORDER
 		FROM up_spec_type ust 
 		INNER JOIN up_spec_category usc on ust.SPEC_CATEGORY_ID = usc.ID;";
+	}
+
+	public static function getCategoriesQuery(): string
+	{
+		return "SELECT
+			usc.ID as CAT_ID,
+            usc.NAME as CAT_NAME,
+            usc.DISPLAY_ORDER as CAT_ORDER
+		FROM up_spec_category usc;";
 	}
 }

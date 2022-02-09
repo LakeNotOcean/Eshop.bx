@@ -2,7 +2,10 @@
 
 namespace Up\Service\SpecificationService;
 
+use http\Exception;
 use Up\DAO\SpecificationDAO\SpecificationDAO;
+use Up\Entity\Specification;
+use Up\Entity\SpecificationCategory;
 
 class SpecificationsServiceImpl implements SpecificationsService
 {
@@ -19,11 +22,10 @@ class SpecificationsServiceImpl implements SpecificationsService
 		return $this->specificationDAO->getTypes();
 	}
 
-	public function getCategories(): array
+	public function getCategoriesWithSpecifications(): array
 	{
-		$categories = $this->specificationDAO->getCategories();
+		$categories = $this->specificationDAO->getCategoriesWithSpecifications();
 		$this->specificationsSort($categories);
-
 		return $categories;
 	}
 
@@ -33,6 +35,51 @@ class SpecificationsServiceImpl implements SpecificationsService
 		$this->specificationsSort($categories);
 
 		return $categories;
+	}
+
+	/**
+	 * @throws \Exception
+	 */
+	public function addCategory(SpecificationCategory $category): void
+	{
+		$categories=$this->specificationDAO->getCategories();
+		foreach ($categories as $addedCat)
+		{
+			if ($addedCat->getId()===$category->getId() || $addedCat->getName()===$category->getName())
+			{
+				throw new \Exception('This category already exists');
+			}
+		}
+		$this->specificationDAO->addCategory($category);
+	}
+
+	/**
+	 * @throws \Exception
+	 */
+	public function addSpecification(int $categoryId, Specification $specification): void
+	{
+		$categories=$this->specificationDAO->getCategoriesWithSpecifications();
+		foreach ($categories as $category)
+		{
+			$specifications=$category->getSpecificationList();
+			foreach ($specifications as $currSpec)
+			{
+				if ($currSpec->getName()===$specification->getName() || $currSpec->getId()===$specification->getId())
+				{
+					throw new \Exception('This specification already exists');
+				}
+			}
+		}
+		if (!array_key_exists($categoryId,$categories))
+		{
+			throw new \Exception('category does not exists');
+		}
+		$this->specificationDAO->addSpecification($categoryId,$specification);
+	}
+
+	public function getCategories(): array
+	{
+		return $this->specificationDAO->getCategories();
 	}
 
 	public function specificationsSort(array &$categories): void
@@ -45,4 +92,6 @@ class SpecificationsServiceImpl implements SpecificationsService
 			$category->specificationsSort();
 		}
 	}
+
+
 }
