@@ -1,5 +1,0 @@
-[Wed Feb 09 12:22:27 2022]  Up\Core\Router\Errors\RoutingException: Не найдена ручка соответствующая пути /favicon.ico и методу GET in /Users/petrpopov/server/eshop/src/Core/Router/Router.php:117
-Stack trace:
-#0 /Users/petrpopov/server/eshop/src/Core/Application.php(59): Up\Core\Router\Router->route('GET', '/favicon.ico')
-#1 /Users/petrpopov/server/eshop/public/index.php(20): Up\Core\Application::run()
-#2 {main}
