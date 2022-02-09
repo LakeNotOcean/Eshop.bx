@@ -89,7 +89,7 @@ class Logger implements LoggerInterface
 		$record = '';
 		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 		foreach ($backtrace as $key => $el) {
-			if ($key > 0) {
+			if ($key > 4) {
 				$record .= '#' . $key . ' ' . $el['class'] . $el['type'] . $el['function'] . '() called at [' . $el['file'] . ':' . $el['line'] . ']' . PHP_EOL;
 			}
 		}
