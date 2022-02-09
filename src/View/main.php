@@ -22,9 +22,11 @@
 <body>
 
 <nav>
-	<svg class="logo">
-		<use xlink:href="./img/sprites.svg#logo"></use>
-	</svg>
+	<a href="/">
+		<svg class="logo">
+			<use xlink:href="./img/sprites.svg#logo"></use>
+		</svg>
+	</a>
 	<form action="/" method="get" enctype="multipart/form-data" class="search">
 		<input type="text" id="query" name="query" class="search-field" placeholder="Поиск по сайту">
 		<div class="search-icon">
