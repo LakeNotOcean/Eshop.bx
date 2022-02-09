@@ -25,8 +25,8 @@ $config = [
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'templateProcessor'],
-			['class', 'specificationService']
-		]
+			['class', 'specificationService'],
+		],
 	],
 	'templateProcessor' => [
 		'classPath' => \Up\Core\TemplateProcessorImpl::class,
@@ -42,9 +42,11 @@ $config = [
 		],
 	],
 	'specificationService' => [
-		'classPath' => Up\Service\SpecificationService\SpecificationsServiceHardcode::class,
+		'classPath' => Up\Service\SpecificationService\SpecificationsServiceImpl::class,
 		'initType' => 'constructor',
-		'initArgs' => [],
+		'initArgs' => [
+			['class', 'specificationDAO'],
+		],
 	],
 	'itemDAO' => [
 		'classPath' => \Up\DAO\ItemDAO\ItemDAOmysql::class,

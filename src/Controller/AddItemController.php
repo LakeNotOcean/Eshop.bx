@@ -26,13 +26,11 @@ class AddItemController
 	{
 		$itemTypes = $this->specificationsService->getItemTypes();
 		$categories = $this->specificationsService->getCategories();
-		$specs = $this->specificationsService->getSpecifications();
-		$template = $this->specificationsService->getItemTemplate('$request->getQueriesByName()');
+		$template = $this->specificationsService->getItemTemplate(intval('$request->getQueriesByName()'));
 
 		$page = $this->templateProcessor->render('add-item.php', [
 			'itemTypes' => $itemTypes,
 			'categories' => $categories,
-			'specs' => $specs,
 			'template' => $template
 		], 'admin-main.php', []);
 

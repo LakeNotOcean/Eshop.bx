@@ -39,16 +39,6 @@ class CatalogServiceImpl implements CatalogServiceInterface
 		return 2;
 	}
 
-	private function specificationsSort(array &$categories):void
-	{
-		usort($categories, function($a,$b)
-		{
-			return $a->getDisplayOrder()<=>$b->getDisplayOrder();
-		});
-		foreach ($categories as $id=>&$category)
-		{
-			$category->specificationsSort();
-		}
-	}
+
 
 }

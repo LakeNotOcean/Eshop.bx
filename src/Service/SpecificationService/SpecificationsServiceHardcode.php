@@ -3,7 +3,7 @@
 namespace Up\Service\SpecificationService;
 
 
-class SpecificationsServiceHardcode implements SpecificationsService
+class SpecificationsServiceHardcode
 {
 	public function getItemTypes(): array
 	{
