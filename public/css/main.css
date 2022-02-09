@@ -25,6 +25,7 @@ nav {
 
 .logo {
 	fill: #F17F42;
+	min-width: 99px;
 	width: 99px;
 	height: 50px;
 	margin: 10px 50px;
