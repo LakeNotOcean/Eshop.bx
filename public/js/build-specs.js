@@ -15,11 +15,11 @@ for (let btnDeleteCategory of deleteCategory) {
 let addSpec = document.querySelectorAll('.category .add');
 for (let btnAddSpec of addSpec) {
 	btnAddSpec.addEventListener('click', () => {
-		btnAddSpec.parentNode.insertBefore(createSpec(), btnAddSpec);
+		btnAddSpec.parentNode.insertBefore(createSpec(btnAddSpec), btnAddSpec);
 	});
 }
 
-function createSpec() {
+function createSpec(btn) {
 	let specDiv = document.createElement('div');
 	specDiv.classList.add('spec');
 
@@ -27,8 +27,14 @@ function createSpec() {
 	fieldDiv.classList.add('field');
 	let specNameInput = document.createElement('input');
 	specNameInput.type = "text";
-	specNameInput.setAttribute('list', "spec-data")
+
+	let category = btn.parentNode;
+	let inputCategory = category.querySelector('.input-category');
+	let categoryName = inputCategory.value;
+
+	specNameInput.setAttribute('list', categoryName+"-spec-data");
 	specNameInput.placeholder = "Выбрать название спецификации";
+	specNameInput.classList.add('input-spec-name');
 	let arrowSpan = document.createElement('span');
 	arrowSpan.classList.add('arrow');
 	fieldDiv.append(specNameInput, arrowSpan);
@@ -69,6 +75,14 @@ function createCategory() {
 	inputCategoryInput.classList.add('input-category');
 	inputCategoryInput.setAttribute('list', "category-data")
 	inputCategoryInput.placeholder = "Выбрать название категории";
+	inputCategoryInput.addEventListener('change', () => {
+		let category = inputCategoryInput.parentNode.parentNode.parentNode;
+		let specNameInputs = category.querySelectorAll('.input-spec-name');
+		console.log(inputCategoryInput.value);
+		for (let inputSpecName of specNameInputs) {
+			inputSpecName.setAttribute('list', inputCategoryInput.value+"-spec-data");
+		}
+	});
 
 	let arrowSpan = document.createElement('span');
 	arrowSpan.classList.add('arrow');
@@ -90,7 +104,7 @@ function createCategory() {
 	btnAddDiv.innerText = "Добавить спецификацию";
 
 	btnAddDiv.addEventListener('click', () => {
-		btnAddDiv.parentNode.insertBefore(createSpec(), btnAddDiv);
+		btnAddDiv.parentNode.insertBefore(createSpec(btnAddDiv), btnAddDiv);
 	});
 
 	categoryDiv.append(categoryFieldDiv, btnAddDiv);
