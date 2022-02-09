@@ -11,6 +11,7 @@ use Up\Core\Database\DefaultDatabase;
 use Up\Core\DI\Container;
 use Up\Core\DI\DIConfigPHP;
 use Up\Core\DI\Error\DIException;
+use Up\Core\Logger\Logger;
 use Up\Core\Message\Request;
 use Up\Core\Migration\MigrationManager;
 use Up\Core\Router\Errors\RoutingException;
@@ -26,6 +27,7 @@ class Application
 	 */
 	public static function run(): bool
 	{
+		$logger = new Logger();
 		$settings = Settings::getInstance();
 		//Прописывание маршрутов
 		/** @var Router $router */
@@ -46,7 +48,7 @@ class Application
 			}
 			catch (MigrationException $e)
 			{
-				//todo Залогировали
+				$logger->log('info',$e);
 				var_dump('Миграция не удалась!');
 			}
 		}
@@ -59,7 +61,7 @@ class Application
 		catch (RoutingException $e)
 		{
 			//todo вызов отдельного контроллера ошибок
-			//todo залогировали
+			$logger->log('info',$e);
 			return false;
 		}
 
@@ -72,9 +74,11 @@ class Application
 		}
 		catch (ReflectionException $e)
 		{
+			$logger->log('info',$e);
 		}
 		catch (DIException $e)
 		{
+			$logger->log('info',$e);
 		}
 
 		try
@@ -84,7 +88,7 @@ class Application
 		catch (ReflectionException $e)
 		{
 			//todo вызов отдельного контроллера ошибок
-			//todo залогировали
+			$logger->log('info',$e);
 			return false;
 		}
 
@@ -106,12 +110,12 @@ class Application
 		}
 		catch (Exception $e)
 		{
-			// TODO: журналируем и выводим исключение
+			$logger->log('info',$e);
 			return false;
 		}
 
 		$response->flush();
-
+		$logger->log('notice','Посещение страницы {domain}{url}',['domain' => $settings->getSettings('domainName'),'url' => $_SERVER['REQUEST_URI']]);
 		return true;
 	}
 }

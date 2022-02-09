@@ -7,7 +7,7 @@ use Up\Core\Message\Response;
 use Up\Core\TemplateProcessor;
 use Up\Service\CatalogService;
 
-class HomeController
+class CatalogController
 {
 	protected $templateProcessor;
 	protected $catalogService;
