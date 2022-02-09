@@ -28,9 +28,9 @@ class CatalogServiceImpl implements CatalogService
 	public function getItemById(int $id): ItemDetail
 	{
 		$item = $this->itemDAO->getItemDetailById($id);
-		$itemCategories = $this->specificationDAO->getItemCategoriesByItem($item);
-		$this->specificationsSort($itemCategories);
-		$item->setSpecificationCategoryList($itemCategories);
+		//$itemCategories = $this->specificationDAO->getItemCategoriesByItem($item);
+		//$this->specificationsSort($itemCategories);
+		//$item->setSpecificationCategoryList($itemCategories);
 		return $item;
 	}
 
