@@ -61,8 +61,9 @@ class SpecificationDAOmysql implements SpecificationDAO
 		}
 
 		return $categoriesList;
-
 	}
+
+
 
 	private function getCategoriesByItemTypeIdQuery(int $itemTypeId): string
 	{
@@ -72,8 +73,7 @@ class SpecificationDAOmysql implements SpecificationDAO
             usc.DISPLAY_ORDER as CAT_ORDER,
             u.ID as SPEC_ID,
             u.NAME as SPEC_NAME,
-            u.DISPLAY_ORDER as SPEC_ORDER,
-            u.TYPE as SPEC_TYPE
+            u.DISPLAY_ORDER as SPEC_ORDER
 		FROM up_spec_template ust 
 		INNER JOIN up_spec_type u on ust.SPEC_TYPE_ID = u.ID
 		INNER JOIN up_spec_category usc on u.SPEC_CATEGORY_ID = usc.ID
@@ -90,7 +90,6 @@ class SpecificationDAOmysql implements SpecificationDAO
             ust.ID as SPEC_ID,
             ust.NAME as SPEC_NAME,
             ust.DISPLAY_ORDER as SPEC_ORDER,
-            ust.TYPE as SPEC_TYPE,
 			uis.VALUE as SPEC_VALUE
 		FROM up_item_spec uis
 		INNER JOIN up_spec_type ust on uis.SPEC_TYPE_ID = ust.ID
@@ -101,7 +100,7 @@ class SpecificationDAOmysql implements SpecificationDAO
 	private function createSpecificationByRow(array $row): Specification
 	{
 		return new Specification(
-			$row['SPEC_ID'], $row['SPEC_NAME'], $row['SPEC_TYPE'], $row['SPEC_ORDER'], $row['SPEC_VALUE']
+			$row['SPEC_ID'], $row['SPEC_NAME'], $row['SPEC_ORDER'], $row['SPEC_VALUE']
 		);
 	}
 }
