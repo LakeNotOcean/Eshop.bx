@@ -1,9 +1,8 @@
 <?php
-$item = $items[0];
 ?>
-<link rel="stylesheet" href="./css/catalog.css">
-<link rel="stylesheet" href="./css/item.css">
-<link rel="stylesheet" href="./lib/lightbox/css/lightbox.css">
+<link rel="stylesheet" href="/css/catalog.css">
+<link rel="stylesheet" href="/css/item.css">
+<link rel="stylesheet" href="/lib/lightbox/css/lightbox.css">
 <div class="container">
 	<a class="anchor" id="main"></a>
 	<div class="item-wrapper">
@@ -11,7 +10,7 @@ $item = $items[0];
 			<p class="item-title"><?= $item->getTitle() ?></p>
 			<div class="favourites">
 				<svg class="add-to-favorites">
-					<use xlink:href="./img/sprites.svg#heart"></use>
+					<use xlink:href="/img/sprites.svg#heart"></use>
 				</svg>
 				<p>В избранное</p>
 			</div>
@@ -20,18 +19,18 @@ $item = $items[0];
 			<div class="item-main-sidebar">
 				<div class="item-main-images">
 					<div class="item-main-images-main">
-						<a href="../img/2_big.webp" data-lightbox='item-pic'>
-							<img src="../img/2_big.webp" alt="videocard">
+						<a href="/img/2_big.webp" data-lightbox='item-pic'>
+							<img src="/img/2_big.webp" alt="videocard">
 						</a>
 					</div>
 
 					<div class="item-main-images-all">
 <!--						<a href=bigImage> <img src=smallImage> </a>-->
-						<a href="../img/2-1_big.webp" data-lightbox='item-pic'>
-							<img src="../img/2-1_small.webp" alt="videocard">
+						<a href="/img/2-1_big.webp" data-lightbox='item-pic'>
+							<img src="/img/2-1_small.webp" alt="videocard">
 						</a>
-						<a href="../img/2-2_big.webp" data-lightbox='item-pic'>
-							<img src="../img/2-2_small.webp" alt="videocard">
+						<a href="/img/2-2_big.webp" data-lightbox='item-pic'>
+							<img src="/img/2-2_small.webp" alt="videocard">
 						</a>
 					</div>
 
@@ -55,7 +54,7 @@ $item = $items[0];
 						</div>
 						<div class="item-main-buy-reviews">
 							<svg class="star-icon">
-								<use xlink:href="./img/sprites.svg#star"></use>
+								<use xlink:href="/img/sprites.svg#star"></use>
 							</svg>
 							<p>4.8 · 6 отзывов</p>
 						</div>
@@ -95,13 +94,13 @@ $item = $items[0];
 					<a class="anchor" id="reviews"></a>
 					<div class="item-main-reviews-header">
 						<svg class="star-icon">
-							<use xlink:href="./img/sprites.svg#star"></use>
+							<use xlink:href="/img/sprites.svg#star"></use>
 						</svg>
 						<div class="item-title">4.8 · 6 отзывов</div>
 					</div>
 					<div class="item-review">
 						<div class="item-review-photo">
-							<img src="../img/<?= $item->getId() ?>.jpg" alt="person">
+							<img src="/img/<?= $item->getId() ?>.png" alt="person">
 						</div>
 						<div class="item-review-data">
 							<div class="item-review-name">Юлия</div>
@@ -114,7 +113,7 @@ $item = $items[0];
 
 					<div class="item-review">
 						<div class="item-review-photo">
-							<img src="../img/<?= $item->getId() ?>.jpg" alt="person">
+							<img src="../img/<?= $item->getId() ?>.png" alt="person">
 						</div>
 						<div class="item-review-data">
 							<div class="item-review-name">Юлия</div>
@@ -132,5 +131,5 @@ $item = $items[0];
 
 </div>
 
-<script src="./lib/lightbox/js/lightbox-plus-jquery.js"></script>
-<script src="./js/main.js"></script>
+<script src="/lib/lightbox/js/lightbox-plus-jquery.js"></script>
+<script src="/js/main.js"></script>

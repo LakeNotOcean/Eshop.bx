@@ -17,13 +17,13 @@
 	<link rel="mask-icon" href="/img/logo/safari-pinned-tab.svg" color="#5bbad5">
 	<meta name="msapplication-TileColor" content="#da532c">
 	<meta name="theme-color" content="#ffffff">
-	<link rel="stylesheet" href="./css/main.css">
+	<link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 
 <nav>
 	<svg class="logo">
-		<use xlink:href="./img/sprites.svg#logo"></use>
+		<use xlink:href="/img/sprites.svg#logo"></use>
 	</svg>
 	<form action="/" method="get" enctype="multipart/form-data" class="search">
 		<input type="text" id="query" name="query" class="search-field" placeholder="Поиск по сайту">
