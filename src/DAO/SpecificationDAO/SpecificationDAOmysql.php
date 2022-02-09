@@ -39,28 +39,28 @@ class SpecificationDAOmysql implements SpecificationDAO
 		return $resultArray;
 	}
 
-	public function getItemCategoriesByItem(ItemDetail $item): array
-	{
-		$categoriesList = [];
-		$queryResult = $this->DBConnection->query($this->getCategoriesByItemIdQuery($item->getId()));
-		while ($row = $queryResult->fetch())
-		{
-			$categoryId = $row['CAT_ID'];
-			if (!array_key_exists($categoryId, $categoriesList))
-			{
-				$categoriesList[$categoryId] = new SpecificationCategory(
-					$categoryId, $row['CAT_NAME'], $row['CAT_ORDER']
-				);
-			}
-			$specificationId = $row['SPEC_ID'];
-			if (!$categoriesList[$categoryId]->isSpecificationExist($specificationId))
-			{
-				$categoriesList[$categoryId]->addToSpecificationList($this->createSpecificationByRow($row));
-			}
-		}
-
-		return $categoriesList;
-	}
+	// public function getItemCategoriesByItem(ItemDetail $item): array
+	// {
+	// 	$categoriesList = [];
+	// 	$queryResult = $this->DBConnection->query($this->getCategoriesByItemIdQuery($item->getId()));
+	// 	while ($row = $queryResult->fetch())
+	// 	{
+	// 		$categoryId = $row['CAT_ID'];
+	// 		if (!array_key_exists($categoryId, $categoriesList))
+	// 		{
+	// 			$categoriesList[$categoryId] = new SpecificationCategory(
+	// 				$categoryId, $row['CAT_NAME'], $row['CAT_ORDER']
+	// 			);
+	// 		}
+	// 		$specificationId = $row['SPEC_ID'];
+	// 		if (!$categoriesList[$categoryId]->isSpecificationExist($specificationId))
+	// 		{
+	// 			$categoriesList[$categoryId]->addToSpecificationList($this->createSpecificationByRow($row));
+	// 		}
+	// 	}
+	//
+	// 	return $categoriesList;
+	// }
 
 
 

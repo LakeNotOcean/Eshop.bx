@@ -44,49 +44,77 @@ class ItemDAOmysql implements ItemDAO
 	{
 		$result = $this->DBConnection->query($this->getItemDetailByIdQuery($id));
 		$item = new ItemDetail();
-		$tags = [];
-		$specs = [];
-		$images = [];
-
 		while ($row = $result->fetch())
 		{
 			if ($item->getId() === 0)
 			{
 				$this->mapDetailItemInfo($item, $row);
 			}
-			if (!isset($tags[$row['TAG_ID']]))
+			if (!$item->getTags()->contains($row['TAG_ID']))
 			{
-				$tags[$row['TAG_ID']] = $this->getTag($row);
+				$item->getTags()->addEntity($this->getTag($row));
 			}
-			if (!isset($specs[$row['usc_ID']]))
+			if (!$item->getSpecificationCategoriesList()->contains($row['usc_ID']))
 			{
-				$specs[$row['usc_ID']] = new SpecificationCategory(
-					$row['usc_ID'],
-					$row['usc_NAME'],
-					$row['usc_DISPLAY_ORDER']
-				);
-			}
-			if (!$specs[$row['usc_ID']]->isSpecificationExist($row['SPEC_TYPE_ID']))
-			{
-				$specs[$row['usc_ID']]->addToSpecificationList(
-					new Specification(
-						$row['SPEC_TYPE_ID'], $row['ust_NAME'], $row['ust_DISPLAY_ORDER'], $row['VALUE']
+				$item->getSpecificationCategoriesList()->addEntity(
+					new SpecificationCategory(
+						$row['usc_ID'], $row['usc_NAME'], $row['usc_DISPLAY_ORDER']
 					)
 				);
 			}
-			if (!isset($images[$row['u_ID']]))
+			if (!$item
+				->getSpecificationCategoriesList()
+				->getEntity($row['usc_ID'])
+				->getSpecificationList()
+				->contains($row['SPEC_TYPE_ID']))
 			{
-				$images[$row['u_ID']] = $this->getItemsImage($row);
+				$item
+					->getSpecificationCategoriesList()
+					->getEntity($row['usc_ID'])
+					->getSpecificationList()
+					->addEntity(new Specification(
+						$row['SPEC_TYPE_ID'], $row['ust_NAME'], $row['ust_DISPLAY_ORDER'], $row['VALUE']
+								)
+				);
+			}
+			if (!$item->getImages()->contains($row['u_ID']))
+			{
+				$item->getImages()->addEntity($this->getItemsImage($row));
 				if ($row['IS_MAIN'] and !$item->isSetMainImage())
 				{
-					$item->setMainImage($images[$row['u_ID']]);
+					$item->setMainImage($item->getImages()->getEntity($row['u_ID']));
 				}
 			}
 		}
-		$item->setTags(array_values($tags));
-		$item->setSpecificationCategoryList(array_values($specs));
-		$item->setImages(array_values($images));
 		return $item;
+	}
+
+	public function save(ItemDetail $item): ItemDetail
+	{
+		if ($item->getId() === 0)
+		{
+			return $this->create($item);
+		}
+
+		return $this->update($item);
+	}
+
+	private function update(ItemDetail $item): ItemDetail
+	{
+		$oldItem = $this->getItemDetailById($item->getId());
+		$oldTags = $oldItem->getTags();
+		$oldSpecs = $oldItem->getSpecificationCategoriesList();
+		$oldImages = $oldItem->getImages();
+		$toAddTags = array_filter($item->getTags(), function(ItemsTag $tag) {
+			//return !()
+		});
+
+		return new ItemDetail();
+	}
+
+	private function create(ItemDetail $itemDetail): ItemDetail
+	{
+		return new ItemDetail();
 	}
 
 	private function getItemsQuery(int $from, int $to): string

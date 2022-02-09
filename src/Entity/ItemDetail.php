@@ -5,15 +5,34 @@ namespace Up\Entity;
 class ItemDetail extends Item
 {
 	private $fullDescription = '';
-	private $images = [];
-	private $tags = [];
-	protected $specificationCategoriesList=[];
+
+	/**
+	 * @var EntityArray
+	 */
+	private $images;
+
+	/**
+	 * @var EntityArray
+	 */
+	private $tags;
+
+	/**
+	 * @var EntityArray
+	 */
+	protected $specificationCategoriesList;
+
+	/**
+	 * @var ItemType
+	 */
 	protected $itemType;
 
 
 	public function __construct()
 	{
 		$this->itemType=new ItemType();
+		$this->images = new EntityArray();
+		$this->tags = new EntityArray();
+		$this->specificationCategoriesList = new EntityArray();
 	}
 
 	public function getItemType():ItemType
@@ -28,29 +47,30 @@ class ItemDetail extends Item
 	}
 
 
-	public function getSpecificationCategoriesList(): array
+	public function getSpecificationCategoriesList(): EntityArray
 	{
 		return $this->specificationCategoriesList;
 	}
 
 
-	public function setSpecificationCategoryList(array $specificationCategoriesList): void
+	public function setSpecificationCategoryList(EntityArray $specificationCategoriesList): void
 	{
 		$this->specificationCategoriesList = $specificationCategoriesList;
 	}
 
+
 	/**
-	 * @return array
+	 * @return EntityArray
 	 */
-	public function getTags(): array
+	public function getTags(): EntityArray
 	{
 		return $this->tags;
 	}
 
 	/**
-	 * @param array $tags
+	 * @param EntityArray $tags
 	 */
-	public function setTags(array $tags): void
+	public function setTags(EntityArray $tags): void
 	{
 		$this->tags = $tags;
 	}
@@ -74,17 +94,17 @@ class ItemDetail extends Item
 
 
 	/**
-	 * @return array
+	 * @return EntityArray
 	 */
-	public function getImages(): array
+	public function getImages(): EntityArray
 	{
 		return $this->images;
 	}
 
 	/**
-	 * @param array $images
+	 * @param EntityArray $images
 	 */
-	public function setImages(array $images): void
+	public function setImages(EntityArray $images): void
 	{
 		$this->images = $images;
 	}
