@@ -1,10 +1,10 @@
 <?php
 
-namespace Up\Service;
+namespace Up\Service\CatalogService;
 
 use Up\Entity\ItemDetail;
 
-interface CatalogService
+interface CatalogServiceInterface
 {
 	public function getItems(): array;
 
