@@ -12,7 +12,7 @@ class SpecificationDAOqueries
             usc.DISPLAY_ORDER as CAT_ORDER,
             u.ID as SPEC_ID,
             u.NAME as SPEC_NAME,
-            u.DISPLAY_ORDER as SPEC_ORDER,
+            u.DISPLAY_ORDER as SPEC_ORDER
 		FROM up_spec_template ust 
 		INNER JOIN up_spec_type u on ust.SPEC_TYPE_ID = u.ID
 		INNER JOIN up_spec_category usc on u.SPEC_CATEGORY_ID = usc.ID

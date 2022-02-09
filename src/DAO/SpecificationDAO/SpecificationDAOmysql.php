@@ -32,7 +32,7 @@ class SpecificationDAOmysql implements SpecificationDAO
 			}
 			$specId = $row['SPEC_ID'];
 			$specification = new Specification(
-				$specId, $row['SPEC_NAME'], $row['SPEC_TYPE'], $row['SPEC_ORDER']
+				$specId, $row['SPEC_NAME'],  $row['SPEC_ORDER']
 			);
 			$resultArray[$categoryId]->addToSpecificationList($specification);
 		}
@@ -69,7 +69,7 @@ class SpecificationDAOmysql implements SpecificationDAO
 		if (empty($row['SPEC_VALUE']))
 		{
 			return new Specification(
-				$row['SPEC_ID'], $row['SPEC_NAME'], $row['SPEC_TYPE'], $row['SPEC_ORDER'],
+				$row['SPEC_ID'], $row['SPEC_NAME'], $row['SPEC_ORDER'],
 			);
 		}
 
@@ -136,8 +136,7 @@ class SpecificationDAOmysql implements SpecificationDAO
 			{
 				$categoriesList[$categoryId] = $this->createCategoryByRow($row);
 			}
-			$specificationId = $row['SPEC_ID'];
-			$categoriesList[$specificationId]->addToSpecificationList($this->createSpecificationByRow($row));
+			$categoriesList[$categoryId]->addToSpecificationList($this->createSpecificationByRow($row));
 		}
 
 		return $categoriesList;
