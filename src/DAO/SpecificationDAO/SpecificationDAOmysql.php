@@ -3,7 +3,6 @@
 namespace Up\DAO\SpecificationDAO;
 
 use Up\Core\Database\DefaultDatabase;
-use Up\Entity\Item;
 use Up\Entity\ItemType;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
