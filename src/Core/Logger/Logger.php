@@ -70,6 +70,10 @@ class Logger implements LoggerInterface
 
 	private function open($fileName): void
 	{
+		if (!is_dir($this->PATH))
+		{
+			mkdir($this->PATH);
+		}
 		$filePATH = $this->PATH . $fileName . '.txt';
 		$this->file = fopen($filePATH, 'a+') ;
 	}
