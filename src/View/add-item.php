@@ -68,7 +68,7 @@ $template = $allCategories;
 					<label for="main-image" class="btn-change">Изменить</label>
 				</div>
 				<div id="main-image-preview" class="preview">
-					<img src="./img/default_image.webp" alt="main-image">
+					<img src="/img/default_image.webp" alt="main-image" class="image-img">
 				</div>
 			</div>
 			<div class="other-images">

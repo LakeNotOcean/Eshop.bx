@@ -8,8 +8,7 @@ inputMain.addEventListener('change', () => {
 	const files = inputMain.files;
 	if (files.length === 0) {
 		const image = document.createElement('img');
-		// image.src = "./img/default_image.webp";
-		image.src = "../../public/img/default_image.webp";
+		image.src = "/img/default_image.webp";
 		image.alt = "main-image";
 		image.classList.add('image-img');
 		previewMain.appendChild(image);
