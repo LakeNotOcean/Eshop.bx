@@ -8,6 +8,13 @@ class ItemsImage extends Entity
 	protected $path = '';
 	protected $isMain = false;
 
+	public function __construct(int $id = 0, string $path = '', bool $isMain = false)
+	{
+		$this->id = $id;
+		$this->path = $path;
+		$this->isMain = $isMain;
+	}
+
 	/**
 	 * @return int
 	 */
