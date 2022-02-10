@@ -61,4 +61,5 @@ use Up\Core\Router\URLResolver;
 		</div>
 	</div>
 </div>
+<script src="/js/fix-node.js"></script>
 <script src="./js/fixed-filters.js"></script>

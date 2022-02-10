@@ -135,3 +135,5 @@
 
 <script src="/lib/lightbox/js/lightbox-plus-jquery.js"></script>
 <script src="/js/scroll.js"></script>
+<script src="/js/fix-node.js"></script>
+<script src="/js/fixed-scroll-menu.js"></script>
