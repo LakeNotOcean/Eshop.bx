@@ -1,18 +1,5 @@
 <?php
-/** @var \Up\Entity\Item $item */
-
-$itemSpecs = [1 => new \Up\Entity\SpecificationCategory(
-	1,'Заводские данные',0, [
-		 new \Up\Entity\Specification(1, 'Гарантия', 0, '24 месяца'),
-		 new \Up\Entity\Specification(2, 'Страна-производитель', 1, 'Китай'),
-	 ]
-), new \Up\Entity\SpecificationCategory(
-	  2,'Внешний вид',1, [
-		   new \Up\Entity\Specification(3, 'Основной цвет', 0, 'черный'),
-		   new \Up\Entity\Specification(4, 'Дополнительный цвет', 1, 'серый'),
-		   new \Up\Entity\Specification(5, 'Подсветка', 2, 'нет'),
-	   ]
-)];
+/** @var \Up\Entity\ItemDetail $item */
 
 ?>
 
@@ -21,7 +8,7 @@ $itemSpecs = [1 => new \Up\Entity\SpecificationCategory(
 <div class="container">
 	<a class="anchor" id="main"></a>
 	<div class="item-header">
-		<div class="item-title"><?= $item->getTitle()?></div>
+		<div class="item-title"><?= htmlspecialchars($item->getTitle())?></div>
 		<div class="add-to-favorites">
 			<svg class="add-to-favorites-icon">
 				<use xlink:href="/img/sprites.svg#heart"></use>
@@ -61,11 +48,11 @@ $itemSpecs = [1 => new \Up\Entity\SpecificationCategory(
 		<div class="item-main-container">
 
 			<div class="item-main-header">
-				<div class="item-main-short-desc"><?= $item->getShortDescription()?></div>
+				<div class="item-main-short-desc"><?= htmlspecialchars($item->getShortDescription())?></div>
 				<div class="item-buy card-outline">
 					<div class="item-buy-header">
 						<div class="buy-price">
-							<div class="buy-price-value"><?= $item->getPrice() ?> ₽</div>
+							<div class="buy-price-value"><?= htmlspecialchars($item->getPrice())?> ₽</div>
 							<div class="buy-price-measure">/ штуку</div>
 						</div>
 						<a href="#reviews" class="buy-reviews">
@@ -86,12 +73,12 @@ $itemSpecs = [1 => new \Up\Entity\SpecificationCategory(
 			<div class="item-main-specs">
 				<a class="anchor" id="specs"></a>
 				<div class="item-section-title">Характеристики</div>
-				<?php foreach ($itemSpecs as $category):?>
-					<div class="spec-category"><?= $category->getName()?></div>
-					<?php foreach ($category->getSpecificationList() as $spec):?>
+				<?php foreach ($item->getSpecificationCategoriesList()->getEntitiesArray() as $category):?>
+					<div class="spec-category"><?= htmlspecialchars($category->getName())?></div>
+					<?php foreach ($category->getSpecificationList()->getEntitiesArray() as $spec):?>
 						<div class="item-spec">
-							<div class="item-spec-name"><?= $spec->getName()?></div>
-							<div class="item-spec-value"><?= $spec->getValue()?></div>
+							<div class="item-spec-name"><?= htmlspecialchars($spec->getName())?></div>
+							<div class="item-spec-value"><?= htmlspecialchars($spec->getValue())?></div>
 						</div>
 					<?php endforeach;?>
 				<?php endforeach;?>
@@ -100,7 +87,7 @@ $itemSpecs = [1 => new \Up\Entity\SpecificationCategory(
 			<div class="item-description">
 				<a class="anchor" id="description"></a>
 				<div class="item-section-title">Описание</div>
-				<div class="description-text"><?= $item->getShortDescription() ?> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid architecto aspernatur atque aut culpa dolor est fugit, hic illo impedit ipsa ipsam ipsum iure iusto laborum laudantium modi natus nihil nostrum officia optio pariatur praesentium quae quas qui quo recusandae sed tempore ut veritatis. Ab accusamus ad at commodi consectetur debitis deleniti ducimus eligendi eveniet fugiat incidunt, ipsam labore laborum, laudantium, libero nemo nostrum quo repellat sapiente sequi sint tempora unde vitae! Ab adipisci, aliquam asperiores assumenda consequuntur culpa debitis delectus deleniti doloremque inventore ipsa iusto laborum molestiae nulla, officia officiis optio quam quisquam quos sit suscipit tempora totam ut!</div>
+				<div class="description-text"><?= htmlspecialchars($item->getShortDescription())?> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid architecto aspernatur atque aut culpa dolor est fugit, hic illo impedit ipsa ipsam ipsum iure iusto laborum laudantium modi natus nihil nostrum officia optio pariatur praesentium quae quas qui quo recusandae sed tempore ut veritatis. Ab accusamus ad at commodi consectetur debitis deleniti ducimus eligendi eveniet fugiat incidunt, ipsam labore laborum, laudantium, libero nemo nostrum quo repellat sapiente sequi sint tempora unde vitae! Ab adipisci, aliquam asperiores assumenda consequuntur culpa debitis delectus deleniti doloremque inventore ipsa iusto laborum molestiae nulla, officia officiis optio quam quisquam quos sit suscipit tempora totam ut!</div>
 			</div>
 
 			<div class="item-reviews">

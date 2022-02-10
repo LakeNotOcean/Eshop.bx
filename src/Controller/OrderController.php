@@ -22,7 +22,7 @@ class OrderController
 	public function makeOrder(Request $request, int $id): Response
 	{
 		$item = $this->itemService->getItemById($id);
-		$items = [$item,$item,$item,$item];
+		$items = [$item];
 		$page = $this->templateProcessor->render('make-order.php', [
 			'items' => $items
 		], 'order.php', [
