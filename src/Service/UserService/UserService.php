@@ -6,9 +6,10 @@ use Up\Entity\User;
 
 interface UserService
 {
-	public function authorizeUserByLogin(string $login,string $password):bool;
+	public function authorizeUserByLogin(string $login,string $password):void;
 	public function giveUserModeratorRights(string $login);
 	public function removeUserModeratorRights(string $login);
 	public function getUserInfo():User;
+	public function registerUser(User $user, string $password):void;
 	public function removeUserFromSession(): void;
 }
