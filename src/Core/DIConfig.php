@@ -26,6 +26,7 @@ $config = [
 		'initArgs' => [
 			['class', 'templateProcessor'],
 			['class', 'specificationService'],
+			['class','']
 		],
 	],
 	'templateProcessor' => [
@@ -46,6 +47,20 @@ $config = [
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'specificationDAO'],
+		],
+	],
+	'userService'=>[
+		'classPath'=>\Up\Service\UserService\UserServiceImpl::class,
+		'initType'=>'constructor',
+		'initArgs'=>[
+			['class','userDAO'],
+		],
+	],
+	'userDAO'=>[
+		'classPath'=>\Up\DAO\UserDAO\UserDAOmysql::class,
+		'initType'=>'constructor',
+		'initArgs' => [
+			['class', 'DB'],
 		],
 	],
 	'itemDAO' => [
