@@ -38,10 +38,10 @@
 
 			</div>
 			<div class="scroll-menu card-outline">
-				<a class="scroll-menu-item" href="#main">Купить</a>
-				<a class="scroll-menu-item" href="#specs">Характеристики</a>
-				<a class="scroll-menu-item" href="#description">Описание</a>
-				<a class="scroll-menu-item" href="#reviews">Отзывы</a>
+				<a class="scroll-menu-item" title="main">Купить</a>
+				<a class="scroll-menu-item" title="specs">Характеристики</a>
+				<a class="scroll-menu-item" title="description">Описание</a>
+				<a class="scroll-menu-item" title="reviews">Отзывы</a>
 			</div>
 		</div>
 

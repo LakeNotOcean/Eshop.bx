@@ -2,6 +2,12 @@ main {
 	background: white;
 }
 
+.anchor {
+	position: relative;
+	left: 0;
+	top: -120px;
+}
+
 .container {
 	display: flex;
 	flex-direction: column;
