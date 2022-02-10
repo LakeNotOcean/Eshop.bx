@@ -139,7 +139,7 @@ class Request
 	 */
 	private function getRequestParameters(string $key, array $from, string $exceptionMessage)
 	{
-		if (!in_array($key, $from))
+		if (!array_key_exists($key, $from))
 		{
 			throw new Error\NoSuchQueryParameterException($exceptionMessage);
 		}

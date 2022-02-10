@@ -2,6 +2,7 @@
 
 namespace Up\Controller;
 
+use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Response;
 use Up\Core\Message\Request;
 use Up\Core\TemplateProcessor;
@@ -41,6 +42,28 @@ class OrderController
 			$cost += $item->getPrice();
 		}
 		return $cost;
+	}
+
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
+	public function finishOrder(Request $request): Response
+	{
+		//TODO(catalogService->getItemsByIds) for id array
+		$itemIds = $request->getPostParametersByName('itemIds');
+		$items = [];
+		foreach ($itemIds as $id)
+		{
+			$items[] = $this->catalogService->getItemById($id);
+		}
+		$page = $this->templateProcessor->render('finish-order.php', [
+			'items' => $items
+		], 'order.php', [
+			'cost' => $this->calculateTotalCost($items),
+			'orderSize' => count($items)
+		]);
+		$response = new Response();
+		return $response->withBodyHTML($page);
 	}
 
 }
