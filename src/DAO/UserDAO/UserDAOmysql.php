@@ -3,8 +3,8 @@
 namespace Up\DAO\UserDAO;
 
 use Up\Core\Database\DefaultDatabase;
-use Up\Entity\User;
 use Up\Entity\UserRole;
+use Up\Entity\User;
 
 class UserDAOmysql implements UserDAO
 {
@@ -99,7 +99,7 @@ class UserDAOmysql implements UserDAO
 		);
 	}
 
-	public function changeRole(string $login, int $roleId): void
+	private function changeRole(string $login, int $roleId): void
 	{
 		$query = "UPDATE up_user SET ROLE_ID={$roleId} WHERE LOGIN={$login}";
 		$queryResult = $this->DBConnection->prepare($query);
