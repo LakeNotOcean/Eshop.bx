@@ -55,7 +55,7 @@
 							<div class="buy-price-value"><?= htmlspecialchars($item->getPrice())?> ₽</div>
 							<div class="buy-price-measure">/ штуку</div>
 						</div>
-						<a href="#reviews" class="buy-reviews">
+						<a class="buy-reviews" title="reviews" >
 							<svg class="star-icon">
 								<use xlink:href="/img/sprites.svg#star"></use>
 							</svg>

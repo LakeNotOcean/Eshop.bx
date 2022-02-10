@@ -1,4 +1,4 @@
-let scrollMenuItems = document.querySelectorAll('.scroll-menu-item');
+let scrollMenuItems = document.querySelectorAll('.scroll-menu-item, .buy-reviews');
 
 for (let scrollMenuItem of scrollMenuItems) {
 	let id = scrollMenuItem.title;
