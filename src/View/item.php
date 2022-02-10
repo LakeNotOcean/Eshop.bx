@@ -7,7 +7,7 @@
 	<a class="anchor" id="main"></a>
 	<div class="item-wrapper">
 		<div class="item-header">
-			<p class="item-title"><?= $item->getTitle() ?></p>
+			<p class="item-title"><?= htmlspecialchars($item->getTitle()) ?></p>
 			<div class="favourites">
 				<svg class="add-to-favorites">
 					<use xlink:href="/img/sprites.svg#heart"></use>
@@ -46,11 +46,11 @@
 			<div class="item-main-container">
 				<div class="item-main-header">
 					<div class="item-main-short-desc">
-						<?= $item->getShortDescription() ?>
+						<?= htmlspecialchars($item->getShortDescription()) ?>
 					</div>
 					<div class="item-main-buy">
 						<div class="item-main-buy-price">
-							<?= $item->getPrice() ?> ₽
+							<?= htmlspecialchars($item->getPrice()) ?> ₽
 						</div>
 						<div class="item-main-buy-reviews">
 							<svg class="star-icon">
@@ -63,7 +63,7 @@
 				</div>
 				<div class="item-main-specs">
 					<a class="anchor" id="specs"></a>
-					<div class="item-title">
+					<div class="item-subtitle">
 						Характеристики
 					</div>
 
@@ -87,8 +87,8 @@
 				</div>
 				<div class="item-main-description">
 					<a class="anchor" id="description"></a>
-					<div class="item-title">Описание</div>
-					<p><?= $item->getShortDescription() ?> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid architecto aspernatur atque aut culpa dolor est fugit, hic illo impedit ipsa ipsam ipsum iure iusto laborum laudantium modi natus nihil nostrum officia optio pariatur praesentium quae quas qui quo recusandae sed tempore ut veritatis. Ab accusamus ad at commodi consectetur debitis deleniti ducimus eligendi eveniet fugiat incidunt, ipsam labore laborum, laudantium, libero nemo nostrum quo repellat sapiente sequi sint tempora unde vitae! Ab adipisci, aliquam asperiores assumenda consequuntur culpa debitis delectus deleniti doloremque inventore ipsa iusto laborum molestiae nulla, officia officiis optio quam quisquam quos sit suscipit tempora totam ut!</p>
+					<div class="item-subtitle">Описание</div>
+					<p><?= htmlspecialchars($item->getShortDescription()) ?> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid architecto aspernatur atque aut culpa dolor est fugit, hic illo impedit ipsa ipsam ipsum iure iusto laborum laudantium modi natus nihil nostrum officia optio pariatur praesentium quae quas qui quo recusandae sed tempore ut veritatis. Ab accusamus ad at commodi consectetur debitis deleniti ducimus eligendi eveniet fugiat incidunt, ipsam labore laborum, laudantium, libero nemo nostrum quo repellat sapiente sequi sint tempora unde vitae! Ab adipisci, aliquam asperiores assumenda consequuntur culpa debitis delectus deleniti doloremque inventore ipsa iusto laborum molestiae nulla, officia officiis optio quam quisquam quos sit suscipit tempora totam ut!</p>
 				</div>
 				<div class="item-main-reviews">
 					<a class="anchor" id="reviews"></a>
@@ -96,7 +96,7 @@
 						<svg class="star-icon">
 							<use xlink:href="/img/sprites.svg#star"></use>
 						</svg>
-						<div class="item-title">4.8 · 6 отзывов</div>
+						<div class="item-subtitle">4.8 · 6 отзывов</div>
 					</div>
 					<div class="item-review">
 						<div class="item-review-photo">
