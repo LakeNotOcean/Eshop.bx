@@ -3,6 +3,7 @@
 namespace Up\Service\SpecificationService;
 
 use http\Exception;
+use Up\Core\Message\DBResponse;
 use Up\DAO\SpecificationDAO\SpecificationDAO;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
@@ -58,26 +59,23 @@ class SpecificationsServiceImpl implements SpecificationsService
 		$this->specificationDAO->addCategory($category);
 	}
 
-	/**
-	 * @throws \Exception
-	 */
 	public function addSpecification(int $categoryId, Specification $specification): void
 	{
-		$categories=$this->specificationDAO->getCategoriesWithSpecifications();
+		$categories = $this->specificationDAO->getCategoriesWithSpecifications();
 		foreach ($categories as $category)
 		{
-			$specifications=$category->getSpecificationList();
+			$specifications = $category->getSpecificationList()->getEntitiesArray();
 			foreach ($specifications as $currSpec)
 			{
-				if ($currSpec->getName()===$specification->getName() || $currSpec->getId()===$specification->getId())
+				if ($currSpec->getName() === $specification->getName())
 				{
-					throw new \Exception('This specification already exists');
+					return;
 				}
 			}
 		}
-		if (!array_key_exists($categoryId,$categories))
+		if (!array_key_exists($categoryId, $categories))
 		{
-			throw new \Exception('category does not exists');
+			return;
 		}
 		$this->specificationDAO->addSpecification($categoryId,$specification);
 	}

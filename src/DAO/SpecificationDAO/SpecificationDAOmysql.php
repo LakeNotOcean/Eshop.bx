@@ -221,7 +221,7 @@ class SpecificationDAOmysql implements SpecificationDAO
 
 	public function addSpecification(int $categoryId, Specification $specification): void
 	{
-		$query = "INSERT INTO up_spec_type (ID, NAME, SPEC_CATEGORY_ID, DISPLAY_ORDER) VALUES (?,?,?,?);";
+		$query = "INSERT INTO up_spec_type (NAME, SPEC_CATEGORY_ID, DISPLAY_ORDER) VALUES (?,?,?);";
 		$prepair = $this->DBConnection->prepare($query);
 		$prepair->execute($this->prepareSpecification($categoryId, $specification));
 	}
@@ -251,7 +251,7 @@ class SpecificationDAOmysql implements SpecificationDAO
 
 	private function prepareSpecification(int $categoryId, Specification $specification): array
 	{
-		return [$specification->getId(), $specification->getName(), $categoryId, $specification->getDisplayOrder()];
+		return [$specification->getName(), $categoryId, $specification->getDisplayOrder()];
 	}
 
 	private function prepareCategory(SpecificationCategory $category): array

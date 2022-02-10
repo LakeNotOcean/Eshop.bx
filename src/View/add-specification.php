@@ -26,7 +26,7 @@
 		<input type="submit" value="Сохранить спецификацию в базу данных" class="btn-save">
 	</form>
 	<?php if ($isNewSpecAdded):?>
-		<div id="popup" class="new-spec-popup">Добавлена новая спецификация</div>
+		<div id="popup" class="popup success">Спецификация успешно добавлена</div>
 	<?php endif;?>
 </div>
 

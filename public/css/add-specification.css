@@ -16,18 +16,21 @@ main {
 	flex-direction: column;
 }
 
-.new-spec-popup {
+.popup {
 	width: 300px;
 	height: 40px;
 	line-height: 40px;
 	margin: 20px auto;
 	padding: 20px;
 	border-radius: 10px;
-	background: #00AC47;
 	color: white;
 	text-align: center;
 	font-weight: 500;
 	transition: .1s;
+}
+
+.success {
+	background: #00AC47;
 }
 
 .hidden {
