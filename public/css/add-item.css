@@ -38,9 +38,11 @@ input fields
 	font-weight: 600;
 }
 
-input {
+input, select {
+	appearance:none;
 	flex: 1;
 	display: block;
+	height: 40px;
 	line-height: 40px;
 	padding: 0 10px;
 	margin: 5px 10px 5px 0;
@@ -59,44 +61,6 @@ input::placeholder {
 
 input::-webkit-calendar-picker-indicator {
 	opacity: 0;
-}
-
-/*==========================
-arrow
-==========================*/
-
-input[list]:focus + .arrow {
-	transform: rotateZ(180deg);
-}
-
-.arrow {
-	position: absolute;
-	width: 20px;
-	height: 20px;
-	right: 24px;
-	transition: .1s;
-}
-
-.arrow::before, .arrow::after {
-	position: absolute;
-	content: '';
-	width: 15px;
-	height: 3px;
-	top: 4px;
-	border-radius: 1in;
-	background: #333333;
-}
-
-.arrow::before {
-	left: 0;
-	transform-origin: left;
-	transform: rotateZ(45deg);
-}
-
-.arrow::after {
-	right: 0;
-	transform-origin: right;
-	transform: rotateZ(-45deg);
 }
 
 /*==========================

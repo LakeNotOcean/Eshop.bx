@@ -57,10 +57,8 @@
 		</div>
 	</div>
 
-
 	<div class="specifications">
 		<div class="specifications-title">Характеристики</div>
-
 		<div class="btn add add-category">Добавить категорию</div>
 	</div>
 
