@@ -27,8 +27,8 @@ use Up\Core\Router\URLResolver;
 				<a class="item" href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>">
 					<picture>
 						<source srcset="../img/<?= $item->getId() . $pref  ?>.webp" type="image/webp">
-						<source srcset="../img/<?= $item->getId()  . $pref  ?>.png" type="image/jpG">
-						<img class="item-image" src="../img/<?= $item->getId() ?>.png" alt="Alt Text!">
+						<source srcset="../img/<?= $item->getId()  . $pref  ?>.png" type="image/png">
+						<img class="item-image" src="../img/<?= $item->getId() ?>.png" alt="Item Image">
 					</picture>
 					<div class="item-other">
 						<div class="item-other-to-top">
@@ -58,6 +58,16 @@ use Up\Core\Router\URLResolver;
 			<?php
 			endforeach; ?>
 
+			<div class="navigation">
+				<a href="/?page=1" class="navigation-page navigation-item"> < </a>
+				<a href="/?page=1" class="navigation-page navigation-item navigation-active"> 1 </a>
+				<a href="/?page=2" class="navigation-page navigation-item">2</a>
+				<a href="/?page=3" class="navigation-page navigation-item">3</a>
+				<a href="/?page=4" class="navigation-page navigation-item">4</a>
+				<div class="navigation-dots navigation-item">...</div>
+				<a href="/?page=15" class="navigation-page navigation-item">15</a>
+				<a href="/?page=2" class="navigation-page navigation-item">></a>
+			</div>
 		</div>
 	</div>
 </div>
