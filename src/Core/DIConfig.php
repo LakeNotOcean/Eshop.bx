@@ -70,6 +70,13 @@ $config = [
 			['class', 'specificationDAO'],
 		],
 	],
+	'userService' => [
+		'classPath' => Up\Service\UserService\UserServiceImpl::class,
+		'initType' => 'constructor',
+		'initArgs' => [
+			['class', 'userDAO'],
+		],
+	],
 
 	/*==========================
 	DAO and Database
@@ -83,6 +90,13 @@ $config = [
 	],
 	'specificationDAO' => [
 		'classPath' => \Up\DAO\SpecificationDAO\SpecificationDAOmysql::class,
+		'initType' => 'constructor',
+		'initArgs' => [
+			['class', 'DB'],
+		],
+	],
+	'userDAO' => [
+		'classPath' => \Up\DAO\UserDAO\UserDAOmysql::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'DB'],
