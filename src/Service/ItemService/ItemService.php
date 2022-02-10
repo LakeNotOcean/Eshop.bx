@@ -39,6 +39,4 @@ class ItemService implements ItemServiceInterface
 	{
 		return $this->itemDAO->save($item);
 	}
-
-
 }

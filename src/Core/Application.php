@@ -72,13 +72,13 @@ class Application
 		{
 			$controller = $container->get($method['callback'][0]);
 		}
-		catch (ReflectionException $e)
+		catch (ReflectionException|DIException $e)
 		{
-			$logger->log('info',$e);
+			$logger->log('info', $e);
 		}
-		catch (DIException $e)
+		catch (Exception $exception)
 		{
-			$logger->log('info',$e);
+			$logger->log('info', $exception);
 		}
 
 		try
