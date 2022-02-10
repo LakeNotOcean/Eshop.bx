@@ -14,7 +14,6 @@ use Up\Entity\SpecificationCategory;
 
 class ItemDAOmysql implements ItemDAO
 {
-	private const PAGE_SIZE = 10;
 	private $DBConnection;
 
 	public function __construct(DefaultDatabase $DBConnection)
@@ -22,11 +21,9 @@ class ItemDAOmysql implements ItemDAO
 		$this->DBConnection = $DBConnection;
 	}
 
-	public function getItems(int $page): array
+	public function getItems(int $offset, int $amountItems): array
 	{
-		$from = $page * self::PAGE_SIZE;
-		$to = ($page + 1) * self::PAGE_SIZE;
-		$result = $this->DBConnection->query($this->getItemsQuery($from, $to));
+		$result = $this->DBConnection->query($this->getItemsQuery($offset, $amountItems));
 		$items = [];
 		while ($row = $result->fetch())
 		{
@@ -194,7 +191,7 @@ class ItemDAOmysql implements ItemDAO
 		return $specs;
 	}
 
-	private function getItemsQuery(int $from, int $to): string
+	private function getItemsQuery(int $offset, int $amountItems): string
 	{
 		return "SELECT ui.ID as ui_ID,
                         TITLE as TITLE,
@@ -208,7 +205,7 @@ class ItemDAOmysql implements ItemDAO
 				FROM up_item ui
 				INNER JOIN up_image u on ui.ID = u.ITEM_ID AND u.IS_MAIN = 1
 				ORDER BY ui.SORT_ORDER
-				LIMIT {$from}, {$to};";
+				LIMIT {$offset}, {$amountItems};";
 	}
 
 	private function getItemDetailByIdQuery(int $id): string

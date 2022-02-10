@@ -2,6 +2,7 @@
 /** @var array<Entity\Item> $items */
 
 /** @var int $result_count */
+/** @var int $currentPage */
 $pref = '_big';
 use Up\Core\Router\URLResolver;
 
@@ -59,14 +60,27 @@ use Up\Core\Router\URLResolver;
 			endforeach; ?>
 
 			<div class="navigation">
-				<a href="/?page=1" class="navigation-page navigation-item"> < </a>
-				<a href="/?page=1" class="navigation-page navigation-item navigation-active"> 1 </a>
-				<a href="/?page=2" class="navigation-page navigation-item">2</a>
-				<a href="/?page=3" class="navigation-page navigation-item">3</a>
-				<a href="/?page=4" class="navigation-page navigation-item">4</a>
-				<div class="navigation-dots navigation-item">...</div>
-				<a href="/?page=15" class="navigation-page navigation-item">15</a>
-				<a href="/?page=2" class="navigation-page navigation-item">></a>
+<!--				<div class="navigation-dots navigation-item">...</div>-->
+				<?php
+				($currentPage === 1) ? $prevPage = 1 : $prevPage = $currentPage - 1;
+				($currentPage === 3) ? $nextPage = 3 : $nextPage = $currentPage + 1;
+				?>
+				<a href="/?page=<?= $prevPage ?>" class="navigation-page navigation-item"> < </a>
+				<?php
+				for ($i=1; $i<4; $i++):
+					if ($currentPage === $i)
+					{
+						$activeClass = 'navigation-active';
+					}
+					else
+					{
+						$activeClass = '';
+					}
+					?>
+					<a href="/?page=<?= $i ?>" class="navigation-page navigation-item <?= $activeClass ?>"> <?= $i ?> </a>
+
+				<? endfor; ?>
+				<a href="/?page=<?= $nextPage ?>" class="navigation-page navigation-item"> > </a>
 			</div>
 		</div>
 	</div>
