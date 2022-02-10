@@ -33,13 +33,13 @@ use Up\Core\Router\URLResolver;
 					<div class="item-other">
 						<div class="item-other-to-top">
 							<div class="item-other-header">
-								<div class="item-title"><?= $item->getTitle() ?></div>
+								<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
 								<svg class="add-to-favorites">
 									<use xlink:href="/img/sprites.svg#heart"></use>
 								</svg>
 							</div>
 							<div class="item-short-description">
-								<?= $item->getShortDescription() ?>
+								<?= htmlspecialchars($item->getShortDescription()) ?>
 							</div>
 						</div>
 						<div class="item-other-footer">
@@ -50,7 +50,7 @@ use Up\Core\Router\URLResolver;
 								<div class="rating-value"><?= (float)random_int(40, 50) / 10 ?></div>
 								<div class="review-count">(<?= random_int(5, 50) ?> отзывов)</div>
 							</div>
-							<div class="price"><?= $item->getPrice() ?> ₽</div>
+							<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
 						</div>
 					</div>
 				</a>
