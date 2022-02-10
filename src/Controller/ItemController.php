@@ -45,25 +45,4 @@ class ItemController
 
 		return $response->withBodyHTML($pages);
 	}
-
-	public function testForm(Request $request): Response
-	{
-		return (new Response())->withBodyHTML(
-			$this->templateProcessor->render('test-form.php', [], 'main.php', [])
-		);
-	}
-
-	/**
-	 * @throws NoSuchQueryParameterException
-	 */
-	public function testFormPost(Request $request): Response
-	{
-		if (!$request->isFilesContains('testName'))
-		{
-			throw new Error('testName');
-		}
-		$this->imageService->addImage($request->getFilesByName('testName'), 2, true);
-
-		return (new Response())->withBodyJSON((array)var_export($request));
-	}
 }
