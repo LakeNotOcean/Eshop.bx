@@ -29,6 +29,11 @@ class SpecificationsServiceImpl implements SpecificationsService
 		return $categories;
 	}
 
+	public function getSpecificationByCategoryId(int $id): array
+	{
+		return $this->specificationDAO->getSpecificationByCategoryId($id);
+	}
+
 	public function getItemTemplate(int $templateId): array
 	{
 		$categories = $this->specificationDAO->getCategoriesByItemTypeId($templateId);

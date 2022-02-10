@@ -77,6 +77,23 @@ class SpecificationDAOmysql implements SpecificationDAO
 		return $typeList;
 	}
 
+	public function getSpecificationByCategoryId(int $id): array
+	{
+		$result = $this->DBConnection->query($this->getSpecificationByCategoryByIdQuery($id));
+		$specification = [];
+		while ($row = $result->fetch())
+		{
+			$specification[$row['ID']] = new Specification($row['ID'], $row['NAME'], $row['DISPLAY_ORDER']);
+		}
+		return $specification;
+	}
+
+	private function getSpecificationByCategoryByIdQuery(int $id): string
+	{
+		return "SELECT ID, NAME, DISPLAY_ORDER FROM up_spec_type
+				WHERE ID={$id}";
+	}
+
 	public function getCategoriesByTypes(): array
 	{
 		$queryResult = $this->DBConnection->query(SpecificationDAOqueries::getCategoriesByTypesIdQuery());
@@ -215,7 +232,7 @@ class SpecificationDAOmysql implements SpecificationDAO
 		$categoriesList = [];
 		while ($row = $queryResult->fetch())
 		{
-			$categoriesList['CAT_ID'] = $this->createCategoryByRow($row);
+			$categoriesList[$row['CAT_ID']] = $this->createCategoryByRow($row);
 		}
 
 		return $categoriesList;

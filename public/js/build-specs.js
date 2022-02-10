@@ -1,3 +1,47 @@
+let categories;
+let spec = {};
+
+async function getSpecification(catId){
+	if(catId in spec) return spec[catId]
+	let response = await fetch('/category/detail');
+	spec = await response.json();
+	return spec[catId];
+}
+
+function changeSpecValueInput(spec){
+	let input = spec.parentElement.parentElement.querySelector('input');
+	let categoryId = spec.parentElement.parentElement.parentElement.querySelector('.input-category').value;
+	let specId = spec.value;
+	input.name = 'specs[' + categoryId + '][' + specId + ']';
+}
+
+fetch('/categories')
+	.then((response) => response.json().then(json => {
+		categories = json;
+	}));
+
+function getSpecOption(select, catId){
+	while (select.firstChild) select.lastChild.remove();
+	getSpecification(catId).then(specs => {
+		for(let specId in specs){
+			let option = document.createElement('option');
+			option.value = specId;
+			option.text = specs[specId];
+			select.append(option);
+		}
+		changeSpecValueInput(select);
+	});
+
+}
+
+function changeChild(parent, catId){
+	nodeList = parent.parentElement.parentElement.parentElement.querySelectorAll('.input-spec-name');
+	nodeList.forEach(node => {
+		getSpecOption(node, catId);
+	});
+}
+
+
 let deleteSpec = document.querySelectorAll('.spec .delete');
 for (let btnDeleteSpec of deleteSpec) {
 	btnDeleteSpec.addEventListener('click', () => {
@@ -25,22 +69,32 @@ function createSpec(btn) {
 
 	let fieldDiv = document.createElement('div');
 	fieldDiv.classList.add('field');
-	let specNameInput = document.createElement('input');
-	specNameInput.type = "text";
+	let specNameInput = document.createElement('select');
+	specNameInput.addEventListener('change', event => changeSpecValueInput(event.target));
 
 	let category = btn.parentNode;
 	let inputCategory = category.querySelector('.input-category');
-	let categoryName = inputCategory.value;
+	let categoryId = inputCategory.value;
 
-	specNameInput.setAttribute('list', categoryName+"-spec-data");
-	specNameInput.placeholder = "Выбрать название спецификации";
+	let specValueInput = document.createElement('input');
+	specValueInput.placeholder = "Ввести значение спецификации";
+
+	getSpecification(categoryId).then(specs => {
+		for(let specId in specs){
+			let option = document.createElement('option');
+			option.value = specId;
+			option.text = specs[specId];
+			specNameInput.append(option);
+		}
+		changeSpecValueInput(specNameInput);
+	});
+
 	specNameInput.classList.add('input-spec-name');
 	let arrowSpan = document.createElement('span');
 	arrowSpan.classList.add('arrow');
 	fieldDiv.append(specNameInput, arrowSpan);
 
-	let specValueInput = document.createElement('input');
-	specValueInput.placeholder = "Ввести значение спецификации";
+
 
 	let btnDeleteDiv = document.createElement('div');
 	btnDeleteDiv.classList.add('btn', 'delete');
@@ -71,17 +125,17 @@ function createCategory() {
 	let fieldDiv = document.createElement('div');
 	fieldDiv.classList.add('field');
 
-	let inputCategoryInput = document.createElement('input');
+	let inputCategoryInput = document.createElement('select');
 	inputCategoryInput.classList.add('input-category');
-	inputCategoryInput.setAttribute('list', "category-data")
-	inputCategoryInput.placeholder = "Выбрать название категории";
-	inputCategoryInput.addEventListener('change', () => {
-		let category = inputCategoryInput.parentNode.parentNode.parentNode;
-		let specNameInputs = category.querySelectorAll('.input-spec-name');
-		console.log(inputCategoryInput.value);
-		for (let inputSpecName of specNameInputs) {
-			inputSpecName.setAttribute('list', inputCategoryInput.value+"-spec-data");
-		}
+	for(let categoryId in categories){
+		let option = document.createElement('option');
+		option.value = categoryId;
+		option.text = categories[categoryId];
+		inputCategoryInput.append(option);
+	}
+
+	inputCategoryInput.addEventListener('change', (event)=>{
+		changeChild(event.target, event.target.value);
 	});
 
 	let arrowSpan = document.createElement('span');
