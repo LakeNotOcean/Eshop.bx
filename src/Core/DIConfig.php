@@ -12,6 +12,15 @@
  * 'initMethod' - если initType=singleton, то необходимо указать метод, вызываемый для инстанцирования класса
  */
 $config = [
+	'templateProcessor' => [
+		'classPath' => \Up\Core\TemplateProcessorImpl::class,
+		'initType' => 'constructor',
+		'initArgs' => [],
+	],
+
+	/*==========================
+	Controller
+	==========================*/
 	'itemController' => [
 		'classPath' => \Up\Controller\ItemController::class,
 		'initType' => 'constructor',
@@ -29,11 +38,18 @@ $config = [
 			['class', 'specificationService'],
 		],
 	],
-	'templateProcessor' => [
-		'classPath' => \Up\Core\TemplateProcessorImpl::class,
+	'orderController' => [
+		'classPath' => \Up\Controller\OrderController::class,
 		'initType' => 'constructor',
-		'initArgs' => [],
+		'initArgs' => [
+			['class', 'templateProcessor'],
+			['class', 'itemService']
+		],
 	],
+
+	/*==========================
+	Service
+	==========================*/
 	'itemService' => [
 		'classPath' => \Up\Service\ItemService\ItemService::class,
 		'initType' => 'constructor',
@@ -54,6 +70,10 @@ $config = [
 			['class', 'specificationDAO'],
 		],
 	],
+
+	/*==========================
+	DAO and Database
+	==========================*/
 	'itemDAO' => [
 		'classPath' => \Up\DAO\ItemDAO\ItemDAOmysql::class,
 		'initType' => 'constructor',

@@ -6,23 +6,22 @@ use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Response;
 use Up\Core\Message\Request;
 use Up\Core\TemplateProcessor;
-use Up\Service\CatalogService\CatalogServiceInterface;
-
+use Up\Service\ItemService\ItemServiceInterface;
 
 class OrderController
 {
 	protected $templateProcessor;
-	protected $catalogService;
+	protected $itemService;
 
-	public function __construct(TemplateProcessor $templateProcessor, CatalogServiceInterface $catalogService)
+	public function __construct(TemplateProcessor $templateProcessor, ItemServiceInterface $itemService)
 	{
 		$this->templateProcessor = $templateProcessor;
-		$this->catalogService = $catalogService;
+		$this->itemService = $itemService;
 	}
 
 	public function makeOrder(Request $request, int $id): Response
 	{
-		$item = $this->catalogService->getItemById($id);
+		$item = $this->itemService->getItemById($id);
 		$items = [$item,$item,$item,$item];
 		$page = $this->templateProcessor->render('make-order.php', [
 			'items' => $items
@@ -54,7 +53,7 @@ class OrderController
 		$items = [];
 		foreach ($itemIds as $id)
 		{
-			$items[] = $this->catalogService->getItemById($id);
+			$items[] = $this->itemService->getItemById($id);
 		}
 		$page = $this->templateProcessor->render('finish-order.php', [
 			'items' => $items
