@@ -262,7 +262,7 @@ class ItemDAOmysql implements ItemDAO
 	private function getInsertImagesQuery(int $id, array $images): string
 	{
 		$insert = implode(',', array_map(function(ItemsImage $image) use($id){
-			return "({$image->getPath()},{$id},{$image->isMain()})";
+			return "('{$image->getPath()}',{$id},{$image->isMain()})";
 		}, $images));
 		return "INSERT INTO up_image(PATH, ITEM_ID, IS_MAIN) VALUES {$insert};";
 	}

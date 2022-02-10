@@ -8,6 +8,7 @@ use Up\Core\Message\Response;
 use Up\Core\TemplateProcessor;
 use Up\Entity\EntityArray;
 use Up\Entity\ItemDetail;
+use Up\Entity\ItemsImage;
 use Up\Entity\ItemType;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
@@ -113,7 +114,16 @@ class AddItemController
 		}
 		$item->setItemType(new ItemType(1, 'Видеокарта'));
 		$item->setSpecificationCategoryList($categories);
+		$item->setMainImage(new ItemsImage(1, '1.png', true));
+		$imagesArray = new EntityArray();
+		$imagesArray->addEntity(new ItemsImage(1, '1.png', true));
+		$item->setImages($imagesArray);
 		$this->itemService->save($item);
 		return (new Response())->withBodyHTML('');
+	}
+
+	private function mapItemCommonInfoFromRequest(ItemDetail $item, Request $request): void
+	{
+
 	}
 }
