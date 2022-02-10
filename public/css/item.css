@@ -1,7 +1,12 @@
+main {
+	background: white;
+}
+
 .container {
 	display: flex;
 	flex-direction: column;
 	padding: 0 50px;
+	max-width: 1300px;
 }
 
 .card-outline {
@@ -22,7 +27,7 @@ item-header
 
 .item-title {
 	flex: 1;
-	font-size: 22px;
+	font-size: 20px;
 	font-weight: 700;
 }
 
