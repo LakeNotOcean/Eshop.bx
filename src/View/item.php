@@ -87,8 +87,7 @@
 			<div class="item-description">
 				<a class="anchor" id="description"></a>
 				<div class="item-section-title">Описание</div>
-				<div class="description-text"><?= htmlspecialchars($item->getShortDescription())?> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid architecto aspernatur atque aut culpa dolor est fugit, hic illo impedit ipsa ipsam ipsum iure iusto laborum laudantium modi natus nihil nostrum officia optio pariatur praesentium quae quas qui quo recusandae sed tempore ut veritatis. Ab accusamus ad at commodi consectetur debitis deleniti ducimus eligendi eveniet fugiat incidunt, ipsam labore laborum, laudantium, libero nemo nostrum quo repellat sapiente sequi sint tempora unde vitae! Ab adipisci, aliquam asperiores assumenda consequuntur culpa debitis delectus deleniti doloremque inventore ipsa iusto laborum molestiae nulla, officia officiis optio quam quisquam quos sit suscipit tempora totam ut!</div>
-			</div>
+				<div class="description-text"><?= htmlspecialchars($item->getFullDescription())?> </div>
 
 			<div class="item-reviews">
 				<a class="anchor" id="reviews"></a>
