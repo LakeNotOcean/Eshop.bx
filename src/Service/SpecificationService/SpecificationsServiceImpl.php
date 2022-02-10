@@ -47,10 +47,10 @@ class SpecificationsServiceImpl implements SpecificationsService
 	 */
 	public function addCategory(SpecificationCategory $category): void
 	{
-		$categories=$this->specificationDAO->getCategories();
+		$categories = $this->specificationDAO->getCategories();
 		foreach ($categories as $addedCat)
 		{
-			if ($addedCat->getId()===$category->getId() || $addedCat->getName()===$category->getName())
+			if ($addedCat->getName() === $category->getName())
 			{
 				throw new \Exception('This category already exists');
 			}

@@ -41,13 +41,100 @@ class AddItemController
 	{
 		$itemTypes = $this->specificationsService->getItemTypes();
 		$categories = $this->specificationsService->getCategoriesWithSpecifications();
-		$template = $this->specificationsService->getItemTemplate(intval('$request->getQueriesByName()'));
-
+		$template = $this->specificationsService->getItemTemplate((int)$request->getQueriesByName('item-type'));
 
 		$page = $this->templateProcessor->render('add-item.php', [
 			'itemTypes' => $itemTypes,
 			'categories' => $categories,
 			'template' => $template
+		], 'admin-main.php', []);
+
+		$response = new Response();
+
+		return $response->withBodyHTML($page);
+	}
+
+	public function chooseItemType(Request $request): Response
+	{
+		$itemTypes = $this->specificationsService->getItemTypes();
+
+		$page = $this->templateProcessor->render('choose-item-type.php', [
+			'itemTypes' => $itemTypes
+		], 'admin-main.php', []);
+
+		$response = new Response();
+
+		return $response->withBodyHTML($page);
+	}
+
+	public function addItemType(Request $request): Response
+	{
+		$page = $this->templateProcessor->render('add-item-type.php', [
+
+		], 'admin-main.php', []);
+
+		$response = new Response();
+
+		return $response->withBodyHTML($page);
+	}
+
+	public function addCategory(Request $request): Response
+	{
+		$page = $this->templateProcessor->render('add-category.php', [
+			'isNewCategoryAdded' => false
+		], 'admin-main.php', []);
+
+		$response = new Response();
+
+		return $response->withBodyHTML($page);
+	}
+
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
+	public function addCategoryAndSaveToDB(Request $request): Response
+	{
+		$category = $request->getPostParametersByName('category');
+		$categoryOrder = $request->getPostParametersByName('category-order');
+		$newCategory = new SpecificationCategory(0, $category, $categoryOrder);
+		$this->specificationsService->addCategory($newCategory);
+		$page = $this->templateProcessor->render('add-category.php', [
+			'isNewCategoryAdded' => true
+		], 'admin-main.php', []);
+
+		$response = new Response();
+
+		return $response->withBodyHTML($page);
+	}
+
+	public function addSpecification(Request $request): Response
+	{
+		$categories = $this->specificationsService->getCategories();
+		$page = $this->templateProcessor->render('add-specification.php', [
+			'categories' => $categories,
+			'isNewSpecAdded' => false
+		], 'admin-main.php', []);
+
+		$response = new Response();
+
+		return $response->withBodyHTML($page);
+	}
+
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
+	public function addSpecificationAndSaveToDB(Request $request): Response
+	{
+		$categoryId = $request->getPostParametersByName('category-id');
+		$specName = $request->getPostParametersByName('spec-name');
+		$specOrder = $request->getPostParametersByName('spec-order');
+		$newSpec = new Specification(0, $specName, $specOrder);
+		$this->specificationsService->addSpecification($categoryId, $newSpec);
+
+		$categories = $this->specificationsService->getCategories();
+		$page = $this->templateProcessor->render('add-specification.php', [
+			'categories' => $categories,
+			'isNewSpecAdded' => true
 		], 'admin-main.php', []);
 
 		$response = new Response();

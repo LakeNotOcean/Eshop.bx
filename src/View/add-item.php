@@ -67,8 +67,7 @@
 		<div class="btn add add-category">Добавить категорию</div>
 	</div>
 
-	<input type="submit"  value="Сохранить товар в базу данных" class="btn save">
+	<input type="submit"  value="Сохранить товар в базу данных" class="btn btn-save">
 </form>
-<script src="./js/preview-images.js"></script>
-<script src="./js/build-specs.js"></script>
-<script src="./js/listen-category.js"></script>
+<script src="/js/preview-images.js"></script>
+<script src="/js/build-specs.js"></script>
