@@ -38,7 +38,11 @@
 
 <main>
 	<?= $content ?>
+	<div class="footer">
+		2022, EShop Inc. · <a href="/">Главная страница</a> · <a href="/">Помощь</a> · <a href="/">Поддержка</a>
+	</div>
 </main>
+
 
 </body>
 </html>

@@ -116,8 +116,33 @@ main
 main {
 	position: absolute;
 	display: flex;
+	flex-direction: column;
 	width: 100vw;
 	min-height: calc(100vh - var(--nav-height));
 	top: var(--nav-height);
 	z-index: -1;
+}
+
+.footer {
+	display: flex;
+	height: 70px;
+	width: 100%;
+	background: #333;
+	color: white;
+	align-items: center;
+	justify-content: center;
+}
+
+.footer a {
+	text-decoration: none;
+	color: white;
+	padding: 10px;
+	margin: 10px;
+	border-radius: 5px;
+	transition: .5s;
+}
+
+.footer a:hover {
+	background: #444;
+	transition: .5s;
 }
