@@ -14,7 +14,7 @@ use Up\Core\DI\Error\DIException;
 use Up\Core\Logger\Logger;
 use Up\Core\Message\Request;
 use Up\Core\Migration\MigrationManager;
-use Up\Core\Router\Errors\RoutingException;
+use Up\Core\Router\Error\RoutingException;
 use Up\Core\Router\Router;
 use Up\Core\Settings\Settings;
 

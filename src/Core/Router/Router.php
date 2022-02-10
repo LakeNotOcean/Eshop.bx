@@ -98,7 +98,7 @@ class Router
 	}
 
 	/**
-	 * @throws Errors\RoutingException
+	 * @throws Error\RoutingException
 	 */
 	public function route(string $method, string $path): array
 	{
@@ -114,11 +114,11 @@ class Router
 				];
 			}
 		}
-		throw new Errors\RoutingException("Не найдена ручка соответствующая пути {$path} и методу {$method}");
+		throw new Error\RoutingException("Не найдена ручка соответствующая пути {$path} и методу {$method}");
 	}
 
 	/**
-	 * @throws Errors\URLParameterTypeException
+	 * @throws Error\URLParameterTypeException
 	 */
 	private function createRegexCaptureGroup($params): string
 	{
@@ -126,7 +126,7 @@ class Router
 		$variableName = $params['variableName'];
 		if (!isset($this->typeToRegex[$type]))
 		{
-			throw new Errors\URLParameterTypeException('Указан неверный тип переменной урла');
+			throw new Error\URLParameterTypeException('Указан неверный тип переменной урла');
 		}
 
 		return '(?<' . $variableName . '>' . $this->typeToRegex[$type] . ')';

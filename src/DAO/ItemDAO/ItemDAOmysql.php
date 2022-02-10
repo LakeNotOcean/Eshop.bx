@@ -204,8 +204,6 @@ class ItemDAOmysql implements ItemDAO
                         ACTIVE as ACTIVE,
                         u.ID IMAGE_ID,
                         u.PATH IMAGE_PATH,
-                        u.WIDTH IMAGE_WIDTH,
-                        u.HEIGHT IMAGE_HEIGHT,
                         u.IS_MAIN IMAGE_IS_MAIN
 				FROM up_item ui
 				INNER JOIN up_image u on ui.ID = u.ITEM_ID AND u.IS_MAIN = 1
@@ -314,8 +312,6 @@ class ItemDAOmysql implements ItemDAO
 	{
 		$image->setId($row['IMAGE_ID']);
 		$image->setPath($row['IMAGE_PATH']);
-		$image->setHeight($row['IMAGE_HEIGHT']);
-		$image->setWidth($row['IMAGE_WIDTH']);
 		$image->setIsMain($row['IMAGE_IS_MAIN']);
 	}
 

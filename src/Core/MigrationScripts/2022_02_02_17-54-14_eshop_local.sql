@@ -26,8 +26,6 @@ CREATE TABLE `up_image`
 (
 	`ID`      int(11) NOT NULL AUTO_INCREMENT,
 	`PATH`    varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-	`WIDTH`   int(11)                                 DEFAULT NULL,
-	`HEIGHT`  int(11)                                 DEFAULT NULL,
 	`ITEM_ID` int(11)                                 DEFAULT NULL,
 	PRIMARY KEY (`ID`),
 	KEY `up_image_up_item_ID_fk` (`ITEM_ID`),
