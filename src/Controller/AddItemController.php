@@ -57,7 +57,6 @@ class AddItemController
 	public function chooseItemType(Request $request): Response
 	{
 		$itemTypes = $this->specificationsService->getItemTypes();
-
 		$page = $this->templateProcessor->render('choose-item-type.php', [
 			'itemTypes' => $itemTypes
 		], 'admin-main.php', []);
