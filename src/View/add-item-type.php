@@ -41,5 +41,5 @@ $template = [''=>['']];
 		<div class="btn-add">Добавить категорию</div>
 	</div>
 
-	<input type="submit" value="Сохранить тип товара в базу данных">
+	<input type="submit" value="Сохранить тип товара в базу данных" class="btn-save">
 </form>

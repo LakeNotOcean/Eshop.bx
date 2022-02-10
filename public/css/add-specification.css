@@ -1,0 +1,35 @@
+main {
+	background: #F6F6F6;
+}
+
+.container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	max-width: 1300px;
+	padding: 30px 50px;
+}
+
+.form-add-specification {
+	display: flex;
+	flex-direction: column;
+}
+
+.new-spec-popup {
+	width: 300px;
+	height: 40px;
+	line-height: 40px;
+	margin: 20px auto;
+	padding: 20px;
+	border-radius: 10px;
+	background: #00AC47;
+	color: white;
+	text-align: center;
+	font-weight: 500;
+	transition: .1s;
+}
+
+.hidden {
+	opacity: 0;
+}

@@ -186,12 +186,15 @@ specifications
 	align-items: center;
 }
 
-.save {
-	margin-top: 20px;
-	color: #00AC47;
+.btn-save {
+	flex: 0;
+	width: 400px;
+	margin: 30px auto;
 }
 
-.save:hover {
-	background: #00AC47;
-	border-color: #00AC47;
+.btn-save:hover {
+	background: #F17F42;
+	border-color: #F17F42;
+	color: #ffffff;
+	font-weight: 500;
 }

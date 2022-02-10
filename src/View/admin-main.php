@@ -30,10 +30,10 @@
 		<div class="nav-item nav-item-active">Добавить товар
 			<div class="menu-container">
 				<div class="menu">
-					<a class="menu-item" href="/">Добавить товар</a>
-					<a class="menu-item" href="/">Добавить тип товара</a>
-					<a class="menu-item" href="/">Добавить категорию</a>
-					<a class="menu-item" href="/">Добавить спецификацию</a>
+					<a class="menu-item" href="/chooseItemType">Добавить товар</a>
+					<a class="menu-item" href="/addItemType">Добавить тип товара</a>
+					<a class="menu-item" href="/addCategory">Добавить категорию</a>
+					<a class="menu-item" href="/addSpecification">Добавить спецификацию</a>
 				</div>
 			</div>
 		</div>
