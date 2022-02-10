@@ -12,28 +12,13 @@
  * 'initMethod' - если initType=singleton, то необходимо указать метод, вызываемый для инстанцирования класса
  */
 $config = [
-	'templateProcessor' => [
-		'classPath' => \Up\Core\TemplateProcessorImpl::class,
-		'initType' => 'constructor',
-		'initArgs' => [],
-	],
-	/*====================
-	Controllers
-	=====================*/
-	'catalogController' => [
-		'classPath' => \Up\Controller\CatalogController::class,
+	'itemController' => [
+		'classPath' => \Up\Controller\ItemController::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'templateProcessor'],
-			['class', 'catalogService'],
-		],
-	],
-	'orderController' => [
-		'classPath' => \Up\Controller\OrderController::class,
-		'initType' => 'constructor',
-		'initArgs' => [
-			['class', 'templateProcessor'],
-			['class', 'catalogService'],
+			['class', 'itemService'],
+			['class', 'imageService']
 		],
 	],
 	'addItemController' => [
@@ -44,17 +29,23 @@ $config = [
 			['class', 'specificationService'],
 		],
 	],
-
-	/*====================
-	Services
-	=====================*/
-	'catalogService' => [
-		'classPath' => \Up\Service\CatalogService\CatalogServiceImpl::class,
+	'templateProcessor' => [
+		'classPath' => \Up\Core\TemplateProcessorImpl::class,
+		'initType' => 'constructor',
+		'initArgs' => [],
+	],
+	'itemService' => [
+		'classPath' => \Up\Service\ItemService\ItemService::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'itemDAO'],
 			['class', 'specificationDAO'],
 		],
+	],
+	'imageService' => [
+		'classPath' => \Up\Service\ImageService\ImageService::class,
+		'initType' => 'constructor',
+		'initArgs' => [],
 	],
 	'specificationService' => [
 		'classPath' => Up\Service\SpecificationService\SpecificationsServiceImpl::class,
@@ -63,10 +54,6 @@ $config = [
 			['class', 'specificationDAO'],
 		],
 	],
-
-	/*====================
-	DAO and Database
-	=====================*/
 	'itemDAO' => [
 		'classPath' => \Up\DAO\ItemDAO\ItemDAOmysql::class,
 		'initType' => 'constructor',

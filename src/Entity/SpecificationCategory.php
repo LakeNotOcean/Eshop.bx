@@ -2,19 +2,27 @@
 
 namespace Up\Entity;
 
-class SpecificationCategory
+class SpecificationCategory extends Entity
 {
-	protected $id;
 	protected $name;
+
+	/**
+	 * @var EntityArray
+	 */
 	protected $specificationList;
 	protected $displayOrder;
 
-	public function __construct(int $id = 1, string $name = '', int $displayOrder = 0, array $specificationList = [])
+	public function __construct(int $id=1, string $name='',int $displayOrder=0)
 	{
 		$this->id = $id;
 		$this->name = $name;
-		$this->specificationList = $specificationList;
 		$this->displayOrder = $displayOrder;
+		$this->specificationList = new EntityArray();
+	}
+
+	public function addToSpecificationList(Specification $specification): void
+	{
+		$this->specificationList->addEntity($specification);
 	}
 
 	public function getDisplayOrder(): int
@@ -27,37 +35,21 @@ class SpecificationCategory
 		$this->displayOrder = $displayOrder;
 	}
 
-	public function getSpecificationList(): array
+	public function getSpecificationList(): EntityArray
 	{
 		return $this->specificationList;
 	}
 
-	public function addToSpecificationList(Specification $specification): void
+	public function setSpecificationList(EntityArray $entityArray)
 	{
-		$this->specificationList[$specification->getId()] = $specification;
+		$this->specificationList = $entityArray;
 	}
-
-	public function getSpecificationById(int $specificationId): Specification
-	{
-		return $this->specificationList[$specificationId];
-	}
-
-	public function setSpecificationValueById(int $specificationId, string $value): void
-	{
-		$this->specificationList[$specificationId]->setValue($value);
-	}
-
-	public function isSpecificationExist(int $specificationId): bool
-	{
-		return isset($this->specificationList[$specificationId]);
-	}
-
-	public function specificationsSort(): void
-	{
-		usort($this->specificationList, function($a, $b) {
-			return $a->getDisplayOrder() <=> $b->getDisplayOrder();
-		});
-	}
+	// public function specificationsSort():void
+	// {
+	// 	usort($this->specificationList,function($a,$b){
+	// 		return $a->getDisplayOrder()<=>$b->getDisplayOrder();
+	// 	});
+	// }
 
 	public function getName(): string
 	{
@@ -68,15 +60,5 @@ class SpecificationCategory
 	{
 		$this->name = $name;
 
-	}
-
-	public function getId(): int
-	{
-		return $this->id;
-	}
-
-	public function setId(int $id): void
-	{
-		$this->id = $id;
 	}
 }

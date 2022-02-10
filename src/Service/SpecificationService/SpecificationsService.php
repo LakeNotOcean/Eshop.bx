@@ -15,12 +15,12 @@ interface SpecificationsService
 
 	public function getItemTemplate(int $templateId): array;
 
-	public function specificationsSort(array &$categories): void;
+	//public function specificationsSort(array &$categories): void;
 
 	public function addCategory(SpecificationCategory $category):void;
 
 	public function addSpecification(int $categoryId,Specification $specification):void;
 
-
+	public function getSpecificationByCategoryId(int $id): array;
 
 }
