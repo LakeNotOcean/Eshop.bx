@@ -7,6 +7,7 @@ use Up\Core\Message\Response;
 use Up\Core\TemplateProcessor;
 use Up\Service\CatalogService\CatalogServiceInterface;
 
+
 class CatalogController
 {
 	protected $templateProcessor;
@@ -32,9 +33,9 @@ class CatalogController
 		return $this->catalogService->getResultCount();
 	}
 
-	public function getItem(Request $request,$id):Response
+	public function getItem(Request $request, int $id):Response
 	{
-		$item=$this->catalogService->getItemById($id);
+		$item = $this->catalogService->getItemById($id);
 		$pages = $this->templateProcessor->render('item.php', ['item' => $item], 'main.php', []);
 		$response = new Response();
 		return $response->withBodyHTML($pages);

@@ -1,64 +1,78 @@
 .container {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	padding: 30px;
+	padding: 0 50px;
 }
 
-.anchor {
-	position: relative;
-	left: 0;
-	top: -120px;
+.card-outline {
+	border-radius: 10px;
+	box-shadow: 0 4px 10px 2px #0000001A;
+	border: 1px solid #DDDDDD;
 }
 
-.item-wrapper {
-	background: #fff;
-	width: 80%;
-	border-radius: 20px;
-	padding: 30px;
-}
+/*==========================
+item-header
+==========================*/
 
 .item-header {
 	display: flex;
-	flex-direction: row;
 	justify-content: space-between;
-	padding: 20px;
-}
-
-.favourites {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-}
-
-.favourites p {
-	padding-left: 10px;
-	text-decoration: underline;
-	font-weight: bold;
+	padding: 30px 0;
 }
 
 .item-title {
-	font-size: 28px;
-	font-weight: bold;
+	flex: 1;
+	font-size: 22px;
+	font-weight: 700;
 }
+
+.add-to-favorites {
+	display: flex;
+	margin-left: 15px;
+	justify-content: end;
+	align-items: center;
+}
+
+.add-to-favorites-label {
+	padding-left: 10px;
+	text-decoration: underline;
+	font-weight: 600;
+}
+
+.add-to-favorites-icon {
+	width: 30px;
+	height: 25px;
+
+	min-width: 30px;
+	fill: none;
+	stroke: #222222;
+}
+
+.add-to-favorites:hover .add-to-favorites-icon {
+	fill: red;
+	stroke: none;
+}
+
+/*==========================
+item-main
+==========================*/
 
 .item-main {
 	display: flex;
-	flex-direction: row;
-	padding-top: 30px;
 }
 
+/*==========================
+item-main-sidebar
+==========================*/
+
 .item-main-sidebar {
-	width: 30%;
-	padding: 0 10px;
+	width: 300px;
+	margin-right: 50px;
 }
 
 .item-main-images {
 	display: flex;
-	flex-direction: row-reverse;
 	padding: 10px;
-	box-shadow: 0 0 10px 5px #b7b7b7;
-	border-radius: 10px;
 }
 
 .item-main-images-all {
@@ -73,10 +87,10 @@
 }
 
 .item-main-images-main {
+	flex: 1;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	flex: 1;
 	padding: 30px 0;
 }
 
@@ -84,16 +98,18 @@
 	width: 100%;
 }
 
-.item-main-options {
+/*==========================
+scroll-menu
+==========================*/
+
+.scroll-menu {
 	display: flex;
 	flex-direction: column;
-	margin-top: 50px;
-	box-shadow: 0 0 10px 5px #b7b7b7;
-	border-radius: 10px;
+	margin-top: 30px;
 	padding: 10px 0;
 }
 
-.item-main-options a {
+.scroll-menu-item {
 	display: flex;
 	align-items: center;
 	padding: 15px;
@@ -102,118 +118,185 @@
 	text-decoration: none;
 }
 
-.item-main-options a:hover {
+.scroll-menu-item:hover {
 	background-color: #eee;
 	transition: .4s;
 }
 
+/*==========================
+item-main-container
+==========================*/
+
 .item-main-container {
+	flex: 1;
 	flex-direction: column;
-	width: 70%;
-	padding: 0 30px;
 }
+
+/*==========================
+item-main-header
+==========================*/
 
 .item-main-header {
 	display: flex;
 	flex-direction: row;
-}
-
-.item-main-short-desc {
-	width: 65%;
-	padding: 10px 20px;
-}
-
-.item-main-buy {
-	display: flex;
-	flex-wrap: wrap;
-	width: 35%;
-	border-radius: 10px;
-	box-shadow: 0 0 10px 5px #b7b7b7;
-	padding: 20px;
-}
-
-.item-main-buy-price {
-	width: 50%;
-	font-size: 26px;
-	font-weight: bold;
-}
-
-.item-main-buy-reviews {
-	display: flex;
-	width: 50%;
 	align-items: center;
 }
 
-.item-main-buy-reviews p {
-	padding-left: 10px;
+.item-main-short-desc {
+	flex: 1;
+	margin-right: 15px;
 }
 
-.item-main-buy-button {
+/*==========================
+item-main-buy
+==========================*/
+
+.item-buy {
+	display: flex;
+	width: 300px;
+	flex-direction: column;
+	padding: 20px;
+}
+
+.item-buy-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.buy-price {
+	display: flex;
+}
+
+.buy-price-value {
+	font-size: 18px;
+	font-weight: 700;
+}
+
+.buy-price-measure {
+	margin-left: 5px;
+}
+
+/*==========================
+item-reviews
+==========================*/
+
+.buy-reviews {
+	display: flex;
+	align-items: center;
+	color: inherit;
+	text-decoration: none;
+}
+
+.star-icon {
+	fill: #FF791E;
+	width: 25px;
+	height: 25px
+}
+
+.buy-reviews-label {
+	display: flex;
+	font-size: 12px;
+	padding-left: 10px;
+	font-weight: bold;
+}
+
+.buy-reviews-separator {
+	margin: 0 5px;
+}
+
+.buy-reviews-count {
+	text-decoration: underline;
+}
+
+.btn-buy {
 	display: flex;
 	margin-top: 20px;
-	width: 100%;
-	height: 50px;
+	height: 40px;
 	background: #FF791E;
 	border-radius: 10px;
 	justify-content: center;
 	align-items: center;
 	text-decoration: none;
-	font-size: 20px;
 	color: #fff;
 }
 
+/*==========================
+item-main-specs
+==========================*/
+
+.item-section-title {
+	font-size: 18px;
+	font-weight: 700;
+}
+
 .item-main-specs {
+	flex: 1;
 	display: flex;
 	flex-direction: column;
-	padding: 40px 0;
-}
-
-.item-main-specs-subtitle {
-	font-size: 20px;
-	font-weight: bold;
-	padding-top: 30px;
-}
-
-.item-main-specs-element {
-	display: flex;
-	flex-direction: row;
-	padding-top: 20px;
-}
-
-.item-main-specs-name {
-	font-size: 16px;
-	width: 50%;
-	border-bottom: 1px dotted;
-}
-
-.item-main-specs-value {
-	font-size: 16px;
-	width: 50%;
-}
-
-.item-main-description {
-	padding: 30px 0;
-}
-
-.item-main-description p {
-	padding: 30px 0;
-	line-height: 1.5;
-}
-
-.item-main-reviews-header {
-	display: flex;
-	flex-direction: row;
 	margin: 30px 0;
 }
 
-.item-main-reviews-header svg {
-	padding: 0 10px;
+.spec-category {
+	font-weight: bold;
+	margin-top: 20px;
+}
+
+.item-spec {
+	display: flex;
+	padding-top: 15px;
+}
+
+.item-spec-name {
+	flex: 1;
+	border-bottom: 1px dotted #CCCCCC;
+}
+
+.item-spec-value {
+	margin-left: 10px;
+	flex: 1;
+}
+
+/*==========================
+item-description
+==========================*/
+
+.item-description {
+	margin: 30px 0;
+}
+
+.description-text {
+	margin-top: 15px;
+	line-height: 1.5;
+}
+
+/*==========================
+item-reviews
+==========================*/
+
+.item-reviews {
+	margin: 30px 0;
+}
+
+.reviews-header {
+	display: flex;
+	align-items: center;
+}
+
+.reviews-label {
+	display: flex;
+	font-size: 18px;
+	font-weight: bold;
+	margin-left: 5px;
+}
+
+.reviews-separator {
+	margin: 0 5px;
 }
 
 .item-review {
 	display: flex;
-	flex-direction: row;
-	padding: 20px 0;
+	padding: 15px 0;
 	justify-content: center;
 }
 
@@ -237,7 +320,6 @@
 
 .item-review-name {
 	font-weight: bold;
-	font-size: 18px;
 	padding: 10px 0;
 }
 

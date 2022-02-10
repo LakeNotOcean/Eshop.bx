@@ -1,0 +1,106 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	padding: 30px 50px 0;
+}
+
+/*==========================
+order-items
+==========================*/
+
+.order-items {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.order-item {
+	display: flex;
+	max-width: 400px;
+	padding: 10px;
+	margin: 0 20px 20px 0;
+	border-radius: 10px;
+	box-shadow: 0 4px 10px 2px #0000001A;
+	border: 1px solid #DDDDDD;
+}
+
+.item-image {
+	width: 130px;
+	height: 130px;
+	object-fit: contain;
+}
+
+.item-info {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.item-title {
+	padding: 10px;
+}
+
+.item-price {
+	padding: 10px;
+	font-weight: 700;
+	text-align: right;
+}
+
+/*==========================
+customer-data
+==========================*/
+
+.user-data {
+	display: flex;
+	flex-direction: column;
+	margin-top: 20px;
+}
+
+.user-data-title {
+	font-size: 18px;
+	font-weight: 600;
+	margin-bottom: 20px;
+}
+
+.user-name, .user-contact {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+label {
+	display: flex;
+	flex: 1;
+	min-width: 300px;
+}
+
+input, textarea {
+	flex: 1;
+	line-height: 40px;
+	padding: 0 10px;
+	margin: 5px 10px 5px 0;
+
+	border-radius: 10px;
+	border: 2px solid #D9D9D9;
+	outline: none;
+	background: #ffffff;
+
+	font-size: 15px;
+	font-family: 'Montserrat', sans-serif;
+	color: #333333;
+}
+
+.order-comment {
+	line-height: 15px;
+	padding: 10px;
+}
+
+.btn-confirm {
+	width: 300px;
+	margin: 20px auto;
+}
+
+.btn-confirm:hover {
+	background: #F17F42;
+	border-color: #F17F42;
+	color: #ffffff;
+	font-weight: 500;
+}
