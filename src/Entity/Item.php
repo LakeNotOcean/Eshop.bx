@@ -2,9 +2,8 @@
 
 namespace Up\Entity;
 
-class Item
+class Item extends Entity
 {
-	protected $id = 0;
 	protected $title = '';
 	protected $price = 0;
 	protected $shortDescription = '';
@@ -91,22 +90,6 @@ class Item
 	public function setIsActive(int $isActive): void
 	{
 		$this->isActive = $isActive;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getId(): int
-	{
-		return $this->id;
-	}
-
-	/**
-	 * @param int $id
-	 */
-	public function setId(int $id): void
-	{
-		$this->id = $id;
 	}
 
 	/**

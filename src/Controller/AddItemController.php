@@ -43,4 +43,38 @@ class AddItemController
 		return $response->withBodyHTML($page);
 	}
 
+	public function getCategoriesJSON(Request $request): Response
+	{
+		$response = new Response();
+		$response = $response->withBodyJSON(array_map(function(SpecificationCategory $spec){
+			return $spec->getName();
+		},$this->specificationsService->getCategories()));
+		return $response;
+	}
+
+	public function getSpecsByCategoryIdJSON(Request $request, int $id): Response
+	{
+		$response = new Response();
+		$response = $response->withBodyJSON(array_map(function(Specification $spec){
+			return $spec->getName();
+		}, $this->specificationsService->getSpecificationByCategoryId($id)));
+		return $response;
+	}
+
+	public function getCategoriesWithSpecsJSON(Request $request): Response
+	{
+		$response = new Response();
+		$response = $response->withBodyJSON(array_map(function(SpecificationCategory $cat){
+			return array_map(function(Specification $spec){
+				return $spec->getName();
+			}, $cat->getSpecificationList()->getEntitiesArray());
+		}, $this->specificationsService->getCategoriesWithSpecifications()));
+		return $response;
+	}
+
+	public function test(Request $request): Response
+	{
+		var_dump($_POST);
+		return (new Response())->withBodyHTML('');
+	}
 }

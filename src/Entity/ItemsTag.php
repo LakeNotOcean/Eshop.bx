@@ -2,26 +2,9 @@
 
 namespace Up\Entity;
 
-class ItemsTag
+class ItemsTag extends Entity
 {
-	protected $id = 0;
 	protected $name = '';
-
-	/**
-	 * @return int
-	 */
-	public function getId(): int
-	{
-		return $this->id;
-	}
-
-	/**
-	 * @param int $id
-	 */
-	public function setId(int $id): void
-	{
-		$this->id = $id;
-	}
 
 	/**
 	 * @return string

@@ -1,6 +1,6 @@
 <?php
 
-namespace Up\Core\Router\Errors;
+namespace Up\Core\Router\Error;
 
 use Exception;
 

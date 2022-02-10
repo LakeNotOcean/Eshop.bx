@@ -2,11 +2,9 @@
 
 namespace Up\Entity;
 
-class ItemsImage
+class ItemsImage extends Entity
 {
 	protected $id = 0;
-	protected $width = 0;
-	protected $height = 0;
 	protected $path = '';
 	protected $isMain = false;
 
@@ -24,38 +22,6 @@ class ItemsImage
 	public function setId(int $id): void
 	{
 		$this->id = $id;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getWidth(): int
-	{
-		return $this->width;
-	}
-
-	/**
-	 * @param int $width
-	 */
-	public function setWidth(int $width): void
-	{
-		$this->width = $width;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getHeight(): int
-	{
-		return $this->height;
-	}
-
-	/**
-	 * @param int $height
-	 */
-	public function setHeight(int $height): void
-	{
-		$this->height = $height;
 	}
 
 	/**

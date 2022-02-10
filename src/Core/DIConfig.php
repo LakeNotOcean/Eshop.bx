@@ -12,12 +12,22 @@
  * 'initMethod' - если initType=singleton, то необходимо указать метод, вызываемый для инстанцирования класса
  */
 $config = [
-	'catalogController' => [
-		'classPath' => \Up\Controller\CatalogController::class,
+	'templateProcessor' => [
+		'classPath' => \Up\Core\TemplateProcessorImpl::class,
+		'initType' => 'constructor',
+		'initArgs' => [],
+	],
+
+	/*==========================
+	Controller
+	==========================*/
+	'itemController' => [
+		'classPath' => \Up\Controller\ItemController::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'templateProcessor'],
-			['class', 'catalogService'],
+			['class', 'itemService'],
+			['class', 'imageService']
 		],
 	],
 	'addItemController' => [
@@ -29,18 +39,30 @@ $config = [
 			['class','']
 		],
 	],
-	'templateProcessor' => [
-		'classPath' => \Up\Core\TemplateProcessorImpl::class,
+	'orderController' => [
+		'classPath' => \Up\Controller\OrderController::class,
 		'initType' => 'constructor',
-		'initArgs' => [],
+		'initArgs' => [
+			['class', 'templateProcessor'],
+			['class', 'itemService']
+		],
 	],
-	'catalogService' => [
-		'classPath' => \Up\Service\CatalogService\CatalogServiceImpl::class,
+
+	/*==========================
+	Service
+	==========================*/
+	'itemService' => [
+		'classPath' => \Up\Service\ItemService\ItemService::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'itemDAO'],
 			['class', 'specificationDAO'],
 		],
+	],
+	'imageService' => [
+		'classPath' => \Up\Service\ImageService\ImageService::class,
+		'initType' => 'constructor',
+		'initArgs' => [],
 	],
 	'specificationService' => [
 		'classPath' => Up\Service\SpecificationService\SpecificationsServiceImpl::class,

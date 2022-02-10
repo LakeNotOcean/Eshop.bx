@@ -98,7 +98,7 @@ class Request
 	 */
 	public function getFilesByName(string $key)
 	{
-		return $this->getRequestParameters($key, $this->cookies, 'Not found such files: ' . $key);
+		return $this->getRequestParameters($key, $this->files, 'Not found such files: ' . $key);
 	}
 
 	/**
@@ -111,27 +111,27 @@ class Request
 
 	public function isQueryContains(string $key): bool
 	{
-		return in_array($key, $this->queries);
+		return array_key_exists($key, $this->queries);
 	}
 
 	public function isPostContains(string $key): bool
 	{
-		return in_array($key, $this->post);
+		return array_key_exists($key, $this->post);
 	}
 
 	public function isCookiesContains(string $key): bool
 	{
-		return in_array($key, $this->cookies);
+		return array_key_exists($key, $this->cookies);
 	}
 
 	public function isFilesContains(string $key): bool
 	{
-		return in_array($key, $this->files);
+		return array_key_exists($key, $this->files);
 	}
 
 	public function isSessionContains(string $key): bool
 	{
-		return in_array($key, $this->session);
+		return array_key_exists($key, $this->session);
 	}
 
 	/**
@@ -139,7 +139,7 @@ class Request
 	 */
 	private function getRequestParameters(string $key, array $from, string $exceptionMessage)
 	{
-		if (!in_array($key, $from))
+		if (!array_key_exists($key, $from))
 		{
 			throw new Error\NoSuchQueryParameterException($exceptionMessage);
 		}

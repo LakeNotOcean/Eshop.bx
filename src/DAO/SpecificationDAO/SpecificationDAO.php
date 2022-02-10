@@ -25,4 +25,6 @@ interface SpecificationDAO
 
 	public function addSpecification(int $categoryId, Specification $specification):void;
 
+	public function getSpecificationByCategoryId(int $id): array;
+
 }
