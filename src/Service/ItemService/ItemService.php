@@ -1,12 +1,13 @@
 <?php
 
-namespace Up\Service\CatalogService;
+namespace Up\Service\ItemService;
 
 use Up\DAO\ItemDAO\ItemDAO;
 use Up\DAO\SpecificationDAO\SpecificationDAO;
 use Up\Entity\ItemDetail;
+use Up\Entity\ItemsImage;
 
-class CatalogServiceImpl implements CatalogServiceInterface
+class ItemService implements ItemServiceInterface
 {
 	protected $itemDAO;
 	protected $specificationDAO;
@@ -34,10 +35,6 @@ class CatalogServiceImpl implements CatalogServiceInterface
 		return $item;
 	}
 
-	public function getResultCount(): int
-	{
-		return 2;
-	}
 
 
 
