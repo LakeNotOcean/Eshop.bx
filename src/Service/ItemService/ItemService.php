@@ -35,7 +35,10 @@ class ItemService implements ItemServiceInterface
 		return $item;
 	}
 
-
+	public function save(ItemDetail $item): ItemDetail
+	{
+		return $this->itemDAO->save($item);
+	}
 
 
 }

@@ -36,6 +36,8 @@ $config = [
 		'initArgs' => [
 			['class', 'templateProcessor'],
 			['class', 'specificationService'],
+			['class', 'tagService'],
+			['class', 'itemService'],
 		],
 	],
 	'orderController' => [
@@ -62,6 +64,13 @@ $config = [
 		'classPath' => \Up\Service\ImageService\ImageService::class,
 		'initType' => 'constructor',
 		'initArgs' => [],
+	],
+	'tagService' => [
+		'classPath' => \Up\Service\TagService\TagServiceImpl::class,
+		'initType' => 'constructor',
+		'initArgs' => [
+			['class', 'tagDAO'],
+		]
 	],
 	'specificationService' => [
 		'classPath' => Up\Service\SpecificationService\SpecificationsServiceImpl::class,
@@ -102,10 +111,18 @@ $config = [
 			['class', 'DB'],
 		],
 	],
+	'tagDAO' => [
+		'classPath' => \Up\DAO\TagDAO\TagDAOmysql::class,
+		'initType' => 'constructor',
+		'initArgs' => [
+			['class', 'DB']
+		],
+	],
 	'DB' => [
 		'classPath' => \Up\Core\Database\DefaultDatabase::class,
 		'initType' => 'singleton',
 		'initArgs' => [],
 		'initMethod' => 'getInstance',
 	],
+
 ];

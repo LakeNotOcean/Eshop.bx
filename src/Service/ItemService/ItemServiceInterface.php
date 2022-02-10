@@ -9,4 +9,6 @@ interface ItemServiceInterface
 	public function getItems(array $limitOffset): array;
 
 	public function getItemById(int $id): ItemDetail;
+
+	public function save(ItemDetail $item): ItemDetail;
 }
