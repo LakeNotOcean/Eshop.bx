@@ -13,9 +13,43 @@ use Up\Core\Router\URLResolver;
 	<div class="filters-item-list-row">
 		<div class="filters-column">
 			<div class="filters">
-				Фильтры
 				<div class="filter-category">
-					<div class="price-category"></div>
+					<div class="price-category">
+						<div class="filter-category-title">
+							Цена
+						</div>
+						<div class="price-category-bodies">
+							<div class="price-category-body">
+								<div class="price-category-body-text">
+									Мин. цена
+								</div>
+								<div class="price-category-body-int">
+									100
+								</div>
+							</div>
+							<div class="price-category-body-center">
+								-
+							</div>
+							<div class="price-category-body">
+								<div class="price-category-body-text">
+									Макс. цена
+								</div>
+								<div class="price-category-body-int">
+									1000
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="tag-category">
+						<div class="filter-category-title">
+							Тег
+						</div>
+						<div class="tag-category-body">
+							Выбор
+						</div>
+
+					</div>
 				</div>
 			</div>
 		</div>
