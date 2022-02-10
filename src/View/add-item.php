@@ -30,6 +30,11 @@
 				<span class="label-title">Теги</span>
 				<input type="text" id="item-tags" name="item-tags" placeholder="Ввести теги через запятую">
 			</label>
+
+			<label for="item-sort_order" class="field">
+				<span class="label-title">Порядок сортировки</span>
+				<input type="text" id="item-sort_order" name="item-sort_order" placeholder="Ввести порядок сортировки">
+			</label>
 		</div>
 
 		<div class="images">
