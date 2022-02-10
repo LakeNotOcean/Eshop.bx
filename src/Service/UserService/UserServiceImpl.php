@@ -16,18 +16,17 @@ class UserServiceImpl implements UserService
 		$this->userDAO = $userDAO;
 	}
 
-	public function authorizeUserByLogin(string $login, string $password): bool
+	/**
+	 * @throws \Exception
+	 */
+	public function authorizeUserByLogin(string $login, string $password): void
 	{
-		$passwordHash = $this->encryptPassword($password);
-		if (!$this->userDAO->authenticateUser($login, $passwordHash))
+		if (!$this->userDAO->authenticateUser($login, $password))
 		{
-			return false;
+			throw new \Exception('Неверный логин и/или пароль ');
 		}
 		$user = $this->userDAO->getUserByLogin($login);
 		$this->addUserToSession($user);
-
-		return true;
-
 	}
 
 	/**
@@ -59,11 +58,10 @@ class UserServiceImpl implements UserService
 		return $_SESSION['USER'];
 	}
 
-	private function encryptPassword(string $password): string
+	public function registerUser(user $user, string $password):void
 	{
-		return password_hash($password, PASSWORD_BCRYPT);
+		$this->userDAO->addUser($user, $password);
 	}
-
 	private function addUserToSession(User $user): void
 	{
 		$this->startSessionIfNotExists();

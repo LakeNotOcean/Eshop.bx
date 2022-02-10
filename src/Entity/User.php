@@ -9,7 +9,7 @@ class User
 	protected $role;
 	protected $phone;
 
-	public function __construct(string $login,UserRole $role,string $email, string $phone)
+	public function __construct(string $login,UserRole $role,string $email='', string $phone='')
 	{
 		$this->login=$login;
 		$this->role=$role;
