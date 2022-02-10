@@ -8,6 +8,7 @@ use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\Migration\MigrationManager;
 use Up\Core\TemplateProcessor;
+use Up\Lib\Paginator\Paginator;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
 
@@ -30,8 +31,17 @@ class ItemController
 
 	public function getItems(Request $request): Response
 	{
-		$items = $this->itemService->getItems();
-		$pages = $this->templateProcessor->render('catalog.php', ['items' => $items], 'main.php', []);
+		if ($request->isQueryContains('page'))
+		{
+			$currentPage = (int)$request->getQueriesByName('page');
+		}
+		else
+		{
+			$currentPage = 1;
+		}
+
+		$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, 10));
+		$pages = $this->templateProcessor->render('catalog.php', ['items' => $items, 'currentPage' => $currentPage], 'main.php', []);
 		$response = new Response();
 
 		return $response->withBodyHTML($pages);
