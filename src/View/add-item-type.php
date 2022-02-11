@@ -23,5 +23,5 @@
 	<?php
 	endif; ?>
 </div>
-
+<script src="/js/popup-disappear.js"></script>
 <script src="/js/build-item-type.js"></script>
