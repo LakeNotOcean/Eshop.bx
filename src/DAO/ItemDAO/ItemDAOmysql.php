@@ -194,6 +194,13 @@ class ItemDAOmysql implements ItemDAO
 		return $specs;
 	}
 
+	public function getItemsAmount(): int
+	{
+		$query = 'SELECT count(1) AS num_items FROM up_item WHERE ACTIVE = 1';
+		$result = $this->DBConnection->query($query);
+		return $result->fetch()['num_items'];
+	}
+
 	private function getItemsQuery(int $offset, int $amountItems): string
 	{
 		return "SELECT ui.ID as ui_ID,
@@ -207,6 +214,7 @@ class ItemDAOmysql implements ItemDAO
                         u.IS_MAIN IMAGE_IS_MAIN
 				FROM up_item ui
 				INNER JOIN up_image u on ui.ID = u.ITEM_ID AND u.IS_MAIN = 1
+				WHERE ACTIVE = 1
 				ORDER BY ui.SORT_ORDER
 				LIMIT {$offset}, {$amountItems};";
 	}

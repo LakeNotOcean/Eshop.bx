@@ -2,6 +2,7 @@
 
 namespace Up\DAO\SpecificationDAO;
 
+use Up\Entity\ItemType;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 
@@ -17,7 +18,13 @@ interface SpecificationDAO
 
 	public function getCategoriesByTypes(): array;
 
+	public function addItemType(string $name): void;
+
+	public function addSpecTemplate(int $itemTypeId, array $templateSpecs): void;
+
 	public function getTypes(): array;
+
+	public function getItemTypeByName(string $name): ItemType;
 
 	public function addCategory(SpecificationCategory $category):void;
 

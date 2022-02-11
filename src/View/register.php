@@ -1,5 +1,5 @@
 <?php
-/** @var string $state */
+
 ?>
 
 <!--<link rel="stylesheet" href="./css/login.css">-->
@@ -7,15 +7,11 @@
 
 <div class="container">
 	<div class="sign-in-title">Вход</div>
-	<form action="/login" method="post" enctype="multipart/form-data" class="sign-in-form">
+	<form action="/register" method="post" enctype="multipart/form-data" class="sign-in-form">
 		<input type="text" id="login" name="login" class="input" placeholder="Логин">
 		<input type="password" id="password" name="password" class="input" placeholder="Пароль">
-		<input type="submit" id="submit-button" class="submit-button" value="login">
+		<input type="text" id="email" name="email" class="input" placeholder="Почта">
+		<input type="text" id="phone" name="phone" class="input" placeholder="Телефон">
+		<input type="submit" id="submit" class="button" value="Отрпавить">
 	</form>
-	<div class='<?php
-	if ($state == 'unsuccessful')
-	{
-		echo 'incorrect-pass-visible';
-	}?> incorrect-pass'>
-	</div>
 </div>

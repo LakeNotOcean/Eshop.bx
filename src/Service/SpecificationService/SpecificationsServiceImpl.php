@@ -23,6 +23,11 @@ class SpecificationsServiceImpl implements SpecificationsService
 		return $this->specificationDAO->getTypes();
 	}
 
+	public function getCategoriesByItemTypeId(int $id): array
+	{
+		return $this->specificationDAO->getCategoriesByItemTypeId($id);
+	}
+
 	public function getCategoriesWithSpecifications(): array
 	{
 		$categories = $this->specificationDAO->getCategoriesWithSpecifications();
@@ -43,6 +48,13 @@ class SpecificationsServiceImpl implements SpecificationsService
 		return $categories;
 	}
 
+	public function addItemType(string $itemTypeName, array $templateSpecs): void
+	{
+		$this->specificationDAO->addItemType($itemTypeName);
+		$itemType = $this->specificationDAO->getItemTypeByName($itemTypeName);
+		$this->specificationDAO->addSpecTemplate($itemType->getId(), $templateSpecs);
+	}
+
 	/**
 	 * @throws \Exception
 	 */
@@ -53,7 +65,7 @@ class SpecificationsServiceImpl implements SpecificationsService
 		{
 			if ($addedCat->getName() === $category->getName())
 			{
-				throw new \Exception('This category already exists');
+				return;
 			}
 		}
 		$this->specificationDAO->addCategory($category);
@@ -73,11 +85,12 @@ class SpecificationsServiceImpl implements SpecificationsService
 				}
 			}
 		}
-		if (!array_key_exists($categoryId, $categories))
+		$allCategories = $this->specificationDAO->getCategories();
+		if (!array_key_exists($categoryId, $allCategories))
 		{
 			return;
 		}
-		$this->specificationDAO->addSpecification($categoryId,$specification);
+		$this->specificationDAO->addSpecification($categoryId, $specification);
 	}
 
 	public function getCategories(): array
@@ -95,6 +108,4 @@ class SpecificationsServiceImpl implements SpecificationsService
 	// 		$category->specificationsSort();
 	// 	}
 	// }
-
-
 }

@@ -5,7 +5,7 @@ main {
 .anchor {
 	position: relative;
 	left: 0;
-	top: -120px;
+	top: -100px;
 }
 
 .container {
@@ -280,6 +280,7 @@ item-description
 .description-text {
 	margin-top: 15px;
 	line-height: 1.5;
+	text-align: justify;
 }
 
 /*==========================
@@ -344,4 +345,5 @@ item-reviews
 	display: flex;
 	align-items: center;
 	line-height: 1.5;
+	text-align: justify;
 }

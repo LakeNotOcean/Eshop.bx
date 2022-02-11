@@ -48,6 +48,15 @@ $config = [
 			['class', 'itemService']
 		],
 	],
+	'userController' => [
+		'classPath' => \Up\Controller\UserController::class,
+		'initType' => 'constructor',
+		'initArgs' => [
+			['class','templateProcessor'],
+			['class', 'userService']
+		],
+	],
+
 
 	/*==========================
 	Service

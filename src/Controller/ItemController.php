@@ -17,6 +17,7 @@ class ItemController
 	protected $templateProcessor;
 	protected $itemService;
 	protected $imageService;
+	protected $itemsInPage = 10;
 
 	public function __construct(
 		TemplateProcessor     $templateProcessor,
@@ -40,8 +41,15 @@ class ItemController
 			$currentPage = 1;
 		}
 
-		$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, 10));
-		$pages = $this->templateProcessor->render('catalog.php', ['items' => $items, 'currentPage' => $currentPage], 'main.php', []);
+		$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
+		$itemsAmount = $this->itemService->getItemsAmount();
+		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
+		$pages = $this->templateProcessor->render('catalog.php',
+												  ['items' => $items,
+												   'currentPage' => $currentPage,
+												   'itemsAmount' => $itemsAmount,
+												   'pagesAmount' => $pagesAmount
+												  ], 'main.php', []);
 		$response = new Response();
 
 		return $response->withBodyHTML($pages);
