@@ -196,7 +196,7 @@ class ItemDAOmysql implements ItemDAO
 
 	public function getItemsAmount(): int
 	{
-		$query = 'SELECT count(*) AS num_items FROM up_item WHERE ACTIVE = 1';
+		$query = 'SELECT count(1) AS num_items FROM up_item WHERE ACTIVE = 1';
 		$result = $this->DBConnection->query($query);
 		return $result->fetch()['num_items'];
 	}
