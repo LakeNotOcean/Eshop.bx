@@ -2,53 +2,75 @@
 
 namespace Up\Entity;
 
-use http\Exception;
-
 class User
 {
 	protected $login;
 	protected $email;
 	protected $role;
 	protected $phone;
+	protected $secondName;
+	protected $firstName;
 
-	private const phoneNumberPattern="/\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|
-	2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|
-	4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$/";
-
-	/**
-	 * @throws \Exception
-	 */
-	public function __construct(string $login, UserRole $role, string $email = 'test@test.test', string $phone = '')
+	public function __construct(
+		string   $login,
+		UserRole $role,
+		string   $email = '',
+		string   $phone = '',
+		string   $firstName = '',
+		string   $secondName = ''
+	)
 	{
-		$this->validateEmail($email);
-		if ($phone!=='')
-			$this->validatePhone($phone);
 		$this->login = $login;
 		$this->role = $role;
-
 		$this->email = $email;
 		$this->phone = $phone;
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public function getSecondName()
+	{
+		return $this->secondName;
+	}
+
+	/**
+	 * @param mixed $secondName
+	 */
+	public function setSecondName($secondName): void
+	{
+		$this->secondName = $secondName;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getFirstName()
+	{
+		return $this->firstName;
+	}
+
+	/**
+	 * @param mixed $firstName
+	 */
+	public function setFirstName($firstName): void
+	{
+		$this->firstName = $firstName;
+	}
+
+	/**
 	 * @param string $email
-	 *
-	 * @throws \Exception
 	 */
 	public function setEmail(string $email): void
 	{
-		$this->validateEmail($email);
 		$this->email = $email;
 	}
 
 	/**
 	 * @param string $phone
-	 *
-	 * @throws \Exception
 	 */
 	public function setPhone(string $phone): void
 	{
-		$this->validatePhone($phone);
 		$this->phone = $phone;
 	}
 
@@ -83,27 +105,4 @@ class User
 	{
 		return $this->phone;
 	}
-
-	/**
-	 * @throws \Exception
-	 */
-	private function validateEmail(string $email)
-	{
-		if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-		{
-			throw new \Exception('Invalid email format');
-		}
-	}
-
-	/**
-	 * @throws \Exception
-	 */
-	private function validatePhone(string $phone)
-	{
-		if (!preg_match(self::phoneNumberPattern,$phone))
-		{
-			throw new \Exception('Invalid phone format');
-		}
-	}
-
 }
