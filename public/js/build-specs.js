@@ -1,28 +1,11 @@
+let categories;
 let spec = {};
 
-
-
-async function getSpec(type){
-	fetch('/categoriesByType' + type)
-		.then((response) => response.json().then(json => {
-			spec = json;
-		}));
-}
-
-async function createTemplate(){
-	let template = await getSpec(document.location.search);
-	for(let catId in template){
-
-	}
-}
-
-getSpec(document.location.search).then();
-
-
 async function getSpecification(catId){
-	if(catId in spec) return spec[catId][1]
-	let response = await getSpec();
-	return spec[catId][1];
+	if(catId in spec) return spec[catId]
+	let response = await fetch('/category/detail');
+	spec = await response.json();
+	return spec[catId];
 }
 
 function changeSpecValueInput(spec){
@@ -31,6 +14,11 @@ function changeSpecValueInput(spec){
 	let specId = spec.value;
 	input.name = 'specs[' + categoryId + '][' + specId + ']';
 }
+
+fetch('/categories')
+	.then((response) => response.json().then(json => {
+		categories = json;
+	}));
 
 function getSpecOption(select, catId){
 	while (select.firstChild) select.lastChild.remove();
@@ -135,10 +123,10 @@ function createCategory() {
 
 	let inputCategoryInput = document.createElement('select');
 	inputCategoryInput.classList.add('input-category');
-	for(let categoryId in spec){
+	for(let categoryId in categories){
 		let option = document.createElement('option');
 		option.value = categoryId;
-		option.text = categories[categoryId][0];
+		option.text = categories[categoryId];
 		inputCategoryInput.append(option);
 	}
 
