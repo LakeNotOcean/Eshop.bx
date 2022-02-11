@@ -26,3 +26,5 @@ $router->post('/addSpecification', ['addItemController', 'addSpecificationAndSav
 $router->get('/category/detail', ['addItemController', 'getCategoriesWithSpecsJSON'], 'category-detail');
 $router->get('/categories', ['addItemController', 'getCategoriesJSON'], 'cat');
 $router->get('/category/{positiveInt:id}', ['addItemController', 'getSpecsByCategoryIdJSON'], 'cat');
+
+$router->get('/categoriesByType', ['addItemController', 'getCategoriesByItemTypeIdJSON'], 'categories-by-type');

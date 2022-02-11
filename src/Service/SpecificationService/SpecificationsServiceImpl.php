@@ -23,6 +23,11 @@ class SpecificationsServiceImpl implements SpecificationsService
 		return $this->specificationDAO->getTypes();
 	}
 
+	public function getCategoriesByItemTypeId(int $id): array
+	{
+		return $this->specificationDAO->getCategoriesByItemTypeId($id);
+	}
+
 	public function getCategoriesWithSpecifications(): array
 	{
 		$categories = $this->specificationDAO->getCategoriesWithSpecifications();
