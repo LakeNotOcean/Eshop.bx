@@ -49,11 +49,10 @@ class UserDAOmysql implements UserDAO
 		$password = password_hash($password, PASSWORD_BCRYPT);
 
 		$query = "INSERT INTO up_user (LOGIN, EMAIL, PHONE, PASSWORD, ROLE_ID) 
-			VALUES ({$user->getLogin()},{$user->getEmail()},{$user->getPhone()},$password,2)";
+			VALUES ('{$user->getLogin()}','{$user->getEmail()}','{$user->getPhone()}','$password','2')";
 
 		$queryResult = $this->DBConnection->prepare($query);
 		$queryResult->execute();
-		$s = '';
 	}
 
 	public function giveUserModeratorRoleByLogin(string $login): void
