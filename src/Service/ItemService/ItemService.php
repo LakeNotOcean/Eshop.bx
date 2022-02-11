@@ -35,6 +35,11 @@ class ItemService implements ItemServiceInterface
 		return $item;
 	}
 
+	public function getItemsAmount(): int
+	{
+		return $this->itemDAO->getItemsAmount();
+	}
+
 	public function save(ItemDetail $item): ItemDetail
 	{
 		return $this->itemDAO->save($item);
