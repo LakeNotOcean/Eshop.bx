@@ -194,6 +194,28 @@ class AddItemController
 	/**
 	 * @throws NoSuchQueryParameterException
 	 */
+	public function getCategoriesByItemTypeIdJSON(Request $request): Response
+	{
+		$response = new Response();
+		if(!$request->isQueryContains('item-type'))
+		{
+			$categories = $this->specificationsService->getCategoriesWithSpecifications();
+		}
+		else
+		{
+			$categories = $this->specificationsService->getCategoriesByItemTypeId($request->getQueriesByName('item-type'));
+		}
+		$categoriesArray = array_map(function(SpecificationCategory $cat){
+			return [$cat->getName() ,array_map(function(Specification $spec){
+				return $spec->getName();
+			}, $cat->getSpecificationList()->getEntitiesArray())];
+		}, $categories);
+		return $response->withBodyJSON($categoriesArray);
+	}
+
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
 	public function test(Request $request): Response
 	{
 		$item = new ItemDetail();

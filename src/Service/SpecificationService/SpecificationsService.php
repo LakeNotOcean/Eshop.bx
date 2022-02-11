@@ -23,4 +23,6 @@ interface SpecificationsService
 	public function addSpecification(int $categoryId, Specification $specification): void;
 
 	public function getSpecificationByCategoryId(int $id): array;
+
+	public function getCategoriesByItemTypeId(int $id): array;
 }
