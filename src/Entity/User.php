@@ -21,7 +21,8 @@ class User
 	public function __construct(string $login, UserRole $role, string $email = 'test@test.test', string $phone = '')
 	{
 		$this->validateEmail($email);
-		$this->validatePhone($phone);
+		if ($phone!=='')
+			$this->validatePhone($phone);
 		$this->login = $login;
 		$this->role = $role;
 
