@@ -2,6 +2,7 @@
 
 namespace Up\Service\UserService;
 
+use Exception;
 use Up\DAO\UserDAO\UserDAO;
 use Up\Entity\User;
 use Up\Entity\UserRole;
@@ -9,8 +10,8 @@ use Up\Entity\UserRole;
 class UserServiceImpl implements UserService
 {
 
-	private const Admin='Admin';
-	private const UserKey='USER';
+	private const Admin = 'Admin';
+	private const UserKey = 'USER';
 
 	protected $userDAO;
 
@@ -20,20 +21,20 @@ class UserServiceImpl implements UserService
 	}
 
 	/**
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function authorizeUserByLogin(string $login, string $password): void
 	{
 		if (!$this->userDAO->authenticateUser($login, $password))
 		{
-			throw new \Exception('Неверный логин и/или пароль ');
+			throw new Exception('Неверный логин и/или пароль ');
 		}
 		$user = $this->userDAO->getUserByLogin($login);
 		$this->addUserToSession($user);
 	}
 
 	/**
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function giveUserModeratorRights(string $login)
 	{
@@ -43,7 +44,7 @@ class UserServiceImpl implements UserService
 	}
 
 	/**
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function removeUserModeratorRights(string $login)
 	{
@@ -56,23 +57,25 @@ class UserServiceImpl implements UserService
 		$this->startSessionIfNotExists();
 		if (!isset($_SESSION[self::UserKey]))
 		{
-			$_SESSION[self::UserKey]=new User('',new UserRole());
+			$_SESSION[self::UserKey] = new User('', new UserRole());
 		}
+
 		return $_SESSION[self::UserKey];
 	}
 
-
-	public function registerUser(user $user, string $password):void
+	public function registerUser(user $user, string $password): void
 	{
 		$this->userDAO->addUser($user, $password);
 		$this->addUserToSession($user);
 	}
+
 	private function addUserToSession(User $user): void
 	{
 		$this->startSessionIfNotExists();
 		$_SESSION[self::UserKey] = $user;
 	}
-	private function startSessionIfNotExists():void
+
+	private function startSessionIfNotExists(): void
 	{
 		if (session_status() === PHP_SESSION_NONE)
 		{
@@ -81,13 +84,13 @@ class UserServiceImpl implements UserService
 	}
 
 	/**
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function checkIsAdmin(): void
 	{
 		if ($this->getUserInfo()->getRole()->getName() !== self::Admin)
 		{
-			throw new \Exception('You are not authorized to perform the operation ');
+			throw new Exception('You are not authorized to perform the operation ');
 		}
 	}
 
@@ -95,13 +98,14 @@ class UserServiceImpl implements UserService
 	{
 		$this->sessionDestroy();
 	}
-	private function sessionDestroy():void
+
+	private function sessionDestroy(): void
 	{
 		session_start();
 		session_unset();
 		session_destroy();
 		session_write_close();
-		setcookie(session_name(),'',0,'/');
+		setcookie(session_name(), '', 0, '/');
 	}
 
 	public function getUsersInfo(): array
@@ -110,9 +114,11 @@ class UserServiceImpl implements UserService
 		{
 			return $this->getUsersList();
 		}
+
 		return [];
 	}
-	private function getUsersList():array
+
+	private function getUsersList(): array
 	{
 		return $this->userDAO->getUsersInfo();
 	}

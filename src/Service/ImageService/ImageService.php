@@ -5,7 +5,6 @@ namespace Up\Service\ImageService;
 use http\Exception\RuntimeException;
 use Up\Core\Error\OSError;
 use Up\Core\Settings\Settings;
-use Up\DAO\ImageDAO\ImageDAOInterface;
 use Up\Entity\ItemsImage;
 use Up\Lib\Mime\Error\MimeTypeException;
 use Up\Lib\Mime\MimeMapper;
@@ -51,8 +50,7 @@ class ImageService implements ImageServiceInterface
 	public function addImages(array $imagesParams, array $isMains): array
 	{
 		return array_map(
-			function($imageParams, $isMain)
-			{
+			function($imageParams, $isMain) {
 				return $this->addImage($imageParams, $isMain);
 			},
 			$imagesParams,
@@ -124,8 +122,6 @@ class ImageService implements ImageServiceInterface
 	 * @param string $imageFilename
 	 * @param string $mimeType
 	 *
-	 * @param int|null $sizePostfix
-	 *
 	 * @return string
 	 */
 	private function getUniqueFilename(string $imageFilename, string $mimeType): string
@@ -156,7 +152,7 @@ class ImageService implements ImageServiceInterface
 		return $resultFilename;
 	}
 
-	private function addSizePosfixToFilename(string $imageFilename, int $size)
+	private function addSizePosfixToFilename(string $imageFilename, int $size): string
 	{
 		$fileExtension = explode('.', $imageFilename);
 		$fileExtension = end($fileExtension);
@@ -174,7 +170,7 @@ class ImageService implements ImageServiceInterface
 		return file_exists($this->getPathByFilename($imageFilename));
 	}
 
-	private function getPathByFilename(string $filename)
+	private function getPathByFilename(string $filename): string
 	{
 		return $this->imageDirPath . $filename;
 	}

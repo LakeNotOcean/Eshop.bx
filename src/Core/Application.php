@@ -19,7 +19,6 @@ use Up\Core\Router\Error\RoutingException;
 use Up\Core\Router\Router;
 use Up\Core\Settings\Settings;
 
-
 class Application
 {
 
@@ -49,7 +48,7 @@ class Application
 			}
 			catch (MigrationException $e)
 			{
-				$logger->log('info',$e);
+				$logger->log('info', $e);
 				var_dump('Миграция не удалась!');
 			}
 		}
@@ -63,6 +62,7 @@ class Application
 		{
 			//todo вызов отдельного контроллера ошибок
 			$logger->log('info', $e);
+
 			return false;
 		}
 
@@ -85,7 +85,8 @@ class Application
 		catch (ReflectionException $e)
 		{
 			//todo вызов отдельного контроллера ошибок
-			$logger->log('info',$e);
+			$logger->log('info', $e);
+
 			return false;
 		}
 
@@ -107,12 +108,18 @@ class Application
 		}
 		catch (Exception $e)
 		{
-			$logger->log('info',$e);
+			$logger->log('info', $e);
+
 			return false;
 		}
 
 		$response->flush();
-		$logger->log('notice','Посещение страницы {domain}{url}',['domain' => $settings->getSettings('domainName'),'url' => $_SERVER['REQUEST_URI']]);
+		$logger->log(
+			'notice',
+			'Посещение страницы {domain}{url}',
+			['domain' => $settings->getSettings('domainName'), 'url' => $_SERVER['REQUEST_URI']]
+		);
+
 		return true;
 	}
 }

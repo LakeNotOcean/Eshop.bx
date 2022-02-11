@@ -12,7 +12,7 @@ class SpecificationCategory extends Entity
 	protected $specificationList;
 	protected $displayOrder;
 
-	public function __construct(int $id=1, string $name='',int $displayOrder=0)
+	public function __construct(int $id = 1, string $name = '', int $displayOrder = 0)
 	{
 		$this->id = $id;
 		$this->name = $name;

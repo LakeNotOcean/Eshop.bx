@@ -1,6 +1,10 @@
 <?php
-/** @var array<\Up\Entity\SpecificationCategory> $categories */
+/** @var array<SpecificationCategory> $categories */
+
 /** @var bool $isNewSpecAdded */
+
+use Up\Entity\SpecificationCategory;
+
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
@@ -9,9 +13,11 @@
 		<label for="category-id" class="field">
 			<span class="label-title">Категория</span>
 			<select id="category-id" name="category-id" class="input-category">
-				<?php foreach ($categories as $category):?>
-					<option value="<?= $category->getId()?>"><?= $category->getName()?></option>
-				<?php endforeach;?>
+				<?php
+				foreach ($categories as $category): ?>
+					<option value="<?= $category->getId() ?>"><?= $category->getName() ?></option>
+				<?php
+				endforeach; ?>
 			</select>
 		</label>
 		<label for="spec-name" class="field">
@@ -24,9 +30,11 @@
 		</label>
 		<input type="submit" value="Сохранить спецификацию в базу данных" class="btn-save">
 	</form>
-	<?php if ($isNewSpecAdded):?>
+	<?php
+	if ($isNewSpecAdded): ?>
 		<div id="popup" class="popup">Добавлена новая спецификация</div>
-	<?php endif;?>
+	<?php
+	endif; ?>
 </div>
 
 <script src="/js/popup-disappear.js"></script>

@@ -3,7 +3,6 @@
 namespace Up\DAO\ItemDAO;
 
 use Up\Core\Database\DefaultDatabase;
-use Up\Entity\EntityArray;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\ItemsImage;
@@ -62,15 +61,15 @@ class ItemDAOmysql implements ItemDAO
 			}
 			if (
 				!$item->getSpecificationCategoriesList()->getEntity($row['usc_ID'])->getSpecificationList()->contains(
-						$row['SPEC_TYPE_ID']
-					)
+					$row['SPEC_TYPE_ID']
+				)
 			)
 			{
 				$item->getSpecificationCategoriesList()->getEntity($row['usc_ID'])->getSpecificationList()->addEntity(
-						new Specification(
-							$row['SPEC_TYPE_ID'], $row['ust_NAME'], $row['ust_DISPLAY_ORDER'], $row['VALUE']
-						)
-					);
+					new Specification(
+						$row['SPEC_TYPE_ID'], $row['ust_NAME'], $row['ust_DISPLAY_ORDER'], $row['VALUE']
+					)
+				);
 			}
 			if (!$item->getImages()->contains($row['u_ID']))
 			{
@@ -113,37 +112,43 @@ class ItemDAOmysql implements ItemDAO
 
 		if (!empty($oldTags))
 		{
-			$this->DBConnection->query($this->getDeleteWhereAndWhereInQuery($item->getId(), array_keys($oldTags), [
-				'table_name' => 'up_item_tag',
-				'item_id_name' => 'ITEM_ID',
-				'other_id_name' => 'TAG_ID'])
+			$this->DBConnection->query(
+				$this->getDeleteWhereAndWhereInQuery($item->getId(), array_keys($oldTags), [
+					'table_name' => 'up_item_tag',
+					'item_id_name' => 'ITEM_ID',
+					'other_id_name' => 'TAG_ID',
+				])
 			);
 		}
-		if(!empty($oldSpecs))
+		if (!empty($oldSpecs))
 		{
-			$this->DBConnection->query($this->getDeleteWhereAndWhereInQuery($item->getId(), array_keys($oldSpecs), [
-				'table_name' => 'up_item_spec',
-				'item_id_name' => 'ITEM_ID',
-				'other_id_name' => 'SPEC_TYPE_ID'])
+			$this->DBConnection->query(
+				$this->getDeleteWhereAndWhereInQuery($item->getId(), array_keys($oldSpecs), [
+					'table_name' => 'up_item_spec',
+					'item_id_name' => 'ITEM_ID',
+					'other_id_name' => 'SPEC_TYPE_ID',
+				])
 			);
 		}
-		if(!empty($oldImages))
+		if (!empty($oldImages))
 		{
-			$this->DBConnection->query($this->getDeleteWhereAndWhereInQuery($item->getId(), array_keys($oldImages),[
-				'table_name' => 'up_image',
-				'item_id_name' => 'ITEM_ID',
-				'other_id_name' => 'ID'])
+			$this->DBConnection->query(
+				$this->getDeleteWhereAndWhereInQuery($item->getId(), array_keys($oldImages), [
+					'table_name' => 'up_image',
+					'item_id_name' => 'ITEM_ID',
+					'other_id_name' => 'ID',
+				])
 			);
 		}
-		if(!empty($newTags))
+		if (!empty($newTags))
 		{
 			$this->DBConnection->query($this->getInsertTagsQuery($item->getId(), $newTags));
 		}
-		if(!empty($newSpecs))
+		if (!empty($newSpecs))
 		{
 			$this->DBConnection->query($this->getInsertSpecsQuery($item->getId(), $newSpecs));
 		}
-		if(!empty($newImages))
+		if (!empty($newImages))
 		{
 			$this->DBConnection->query($this->getInsertImagesQuery($item->getId(), $newImages));
 		}
@@ -167,10 +172,11 @@ class ItemDAOmysql implements ItemDAO
 
 		$this->DBConnection->query($this->getInsertTagsQuery($id, $tags));
 		$this->DBConnection->query($this->getInsertSpecsQuery($id, $specs));
-		if(!empty($images))
+		if (!empty($images))
 		{
 			$this->DBConnection->query($this->getInsertImagesQuery($id, $images));
 		}
+
 		return $item;
 	}
 
@@ -198,6 +204,7 @@ class ItemDAOmysql implements ItemDAO
 	{
 		$query = 'SELECT count(1) AS num_items FROM up_item WHERE ACTIVE = 1';
 		$result = $this->DBConnection->query($query);
+
 		return $result->fetch()['num_items'];
 	}
 
@@ -256,28 +263,38 @@ class ItemDAOmysql implements ItemDAO
 				return "({$id},{$tag->getId()})";
 			}, $tags)
 		);
+
 		return "INSERT INTO up_item_tag (ITEM_ID, TAG_ID) VALUES {$insert};";
 	}
 
 	private function getInsertSpecsQuery(int $id, array $specs): string
 	{
-		$insert = implode(',', array_map(function(Specification $s) use ($id){
-			return "({$id},'{$s->getId()}','{$s->getValue()}')";
-		}, $specs));
+		$insert = implode(
+			',',
+			array_map(function(Specification $s) use ($id) {
+				return "({$id},'{$s->getId()}','{$s->getValue()}')";
+			}, $specs)
+		);
+
 		return "INSERT INTO up_item_spec (ITEM_ID, SPEC_TYPE_ID, VALUE) VALUES {$insert};";
 	}
 
 	private function getInsertImagesQuery(int $id, array $images): string
 	{
-		$insert = implode(',', array_map(function(ItemsImage $image) use($id){
-			return "('{$image->getPath()}',{$id},{$image->isMain()})";
-		}, $images));
+		$insert = implode(
+			',',
+			array_map(function(ItemsImage $image) use ($id) {
+				return "('{$image->getPath()}',{$id},{$image->isMain()})";
+			}, $images)
+		);
+
 		return "INSERT INTO up_image(PATH, ITEM_ID, IS_MAIN) VALUES {$insert};";
 	}
 
 	private function getInsertItemQuery(ItemDetail $item): string
 	{
 		$date = date('Y-m-d H:i:s');
+
 		return "INSERT INTO up_item(TITLE, PRICE, SHORT_DESC, FULL_DESC, SORT_ORDER, ACTIVE, DATE_CREATE, DATE_UPDATE, ITEM_TYPE_ID) 
 				VALUES ('{$item->getTitle()}', {$item->getPrice()}, '{$item->getShortDescription()}', 
 				        '{$item->getFullDescription()}', {$item->getSortOrder()}, {$item->getIsActive()}, 
@@ -287,6 +304,7 @@ class ItemDAOmysql implements ItemDAO
 	private function getUpdateItemQuery(ItemDetail $item): string
 	{
 		$date = date('Y-m-d H:i:s');
+
 		return "UPDATE up_item
 				SET TITLE={$item->getTitle()},
 					PRICE={$item->getPrice()},

@@ -1,1 +1,0 @@
-ALTER TABLE up_item_spec ADD VALUE varchar(500) DEFAULT ''

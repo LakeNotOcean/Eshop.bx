@@ -3,8 +3,8 @@
 namespace Up\Controller;
 
 use Up\Core\Message\Error\NoSuchQueryParameterException;
-use Up\Core\Message\Response;
 use Up\Core\Message\Request;
+use Up\Core\Message\Response;
 use Up\Core\TemplateProcessor;
 use Up\Service\ItemService\ItemServiceInterface;
 
@@ -24,13 +24,13 @@ class OrderController
 		$item = $this->itemService->getItemById($id);
 		$items = [$item];
 		$page = $this->templateProcessor->render('make-order.php', [
-			'items' => $items
-		], 'order.php', [
-			'cost' => $this->calculateTotalCost($items),
-			'orderSize' => count($items)
-		]);
-		$response = new Response();
-		return $response->withBodyHTML($page);
+			'items' => $items,
+		],                                       'order.php', [
+													 'cost' => $this->calculateTotalCost($items),
+													 'orderSize' => count($items),
+												 ]);
+
+		return (new Response())->withBodyHTML($page);
 	}
 
 	private function calculateTotalCost(array $items): int
@@ -40,6 +40,7 @@ class OrderController
 		{
 			$cost += $item->getPrice();
 		}
+
 		return $cost;
 	}
 
@@ -56,13 +57,13 @@ class OrderController
 			$items[] = $this->itemService->getItemById($id);
 		}
 		$page = $this->templateProcessor->render('finish-order.php', [
-			'items' => $items
-		], 'order.php', [
-			'cost' => $this->calculateTotalCost($items),
-			'orderSize' => count($items)
-		]);
-		$response = new Response();
-		return $response->withBodyHTML($page);
+			'items' => $items,
+		],                                       'order.php', [
+													 'cost' => $this->calculateTotalCost($items),
+													 'orderSize' => count($items),
+												 ]);
+
+		return (new Response())->withBodyHTML($page);
 	}
 
 }

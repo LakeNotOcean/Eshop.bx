@@ -17,7 +17,10 @@ class TagServiceImpl implements TagService
 
 	public function save(array $tags): EntityArray
 	{
-		$tags = array_map(function(string $tag) {return new ItemsTag(0, $tag);}, $tags);
+		$tags = array_map(static function(string $tag) {
+			return new ItemsTag(0, $tag);
+		}, $tags);
+
 		return $this->tagDAO->save($tags);
 	}
 }

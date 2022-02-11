@@ -11,9 +11,24 @@
  *                В случае если зависимостей нет нужно указать пустой массив
  * 'initMethod' - если initType=singleton, то необходимо указать метод, вызываемый для инстанцирования класса
  */
+
+use Up\Controller\AddItemController;
+use Up\Controller\ItemController;
+use Up\Controller\OrderController;
+use Up\Controller\UserController;
+use Up\Core\Database\DefaultDatabase;
+use Up\Core\TemplateProcessorImpl;
+use Up\DAO\ItemDAO\ItemDAOmysql;
+use Up\DAO\SpecificationDAO\SpecificationDAOmysql;
+use Up\DAO\TagDAO\TagDAOmysql;
+use Up\DAO\UserDAO\UserDAOmysql;
+use Up\Service\ImageService\ImageService;
+use Up\Service\ItemService\ItemService;
+use Up\Service\TagService\TagServiceImpl;
+
 $config = [
 	'templateProcessor' => [
-		'classPath' => \Up\Core\TemplateProcessorImpl::class,
+		'classPath' => TemplateProcessorImpl::class,
 		'initType' => 'constructor',
 		'initArgs' => [],
 	],
@@ -22,16 +37,16 @@ $config = [
 	Controller
 	==========================*/
 	'itemController' => [
-		'classPath' => \Up\Controller\ItemController::class,
+		'classPath' => ItemController::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'templateProcessor'],
 			['class', 'itemService'],
-			['class', 'imageService']
+			['class', 'imageService'],
 		],
 	],
 	'addItemController' => [
-		'classPath' => \Up\Controller\AddItemController::class,
+		'classPath' => AddItemController::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'templateProcessor'],
@@ -41,28 +56,27 @@ $config = [
 		],
 	],
 	'orderController' => [
-		'classPath' => \Up\Controller\OrderController::class,
+		'classPath' => OrderController::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'templateProcessor'],
-			['class', 'itemService']
+			['class', 'itemService'],
 		],
 	],
 	'userController' => [
-		'classPath' => \Up\Controller\UserController::class,
+		'classPath' => UserController::class,
 		'initType' => 'constructor',
 		'initArgs' => [
-			['class','templateProcessor'],
-			['class', 'userService']
+			['class', 'templateProcessor'],
+			['class', 'userService'],
 		],
 	],
-
 
 	/*==========================
 	Service
 	==========================*/
 	'itemService' => [
-		'classPath' => \Up\Service\ItemService\ItemService::class,
+		'classPath' => ItemService::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'itemDAO'],
@@ -70,16 +84,16 @@ $config = [
 		],
 	],
 	'imageService' => [
-		'classPath' => \Up\Service\ImageService\ImageService::class,
+		'classPath' => ImageService::class,
 		'initType' => 'constructor',
 		'initArgs' => [],
 	],
 	'tagService' => [
-		'classPath' => \Up\Service\TagService\TagServiceImpl::class,
+		'classPath' => TagServiceImpl::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'tagDAO'],
-		]
+		],
 	],
 	'specificationService' => [
 		'classPath' => Up\Service\SpecificationService\SpecificationsServiceImpl::class,
@@ -100,35 +114,35 @@ $config = [
 	DAO and Database
 	==========================*/
 	'itemDAO' => [
-		'classPath' => \Up\DAO\ItemDAO\ItemDAOmysql::class,
+		'classPath' => ItemDAOmysql::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'DB'],
 		],
 	],
 	'specificationDAO' => [
-		'classPath' => \Up\DAO\SpecificationDAO\SpecificationDAOmysql::class,
+		'classPath' => SpecificationDAOmysql::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'DB'],
 		],
 	],
 	'userDAO' => [
-		'classPath' => \Up\DAO\UserDAO\UserDAOmysql::class,
+		'classPath' => UserDAOmysql::class,
 		'initType' => 'constructor',
 		'initArgs' => [
 			['class', 'DB'],
 		],
 	],
 	'tagDAO' => [
-		'classPath' => \Up\DAO\TagDAO\TagDAOmysql::class,
+		'classPath' => TagDAOmysql::class,
 		'initType' => 'constructor',
 		'initArgs' => [
-			['class', 'DB']
+			['class', 'DB'],
 		],
 	],
 	'DB' => [
-		'classPath' => \Up\Core\Database\DefaultDatabase::class,
+		'classPath' => DefaultDatabase::class,
 		'initType' => 'singleton',
 		'initArgs' => [],
 		'initMethod' => 'getInstance',

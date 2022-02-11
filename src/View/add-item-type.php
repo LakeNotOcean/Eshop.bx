@@ -1,5 +1,6 @@
 <?php
 /** @var bool $isNewItemTypeAdded */
+
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
@@ -16,9 +17,11 @@
 
 		<input type="submit" value="Сохранить тип товара в базу данных" class="btn-save">
 	</form>
-	<?php if ($isNewItemTypeAdded):?>
+	<?php
+	if ($isNewItemTypeAdded): ?>
 		<div id="popup" class="popup">Добавлен новый тип товара</div>
-	<?php endif;?>
+	<?php
+	endif; ?>
 </div>
 
 <script src="/js/build-item-type.js"></script>

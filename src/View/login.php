@@ -1,5 +1,6 @@
 <?php
 /** @var string $state */
+
 ?>
 
 <!--<link rel="stylesheet" href="./css/login.css">-->
@@ -16,6 +17,6 @@
 	if ($state == 'unsuccessful')
 	{
 		echo 'incorrect-pass-visible';
-	}?> incorrect-pass'>
+	} ?> incorrect-pass'>
 	</div>
 </div>

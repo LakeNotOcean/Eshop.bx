@@ -2,11 +2,8 @@
 
 namespace Up\Controller;
 
-use Error;
-use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
-use Up\Core\Migration\MigrationManager;
 use Up\Core\TemplateProcessor;
 use Up\Lib\Paginator\Paginator;
 use Up\Service\ImageService\ImageServiceInterface;
@@ -30,6 +27,9 @@ class ItemController
 		$this->imageService = $imageService;
 	}
 
+	/**
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 */
 	public function getItems(Request $request): Response
 	{
 		if ($request->isQueryContains('page'))
@@ -44,23 +44,25 @@ class ItemController
 		$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
 		$itemsAmount = $this->itemService->getItemsAmount();
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
-		$pages = $this->templateProcessor->render('catalog.php',
-												  ['items' => $items,
-												   'currentPage' => $currentPage,
-												   'itemsAmount' => $itemsAmount,
-												   'pagesAmount' => $pagesAmount
-												  ], 'main.php', []);
-		$response = new Response();
+		$pages = $this->templateProcessor->render(
+			'catalog.php', [
+							 'items' => $items,
+							 'currentPage' => $currentPage,
+							 'itemsAmount' => $itemsAmount,
+							 'pagesAmount' => $pagesAmount,
+						 ],
+			'main.php',
+			[]
+		);
 
-		return $response->withBodyHTML($pages);
+		return (new Response())->withBodyHTML($pages);
 	}
 
 	public function getItem(Request $request, $id): Response
 	{
 		$item = $this->itemService->getItemById($id);
 		$pages = $this->templateProcessor->render('item.php', ['item' => $item], 'main.php', []);
-		$response = new Response();
 
-		return $response->withBodyHTML($pages);
+		return (new Response())->withBodyHTML($pages);
 	}
 }

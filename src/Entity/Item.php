@@ -11,7 +11,6 @@ class Item extends Entity
 	protected $isActive = 0;
 	protected $mainImage;
 
-
 	/**
 	 * @return string
 	 */

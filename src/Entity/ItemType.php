@@ -6,10 +6,10 @@ class ItemType extends Entity
 {
 	protected $name;
 
-	public function __construct(int $id=1,string $name='')
+	public function __construct(int $id = 1, string $name = '')
 	{
-		$this->id=$id;
-		$this->name=$name;
+		$this->id = $id;
+		$this->name = $name;
 	}
 
 	public function getName(): string
@@ -21,6 +21,5 @@ class ItemType extends Entity
 	{
 		$this->name = $name;
 	}
-
 
 }

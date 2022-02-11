@@ -26,11 +26,11 @@ interface SpecificationDAO
 
 	public function getItemTypeByName(string $name): ItemType;
 
-	public function addCategory(SpecificationCategory $category):void;
+	public function addCategory(SpecificationCategory $category): void;
 
-	public function getCategories():array;
+	public function getCategories(): array;
 
-	public function addSpecification(int $categoryId, Specification $specification):void;
+	public function addSpecification(int $categoryId, Specification $specification): void;
 
 	public function getSpecificationByCategoryId(int $id): array;
 

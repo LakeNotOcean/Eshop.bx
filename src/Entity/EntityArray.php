@@ -14,6 +14,7 @@ class EntityArray
 	{
 		return $this->entities[$id];
 	}
+
 	public function addEntity(Entity $entity): void
 	{
 		$this->entities[$entity->getId()] = $entity;

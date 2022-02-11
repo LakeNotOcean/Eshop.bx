@@ -2,7 +2,9 @@
 
 namespace Up\Core\DI\Error;
 
-class DIException extends \Exception
+use Exception;
+
+class DIException extends Exception
 {
 
 }

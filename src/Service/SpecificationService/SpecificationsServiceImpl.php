@@ -2,8 +2,7 @@
 
 namespace Up\Service\SpecificationService;
 
-use http\Exception;
-use Up\Core\Message\DBResponse;
+use Exception;
 use Up\DAO\SpecificationDAO\SpecificationDAO;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
@@ -30,9 +29,8 @@ class SpecificationsServiceImpl implements SpecificationsService
 
 	public function getCategoriesWithSpecifications(): array
 	{
-		$categories = $this->specificationDAO->getCategoriesWithSpecifications();
 		//$this->specificationsSort($categories);
-		return $categories;
+		return $this->specificationDAO->getCategoriesWithSpecifications();
 	}
 
 	public function getSpecificationByCategoryId(int $id): array
@@ -42,10 +40,9 @@ class SpecificationsServiceImpl implements SpecificationsService
 
 	public function getItemTemplate(int $templateId): array
 	{
-		$categories = $this->specificationDAO->getCategoriesByItemTypeId($templateId);
 		//$this->specificationsSort($categories);
 
-		return $categories;
+		return $this->specificationDAO->getCategoriesByItemTypeId($templateId);
 	}
 
 	public function addItemType(string $itemTypeName, array $templateSpecs): void
@@ -56,7 +53,7 @@ class SpecificationsServiceImpl implements SpecificationsService
 	}
 
 	/**
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function addCategory(SpecificationCategory $category): void
 	{
