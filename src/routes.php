@@ -15,6 +15,7 @@ $router->post('/finishOrder',['orderController', 'finishOrder'],'finish-order');
 $router->get('/addItem', ['addItemController', 'addItem'], 'add-item');
 $router->get('/chooseItemType', ['addItemController', 'chooseItemType'], 'choose-item-type');
 $router->get('/addItemType', ['addItemController', 'addItemType'], 'add-item-type');
+$router->post('/addItemType', ['addItemController', 'addItemTypeAndSaveToDB'], 'add-item-type-db');
 $router->get('/addCategory', ['addItemController', 'addCategory'], 'add-category');
 $router->post('/addCategory', ['addItemController', 'addCategoryAndSaveToDB'], 'add-category-db');
 $router->get('/addSpecification', ['addItemController', 'addSpecification'], 'add-specification');

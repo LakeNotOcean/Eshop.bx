@@ -39,14 +39,12 @@ class AddItemController
 	 */
 	public function addItem(Request $request): Response
 	{
-		$itemTypes = $this->specificationsService->getItemTypes();
 		$categories = $this->specificationsService->getCategoriesWithSpecifications();
-		$template = $this->specificationsService->getItemTemplate((int)$request->getQueriesByName('item-type'));
+		$itemType = $this->specificationsService->getItemTemplate((int)$request->getQueriesByName('item-type'));
 
 		$page = $this->templateProcessor->render('add-item.php', [
-			'itemTypes' => $itemTypes,
 			'categories' => $categories,
-			'template' => $template
+			'itemType' => $itemType
 		], 'admin-main.php', []);
 
 		$response = new Response();
@@ -68,8 +66,30 @@ class AddItemController
 
 	public function addItemType(Request $request): Response
 	{
+		$categories = $this->specificationsService->getCategoriesWithSpecifications();
 		$page = $this->templateProcessor->render('add-item-type.php', [
+			'categories' => $categories,
+			'isNewItemTypeAdded' => false
+		], 'admin-main.php', []);
 
+		$response = new Response();
+
+		return $response->withBodyHTML($page);
+	}
+
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
+	public function addItemTypeAndSaveToDB(Request $request): Response
+	{
+		$itemTypeName = $request->getPostParametersByName('item-type');
+		$templateSpecs = $request->getPostParametersByName('template-specs');
+		$this->specificationsService->addItemType($itemTypeName, $templateSpecs);
+
+		$categories = $this->specificationsService->getCategoriesWithSpecifications();
+		$page = $this->templateProcessor->render('add-item-type.php', [
+			'categories' => $categories,
+			'isNewItemTypeAdded' => true
 		], 'admin-main.php', []);
 
 		$response = new Response();

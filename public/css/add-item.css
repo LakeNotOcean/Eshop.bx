@@ -1,9 +1,38 @@
-.form-add-item {
+main {
+	background: #F6F6F6;
+	justify-content: center;
+}
+
+.form-container {
 	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	max-width: 1300px;
+}
+
+.form-add {
 	display: flex;
 	flex-direction: column;
 	background: #F6F6F6;
 	padding: 20px 50px;
+}
+
+.popup {
+	height: 40px;
+	line-height: 40px;
+	margin: 20px auto;
+	padding: 0 20px;
+	border-radius: 1in;
+	color: #ffffff;
+	background: #515151;
+	text-align: center;
+	font-weight: 500;
+	transition: .1s;
+}
+
+.hidden {
+	opacity: 0;
 }
 
 /*==========================
