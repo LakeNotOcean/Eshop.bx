@@ -3,6 +3,8 @@
 
 /** @var int $result_count */
 /** @var int $currentPage */
+/** @var int $itemsAmount */
+/** @var int $pagesAmount */
 $pref = '_big';
 use Up\Core\Router\URLResolver;
 
@@ -10,7 +12,7 @@ use Up\Core\Router\URLResolver;
 
 <link rel="stylesheet" href="./css/catalog.css">
 <div class="container">
-	<div class="search_result_count">Видеокарты: найдено <?= 5 ?> штук</div>
+	<div class="search_result_count">Видеокарты: найдено <?= $itemsAmount ?> штук</div>
 	<div class="filters-item-list-row">
 		<div class="filters-column">
 			<div class="filters">
@@ -61,13 +63,11 @@ use Up\Core\Router\URLResolver;
 
 			<div class="navigation">
 <!--				<div class="navigation-dots navigation-item">...</div>-->
+				<a href="/?page=1" class="navigation-page navigation-item"> << </a>
 				<?php
-				($currentPage === 1) ? $prevPage = 1 : $prevPage = $currentPage - 1;
-				($currentPage === 3) ? $nextPage = 3 : $nextPage = $currentPage + 1;
-				?>
-				<a href="/?page=<?= $prevPage ?>" class="navigation-page navigation-item"> < </a>
-				<?php
-				for ($i=1; $i<4; $i++):
+				($currentPage > 3) ? $startPage = $currentPage - 3 : $startPage = 1;
+				($currentPage <= $pagesAmount - 3) ? $endPage = $currentPage + 3 : $endPage = $pagesAmount;
+				for ($i=$startPage; $i<=$endPage; $i++):
 					if ($currentPage === $i)
 					{
 						$activeClass = 'navigation-active';
@@ -79,8 +79,9 @@ use Up\Core\Router\URLResolver;
 					?>
 					<a href="/?page=<?= $i ?>" class="navigation-page navigation-item <?= $activeClass ?>"> <?= $i ?> </a>
 
-				<? endfor; ?>
-				<a href="/?page=<?= $nextPage ?>" class="navigation-page navigation-item"> > </a>
+				<?php endfor; ?>
+
+				<a href="/?page=<?= $pagesAmount ?>" class="navigation-page navigation-item"> >> </a>
 			</div>
 		</div>
 	</div>
