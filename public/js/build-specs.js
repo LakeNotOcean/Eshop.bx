@@ -1,14 +1,14 @@
 let categories;
 let spec = {};
 
-async function getSpecification(catId){
+async function getSpecification(catId) {
 	if(catId in spec) return spec[catId]
 	let response = await fetch('/category/detail');
 	spec = await response.json();
 	return spec[catId];
 }
 
-function changeSpecValueInput(spec){
+function changeSpecValueInput(spec) {
 	let input = spec.parentElement.parentElement.querySelector('input');
 	let categoryId = spec.parentElement.parentElement.parentElement.querySelector('.input-category').value;
 	let specId = spec.value;
@@ -20,7 +20,7 @@ fetch('/categories')
 		categories = json;
 	}));
 
-function getSpecOption(select, catId){
+function getSpecOption(select, catId) {
 	while (select.firstChild) select.lastChild.remove();
 	getSpecification(catId).then(specs => {
 		for(let specId in specs){

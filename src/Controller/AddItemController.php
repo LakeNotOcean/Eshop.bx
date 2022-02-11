@@ -16,6 +16,7 @@ use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\SpecificationService\SpecificationsService;
 use Up\Service\TagService\TagService;
 
+
 class AddItemController
 {
 	protected $templateProcessor;
