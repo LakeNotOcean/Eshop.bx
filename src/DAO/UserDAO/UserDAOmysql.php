@@ -53,6 +53,7 @@ class UserDAOmysql implements UserDAO
 
 		$queryResult = $this->DBConnection->prepare($query);
 		$queryResult->execute();
+		$s = '';
 	}
 
 	public function giveUserModeratorRoleByLogin(string $login): void

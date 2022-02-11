@@ -58,6 +58,7 @@ class UserServiceImpl implements UserService
 		return $_SESSION['USER'];
 	}
 
+
 	public function registerUser(user $user, string $password):void
 	{
 		$this->userDAO->addUser($user, $password);

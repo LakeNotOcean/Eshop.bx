@@ -6,11 +6,13 @@ $router->post("/testPost", ['addItemController', 'test'], 'home');
 
 //User
 $router->get('/', ['itemController', 'getItems'], 'home');
-$router->get('/getItem',['itemController', 'getItem'],'home');
 $router->get('/item/{positiveInt:id}',['itemController', 'getItem'],'item-detail');
 $router->get('/makeOrder/{positiveInt:id}',['orderController', 'makeOrder'],'make-order');
+$router->get('/register',['userController','registerUserPage'],'register-user-page');
+$router->get('/login',['userController','loginUserPage'],'login-user-page');
 $router->post('/finishOrder',['orderController', 'finishOrder'],'finish-order');
-
+$router->post('/register',['userController','registerUser'],'register-user');
+$router->post('/login',['userController','loginUser'],'login-user');
 //Admin
 $router->get('/addItem', ['addItemController', 'addItem'], 'add-item');
 $router->get('/chooseItemType', ['addItemController', 'chooseItemType'], 'choose-item-type');
