@@ -7,10 +7,10 @@ class UserRole
 	protected $id;
 	protected $name;
 
-	public function __construct(int $id=0,string $name="Guest")
+	public function __construct(int $id = 0, string $name = "Guest")
 	{
-		$this->id=$id;
-		$this->name=$name;
+		$this->id = $id;
+		$this->name = $name;
 	}
 
 	/**

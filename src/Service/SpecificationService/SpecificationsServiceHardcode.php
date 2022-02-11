@@ -2,7 +2,6 @@
 
 namespace Up\Service\SpecificationService;
 
-
 class SpecificationsServiceHardcode
 {
 	public function getItemTypes(): array
@@ -22,6 +21,9 @@ class SpecificationsServiceHardcode
 
 	public function getItemTemplate(string $itemType): array
 	{
-		return ['Заводские данные'=>['Гарантия', 'Страна-производитель'], 'Внешний вид' => ['Основной цвет', 'Дополнительный цвет', 'Подсветка']];
+		return [
+			'Заводские данные' => ['Гарантия', 'Страна-производитель'],
+			'Внешний вид' => ['Основной цвет', 'Дополнительный цвет', 'Подсветка'],
+		];
 	}
 }

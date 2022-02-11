@@ -1,3 +1,0 @@
-UPDATE up_item
-SET SORT_ORDER = 1
-WHERE ID = 2;

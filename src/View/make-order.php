@@ -1,24 +1,31 @@
 <?php
-/** @var array<\Up\Entity\Item> $items */
+/** @var array<Item> $items */
+
+use Up\Entity\Item;
+
 ?>
 
 <link rel="stylesheet" href="/css/make-order.css">
 <div class="container">
 	<div class="order-items">
-		<?php foreach ($items as $item):?>
+		<?php
+		foreach ($items as $item): ?>
 			<div class="order-item">
 				<img class="item-image" src="/img/2_big.webp" alt="item-main-image">
 				<div class="item-info">
-					<div class="item-title"><?= $item->getTitle()?></div>
-					<div class="item-price"><?= $item->getPrice()?> ₽</div>
+					<div class="item-title"><?= $item->getTitle() ?></div>
+					<div class="item-price"><?= $item->getPrice() ?> ₽</div>
 				</div>
 			</div>
-		<?php endforeach;?>
+		<?php
+		endforeach; ?>
 	</div>
 	<form action="/finishOrder" method="post" enctype="multipart/form-data" class="user-data">
-		<?php foreach ($items as $item):?>
-			<input type="hidden" name="itemIds[]" value="<?= $item->getId()?>" />
-		<?php endforeach;?>
+		<?php
+		foreach ($items as $item): ?>
+			<input type="hidden" name="itemIds[]" value="<?= $item->getId() ?>"/>
+		<?php
+		endforeach; ?>
 		<div class="user-data-title">Данные покупателя</div>
 		<div class="user-name">
 			<label for="name">

@@ -2,6 +2,8 @@
 
 namespace Up\Core\Error;
 
-class OSError extends \Error
+use Error;
+
+class OSError extends Error
 {
 }

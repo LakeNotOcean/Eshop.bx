@@ -5,7 +5,6 @@ namespace Up\Service\ItemService;
 use Up\DAO\ItemDAO\ItemDAO;
 use Up\DAO\SpecificationDAO\SpecificationDAO;
 use Up\Entity\ItemDetail;
-use Up\Entity\ItemsImage;
 
 class ItemService implements ItemServiceInterface
 {
@@ -21,18 +20,15 @@ class ItemService implements ItemServiceInterface
 
 	public function getItems(array $limitOffset): array
 	{
-		$items = $this->itemDAO->getItems($limitOffset['offset'], $limitOffset['amountItems']);
-
-		return $items;
+		return $this->itemDAO->getItems($limitOffset['offset'], $limitOffset['amountItems']);
 	}
 
 	public function getItemById(int $id): ItemDetail
 	{
-		$item = $this->itemDAO->getItemDetailById($id);
 		//$itemCategories = $this->specificationDAO->getItemCategoriesByItem($item);
 		//$this->specificationsSort($itemCategories);
 		//$item->setSpecificationCategoryList($itemCategories);
-		return $item;
+		return $this->itemDAO->getItemDetailById($id);
 	}
 
 	public function getItemsAmount(): int

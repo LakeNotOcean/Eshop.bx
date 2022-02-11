@@ -14,6 +14,7 @@ class DIConfigPHP implements DIConfigInterface
 	public function getConfig(): array
 	{
 		require_once $this->path;
+
 		/** @var array $config */
 		return $config;
 	}

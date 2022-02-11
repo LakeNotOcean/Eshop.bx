@@ -6,6 +6,7 @@
 /** @var int $itemsAmount */
 /** @var int $pagesAmount */
 $pref = '_big';
+
 use Up\Core\Router\URLResolver;
 
 ?>
@@ -29,8 +30,8 @@ use Up\Core\Router\URLResolver;
 
 				<a class="item" href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>">
 					<picture>
-						<source srcset="../img/<?= $item->getId() . $pref  ?>.webp" type="image/webp">
-						<source srcset="../img/<?= $item->getId()  . $pref  ?>.png" type="image/png">
+						<source srcset="../img/<?= $item->getId() . $pref ?>.webp" type="image/webp">
+						<source srcset="../img/<?= $item->getId() . $pref ?>.png" type="image/png">
 						<img class="item-image" src="../img/<?= $item->getId() ?>.png" alt="Item Image">
 					</picture>
 					<div class="item-other">
@@ -62,12 +63,12 @@ use Up\Core\Router\URLResolver;
 			endforeach; ?>
 
 			<div class="navigation">
-<!--				<div class="navigation-dots navigation-item">...</div>-->
+				<!--				<div class="navigation-dots navigation-item">...</div>-->
 				<a href="/?page=1" class="navigation-page navigation-item"> << </a>
 				<?php
 				($currentPage > 3) ? $startPage = $currentPage - 3 : $startPage = 1;
 				($currentPage <= $pagesAmount - 3) ? $endPage = $currentPage + 3 : $endPage = $pagesAmount;
-				for ($i=$startPage; $i<=$endPage; $i++):
+				for ($i = $startPage; $i <= $endPage; $i++):
 					if ($currentPage === $i)
 					{
 						$activeClass = 'navigation-active';
@@ -79,7 +80,8 @@ use Up\Core\Router\URLResolver;
 					?>
 					<a href="/?page=<?= $i ?>" class="navigation-page navigation-item <?= $activeClass ?>"> <?= $i ?> </a>
 
-				<?php endfor; ?>
+				<?php
+				endfor; ?>
 
 				<a href="/?page=<?= $pagesAmount ?>" class="navigation-page navigation-item"> >> </a>
 			</div>

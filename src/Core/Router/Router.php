@@ -138,6 +138,7 @@ class Router
 		{
 			$path = mb_substr($path, 0, $queryParamsIndex);
 		}
+
 		return $path;
 	}
 }

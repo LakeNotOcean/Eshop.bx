@@ -2,9 +2,9 @@
 
 namespace Up\Core\Logger;
 
- class LoggerMonitor
+class LoggerMonitor
 {
-	static function warn()
+	public static function warn()
 	{
 		$message = "Line 1\r\nLine 2\r\nLine 3";
 		$message = wordwrap($message, 70, "\r\n");

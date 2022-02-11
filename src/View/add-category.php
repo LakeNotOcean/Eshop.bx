@@ -1,5 +1,6 @@
 <?php
 /** @var bool $isNewCategoryAdded */
+
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
@@ -15,9 +16,11 @@
 		</label>
 		<input type="submit" value="Сохранить категорию в базу данных" class="btn-save">
 	</form>
-	<?php if ($isNewCategoryAdded):?>
+	<?php
+	if ($isNewCategoryAdded): ?>
 		<div id="popup" class="popup">Добавлена новая категория</div>
-	<?php endif;?>
+	<?php
+	endif; ?>
 </div>
 
 <script src="/js/popup-disappear.js"></script>
