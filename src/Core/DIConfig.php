@@ -12,6 +12,15 @@
  * 'initMethod' - если initType=singleton, то необходимо указать метод, вызываемый для инстанцирования класса
  */
 $config = [
+	'templateProcessor' => [
+		'classPath' => \Up\Core\TemplateProcessorImpl::class,
+		'initType' => 'constructor',
+		'initArgs' => [],
+	],
+
+	/*==========================
+	Controller
+	==========================*/
 	'itemController' => [
 		'classPath' => \Up\Controller\ItemController::class,
 		'initType' => 'constructor',
@@ -27,13 +36,22 @@ $config = [
 		'initArgs' => [
 			['class', 'templateProcessor'],
 			['class', 'specificationService'],
+			['class', 'tagService'],
+			['class', 'itemService'],
 		],
 	],
-	'templateProcessor' => [
-		'classPath' => \Up\Core\TemplateProcessorImpl::class,
+	'orderController' => [
+		'classPath' => \Up\Controller\OrderController::class,
 		'initType' => 'constructor',
-		'initArgs' => [],
+		'initArgs' => [
+			['class', 'templateProcessor'],
+			['class', 'itemService']
+		],
 	],
+
+	/*==========================
+	Service
+	==========================*/
 	'itemService' => [
 		'classPath' => \Up\Service\ItemService\ItemService::class,
 		'initType' => 'constructor',
@@ -47,6 +65,13 @@ $config = [
 		'initType' => 'constructor',
 		'initArgs' => [],
 	],
+	'tagService' => [
+		'classPath' => \Up\Service\TagService\TagServiceImpl::class,
+		'initType' => 'constructor',
+		'initArgs' => [
+			['class', 'tagDAO'],
+		]
+	],
 	'specificationService' => [
 		'classPath' => Up\Service\SpecificationService\SpecificationsServiceImpl::class,
 		'initType' => 'constructor',
@@ -54,6 +79,17 @@ $config = [
 			['class', 'specificationDAO'],
 		],
 	],
+	'userService' => [
+		'classPath' => Up\Service\UserService\UserServiceImpl::class,
+		'initType' => 'constructor',
+		'initArgs' => [
+			['class', 'userDAO'],
+		],
+	],
+
+	/*==========================
+	DAO and Database
+	==========================*/
 	'itemDAO' => [
 		'classPath' => \Up\DAO\ItemDAO\ItemDAOmysql::class,
 		'initType' => 'constructor',
@@ -68,10 +104,25 @@ $config = [
 			['class', 'DB'],
 		],
 	],
+	'userDAO' => [
+		'classPath' => \Up\DAO\UserDAO\UserDAOmysql::class,
+		'initType' => 'constructor',
+		'initArgs' => [
+			['class', 'DB'],
+		],
+	],
+	'tagDAO' => [
+		'classPath' => \Up\DAO\TagDAO\TagDAOmysql::class,
+		'initType' => 'constructor',
+		'initArgs' => [
+			['class', 'DB']
+		],
+	],
 	'DB' => [
 		'classPath' => \Up\Core\Database\DefaultDatabase::class,
 		'initType' => 'singleton',
 		'initArgs' => [],
 		'initMethod' => 'getInstance',
 	],
+
 ];

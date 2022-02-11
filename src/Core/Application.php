@@ -7,6 +7,7 @@ use MigrationException;
 use ReflectionException;
 use ReflectionMethod;
 use RuntimeException;
+use Throwable;
 use Up\Core\Database\DefaultDatabase;
 use Up\Core\DI\Container;
 use Up\Core\DI\DIConfigPHP;
@@ -72,13 +73,9 @@ class Application
 		{
 			$controller = $container->get($method['callback'][0]);
 		}
-		catch (ReflectionException $e)
+		catch (ReflectionException|DIException|Throwable $e)
 		{
-			$logger->log('info',$e);
-		}
-		catch (DIException $e)
-		{
-			$logger->log('info',$e);
+			$logger->log('info', $e);
 		}
 
 		try

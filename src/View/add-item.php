@@ -30,6 +30,11 @@
 				<span class="label-title">Теги</span>
 				<input type="text" id="item-tags" name="item-tags" placeholder="Ввести теги через запятую">
 			</label>
+
+			<label for="item-sort_order" class="field">
+				<span class="label-title">Порядок сортировки</span>
+				<input type="text" id="item-sort_order" name="item-sort_order" placeholder="Ввести порядок сортировки">
+			</label>
 		</div>
 
 		<div class="images">
@@ -57,15 +62,12 @@
 		</div>
 	</div>
 
-
 	<div class="specifications">
 		<div class="specifications-title">Характеристики</div>
-
 		<div class="btn add add-category">Добавить категорию</div>
 	</div>
 
-	<input type="submit"  value="Сохранить товар в базу данных" class="btn save">
+	<input type="submit"  value="Сохранить товар в базу данных" class="btn btn-save">
 </form>
-<script src="./js/preview-images.js"></script>
-<script src="./js/build-specs.js"></script>
-<script src="./js/listen-category.js"></script>
+<script src="/js/preview-images.js"></script>
+<script src="/js/build-specs.js"></script>

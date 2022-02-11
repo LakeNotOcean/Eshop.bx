@@ -1,5 +1,7 @@
 <?php
 /** @var string $content */
+/** @var int $orderSize */
+/** @var int $cost */
 ?>
 
 <!doctype html>
@@ -16,33 +18,21 @@
 	<link rel="mask-icon" href="/img/logo/safari-pinned-tab.svg" color="#5bbad5">
 	<meta name="msapplication-TileColor" content="#da532c">
 	<meta name="theme-color" content="#ffffff">
-	<link rel="stylesheet" href="/css/admin-main.css">
+	<link rel="stylesheet" href="/css/order.css">
 </head>
 <body>
 
 <nav>
-	<div class="start">
-		<a href="/">
-			<svg class="logo">
-				<use xlink:href="/img/sprites.svg#logo"></use>
-			</svg>
-		</a>
-		<div class="nav-item nav-item-active">Добавить товар
-			<div class="menu-container">
-				<div class="menu">
-					<a class="menu-item" href="/chooseItemType">Добавить товар</a>
-					<a class="menu-item" href="/addItemType">Добавить тип товара</a>
-					<a class="menu-item" href="/addCategory">Добавить категорию</a>
-					<a class="menu-item" href="/addSpecification">Добавить спецификацию</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="sign-out">Выйти</div>
+	<a href="/">
+		<svg class="logo">
+			<use xlink:href="/img/sprites.svg#logo"></use>
+		</svg>
+	</a>
+	<div class="order-info-message">Покупка <?= $orderSize?> товара за <?= $cost?> ₽</div>
 </nav>
 
 <main>
-	<?= $content?>
+	<?= $content ?>
 </main>
 
 </body>

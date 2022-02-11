@@ -2,6 +2,8 @@
 
 namespace Up\Core\Router;
 
+use Up\Core\Router\Error\ResolveException;
+
 class URLResolver
 {
 	/**
@@ -10,6 +12,10 @@ class URLResolver
 	public static function resolve(string $urlName, array $urlParameters = []): string
 	{
 		$urlTemplate = Router::getInstance()->getUrlTemplateByName($urlName);
+		if (is_null($urlTemplate))
+		{
+			throw new ResolveException("UrlName ({$urlName}) does not exist");
+		}
 		$urlVariableNames = static::getURLVariableNames($urlTemplate);
 
 		$expectedParametersCount = count($urlVariableNames);

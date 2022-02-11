@@ -14,7 +14,6 @@ use Up\Entity\SpecificationCategory;
 
 class ItemDAOmysql implements ItemDAO
 {
-	private const PAGE_SIZE = 10;
 	private $DBConnection;
 
 	public function __construct(DefaultDatabase $DBConnection)
@@ -22,11 +21,9 @@ class ItemDAOmysql implements ItemDAO
 		$this->DBConnection = $DBConnection;
 	}
 
-	public function getItems(int $page): array
+	public function getItems(int $offset, int $amountItems): array
 	{
-		$from = $page * self::PAGE_SIZE;
-		$to = ($page + 1) * self::PAGE_SIZE;
-		$result = $this->DBConnection->query($this->getItemsQuery($from, $to));
+		$result = $this->DBConnection->query($this->getItemsQuery($offset, $amountItems));
 		$items = [];
 		while ($row = $result->fetch())
 		{
@@ -170,7 +167,10 @@ class ItemDAOmysql implements ItemDAO
 
 		$this->DBConnection->query($this->getInsertTagsQuery($id, $tags));
 		$this->DBConnection->query($this->getInsertSpecsQuery($id, $specs));
-		$this->DBConnection->query($this->getInsertImagesQuery($id, $images));
+		if(!empty($images))
+		{
+			$this->DBConnection->query($this->getInsertImagesQuery($id, $images));
+		}
 		return $item;
 	}
 
@@ -185,7 +185,7 @@ class ItemDAOmysql implements ItemDAO
 		foreach ($categories as $cat)
 		{
 			$category = $cat->getSpecificationList()->getEntitiesArray();
-			foreach ($cat as $id => $spec)
+			foreach ($category as $id => $spec)
 			{
 				$specs[$id] = $spec;
 			}
@@ -194,7 +194,7 @@ class ItemDAOmysql implements ItemDAO
 		return $specs;
 	}
 
-	private function getItemsQuery(int $from, int $to): string
+	private function getItemsQuery(int $offset, int $amountItems): string
 	{
 		return "SELECT ui.ID as ui_ID,
                         TITLE as TITLE,
@@ -208,7 +208,7 @@ class ItemDAOmysql implements ItemDAO
 				FROM up_item ui
 				INNER JOIN up_image u on ui.ID = u.ITEM_ID AND u.IS_MAIN = 1
 				ORDER BY ui.SORT_ORDER
-				LIMIT {$from}, {$to};";
+				LIMIT {$offset}, {$amountItems};";
 	}
 
 	private function getItemDetailByIdQuery(int $id): string
@@ -254,7 +254,7 @@ class ItemDAOmysql implements ItemDAO
 	private function getInsertSpecsQuery(int $id, array $specs): string
 	{
 		$insert = implode(',', array_map(function(Specification $s) use ($id){
-			return "({$id},{$s->getId()},{$s->getValue()})";
+			return "({$id},'{$s->getId()}','{$s->getValue()}')";
 		}, $specs));
 		return "INSERT INTO up_item_spec (ITEM_ID, SPEC_TYPE_ID, VALUE) VALUES {$insert};";
 	}
@@ -262,7 +262,7 @@ class ItemDAOmysql implements ItemDAO
 	private function getInsertImagesQuery(int $id, array $images): string
 	{
 		$insert = implode(',', array_map(function(ItemsImage $image) use($id){
-			return "({$image->getPath()},{$id},{$image->isMain()})";
+			return "('{$image->getPath()}',{$id},{$image->isMain()})";
 		}, $images));
 		return "INSERT INTO up_image(PATH, ITEM_ID, IS_MAIN) VALUES {$insert};";
 	}
@@ -271,9 +271,9 @@ class ItemDAOmysql implements ItemDAO
 	{
 		$date = date('Y-m-d H:i:s');
 		return "INSERT INTO up_item(TITLE, PRICE, SHORT_DESC, FULL_DESC, SORT_ORDER, ACTIVE, DATE_CREATE, DATE_UPDATE, ITEM_TYPE_ID) 
-				VALUES ({$item->getTitle()}, {$item->getPrice()}, {$item->getShortDescription()}, 
-				        {$item->getFullDescription()}, {$item->getSortOrder()}, {$item->getIsActive()}, 
-				        {$date}, {$date}, {$item->getItemType()->getId()});";
+				VALUES ('{$item->getTitle()}', {$item->getPrice()}, '{$item->getShortDescription()}', 
+				        '{$item->getFullDescription()}', {$item->getSortOrder()}, {$item->getIsActive()}, 
+				        '{$date}', '{$date}', {$item->getItemType()->getId()});";
 	}
 
 	private function getUpdateItemQuery(ItemDetail $item): string

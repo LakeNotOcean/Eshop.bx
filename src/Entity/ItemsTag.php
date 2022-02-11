@@ -6,6 +6,12 @@ class ItemsTag extends Entity
 {
 	protected $name = '';
 
+	public function __construct(int $id = 0, string $name = '')
+	{
+		$this->id = $id;
+		$this->name = $name;
+	}
+
 	/**
 	 * @return string
 	 */

@@ -1,0 +1,45 @@
+.container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 30px 50px;
+}
+
+/*==========================
+titles
+==========================*/
+
+.access-message, .order-title {
+	font-size: 18px;
+	font-weight: 600;
+	margin-bottom: 10px;
+}
+
+.wait-message {
+	margin-bottom: 30px;
+}
+
+/*==========================
+order-item
+==========================*/
+
+.order-item {
+	display: flex;
+	justify-content: center;
+	font-weight: 500;
+}
+
+.item-number {
+	width: 30px;
+}
+
+.item-title {
+	flex: 1;
+	max-width: 70%;
+}
+
+.item-price {
+	margin-left: 10px;
+}

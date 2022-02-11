@@ -19,9 +19,9 @@ class ItemService implements ItemServiceInterface
 
 	}
 
-	public function getItems(): array
+	public function getItems(array $limitOffset): array
 	{
-		$items = $this->itemDAO->getItems(0);
+		$items = $this->itemDAO->getItems($limitOffset['offset'], $limitOffset['amountItems']);
 
 		return $items;
 	}
@@ -35,7 +35,8 @@ class ItemService implements ItemServiceInterface
 		return $item;
 	}
 
-
-
-
+	public function save(ItemDetail $item): ItemDetail
+	{
+		return $this->itemDAO->save($item);
+	}
 }

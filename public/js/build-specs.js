@@ -90,11 +90,7 @@ function createSpec(btn) {
 	});
 
 	specNameInput.classList.add('input-spec-name');
-	let arrowSpan = document.createElement('span');
-	arrowSpan.classList.add('arrow');
-	fieldDiv.append(specNameInput, arrowSpan);
-
-
+	fieldDiv.append(specNameInput);
 
 	let btnDeleteDiv = document.createElement('div');
 	btnDeleteDiv.classList.add('btn', 'delete');
@@ -138,10 +134,7 @@ function createCategory() {
 		changeChild(event.target, event.target.value);
 	});
 
-	let arrowSpan = document.createElement('span');
-	arrowSpan.classList.add('arrow');
-
-	fieldDiv.append(inputCategoryInput, arrowSpan);
+	fieldDiv.append(inputCategoryInput);
 
 	let btnDeleteDiv = document.createElement('div');
 	btnDeleteDiv.classList.add('btn', 'delete');
