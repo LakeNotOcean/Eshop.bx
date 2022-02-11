@@ -33,16 +33,50 @@ class UserController
 				new UserRole(),
 				$email,
 				$phone);
-			$this->userServiceImpl->registerUser($user,$password);
-			$page = $this->templateProcessor->render('register.php',['state' => 'successful'] , 'main.php', []);
 		}
 		catch (\Exception $e)
 		{
+			//todo - неверное поле, указать неверное поле.
 			$page = $this->templateProcessor->render('register.php',['state' => 'unsuccessful'] , 'main.php', []);
 		}
+		try
+		{
+			$this->userServiceImpl->registerUser($user,$password);
+		}
+		catch (\Exception $e)
+		{
+			//todo - такой пользователь есть
+			$page = $this->templateProcessor->render('register.php',['state' => 'unsuccessful'] , 'main.php', []);
+		}
+		catch (\Exception $e) //todo - для каждого случая свой exception
+		{
+			//todo - неверный пароль
+			$page = $this->templateProcessor->render('register.php',['state' => 'unsuccessful'] , 'main.php', []);
+		}
+		$page = $this->templateProcessor->render('register.php',['state' => 'successful'] , 'main.php', []);
 		$respons = new Response();
 		return $respons->withBodyHTML($page);
 
+	}
+
+	public function loginUser(Request $request): Response
+	{
+		$login = $request->getPostParametersByName('login');
+		$password = $request->getPostParametersByName('password');
+		try
+		{
+			$this->userServiceImpl->authorizeUserByLogin($login,$password);
+			header("Location: /");
+		}
+		catch (\Exception $e)
+		{
+			//todo -  неверный пароль или логин
+			$page = $this->templateProcessor->render('login.php',['state' => 'unsuccessful'] , 'main.php', []);
+		}
+
+
+		$respons = new Response();
+		return $respons->withBodyHTML($page);
 	}
 
 	public function loginUserPage()
@@ -59,9 +93,5 @@ class UserController
 		return $respons->withBodyHTML($page);
 	}
 
-	public function loginUser(Request $request):void
-	{
-		$login = $request->getPostParametersByName('login');
-		$password = $request->getPostParametersByName('password');
-	}
+
 }
