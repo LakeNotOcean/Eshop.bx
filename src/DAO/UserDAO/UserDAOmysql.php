@@ -20,14 +20,13 @@ class UserDAOmysql implements UserDAO
 		$query = "SELECT
 			up_user.LOGIN as USER_LOGIN,
             up_user.PASSWORD as USER_PASSWORD
-		FROM up_user WHERE LOGIN={$login};";
+		FROM up_user WHERE LOGIN='{$login}';";
 		$queryResult = $this->DBConnection->query($query);
 		$resultList = [];
 		while ($row = $queryResult->fetch())
 		{
 			$resultList[$row['USER_LOGIN']] = $row['USER_PASSWORD'];
 		}
-		$password = password_hash($password, PASSWORD_BCRYPT);
 		if (!array_key_exists($login, $resultList) || !password_verify($password, $resultList[$login]))
 		{
 			return false;
@@ -49,7 +48,7 @@ class UserDAOmysql implements UserDAO
 		$password = password_hash($password, PASSWORD_BCRYPT);
 
 		$query = "INSERT INTO up_user (LOGIN, EMAIL, PHONE, PASSWORD, ROLE_ID) 
-			VALUES ({$user->getLogin()},{$user->getEmail()},{$user->getPhone()},$password,2)";
+			VALUES ('{$user->getLogin()}','{$user->getEmail()}','{$user->getPhone()}','$password','2')";
 
 		$queryResult = $this->DBConnection->prepare($query);
 		$queryResult->execute();
@@ -83,7 +82,7 @@ class UserDAOmysql implements UserDAO
 		LEFT JOIN up_role ur on ur.ID = uu.ROLE_ID";
 		if ($login !== '')
 		{
-			$query = $query . " WHERE uu.LOGIN=${login}";
+			$query = $query . " WHERE uu.LOGIN='{$login}'";
 		}
 		$queryResult = $this->DBConnection->prepare($query);
 		$queryResult->execute();

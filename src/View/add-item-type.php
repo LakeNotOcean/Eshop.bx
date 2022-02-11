@@ -1,45 +1,24 @@
 <?php
-
-$categories = ['Заводские данные', 'Внешний вид'];
-$specs = ['Гарантия', 'Страна-производитель', 'Основной цвет', 'Дополнительный цвет', 'Подсветка'];
-
-$template = [''=>['']];
+/** @var bool $isNewItemTypeAdded */
 ?>
 
-<link rel="stylesheet" href="./css/add-item.css">
-<form action="/" method="post" enctype="multipart/form-data" class="form-add-item">
-	<label for="item-type">Тип товара
-		<input type="text" id="item-type" name="item-type" placeholder="Введите название типа товара">
-	</label>
-	<div class="specifications">
-		<div class="specifications-title">Характеристики</div>
+<link rel="stylesheet" href="/css/add-item.css">
+<div class="form-container">
+	<form action="/addItemType" method="post" enctype="multipart/form-data" class="form-add">
+		<label for="item-type" class="field">
+			<span class="label-title">Тип товара</span>
+			<input type="text" id="item-type" name="item-type" placeholder="Введите название типа товара">
+		</label>
+		<div class="specifications">
+			<div class="specifications-title">Характеристики</div>
+			<div class="btn add add-category">Добавить категорию</div>
+		</div>
 
-		<?php foreach ($template as $categoryName => $category):?>
-			<div class="category">
-				<input list="category-data" class="input-category" placeholder="Выбрать название категории" value="<?= $categoryName?>">
-				<datalist id="category-data">
-					<?php foreach ($categories as $categoryData):?>
-						<option value="<?= $categoryData?>"></option>
-					<?php endforeach;?>
-				</datalist>
-				<div class="btn-delete">Удалить</div>
-			</div>
+		<input type="submit" value="Сохранить тип товара в базу данных" class="btn-save">
+	</form>
+	<?php if ($isNewItemTypeAdded):?>
+		<div id="popup" class="popup">Добавлен новый тип товара</div>
+	<?php endif;?>
+</div>
 
-			<?php foreach ($category as $spec):?>
-				<div class="spec">
-					<input list="spec-data" placeholder="Выбрать название спецификации" value="<?= $spec?>">
-					<datalist id="spec-data">
-						<?php foreach ($specs as $specData):?>
-							<option value="<?= $specData?>"></option>
-						<?php endforeach;?>
-					</datalist>
-					<div class="btn-delete">Удалить</div>
-				</div>
-			<?php endforeach;?>
-			<div class="btn-add">Добавить спецификацию</div>
-		<?php endforeach;?>
-		<div class="btn-add">Добавить категорию</div>
-	</div>
-
-	<input type="submit" value="Сохранить тип товара в базу данных" class="btn-save">
-</form>
+<script src="/js/build-item-type.js"></script>

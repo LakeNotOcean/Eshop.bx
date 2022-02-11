@@ -280,6 +280,7 @@ item-description
 .description-text {
 	margin-top: 15px;
 	line-height: 1.5;
+	text-align: justify;
 }
 
 /*==========================
@@ -344,4 +345,5 @@ item-reviews
 	display: flex;
 	align-items: center;
 	line-height: 1.5;
+	text-align: justify;
 }

@@ -9,6 +9,9 @@ use Up\Entity\UserRole;
 class UserServiceImpl implements UserService
 {
 
+	private const Admin='Admin';
+	private const UserKey='USER';
+
 	protected $userDAO;
 
 	public function __construct(UserDAO $userDAO)
@@ -51,21 +54,23 @@ class UserServiceImpl implements UserService
 	public function getUserInfo(): User
 	{
 		$this->startSessionIfNotExists();
-		if (!isset($_SESSION['USER']))
+		if (!isset($_SESSION[self::UserKey]))
 		{
-			$_SESSION['USER']=new User('',new UserRole());
+			$_SESSION[self::UserKey]=new User('',new UserRole());
 		}
-		return $_SESSION['USER'];
+		return $_SESSION[self::UserKey];
 	}
+
 
 	public function registerUser(user $user, string $password):void
 	{
 		$this->userDAO->addUser($user, $password);
+		$this->addUserToSession($user);
 	}
 	private function addUserToSession(User $user): void
 	{
 		$this->startSessionIfNotExists();
-		$_SESSION['USER'] = $user;
+		$_SESSION[self::UserKey] = $user;
 	}
 	private function startSessionIfNotExists():void
 	{
@@ -80,7 +85,7 @@ class UserServiceImpl implements UserService
 	 */
 	public function checkIsAdmin(): void
 	{
-		if ($this->getUserInfo()->getRole()->getName() !== 'Admin')
+		if ($this->getUserInfo()->getRole()->getName() !== self::Admin)
 		{
 			throw new \Exception('You are not authorized to perform the operation ');
 		}
@@ -97,5 +102,18 @@ class UserServiceImpl implements UserService
 		session_destroy();
 		session_write_close();
 		setcookie(session_name(),'',0,'/');
+	}
+
+	public function getUsersInfo(): array
+	{
+		if ($this->getUserInfo()->getRole()->getName() !== self::Admin)
+		{
+			return $this->getUsersList();
+		}
+		return [];
+	}
+	private function getUsersList():array
+	{
+		return $this->userDAO->getUsersInfo();
 	}
 }

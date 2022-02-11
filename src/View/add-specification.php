@@ -4,9 +4,8 @@
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
-<link rel="stylesheet" href="/css/add-specification.css">
-<div class="container">
-	<form action="/addSpecification" method="post" enctype="multipart/form-data" class="form-add-specification">
+<div class="form-container">
+	<form action="/addSpecification" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="category-id" class="field">
 			<span class="label-title">Категория</span>
 			<select id="category-id" name="category-id" class="input-category">
@@ -26,7 +25,7 @@
 		<input type="submit" value="Сохранить спецификацию в базу данных" class="btn-save">
 	</form>
 	<?php if ($isNewSpecAdded):?>
-		<div id="popup" class="new-spec-popup">Добавлена новая спецификация</div>
+		<div id="popup" class="popup">Добавлена новая спецификация</div>
 	<?php endif;?>
 </div>
 

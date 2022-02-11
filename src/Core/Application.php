@@ -62,7 +62,7 @@ class Application
 		catch (RoutingException $e)
 		{
 			//todo вызов отдельного контроллера ошибок
-			$logger->log('info',$e);
+			$logger->log('info', $e);
 			return false;
 		}
 

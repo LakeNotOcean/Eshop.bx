@@ -3,9 +3,8 @@
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
-<link rel="stylesheet" href="/css/add-category.css">
-<div class="container">
-	<form action="/addCategory" method="post" enctype="multipart/form-data" class="form-add-category">
+<div class="form-container">
+	<form action="/addCategory" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="category" class="field">
 			<span class="label-title">Категория</span>
 			<input type="text" id="category" name="category" placeholder="Введите название категории">
@@ -17,7 +16,7 @@
 		<input type="submit" value="Сохранить категорию в базу данных" class="btn-save">
 	</form>
 	<?php if ($isNewCategoryAdded):?>
-		<div id="popup" class="new-category-popup">Добавлена новая категория</div>
+		<div id="popup" class="popup">Добавлена новая категория</div>
 	<?php endif;?>
 </div>
 

@@ -8,6 +8,7 @@ use Up\Entity\ItemType;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 
+
 class SpecificationDAOmysql implements SpecificationDAO
 {
 	private $DBConnection;
@@ -65,6 +66,24 @@ class SpecificationDAOmysql implements SpecificationDAO
 
 	}
 
+	public function addItemType(string $name): void
+	{
+		$query = "INSERT INTO up_item_type (NAME) VALUES (?);";
+		$prepare = $this->DBConnection->prepare($query);
+		$prepare->execute([$name]);
+	}
+
+	public function addSpecTemplate(int $itemTypeId, array $templateSpecs): void
+	{
+		$query = "INSERT INTO up_spec_template (ITEM_TYPE_ID, SPEC_TYPE_ID) VALUES (?,?);";
+		$prepare = $this->DBConnection->prepare($query);
+		$data = $this->prepareTemplateSpecs($itemTypeId, $templateSpecs);
+		foreach ($data as $row)
+		{
+			$prepare->execute($row);
+		}
+	}
+
 	public function getTypes(): array
 	{
 		$queryResult = $this->DBConnection->query(SpecificationDAOqueries::getTypesQuery());
@@ -75,6 +94,19 @@ class SpecificationDAOmysql implements SpecificationDAO
 		}
 
 		return $typeList;
+	}
+
+	public function getItemTypeByName(string $name): ItemType
+	{
+		//TODO Влад сделай ревью пж по безопасности
+		$result = $this->DBConnection->query($this->getItemTypeByNameQuery($name));
+		$itemTypeData = $result->fetch();
+		return new ItemType($itemTypeData['ID'], $itemTypeData['NAME']);
+	}
+
+	private function getItemTypeByNameQuery(string $name): string
+	{
+		return "SELECT ID, NAME FROM up_item_type WHERE NAME = '$name';";
 	}
 
 	public function getSpecificationByCategoryId(int $id): array
@@ -132,7 +164,6 @@ class SpecificationDAOmysql implements SpecificationDAO
 			}
 			$categoriesList[$categoryId]->addToSpecificationList($this->createSpecificationByRow($row));
 		}
-
 		return $categoriesList;
 	}
 
@@ -165,8 +196,6 @@ class SpecificationDAOmysql implements SpecificationDAO
 		}
 		return $categories;
 	}
-
-
 
 	private function getSpecificationCategoryByNameQuery(array $categoryNames, array $typeNames): string
 	{
@@ -221,7 +250,7 @@ class SpecificationDAOmysql implements SpecificationDAO
 
 	public function addSpecification(int $categoryId, Specification $specification): void
 	{
-		$query = "INSERT INTO up_spec_type (ID, NAME, SPEC_CATEGORY_ID, DISPLAY_ORDER) VALUES (?,?,?,?);";
+		$query = "INSERT INTO up_spec_type (NAME, SPEC_CATEGORY_ID, DISPLAY_ORDER) VALUES (?,?,?);";
 		$prepair = $this->DBConnection->prepare($query);
 		$prepair->execute($this->prepareSpecification($categoryId, $specification));
 	}
@@ -249,9 +278,20 @@ class SpecificationDAOmysql implements SpecificationDAO
 		return $result;
 	}
 
+	private function prepareTemplateSpecs(int $itemTypeId, array $templateSpecs): array
+	{
+		$result = [];
+		foreach ($templateSpecs as $specId)
+		{
+			$result[] = [$itemTypeId, $specId];
+		}
+
+		return $result;
+	}
+
 	private function prepareSpecification(int $categoryId, Specification $specification): array
 	{
-		return [$specification->getId(), $specification->getName(), $categoryId, $specification->getDisplayOrder()];
+		return [$specification->getName(), $categoryId, $specification->getDisplayOrder()];
 	}
 
 	private function prepareCategory(SpecificationCategory $category): array
