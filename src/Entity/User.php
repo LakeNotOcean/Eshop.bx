@@ -8,13 +8,54 @@ class User
 	protected $email;
 	protected $role;
 	protected $phone;
+	protected $secondName;
+	protected $firstName;
 
-	public function __construct(string $login,UserRole $role,string $email='', string $phone='')
+	public function __construct(
+		string   $login,
+		UserRole $role,
+		string   $email = '',
+		string   $phone = '',
+		string   $firstName = '',
+		string   $secondName = ''
+	)
 	{
-		$this->login=$login;
-		$this->role=$role;
-		$this->email=$email;
-		$this->phone=$phone;
+		$this->login = $login;
+		$this->role = $role;
+		$this->email = $email;
+		$this->phone = $phone;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSecondName()
+	{
+		return $this->secondName;
+	}
+
+	/**
+	 * @param mixed $secondName
+	 */
+	public function setSecondName($secondName): void
+	{
+		$this->secondName = $secondName;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getFirstName()
+	{
+		return $this->firstName;
+	}
+
+	/**
+	 * @param mixed $firstName
+	 */
+	public function setFirstName($firstName): void
+	{
+		$this->firstName = $firstName;
 	}
 
 	/**
