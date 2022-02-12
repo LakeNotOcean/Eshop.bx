@@ -2,7 +2,6 @@
 
 namespace Up\Core\Middleware;
 
-
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 
@@ -11,7 +10,7 @@ class MiddlewareManager
 	protected $middlewareClassNames = [];
 	private static $instance;
 	private $middlewaresLoadingFilePaths = [
-		SOURCE_DIR . '/Middleware/middlewares.php',
+		SOURCE_DIR . 'Middleware/middlewares.php',
 	];
 
 	public function registerMiddleware(MiddlewareInterface $middleware)
@@ -28,7 +27,7 @@ class MiddlewareManager
 	{
 		$this->middlewareClassNames = array_merge($this->middlewareClassNames, $middlewaresClassName);
 	}
-	//
+
 	public function invokeWithMiddleware(callable $processedFunc, Request $request, ...$params): Response
 	{
 		if (empty($this->middlewareClassNames))
@@ -38,7 +37,7 @@ class MiddlewareManager
 
 		$reversedMiddlewareOrder = array_reverse($this->middlewareClassNames);
 		$registeredMiddlewares = [
-			new $reversedMiddlewareOrder[0]($processedFunc)
+			new $reversedMiddlewareOrder[0]($processedFunc),
 		];
 
 		for ($index = 1, $indexMax = count($reversedMiddlewareOrder); $index < $indexMax; $index++)
@@ -63,6 +62,7 @@ class MiddlewareManager
 		{
 			static::$instance = new static();
 		}
+
 		return static::$instance;
 	}
 }

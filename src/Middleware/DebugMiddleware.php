@@ -21,10 +21,12 @@ class DebugMiddleware extends AbstractMiddleware
 			}
 			catch (Throwable $throwable)
 			{
-				return (new Response)->withBodyHTML((new TemplateProcessorImpl())->render('debug.php', [
-					'request' => $request,
-					'exception' => $throwable
-				], 'main.php', []));
+				return (new Response())->withBodyHTML(
+					(new TemplateProcessorImpl())->render('debug.php', [
+						'request' => $request,
+						'exception' => $throwable,
+					],                                    'main.php', [])
+				);
 			}
 		}
 

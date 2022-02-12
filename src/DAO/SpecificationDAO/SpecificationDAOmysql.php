@@ -199,8 +199,8 @@ class SpecificationDAOmysql implements SpecificationDAO
 			if (!$categories->getEntity($row['C_ID'])->getSpecificationList()->contain($row['T_ID']))
 			{
 				$categories->getEntity($row['C_ID'])->getSpecificationList()->addEntity(
-						new Specification($row['T_ID'], $row['T_NAME'], $row['T_DISPLAY_ORDER'])
-					);
+					new Specification($row['T_ID'], $row['T_NAME'], $row['T_DISPLAY_ORDER'])
+				);
 			}
 		}
 

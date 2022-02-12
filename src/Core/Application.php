@@ -105,11 +105,9 @@ class Application
 		}
 
 		$response->flush();
-		$logger->log(
-			'notice',
-			'Посещение страницы {domain}{url}',
-			['domain' => $settings->getSettings('domainName'), 'url' => $_SERVER['REQUEST_URI']]
-		);
+		$logger->log('notice',
+					 'Посещение страницы {domain}{url}',
+					 ['domain' => $settings->getSettings('domainName'), 'url' => $_SERVER['REQUEST_URI']]);
 
 		return true;
 	}

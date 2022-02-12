@@ -1,10 +1,14 @@
 <?php
 
-$middlewareManager = \Up\Core\Middleware\MiddlewareManager::getInstance();
+use Up\Core\Middleware\MiddlewareManager;
+use Up\Middleware\DebugMiddleware;
+use Up\Middleware\Redirect404Middleware;
+
+$middlewareManager = MiddlewareManager::getInstance();
 
 $middlewares = [
-	\Up\Middleware\Redirect404Middleware::class,
-	\Up\Middleware\DebugMiddleware::class,
+	Redirect404Middleware::class,
+	DebugMiddleware::class,
 ];
 
 $middlewareManager->registerMiddlewares($middlewares);
