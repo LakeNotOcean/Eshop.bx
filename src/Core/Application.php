@@ -11,6 +11,7 @@ use Throwable;
 use Up\Core\Database\DefaultDatabase;
 use Up\Core\DI\Container;
 use Up\Core\DI\DIConfigPHP;
+use Up\Core\DI\DIContainer;
 use Up\Core\DI\Error\DIException;
 use Up\Core\Logger\Logger;
 use Up\Core\Message\Request;
@@ -18,6 +19,7 @@ use Up\Core\Migration\MigrationManager;
 use Up\Core\Router\Error\RoutingException;
 use Up\Core\Router\Router;
 use Up\Core\Settings\Settings;
+
 
 class Application
 {
@@ -71,7 +73,8 @@ class Application
 
 		try
 		{
-			$controller = $container->get($method['callback'][0]);
+			// $controller = $container->get($method['callback'][0]);
+			$controller = DIContainer::get($method['callback'][0]);
 		}
 		catch (ReflectionException|DIException|Throwable $e)
 		{
