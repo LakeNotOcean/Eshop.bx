@@ -4,7 +4,7 @@ namespace Up\Core\DI;
 
 class DIConfigPHP implements DIConfigInterface
 {
-	private $path = '';
+	private $path;
 
 	public function __construct(string $path)
 	{

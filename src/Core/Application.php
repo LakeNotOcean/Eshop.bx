@@ -7,12 +7,9 @@ use MigrationException;
 use ReflectionException;
 use ReflectionMethod;
 use RuntimeException;
-use Throwable;
 use Up\Core\Database\DefaultDatabase;
-use Up\Core\DI\Container;
 use Up\Core\DI\DIConfigPHP;
 use Up\Core\DI\DIContainer;
-use Up\Core\DI\Error\DIException;
 use Up\Core\Logger\Logger;
 use Up\Core\Message\Request;
 use Up\Core\Middleware\MiddlewareManager;
@@ -35,10 +32,6 @@ class Application
 		//Прописывание маршрутов
 		/** @var Router $router */
 		include '../src/routes.php';
-
-		$container = new Container(
-			new DIConfigPHP($settings->getSettings('DIConfigPath'))
-		);
 
 		############### БЛОК ПРИМЕНЕНИЯ МИГРАЦИЙ ######################
 		$isDev = $settings->getSettings('isDev');
@@ -71,18 +64,11 @@ class Application
 		$params = $method['params'];
 		$params['request'] = Request::createFromGlobals();
 
-		try
-		{
-			// $controller = $container->get($method['callback'][0]);
-			$controller = DIContainer::get($method['callback'][0]);
-		}
-		catch (ReflectionException|DIException|Throwable $e)
-		{
-			$logger->log('info', $e);
-		}
 
+		$container = new DIContainer(new DIConfigPHP($settings->getSettings('DIConfigPath')));
 		try
 		{
+			$controller = $container->get($method['callback'][0]);
 			$callbackReflection = new ReflectionMethod($controller, $method['callback'][1]);
 		}
 		catch (ReflectionException $e)
