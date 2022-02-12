@@ -65,7 +65,7 @@ class Application
 		$params['request'] = Request::createFromGlobals();
 
 
-		$container = new DIContainer(new DIConfigPHP($settings->getSettings('DIConfigPath')));
+		$container = DIContainer::getInstance(new DIConfigPHP($settings->getSettings('DIConfigPath')));
 		try
 		{
 			$controller = $container->get($method['callback'][0]);

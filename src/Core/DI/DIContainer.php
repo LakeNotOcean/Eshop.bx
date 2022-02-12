@@ -9,15 +9,25 @@ use ReflectionMethod;
 
 class DIContainer implements DIContainerInterface
 {
+	private static $instance;
 	protected $implementations;
 	protected $singletons;
 	protected $container;
 
-	public function __construct(DIConfigInterface $config)
+	protected function __construct(DIConfigInterface $config)
 	{
 		$this->implementations = $config->getImplementations();
 		$this->singletons = $config->getSingletons();
 		$this->container = [];
+	}
+
+	public static function getInstance(DIConfigInterface $config): DIContainer
+	{
+		if (!isset(static::$instance))
+		{
+			static::$instance = new static($config);
+		}
+		return static::$instance;
 	}
 
 	/**
