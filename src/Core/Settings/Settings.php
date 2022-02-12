@@ -2,6 +2,7 @@
 
 namespace Up\Core\Settings;
 
+
 /** Синглтон, используется для получения информации конфигурации */
 class Settings
 {
