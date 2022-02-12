@@ -13,7 +13,7 @@ class MiddlewareManager
 		SOURCE_DIR . 'Middleware/middlewares.php',
 	];
 
-	public function registerMiddleware(MiddlewareInterface $middleware)
+	public function registerMiddleware(string $middleware)
 	{
 		$this->middlewareClassNames[] = $middleware;
 	}
