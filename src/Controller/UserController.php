@@ -15,7 +15,7 @@ class UserController
 	protected $templateProcessor;
 	protected $userServiceImpl;
 
-	public function __construct(TemplateProcessor $templateProcessor, userServiceImpl $userServiceImpl)
+	public function __construct(TemplateProcessor $templateProcessor, UserServiceImpl $userServiceImpl)
 	{
 		$this->templateProcessor = $templateProcessor;
 		$this->userServiceImpl = $userServiceImpl;
