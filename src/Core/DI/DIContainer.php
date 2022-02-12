@@ -11,18 +11,16 @@ class DIContainer implements DIContainerInterface
 {
 	protected $implementations;
 
-	public function __construct(DIConfigInterface $config)
+	public function __construct(ImplementationsConfigInterface $implementations)
 	{
-		$this->implementations = $config->getConfig();
+		$this->implementations = $implementations->getImplementationsConfig();
 	}
 
 	/**
 	 * @throws ReflectionException
 	 */
-	public function get(string $name): object
+	public function get(string $class): object
 	{
-		$class = $this->getImplementation($name);
-
 		$methods = get_class_methods($class) ?? [];
 
 		if (in_array('__construct', $methods, true))
@@ -39,15 +37,6 @@ class DIContainer implements DIContainerInterface
 		return new $class();
 	}
 
-	protected function getImplementation(string $name)
-	{
-		if (interface_exists($name))
-		{
-			return $this->implementations[$name];
-		}
-		return $name;
-	}
-
 	/**
 	 * @throws ReflectionException
 	 */
@@ -57,9 +46,15 @@ class DIContainer implements DIContainerInterface
 		$dependencies = [];
 		foreach ($reflectionMethod->getParameters() as $parameter)
 		{
-			$dependencies[] = $this->get($parameter->getType()->getName());
+			$dependency = $this->getDependency($class, $parameter->getType()->getName());
+			$dependencies[] = $this->get($dependency);
 		}
 		return $dependencies;
+	}
+
+	protected function getDependency(string $class, string $parameter): string
+	{
+		return $this->implementations[$class][$parameter];
 	}
 
 }
