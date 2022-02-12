@@ -84,3 +84,7 @@ $implementations = [
 		DefaultDatabase::class => DefaultDatabase::class
 	],
 ];
+
+$singletons = [
+	DefaultDatabase::class => 'getInstance'
+];

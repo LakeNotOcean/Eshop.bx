@@ -8,7 +8,7 @@ use ReflectionException;
 use ReflectionMethod;
 use RuntimeException;
 use Up\Core\Database\DefaultDatabase;
-use Up\Core\DI\ImplementationsConfigPHP;
+use Up\Core\DI\DIConfigPHP;
 use Up\Core\DI\DIContainer;
 use Up\Core\Logger\Logger;
 use Up\Core\Message\Request;
@@ -65,7 +65,7 @@ class Application
 		$params['request'] = Request::createFromGlobals();
 
 
-		$container = new DIContainer(new ImplementationsConfigPHP($settings->getSettings('ImplementationsConfigPath')));
+		$container = new DIContainer(new DIConfigPHP($settings->getSettings('DIConfigPath')));
 		try
 		{
 			$controller = $container->get($method['callback'][0]);
