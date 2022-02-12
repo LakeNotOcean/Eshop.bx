@@ -2,7 +2,6 @@
 
 namespace Up\Core\DI;
 
-use http\Exception;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -12,11 +11,13 @@ class DIContainer implements DIContainerInterface
 {
 	protected $implementations;
 	protected $singletons;
+	protected $container;
 
 	public function __construct(DIConfigInterface $config)
 	{
 		$this->implementations = $config->getImplementations();
 		$this->singletons = $config->getSingletons();
+		$this->container = [];
 	}
 
 	/**
@@ -50,8 +51,17 @@ class DIContainer implements DIContainerInterface
 		$dependencies = [];
 		foreach ($reflectionMethod->getParameters() as $parameter)
 		{
-			$dependency = $this->getDependency($class, $parameter->getType()->getName());
-			$dependencies[] = $this->get($dependency);
+			$dependencyName = $this->getDependency($class, $parameter->getType()->getName());
+			if (isset($this->container[$dependencyName]))
+			{
+				$dependency = $this->container[$dependencyName];
+			}
+			else
+			{
+				$dependency = $this->get($dependencyName);
+				$this->container[$dependencyName] = $dependency;
+			}
+			$dependencies[] = $dependency;
 		}
 		return $dependencies;
 	}
