@@ -10,7 +10,6 @@ use Up\Core\TemplateProcessorImpl;
 
 class Redirect404Middleware extends AbstractMiddleware
 {
-
 	public function __invoke(Request $request, ...$params): Response
 	{
 		try
