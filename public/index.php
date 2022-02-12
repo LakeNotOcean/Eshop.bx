@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+const SOURCE_DIR = __DIR__ . '/../src';
 
 require '../Autoloader.php';
 
