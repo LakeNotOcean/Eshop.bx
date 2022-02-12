@@ -2,6 +2,7 @@
 
 namespace Up\Core\DI;
 
+use http\Exception;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -10,10 +11,12 @@ use ReflectionMethod;
 class DIContainer implements DIContainerInterface
 {
 	protected $implementations;
+	protected $singletons;
 
-	public function __construct(ImplementationsConfigInterface $implementations)
+	public function __construct(DIConfigInterface $config)
 	{
-		$this->implementations = $implementations->getImplementationsConfig();
+		$this->implementations = $config->getImplementations();
+		$this->singletons = $config->getSingletons();
 	}
 
 	/**
@@ -21,17 +24,18 @@ class DIContainer implements DIContainerInterface
 	 */
 	public function get(string $class): object
 	{
-		$methods = get_class_methods($class) ?? [];
-
-		if (in_array('__construct', $methods, true))
+		if (array_key_exists($class, $this->singletons))
 		{
-			$dependencies = $this->getConstructorDependencies($class);
-			return (new ReflectionClass($class))->newInstanceArgs($dependencies);
+			$initMethod = $this->singletons[$class];
+			$dependencies = $this->getDependencies($class, $initMethod);
+			return (new ReflectionMethod($class, $initMethod))->invokeArgs(null, $dependencies);
 		}
 
-		if (in_array('getInstance', $methods, true))
+		$methods = get_class_methods($class) ?? [];
+		if (in_array('__construct', $methods, true))
 		{
-			return $class::getInstance();
+			$dependencies = $this->getDependencies($class, '__construct');
+			return (new ReflectionClass($class))->newInstanceArgs($dependencies);
 		}
 
 		return new $class();
@@ -40,9 +44,9 @@ class DIContainer implements DIContainerInterface
 	/**
 	 * @throws ReflectionException
 	 */
-	protected function getConstructorDependencies(string $class): array
+	protected function getDependencies(string $class, string $initMethod): array
 	{
-		$reflectionMethod = new ReflectionMethod($class, '__construct');
+		$reflectionMethod = new ReflectionMethod($class, $initMethod);
 		$dependencies = [];
 		foreach ($reflectionMethod->getParameters() as $parameter)
 		{
