@@ -19,41 +19,47 @@ class DIContainer implements DIContainerInterface
 	/**
 	 * @throws ReflectionException
 	 */
-	public function get(string $name)
+	public function get(string $name): object
+	{
+		$class = $this->getImplementation($name);
+
+		$methods = get_class_methods($class) ?? [];
+
+		if (in_array('__construct', $methods, true))
+		{
+			$dependencies = $this->getConstructorDependencies($class);
+			return (new ReflectionClass($class))->newInstanceArgs($dependencies);
+		}
+
+		if (in_array('getInstance', $methods, true))
+		{
+			return $class::getInstance();
+		}
+
+		return new $class();
+	}
+
+	protected function getImplementation(string $name)
 	{
 		if (interface_exists($name))
 		{
-			$name = $this->implementations[$name];
+			return $this->implementations[$name];
 		}
-		$methods = get_class_methods($name) ?? [];
-		if (in_array('__construct', $methods, true))
-		{
-			$reflection = new ReflectionMethod($name, '__construct');
-		}
-		elseif (in_array('getInstance', $methods, true))
-		{
-			$reflection = new ReflectionMethod($name, 'getInstance');
-		}
-		else
-		{
-			return new $name();
-		}
+		return $name;
+	}
 
-		$params = [];
-		foreach ($reflection->getParameters() as $parameter)
+	/**
+	 * @throws ReflectionException
+	 */
+	protected function getConstructorDependencies(string $class): array
+	{
+		$reflectionMethod = new ReflectionMethod($class, '__construct');
+		$dependencies = [];
+		foreach ($reflectionMethod->getParameters() as $parameter)
 		{
-			$params[] = $this->get($parameter->getType()->getName());
+			$dependencies[] = $this->get($parameter->getType()->getName());
 		}
-		$reflector = new ReflectionClass($name);
-		if (in_array('__construct', $methods, true))
-		{
-			$class = $reflector->newInstanceArgs($params);
-		}
-		elseif (in_array('getInstance', $methods, true))
-		{
-			$class = $name::getInstance();
-		}
-		return $class;
+		return $dependencies;
 	}
 
 }
