@@ -8,7 +8,6 @@ use ReflectionException;
 use ReflectionMethod;
 use RuntimeException;
 use Up\Core\Database\DefaultDatabase;
-use Up\Core\DI\DIConfigPHP;
 use Up\Core\DI\DIContainer;
 use Up\Core\Logger\Logger;
 use Up\Core\Message\Request;
@@ -65,7 +64,7 @@ class Application
 		$params['request'] = Request::createFromGlobals();
 
 
-		$container = DIContainer::getInstance(new DIConfigPHP($settings->getSettings('DIConfigPath')));
+		$container = DIContainer::getInstance();
 		try
 		{
 			$controller = $container->get($method['callback'][0]);

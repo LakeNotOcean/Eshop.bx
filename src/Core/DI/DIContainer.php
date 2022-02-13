@@ -5,27 +5,26 @@ namespace Up\Core\DI;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
+use Up\Core\PHPDocParser\PHPDocParser;
 
 
 class DIContainer implements DIContainerInterface
 {
 	private static $instance;
-	protected $implementations;
-	protected $singletons;
 	protected $container;
+	protected $phpDocParser;
 
-	protected function __construct(DIConfigInterface $config)
+	protected function __construct()
 	{
-		$this->implementations = $config->getImplementations();
-		$this->singletons = $config->getSingletons();
 		$this->container = [];
+		$this->phpDocParser = PHPDocParser::getInstance();
 	}
 
-	public static function getInstance(DIConfigInterface $config): DIContainer
+	public static function getInstance(): DIContainer
 	{
 		if (!isset(static::$instance))
 		{
-			static::$instance = new static($config);
+			static::$instance = new static();
 		}
 		return static::$instance;
 	}
@@ -35,9 +34,13 @@ class DIContainer implements DIContainerInterface
 	 */
 	public function get(string $class): object
 	{
-		if (array_key_exists($class, $this->singletons))
+		$reflector = new ReflectionClass($class);
+
+		$this->phpDocParser->setDocComment($reflector->getDocComment());
+
+		$initMethod = $this->phpDocParser->get('@initMethod');
+		if (!empty($initMethod))
 		{
-			$initMethod = $this->singletons[$class];
 			$dependencies = $this->getDependencies($class, $initMethod);
 			return (new ReflectionMethod($class, $initMethod))->invokeArgs(null, $dependencies);
 		}
@@ -46,7 +49,7 @@ class DIContainer implements DIContainerInterface
 		if (in_array('__construct', $methods, true))
 		{
 			$dependencies = $this->getDependencies($class, '__construct');
-			return (new ReflectionClass($class))->newInstanceArgs($dependencies);
+			return $reflector->newInstanceArgs($dependencies);
 		}
 
 		return new $class();
@@ -58,10 +61,12 @@ class DIContainer implements DIContainerInterface
 	protected function getDependencies(string $class, string $initMethod): array
 	{
 		$reflectionMethod = new ReflectionMethod($class, $initMethod);
+
+		$this->phpDocParser->setDocComment($reflectionMethod->getDocComment());
+
 		$dependencies = [];
-		foreach ($reflectionMethod->getParameters() as $parameter)
+		foreach ($this->phpDocParser->getList('@param') as $dependencyName)
 		{
-			$dependencyName = $this->getDependency($class, $parameter->getType()->getName());
 			if (isset($this->container[$dependencyName]))
 			{
 				$dependency = $this->container[$dependencyName];
@@ -74,11 +79,6 @@ class DIContainer implements DIContainerInterface
 			$dependencies[] = $dependency;
 		}
 		return $dependencies;
-	}
-
-	protected function getDependency(string $class, string $parameter): string
-	{
-		return $this->implementations[$class][$parameter];
 	}
 
 }
