@@ -7,11 +7,14 @@ use Up\DAO\SpecificationDAO\SpecificationDAO;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 
+
 class SpecificationsServiceImpl implements SpecificationsService
 {
-
 	protected $specificationDAO;
 
+	/**
+	 * @param \Up\DAO\SpecificationDAO\SpecificationDAOmysql $specificationDAO
+	 */
 	public function __construct(SpecificationDAO $specificationDAO)
 	{
 		$this->specificationDAO = $specificationDAO;

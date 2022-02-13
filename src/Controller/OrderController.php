@@ -8,11 +8,16 @@ use Up\Core\Message\Response;
 use Up\Core\TemplateProcessor;
 use Up\Service\ItemService\ItemServiceInterface;
 
+
 class OrderController
 {
 	protected $templateProcessor;
 	protected $itemService;
 
+	/**
+	 * @param \Up\Core\TemplateProcessorImpl $templateProcessor
+	 * @param \Up\Service\ItemService\ItemService $itemService
+	 */
 	public function __construct(TemplateProcessor $templateProcessor, ItemServiceInterface $itemService)
 	{
 		$this->templateProcessor = $templateProcessor;

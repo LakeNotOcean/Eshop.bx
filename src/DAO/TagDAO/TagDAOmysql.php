@@ -6,10 +6,14 @@ use Up\Core\Database\DefaultDatabase;
 use Up\Entity\EntityArray;
 use Up\Entity\ItemsTag;
 
+
 class TagDAOmysql implements TagDAO
 {
 	private $DBConnection;
 
+	/**
+	 * @param \Up\Core\Database\DefaultDatabase $DBConnection
+	 */
 	public function __construct(DefaultDatabase $DBConnection)
 	{
 		$this->DBConnection = $DBConnection;

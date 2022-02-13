@@ -7,14 +7,17 @@ use Up\DAO\UserDAO\UserDAO;
 use Up\Entity\User;
 use Up\Entity\UserRole;
 
+
 class UserServiceImpl implements UserService
 {
-
 	private const Admin = 'Admin';
 	private const UserKey = 'USER';
 
 	protected $userDAO;
 
+	/**
+	 * @param \Up\DAO\UserDAO\UserDAOmysql $userDAO
+	 */
 	public function __construct(UserDAO $userDAO)
 	{
 		$this->userDAO = $userDAO;

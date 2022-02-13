@@ -24,6 +24,12 @@ class AddItemController
 	protected $tagService;
 	protected $itemService;
 
+	/**
+	 * @param \Up\Core\TemplateProcessorImpl $templateProcessor
+	 * @param \Up\Service\SpecificationService\SpecificationsServiceImpl $specificationsService
+	 * @param \Up\Service\TagService\TagServiceImpl $tagService
+	 * @param \Up\Service\ItemService\ItemService $itemService
+	 */
 	public function __construct(TemplateProcessor $templateProcessor,
 								SpecificationsService $specificationsService,
 								TagService $tagService,

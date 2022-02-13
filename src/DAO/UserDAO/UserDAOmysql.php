@@ -6,10 +6,14 @@ use Up\Core\Database\DefaultDatabase;
 use Up\Entity\User;
 use Up\Entity\UserRole;
 
+
 class UserDAOmysql implements UserDAO
 {
 	private $DBConnection;
 
+	/**
+	 * @param \Up\Core\Database\DefaultDatabase $DBConnection
+	 */
 	public function __construct(DefaultDatabase $DBConnection)
 	{
 		$this->DBConnection = $DBConnection;
