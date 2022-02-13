@@ -7,10 +7,21 @@ use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\Middleware\AbstractMiddleware;
 use Up\Core\Settings\Settings;
-use Up\Core\TemplateProcessorImpl;
+use Up\Core\TemplateProcessor;
 
 class DebugMiddleware extends AbstractMiddleware
 {
+
+	private $templateProcessor;
+
+	/**
+	 * @param \Up\Core\TemplateProcessorImpl $templateProcessor
+	 */
+	public function __construct(TemplateProcessor $templateProcessor)
+	{
+		$this->templateProcessor = $templateProcessor;
+	}
+
 	public function __invoke(Request $request, ...$params): Response
 	{
 		if (Settings::getInstance()->getSettings('isDev'))
@@ -22,10 +33,10 @@ class DebugMiddleware extends AbstractMiddleware
 			catch (Throwable $throwable)
 			{
 				return (new Response())->withBodyHTML(
-					(new TemplateProcessorImpl())->render('debug.php', [
+					$this->templateProcessor->render('debug.php', [
 						'request' => $request,
 						'exception' => $throwable,
-					],                                    'main.php', [])
+					],                               'main.php', [])
 				);
 			}
 		}

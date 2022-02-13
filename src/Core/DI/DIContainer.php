@@ -5,8 +5,7 @@ namespace Up\Core\DI;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
-use Up\Core\PHPDocParser\PHPDocParser;
-
+use Up\Lib\PHPDocParser\PHPDocParser;
 
 class DIContainer implements DIContainerInterface
 {

@@ -7,7 +7,7 @@ use Up\Core\Message\Response;
 
 interface MiddlewareInterface
 {
-	public function __construct(callable $getResponse);
+	public function setResponseFunction(callable $getResponse);
 
 	public function __invoke(Request $request, ...$params): Response;
 }

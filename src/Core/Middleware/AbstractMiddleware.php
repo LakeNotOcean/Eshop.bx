@@ -6,7 +6,7 @@ abstract class AbstractMiddleware implements MiddlewareInterface
 {
 	protected $getResponse;
 
-	public function __construct(callable $getResponse)
+	public function setResponseFunction(callable $getResponse)
 	{
 		$this->getResponse = $getResponse;
 	}

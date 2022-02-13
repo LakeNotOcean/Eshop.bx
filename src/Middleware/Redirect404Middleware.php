@@ -6,10 +6,20 @@ use Throwable;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\Middleware\AbstractMiddleware;
-use Up\Core\TemplateProcessorImpl;
+use Up\Core\TemplateProcessor;
 
 class Redirect404Middleware extends AbstractMiddleware
 {
+	private $templateProcessor;
+
+	/**
+	 * @param \Up\Core\TemplateProcessorImpl $templateProcessor
+	 */
+	public function __construct(TemplateProcessor $templateProcessor)
+	{
+		$this->templateProcessor = $templateProcessor;
+	}
+
 	public function __invoke(Request $request, ...$params): Response
 	{
 		try
@@ -19,7 +29,7 @@ class Redirect404Middleware extends AbstractMiddleware
 		catch (Throwable $throwable)
 		{
 			return (new Response())->withBodyHTML(
-				(new TemplateProcessorImpl())->render('404.php', [], 'main.php', [])
+				$this->templateProcessor->render('404.php', [], 'main.php', [])
 			);
 		}
 	}

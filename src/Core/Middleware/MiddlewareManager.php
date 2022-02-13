@@ -2,6 +2,7 @@
 
 namespace Up\Core\Middleware;
 
+use Up\Core\DI\DIContainer;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 
@@ -9,9 +10,7 @@ class MiddlewareManager
 {
 	protected $middlewareClassNames = [];
 	private static $instance;
-	private $middlewaresLoadingFilePaths = [
-		SOURCE_DIR . 'Middleware/middlewares.php',
-	];
+	private $middlewaresLoadingFilePath = SOURCE_DIR . 'Middleware/middlewares.php';
 
 	public function registerMiddleware(string $middleware)
 	{
@@ -30,19 +29,24 @@ class MiddlewareManager
 
 	public function invokeWithMiddleware(callable $processedFunc, Request $request, ...$params): Response
 	{
+		$diContainer = DIContainer::getInstance();
 		if (empty($this->middlewareClassNames))
 		{
 			return $processedFunc($request, ...$params);
 		}
 
 		$reversedMiddlewareOrder = array_reverse($this->middlewareClassNames);
-		$registeredMiddlewares = [
-			new $reversedMiddlewareOrder[0]($processedFunc),
-		];
+
+		$lastMiddleware = $diContainer->get($reversedMiddlewareOrder[0]);
+		$lastMiddleware->setResponseFunction($processedFunc);
+
+		$registeredMiddlewares = [$lastMiddleware];
 
 		for ($index = 1, $indexMax = count($reversedMiddlewareOrder); $index < $indexMax; $index++)
 		{
-			$registeredMiddlewares[] = new $reversedMiddlewareOrder[$index]($registeredMiddlewares[$index - 1]);
+			$nextMiddleware = $diContainer->get($reversedMiddlewareOrder[$index]);
+			$nextMiddleware->setResponseFunction($registeredMiddlewares[$index - 1]);
+			$registeredMiddlewares[] = $nextMiddleware;
 		}
 
 		return end($registeredMiddlewares)($request, ...$params);
@@ -50,10 +54,7 @@ class MiddlewareManager
 
 	public function loadMiddlewares()
 	{
-		foreach ($this->middlewaresLoadingFilePaths as $middlewaresLoadingFilePath)
-		{
-			require_once $middlewaresLoadingFilePath;
-		}
+		require_once $this->middlewaresLoadingFilePath;
 	}
 
 	public static function getInstance(): self

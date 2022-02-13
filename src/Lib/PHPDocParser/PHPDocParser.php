@@ -1,7 +1,6 @@
 <?php
 
-namespace Up\Core\PHPDocParser;
-
+namespace Up\Lib\PHPDocParser;
 
 class PHPDocParser implements PHPDocParserInterface
 {
