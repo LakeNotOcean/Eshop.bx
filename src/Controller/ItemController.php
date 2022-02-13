@@ -2,6 +2,7 @@
 
 namespace Up\Controller;
 
+use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessor;
@@ -34,7 +35,7 @@ class ItemController
 	}
 
 	/**
-	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 * @throws NoSuchQueryParameterException
 	 */
 	public function getItems(Request $request): Response
 	{
@@ -50,16 +51,12 @@ class ItemController
 		$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
 		$itemsAmount = $this->itemService->getItemsAmount();
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
-		$pages = $this->templateProcessor->render(
-			'catalog.php', [
-							 'items' => $items,
-							 'currentPage' => $currentPage,
-							 'itemsAmount' => $itemsAmount,
-							 'pagesAmount' => $pagesAmount,
-						 ],
-			'main.php',
-			[]
-		);
+		$pages = $this->templateProcessor->render('catalog.php', [
+			'items' => $items,
+			'currentPage' => $currentPage,
+			'itemsAmount' => $itemsAmount,
+			'pagesAmount' => $pagesAmount,
+		], 'main.php', []);
 
 		return (new Response())->withBodyHTML($pages);
 	}
