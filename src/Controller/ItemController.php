@@ -9,6 +9,7 @@ use Up\Lib\Paginator\Paginator;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
 
+
 class ItemController
 {
 	protected $templateProcessor;
@@ -16,6 +17,11 @@ class ItemController
 	protected $imageService;
 	protected $itemsInPage = 10;
 
+	/**
+	 * @param \Up\Core\TemplateProcessorImpl $templateProcessor
+	 * @param \Up\Service\ItemService\ItemService $itemService
+	 * @param \Up\Service\ImageService\ImageService $imageService
+	 */
 	public function __construct(
 		TemplateProcessor     $templateProcessor,
 		ItemServiceInterface  $itemService,

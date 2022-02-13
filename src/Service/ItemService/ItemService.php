@@ -6,16 +6,20 @@ use Up\DAO\ItemDAO\ItemDAO;
 use Up\DAO\SpecificationDAO\SpecificationDAO;
 use Up\Entity\ItemDetail;
 
+
 class ItemService implements ItemServiceInterface
 {
 	protected $itemDAO;
 	protected $specificationDAO;
 
+	/**
+	 * @param \Up\DAO\ItemDAO\ItemDAOmysql $itemDAO
+	 * @param \Up\DAO\SpecificationDAO\SpecificationDAOmysql $specificationDAO
+	 */
 	public function __construct(ItemDAO $itemDAO, SpecificationDAO $specificationDAO)
 	{
 		$this->itemDAO = $itemDAO;
 		$this->specificationDAO = $specificationDAO;
-
 	}
 
 	public function getItems(array $limitOffset): array
