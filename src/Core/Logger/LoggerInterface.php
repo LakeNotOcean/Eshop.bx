@@ -2,6 +2,7 @@
 // По PSR-3: Logger Interface
 namespace Up\Core\Logger;
 
+
 interface LoggerInterface
 {
 	public function emergency($message, array $context = []);

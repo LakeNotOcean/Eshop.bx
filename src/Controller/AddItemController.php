@@ -5,7 +5,7 @@ namespace Up\Controller;
 use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
-use Up\Core\TemplateProcessor;
+use Up\Core\TemplateProcessorInterface;
 use Up\Entity\EntityArray;
 use Up\Entity\ItemDetail;
 use Up\Entity\ItemsImage;
@@ -13,8 +13,8 @@ use Up\Entity\ItemType;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 use Up\Service\ItemService\ItemServiceInterface;
-use Up\Service\SpecificationService\SpecificationsService;
-use Up\Service\TagService\TagService;
+use Up\Service\SpecificationService\SpecificationsServiceInterface;
+use Up\Service\TagService\TagServiceInterface;
 
 
 class AddItemController
@@ -25,15 +25,15 @@ class AddItemController
 	protected $itemService;
 
 	/**
-	 * @param \Up\Core\TemplateProcessorImpl $templateProcessor
-	 * @param \Up\Service\SpecificationService\SpecificationsServiceImpl $specificationsService
-	 * @param \Up\Service\TagService\TagServiceImpl $tagService
+	 * @param \Up\Core\TemplateProcessor $templateProcessor
+	 * @param \Up\Service\SpecificationService\SpecificationsService $specificationsService
+	 * @param \Up\Service\TagService\TagService $tagService
 	 * @param \Up\Service\ItemService\ItemService $itemService
 	 */
-	public function __construct(TemplateProcessor $templateProcessor,
-								SpecificationsService $specificationsService,
-								TagService $tagService,
-								ItemServiceInterface $itemService)
+	public function __construct(TemplateProcessorInterface     $templateProcessor,
+								SpecificationsServiceInterface $specificationsService,
+								TagServiceInterface            $tagService,
+								ItemServiceInterface           $itemService)
 	{
 		$this->templateProcessor = $templateProcessor;
 		$this->specificationsService = $specificationsService;
@@ -203,7 +203,7 @@ class AddItemController
 	public function getCategoriesByItemTypeIdJSON(Request $request): Response
 	{
 		$response = new Response();
-		if(!$request->isQueryContains('item-type'))
+		if(!$request->containsQuery('item-type'))
 		{
 			$categories = $this->specificationsService->getCategoriesWithSpecifications();
 		}

@@ -2,6 +2,7 @@
 
 namespace Up\Lib\PHPDocParser;
 
+
 interface PHPDocParserInterface
 {
 	public function setDocComment(string $docComment);

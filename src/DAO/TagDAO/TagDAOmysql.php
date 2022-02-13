@@ -7,7 +7,7 @@ use Up\Entity\EntityArray;
 use Up\Entity\ItemsTag;
 
 
-class TagDAOmysql implements TagDAO
+class TagDAOmysql implements TagDAOInterface
 {
 	private $DBConnection;
 

@@ -2,6 +2,7 @@
 
 namespace Up\Entity;
 
+
 class UserRole
 {
 	protected $id;

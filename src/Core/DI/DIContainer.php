@@ -7,6 +7,7 @@ use ReflectionException;
 use ReflectionMethod;
 use Up\Lib\PHPDocParser\PHPDocParser;
 
+
 class DIContainer implements DIContainerInterface
 {
 	private static $instance;

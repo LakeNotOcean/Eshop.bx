@@ -2,6 +2,7 @@
 
 namespace Up\Entity;
 
+
 class ItemsImage extends Entity
 {
 	protected $id = 0;

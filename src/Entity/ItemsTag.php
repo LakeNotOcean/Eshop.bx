@@ -2,6 +2,7 @@
 
 namespace Up\Entity;
 
+
 class ItemsTag extends Entity
 {
 	protected $name = '';

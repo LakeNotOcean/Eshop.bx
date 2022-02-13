@@ -5,6 +5,7 @@ namespace Up\Core\Middleware;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 
+
 interface MiddlewareInterface
 {
 	public function setResponseFunction(callable $getResponse);

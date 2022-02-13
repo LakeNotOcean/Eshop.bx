@@ -6,6 +6,7 @@ use Up\Core\DI\DIContainer;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 
+
 class MiddlewareManager
 {
 	protected $middlewareClassNames = [];

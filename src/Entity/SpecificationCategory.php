@@ -2,6 +2,7 @@
 
 namespace Up\Entity;
 
+
 class SpecificationCategory extends Entity
 {
 	protected $name;

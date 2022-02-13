@@ -2,9 +2,9 @@
 
 namespace Up\Entity;
 
+
 class EntityArray
 {
-
 	/**
 	 * @var array<int,Entity>
 	 */

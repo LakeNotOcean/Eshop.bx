@@ -6,7 +6,8 @@ use Up\Entity\ItemType;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 
-interface SpecificationDAO
+
+interface SpecificationDAOInterface
 {
 	public function getCategoriesByItemTypeId(int $itemTypeId): array;
 

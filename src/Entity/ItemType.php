@@ -2,6 +2,7 @@
 
 namespace Up\Entity;
 
+
 class ItemType extends Entity
 {
 	protected $name;

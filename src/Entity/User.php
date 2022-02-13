@@ -2,6 +2,7 @@
 
 namespace Up\Entity;
 
+
 class User
 {
 	protected $login;

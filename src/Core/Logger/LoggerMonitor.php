@@ -2,6 +2,7 @@
 
 namespace Up\Core\Logger;
 
+
 class LoggerMonitor
 {
 	public static function warn()

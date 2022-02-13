@@ -9,6 +9,7 @@ use PDOException;
 use Up\Core\Database\DefaultDatabase;
 use Up\Core\Settings\Settings;
 
+
 class MigrationManager
 {
 	private $database;
@@ -196,6 +197,3 @@ class MigrationManager
 		file_put_contents($this->migrationDir . $name . '.sql', $changeDatabaseScript);
 	}
 }
-
-
-

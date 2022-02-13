@@ -2,6 +2,7 @@
 
 namespace Up\Entity;
 
+
 class Item extends Entity
 {
 	protected $title = '';

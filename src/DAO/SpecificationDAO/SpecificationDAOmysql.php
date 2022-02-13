@@ -9,7 +9,7 @@ use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 
 
-class SpecificationDAOmysql implements SpecificationDAO
+class SpecificationDAOmysql implements SpecificationDAOInterface
 {
 	private $DBConnection;
 

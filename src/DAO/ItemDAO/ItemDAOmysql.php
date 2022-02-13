@@ -11,7 +11,8 @@ use Up\Entity\ItemType;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 
-class ItemDAOmysql implements ItemDAO
+
+class ItemDAOmysql implements ItemDAOInterface
 {
 	private $DBConnection;
 

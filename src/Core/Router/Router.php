@@ -2,6 +2,7 @@
 
 namespace Up\Core\Router;
 
+
 class Router
 {
 	private static $instance;

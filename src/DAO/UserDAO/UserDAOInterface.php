@@ -4,7 +4,8 @@ namespace Up\DAO\UserDAO;
 
 use Up\Entity\User;
 
-interface UserDAO
+
+interface UserDAOInterface
 {
 	public function authenticateUser(string $login, string $password): bool;
 

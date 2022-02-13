@@ -2,6 +2,7 @@
 
 namespace Up\Entity;
 
+
 abstract class Entity
 {
 	protected $id = 0;

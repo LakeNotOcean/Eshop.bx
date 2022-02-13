@@ -2,6 +2,7 @@
 
 namespace Up\Entity;
 
+
 class ItemDetail extends Item
 {
 	private $fullDescription = '';

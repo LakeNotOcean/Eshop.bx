@@ -5,6 +5,7 @@ namespace Up\DAO;
 use Up\Core\Database\BaseDatabase;
 use ValueError;
 
+
 abstract class AbstractDAO
 {
 	/**

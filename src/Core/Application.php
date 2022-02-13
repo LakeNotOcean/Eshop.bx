@@ -7,6 +7,7 @@ use MigrationException;
 use ReflectionException;
 use ReflectionMethod;
 use RuntimeException;
+use Throwable;
 use Up\Core\Database\DefaultDatabase;
 use Up\Core\DI\DIContainer;
 use Up\Core\Logger\Logger;

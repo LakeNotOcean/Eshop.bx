@@ -5,7 +5,7 @@ namespace Up\Controller;
 use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
-use Up\Core\TemplateProcessor;
+use Up\Core\TemplateProcessorInterface;
 use Up\Service\ItemService\ItemServiceInterface;
 
 
@@ -15,10 +15,10 @@ class OrderController
 	protected $itemService;
 
 	/**
-	 * @param \Up\Core\TemplateProcessorImpl $templateProcessor
+	 * @param \Up\Core\TemplateProcessor $templateProcessor
 	 * @param \Up\Service\ItemService\ItemService $itemService
 	 */
-	public function __construct(TemplateProcessor $templateProcessor, ItemServiceInterface $itemService)
+	public function __construct(TemplateProcessorInterface $templateProcessor, ItemServiceInterface $itemService)
 	{
 		$this->templateProcessor = $templateProcessor;
 		$this->itemService = $itemService;

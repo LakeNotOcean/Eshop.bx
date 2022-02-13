@@ -6,16 +6,17 @@ use Throwable;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\Middleware\AbstractMiddleware;
-use Up\Core\TemplateProcessor;
+use Up\Core\TemplateProcessorInterface;
+
 
 class Redirect404Middleware extends AbstractMiddleware
 {
 	private $templateProcessor;
 
 	/**
-	 * @param \Up\Core\TemplateProcessorImpl $templateProcessor
+	 * @param \Up\Core\TemplateProcessor $templateProcessor
 	 */
-	public function __construct(TemplateProcessor $templateProcessor)
+	public function __construct(TemplateProcessorInterface $templateProcessor)
 	{
 		$this->templateProcessor = $templateProcessor;
 	}

@@ -2,8 +2,8 @@
 
 namespace Up\Service\ItemService;
 
-use Up\DAO\ItemDAO\ItemDAO;
-use Up\DAO\SpecificationDAO\SpecificationDAO;
+use Up\DAO\ItemDAO\ItemDAOInterface;
+use Up\DAO\SpecificationDAO\SpecificationDAOInterface;
 use Up\Entity\ItemDetail;
 
 
@@ -16,7 +16,7 @@ class ItemService implements ItemServiceInterface
 	 * @param \Up\DAO\ItemDAO\ItemDAOmysql $itemDAO
 	 * @param \Up\DAO\SpecificationDAO\SpecificationDAOmysql $specificationDAO
 	 */
-	public function __construct(ItemDAO $itemDAO, SpecificationDAO $specificationDAO)
+	public function __construct(ItemDAOInterface $itemDAO, SpecificationDAOInterface $specificationDAO)
 	{
 		$this->itemDAO = $itemDAO;
 		$this->specificationDAO = $specificationDAO;

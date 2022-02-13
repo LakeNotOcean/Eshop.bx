@@ -6,6 +6,7 @@ use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\Middleware\AbstractMiddleware;
 
+
 class URLAccessMiddleware extends AbstractMiddleware
 {
 	/**
@@ -15,7 +16,7 @@ class URLAccessMiddleware extends AbstractMiddleware
 	private $accessConfig = [
 		'add-item' => AccessLevel::Moderator,
 	];
-	
+
 	public function __invoke(Request $request, ...$params): Response
 	{
 		// TODO: Написать в нем логику

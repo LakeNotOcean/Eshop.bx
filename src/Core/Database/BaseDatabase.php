@@ -6,6 +6,7 @@ use PDO;
 use Up\Core\Database\DSNBuilder\DSNBuilder;
 use Up\Core\Settings\DatabaseConfig;
 
+
 abstract class BaseDatabase extends PDO
 {
 	protected static $instance;

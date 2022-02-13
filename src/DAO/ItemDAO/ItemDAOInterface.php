@@ -4,7 +4,8 @@ namespace Up\DAO\ItemDAO;
 
 use Up\Entity\ItemDetail;
 
-interface ItemDAO
+
+interface ItemDAOInterface
 {
 	public function getItems(int $offset, int $amountItems): array;
 

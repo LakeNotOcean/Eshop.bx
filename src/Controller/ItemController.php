@@ -5,7 +5,7 @@ namespace Up\Controller;
 use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
-use Up\Core\TemplateProcessor;
+use Up\Core\TemplateProcessorInterface;
 use Up\Lib\Paginator\Paginator;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
@@ -19,14 +19,14 @@ class ItemController
 	protected $itemsInPage = 10;
 
 	/**
-	 * @param \Up\Core\TemplateProcessorImpl $templateProcessor
+	 * @param \Up\Core\TemplateProcessor $templateProcessor
 	 * @param \Up\Service\ItemService\ItemService $itemService
 	 * @param \Up\Service\ImageService\ImageService $imageService
 	 */
 	public function __construct(
-		TemplateProcessor     $templateProcessor,
-		ItemServiceInterface  $itemService,
-		ImageServiceInterface $imageService
+		TemplateProcessorInterface $templateProcessor,
+		ItemServiceInterface       $itemService,
+		ImageServiceInterface      $imageService
 	)
 	{
 		$this->templateProcessor = $templateProcessor;
@@ -39,7 +39,7 @@ class ItemController
 	 */
 	public function getItems(Request $request): Response
 	{
-		if ($request->isQueryContains('page'))
+		if ($request->containsQuery('page'))
 		{
 			$currentPage = (int)$request->getQueriesByName('page');
 		}

@@ -2,6 +2,7 @@
 
 namespace Up\Lib\PHPDocParser;
 
+
 class PHPDocParser implements PHPDocParserInterface
 {
 	private static $instance;

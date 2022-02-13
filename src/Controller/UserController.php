@@ -5,17 +5,21 @@ namespace Up\Controller;
 use Exception;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
-use Up\Core\TemplateProcessor;
+use Up\Core\TemplateProcessorInterface;
 use Up\Entity\User;
 use Up\Entity\UserRole;
-use Up\Service\UserService\userServiceImpl;
+
 
 class UserController
 {
 	protected $templateProcessor;
 	protected $userServiceImpl;
 
-	public function __construct(TemplateProcessor $templateProcessor, UserServiceImpl $userServiceImpl)
+	/**
+	 * @param \Up\Core\TemplateProcessor $templateProcessor
+	 * @param \Up\Service\UserService\UserService $userServiceImpl
+	 */
+	public function __construct(TemplateProcessorInterface $templateProcessor, UserService $userServiceImpl)
 	{
 		$this->templateProcessor = $templateProcessor;
 		$this->userServiceImpl = $userServiceImpl;

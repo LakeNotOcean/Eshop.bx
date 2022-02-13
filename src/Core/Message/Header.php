@@ -2,6 +2,7 @@
 
 namespace Up\Core\Message;
 
+
 class Header
 {
 	protected $name = '';

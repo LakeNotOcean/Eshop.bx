@@ -9,6 +9,7 @@ use Up\Entity\ItemsImage;
 use Up\Lib\Mime\Error\MimeTypeException;
 use Up\Lib\Mime\MimeMapper;
 
+
 class ImageService implements ImageServiceInterface
 {
 	/**

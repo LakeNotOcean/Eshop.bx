@@ -2,6 +2,7 @@
 
 namespace Up\Lib\Mime;
 
+
 class MimeMapper
 {
 	private const mimeToExtension = [

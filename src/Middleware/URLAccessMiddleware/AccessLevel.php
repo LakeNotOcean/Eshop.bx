@@ -2,6 +2,7 @@
 
 namespace Up\Middleware\URLAccessMiddleware;
 
+
 class AccessLevel
 {
 	public const All = 1;

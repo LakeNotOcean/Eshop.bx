@@ -7,7 +7,7 @@ use Up\Entity\User;
 use Up\Entity\UserRole;
 
 
-class UserDAOmysql implements UserDAO
+class UserDAOmysql implements UserDAOInterface
 {
 	private $DBConnection;
 

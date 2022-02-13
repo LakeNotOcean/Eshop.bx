@@ -2,6 +2,7 @@
 
 namespace Up\Entity;
 
+
 class Specification extends Entity
 {
 	protected $name = '';
