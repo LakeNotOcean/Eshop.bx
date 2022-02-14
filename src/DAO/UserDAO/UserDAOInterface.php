@@ -2,8 +2,7 @@
 
 namespace Up\DAO\UserDAO;
 
-use Up\Entity\User;
-
+use Up\Entity\User\User;
 
 interface UserDAOInterface
 {

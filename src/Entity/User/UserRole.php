@@ -1,6 +1,6 @@
 <?php
 
-namespace Up\Entity;
+namespace Up\Entity\User;
 
 
 class UserRole
@@ -8,10 +8,18 @@ class UserRole
 	protected $id;
 	protected $name;
 
-	public function __construct(int $id = 0, string $name = "Guest")
+	public function __construct(int $id = 0, UserEnum $name = null)
 	{
 		$this->id = $id;
-		$this->name = $name;
+		if (is_null($name))
+		{
+			$name=UserEnum::Guest;
+		}
+		else
+		{
+			$this->name = $name;
+		}
+
 	}
 
 	/**
@@ -27,7 +35,7 @@ class UserRole
 	 */
 	public function getName(): string
 	{
-		return $this->name;
+		return $this->name->getValue();
 	}
 
 }
