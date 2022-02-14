@@ -94,7 +94,7 @@ class UserController
 		return $respons->withBodyHTML($page);
 	}
 
-	public function loginUserPage()
+	public function loginUserPage(Request $request)
 	{
 		$page = $this->templateProcessor->render('login.php', ['state' => 'process'], 'layout/main.php', []);
 		$respons = new Response();
@@ -102,7 +102,7 @@ class UserController
 		return $respons->withBodyHTML($page);
 	}
 
-	public function registerUserPage()
+	public function registerUserPage(Request $request)
 	{
 		$page = $this->templateProcessor->render('register.php', ['state' => 'process'], 'layout/main.php', []);
 		$respons = new Response();
