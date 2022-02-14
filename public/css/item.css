@@ -1,3 +1,5 @@
+@import "opened-images.css";
+
 main {
 	background: white;
 }
@@ -88,27 +90,22 @@ item-main-sidebar
 	padding: 10px;
 }
 
-.item-main-images-all {
+.main-image {
+	width: 100%;
+	flex: 1;
+	cursor: pointer;
+	padding: 30px 0;
+}
+
+.images-other {
 	display: flex;
 	flex-direction: column;
 }
 
-.item-main-images-all img {
+.other-image {
 	padding: 10px;
 	max-height: 50px;
-	cursor: zoom-in;
-}
-
-.item-main-images-main {
-	flex: 1;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 30px 0;
-}
-
-.item-main-images-main img {
-	width: 100%;
+	cursor: pointer;
 }
 
 /*==========================

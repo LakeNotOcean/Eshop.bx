@@ -11,7 +11,7 @@ use Up\Core\Router\URLResolver;
 
 ?>
 
-<link rel="stylesheet" href="./css/catalog.css">
+<link rel="stylesheet" href="/css/catalog.css">
 <div class="container">
 	<div class="search_result_count">Видеокарты: найдено <?= $itemsAmount ?> штук</div>
 	<div class="filters-item-list-row">
@@ -88,5 +88,6 @@ use Up\Core\Router\URLResolver;
 		</div>
 	</div>
 </div>
+
 <script src="/js/fix-node.js"></script>
-<script src="./js/fixed-filters.js"></script>
+<script src="/js/fixed-filters.js"></script>
