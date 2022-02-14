@@ -2,22 +2,28 @@
 
 namespace Up\Core\Router;
 
+use Up\Core\Router\Error\ResolveException;
+
+
 class URLResolver
 {
 	/**
-	 * @throws Errors\ResolveException
+	 * @throws Error\ResolveException
 	 */
-	public static function resolve(string $urlName, array $urlParameters = null): string
+	public static function resolve(string $urlName, array $urlParameters = []): string
 	{
-		$urlParameters = is_null($urlParameters) ? [] : $urlParameters;
 		$urlTemplate = Router::getInstance()->getUrlTemplateByName($urlName);
+		if (is_null($urlTemplate))
+		{
+			throw new ResolveException("UrlName ({$urlName}) does not exist");
+		}
 		$urlVariableNames = static::getURLVariableNames($urlTemplate);
 
 		$expectedParametersCount = count($urlVariableNames);
 		if (count($urlParameters) !== $expectedParametersCount)
 		{
 			$parametersCount = count($urlParameters);
-			throw new Errors\ResolveException(
+			throw new Error\ResolveException(
 				"Переданно неверное количество параметров урла. 
                                                 Ожидалось: {$expectedParametersCount}.
                                                 Передано: {$parametersCount} "
@@ -36,7 +42,7 @@ class URLResolver
 	}
 
 	/**
-	 * @throws Errors\ResolveException
+	 * @throws Error\ResolveException
 	 */
 	private static function replaceURLVariablesFromUrlTemplate(
 		string $urlTemplate,
@@ -49,7 +55,7 @@ class URLResolver
 		{
 			if (!isset($urlParameters[$variableName]))
 			{
-				throw new Errors\ResolveException("Нет параметра {$variableName} в переданных параметрах урла");
+				throw new Error\ResolveException("Нет параметра {$variableName} в переданных параметрах урла");
 			}
 			$result = preg_replace(
 				"/{[\da-zA-Z]+:{$variableName}}/",

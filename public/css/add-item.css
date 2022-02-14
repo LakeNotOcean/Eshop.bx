@@ -1,9 +1,33 @@
-.form-add-item {
+.form-container {
 	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	max-width: 1300px;
+}
+
+.form-add {
 	display: flex;
 	flex-direction: column;
 	background: #F6F6F6;
 	padding: 20px 50px;
+}
+
+.popup {
+	height: 40px;
+	line-height: 40px;
+	margin: 20px auto;
+	padding: 0 20px;
+	border-radius: 1in;
+	color: #ffffff;
+	background: #515151;
+	text-align: center;
+	font-weight: 500;
+	transition: .1s;
+}
+
+.hidden {
+	opacity: 0;
 }
 
 /*==========================
@@ -38,9 +62,11 @@ input fields
 	font-weight: 600;
 }
 
-input {
+input, select {
+	appearance:none;
 	flex: 1;
 	display: block;
+	height: 40px;
 	line-height: 40px;
 	padding: 0 10px;
 	margin: 5px 10px 5px 0;
@@ -59,44 +85,6 @@ input::placeholder {
 
 input::-webkit-calendar-picker-indicator {
 	opacity: 0;
-}
-
-/*==========================
-arrow
-==========================*/
-
-input[list]:focus + .arrow {
-	transform: rotateZ(180deg);
-}
-
-.arrow {
-	position: absolute;
-	width: 20px;
-	height: 20px;
-	right: 24px;
-	transition: .1s;
-}
-
-.arrow::before, .arrow::after {
-	position: absolute;
-	content: '';
-	width: 15px;
-	height: 3px;
-	top: 4px;
-	border-radius: 1in;
-	background: #333333;
-}
-
-.arrow::before {
-	left: 0;
-	transform-origin: left;
-	transform: rotateZ(45deg);
-}
-
-.arrow::after {
-	right: 0;
-	transform-origin: right;
-	transform: rotateZ(-45deg);
 }
 
 /*==========================
@@ -222,12 +210,15 @@ specifications
 	align-items: center;
 }
 
-.save {
-	margin-top: 20px;
-	color: #00AC47;
+.btn-save {
+	flex: 0;
+	width: 400px;
+	margin: 30px auto;
 }
 
-.save:hover {
-	background: #00AC47;
-	border-color: #00AC47;
+.btn-save:hover {
+	background: #F17F42;
+	border-color: #F17F42;
+	color: #ffffff;
+	font-weight: 500;
 }

@@ -2,6 +2,7 @@
 
 namespace Up\Core\Message;
 
+
 class Request
 {
 	private $queries = [];
@@ -98,7 +99,7 @@ class Request
 	 */
 	public function getFilesByName(string $key)
 	{
-		return $this->getRequestParameters($key, $this->cookies, 'Not found such files: ' . $key);
+		return $this->getRequestParameters($key, $this->files, 'Not found such files: ' . $key);
 	}
 
 	/**
@@ -109,29 +110,29 @@ class Request
 		return $this->getRequestParameters($key, $this->session, 'Not found such parameters in session: ' . $key);
 	}
 
-	public function isQueryContains(string $key): bool
+	public function containsQuery(string $key): bool
 	{
-		return in_array($key, $this->queries);
+		return array_key_exists($key, $this->queries);
 	}
 
-	public function isPostContains(string $key): bool
+	public function containsPost(string $key): bool
 	{
-		return in_array($key, $this->post);
+		return array_key_exists($key, $this->post);
 	}
 
-	public function isCookiesContains(string $key): bool
+	public function containsCookie(string $key): bool
 	{
-		return in_array($key, $this->cookies);
+		return array_key_exists($key, $this->cookies);
 	}
 
-	public function isFilesContains(string $key): bool
+	public function containsFile(string $key): bool
 	{
-		return in_array($key, $this->files);
+		return array_key_exists($key, $this->files);
 	}
 
-	public function isSessionContains(string $key): bool
+	public function containsSession(string $key): bool
 	{
-		return in_array($key, $this->session);
+		return array_key_exists($key, $this->session);
 	}
 
 	/**
@@ -139,7 +140,7 @@ class Request
 	 */
 	private function getRequestParameters(string $key, array $from, string $exceptionMessage)
 	{
-		if (!in_array($key, $from))
+		if (!array_key_exists($key, $from))
 		{
 			throw new Error\NoSuchQueryParameterException($exceptionMessage);
 		}

@@ -5,6 +5,10 @@ namespace Up\Core\Database;
 use Up\Core\Database\DSNBuilder\MysqlDSNBuilder;
 use Up\Core\Settings\Settings;
 
+
+/**
+ * @initMethod getInstance
+ */
 class DefaultDatabase extends BaseDatabase
 {
 	protected static $dnsOptions = [

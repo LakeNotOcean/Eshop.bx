@@ -2,25 +2,15 @@
 
 namespace Up\Entity;
 
-class ItemType
+
+class ItemType extends Entity
 {
-	protected $id;
 	protected $name;
 
-	public function __construct(int $id=1,string $name='')
-	{
-		$this->id=$id;
-		$this->name=$name;
-	}
-
-	public function getId(): int
-	{
-		return $this->id;
-	}
-
-	public function setId(int $id): void
+	public function __construct(int $id = 1, string $name = '')
 	{
 		$this->id = $id;
+		$this->name = $name;
 	}
 
 	public function getName(): string
@@ -32,6 +22,5 @@ class ItemType
 	{
 		$this->name = $name;
 	}
-
 
 }

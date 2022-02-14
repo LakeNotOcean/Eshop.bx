@@ -2,6 +2,7 @@
 
 namespace Up\DAO\SpecificationDAO;
 
+
 class SpecificationDAOqueries
 {
 	public static function getCategoriesByItemTypeIdQuery(int $itemTypeId): string

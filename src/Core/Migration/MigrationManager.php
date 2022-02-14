@@ -9,6 +9,7 @@ use PDOException;
 use Up\Core\Database\DefaultDatabase;
 use Up\Core\Settings\Settings;
 
+
 class MigrationManager
 {
 	private $database;
@@ -26,7 +27,7 @@ class MigrationManager
 		$this->database = $database;
 		$configService = Settings::getInstance();
 		$this->migrationDir = $configService->getSettings('migrationDirPath');
-		$this->migrationDateLen=strlen(date(self::dateFormat));
+		$this->migrationDateLen = strlen(date(self::dateFormat));
 	}
 
 	private function executeQuery(string $query, string $errorMessage = ""): void
@@ -74,11 +75,12 @@ class MigrationManager
 		$migrationFilesArray = [];
 		foreach ($directoryIterator as $fileInfo)
 		{
-			$migrationFilesArray[] =clone $fileInfo;
+			$migrationFilesArray[] = clone $fileInfo;
 		}
-		uasort($migrationFilesArray, function($a,$b) {
-			return strncmp($a->getFilename(),$b->getFilename(),$this->migrationDateLen);
+		uasort($migrationFilesArray, function($a, $b) {
+			return strncmp($a->getFilename(), $b->getFilename(), $this->migrationDateLen);
 		});
+
 		return $migrationFilesArray;
 	}
 
@@ -195,6 +197,3 @@ class MigrationManager
 		file_put_contents($this->migrationDir . $name . '.sql', $changeDatabaseScript);
 	}
 }
-
-
-
