@@ -56,7 +56,7 @@ class ItemController
 			'currentPage' => $currentPage,
 			'itemsAmount' => $itemsAmount,
 			'pagesAmount' => $pagesAmount,
-		], 'main.php', []);
+		], 'layout/main.php', []);
 
 		return (new Response())->withBodyHTML($pages);
 	}
@@ -64,7 +64,7 @@ class ItemController
 	public function getItem(Request $request, $id): Response
 	{
 		$item = $this->itemService->getItemById($id);
-		$pages = $this->templateProcessor->render('item.php', ['item' => $item], 'main.php', []);
+		$pages = $this->templateProcessor->render('item.php', ['item' => $item], 'layout/main.php', []);
 
 		return (new Response())->withBodyHTML($pages);
 	}

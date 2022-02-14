@@ -30,7 +30,7 @@ class OrderController
 		$items = [$item];
 		$page = $this->templateProcessor->render('make-order.php', [
 			'items' => $items,
-		],                                       'order.php', [
+		],                                       'layout/order.php', [
 													 'cost' => $this->calculateTotalCost($items),
 													 'orderSize' => count($items),
 												 ]);
@@ -63,7 +63,7 @@ class OrderController
 		}
 		$page = $this->templateProcessor->render('finish-order.php', [
 			'items' => $items,
-		],                                       'order.php', [
+		],                                       'layout/order.php', [
 													 'cost' => $this->calculateTotalCost($items),
 													 'orderSize' => count($items),
 												 ]);

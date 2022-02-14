@@ -30,7 +30,7 @@ class Redirect404Middleware extends AbstractMiddleware
 		catch (Throwable $throwable)
 		{
 			return (new Response())->withBodyHTML(
-				$this->templateProcessor->render('404.php', [], 'main.php', [])
+				$this->templateProcessor->render('404.php', [], 'layout/main.php', [])
 			);
 		}
 	}
