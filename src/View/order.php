@@ -1,5 +1,6 @@
 <?php
 /** @var string $content */
+
 /** @var int $orderSize */
 /** @var int $cost */
 ?>
@@ -28,7 +29,7 @@
 			<use xlink:href="/img/sprites.svg#logo"></use>
 		</svg>
 	</a>
-	<div class="order-info-message">Покупка <?= $orderSize?> товара за <?= $cost?> ₽</div>
+	<div class="order-info-message">Покупка <?= $orderSize ?> товара за <?= $cost ?> ₽</div>
 </nav>
 
 <main>

@@ -2,7 +2,10 @@
 
 namespace Up\Lib\Mime\Error;
 
-class MimeTypeException extends \Exception
+use Exception;
+
+
+class MimeTypeException extends Exception
 {
 
 }

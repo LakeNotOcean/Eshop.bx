@@ -6,10 +6,14 @@ use Up\Core\Database\DefaultDatabase;
 use Up\Entity\EntityArray;
 use Up\Entity\ItemsTag;
 
-class TagDAOmysql implements TagDAO
+
+class TagDAOmysql implements TagDAOInterface
 {
 	private $DBConnection;
 
+	/**
+	 * @param \Up\Core\Database\DefaultDatabase $DBConnection
+	 */
 	public function __construct(DefaultDatabase $DBConnection)
 	{
 		$this->DBConnection = $DBConnection;
@@ -27,10 +31,11 @@ class TagDAOmysql implements TagDAO
 				return $tag->getName();
 			}, $addedTags->getEntitiesArray())
 		);
-		if(!empty($toAdd))
+		if (!empty($toAdd))
 		{
 			$result = $this->DBConnection->query($this->getInsertQuery($toAdd));
 		}
+
 		return $this->getTagsByNames($names);
 	}
 
@@ -47,9 +52,13 @@ class TagDAOmysql implements TagDAO
 		return $tags;
 	}
 
-	private function getInsertQuery(array $names){
-		$names = array_map(function($name) {return "('{$name}')";}, $names);
+	private function getInsertQuery(array $names)
+	{
+		$names = array_map(function($name) {
+			return "('{$name}')";
+		}, $names);
 		$in = implode(',', $names);
+
 		return "INSERT INTO up_tag (TITLE) VALUES {$in};";
 	}
 

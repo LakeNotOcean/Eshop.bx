@@ -1,5 +1,7 @@
 <?php
-/** @var array<\Up\Entity\Item> $items */
+/** @var array<Item> $items */
+
+use Up\Entity\Item;
 
 ?>
 
@@ -13,12 +15,12 @@
 		$i = 1;
 		foreach ($items as $item):?>
 			<div class="order-item">
-				<div class="item-number"><?= $i?>.</div>
-				<div class="item-title"><?= $item->getTitle()?></div>
-				<div class="item-price"><?= $item->getPrice()?> ₽</div>
+				<div class="item-number"><?= $i ?>.</div>
+				<div class="item-title"><?= $item->getTitle() ?></div>
+				<div class="item-price"><?= $item->getPrice() ?> ₽</div>
 			</div>
-		<?php
-		$i++;
-		endforeach;?>
+			<?php
+			$i++;
+		endforeach; ?>
 	</div>
 </div>

@@ -2,6 +2,7 @@
 
 namespace Up\Core\Settings;
 
+
 /** Синглтон, используется для получения информации конфигурации */
 class Settings
 {
@@ -10,7 +11,7 @@ class Settings
 
 	protected function __construct()
 	{
-		$this->settingsList = parse_ini_file(__DIR__.'/../config.ini',false,INI_SCANNER_TYPED);
+		$this->settingsList = parse_ini_file(__DIR__ . '/../config.ini', false, INI_SCANNER_TYPED);
 		$this->settingsList['databaseConfig'] = new DatabaseConfig(
 			$this->settingsList['host'],
 			$this->settingsList['user'],
@@ -18,8 +19,8 @@ class Settings
 			$this->settingsList['dbName'],
 			(int)$this->settingsList['port']
 		);
-		$removeFields=['host','user','password','dbName','port'];
-		$this->settingsList=array_diff_key($this->settingsList,array_flip($removeFields));
+		$removeFields = ['host', 'user', 'password', 'dbName', 'port'];
+		$this->settingsList = array_diff_key($this->settingsList, array_flip($removeFields));
 	}
 
 	public static function getInstance(): Settings

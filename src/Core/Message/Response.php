@@ -2,6 +2,7 @@
 
 namespace Up\Core\Message;
 
+
 class Response
 {
 	protected $statusCode = 200;

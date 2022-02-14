@@ -2,6 +2,7 @@
 
 namespace Up\Core\Message;
 
+
 class Request
 {
 	private $queries = [];
@@ -109,27 +110,27 @@ class Request
 		return $this->getRequestParameters($key, $this->session, 'Not found such parameters in session: ' . $key);
 	}
 
-	public function isQueryContains(string $key): bool
+	public function containsQuery(string $key): bool
 	{
 		return array_key_exists($key, $this->queries);
 	}
 
-	public function isPostContains(string $key): bool
+	public function containsPost(string $key): bool
 	{
 		return array_key_exists($key, $this->post);
 	}
 
-	public function isCookiesContains(string $key): bool
+	public function containsCookie(string $key): bool
 	{
 		return array_key_exists($key, $this->cookies);
 	}
 
-	public function isFilesContains(string $key): bool
+	public function containsFile(string $key): bool
 	{
 		return array_key_exists($key, $this->files);
 	}
 
-	public function isSessionContains(string $key): bool
+	public function containsSession(string $key): bool
 	{
 		return array_key_exists($key, $this->session);
 	}

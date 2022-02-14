@@ -2,6 +2,7 @@
 
 namespace Up\Lib\Mime;
 
+
 class MimeMapper
 {
 	private const mimeToExtension = [
@@ -183,10 +184,10 @@ class MimeMapper
 		'application/s-compressed' => 'zip',
 		'multipart/x-zip' => 'zip',
 		'text/x-scriptzsh' => 'zsh',
-		'application/sql' => 'sql'
+		'application/sql' => 'sql',
 	];
 
-	public static function getExtensionByMime(string $mime)
+	public static function getExtensionByMime(string $mime): string
 	{
 		return static::mimeToExtension[$mime];
 	}

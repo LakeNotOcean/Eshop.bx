@@ -4,6 +4,7 @@ namespace Up\Core\Router;
 
 use Up\Core\Router\Error\ResolveException;
 
+
 class URLResolver
 {
 	/**

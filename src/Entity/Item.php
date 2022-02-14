@@ -2,6 +2,7 @@
 
 namespace Up\Entity;
 
+
 class Item extends Entity
 {
 	protected $title = '';
@@ -10,7 +11,6 @@ class Item extends Entity
 	protected $sortOrder = 0;
 	protected $isActive = 0;
 	protected $mainImage;
-
 
 	/**
 	 * @return string

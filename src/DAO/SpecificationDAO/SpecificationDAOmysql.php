@@ -9,10 +9,13 @@ use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 
 
-class SpecificationDAOmysql implements SpecificationDAO
+class SpecificationDAOmysql implements SpecificationDAOInterface
 {
 	private $DBConnection;
 
+	/**
+	 * @param \Up\Core\Database\DefaultDatabase $DBConnection
+	 */
 	public function __construct(DefaultDatabase $DBConnection)
 	{
 		$this->DBConnection = $DBConnection;
@@ -101,6 +104,7 @@ class SpecificationDAOmysql implements SpecificationDAO
 		$prepare = $this->DBConnection->prepare($this->getItemTypeByNameQuery($name));
 		$prepare->execute();
 		$itemTypeData = $prepare->fetch();
+
 		return new ItemType($itemTypeData['ID'], $itemTypeData['NAME']);
 	}
 
@@ -117,6 +121,7 @@ class SpecificationDAOmysql implements SpecificationDAO
 		{
 			$specification[$row['ID']] = new Specification($row['ID'], $row['NAME'], $row['DISPLAY_ORDER']);
 		}
+
 		return $specification;
 	}
 
@@ -164,6 +169,7 @@ class SpecificationDAOmysql implements SpecificationDAO
 			}
 			$categoriesList[$categoryId]->addToSpecificationList($this->createSpecificationByRow($row));
 		}
+
 		return $categoriesList;
 	}
 
@@ -177,32 +183,47 @@ class SpecificationDAOmysql implements SpecificationDAO
 			$prepair->execute($row);
 		}
 	}
+
 	public function getSpecificationCategoryByName(array $categoryNames, array $typeNames): EntityArray
 	{
 		$categories = new EntityArray();
 		$result = $this->DBConnection->query($this->getSpecificationCategoryByNameQuery($categoryNames, $typeNames));
 		while ($row = $result->fetch())
 		{
-			if(!$categories->contains($row['C_ID']))
+			if (!$categories->contains($row['C_ID']))
 			{
-				$categories->addEntity(new SpecificationCategory($row['C_ID'], $row['C_NAME'], $row['C_DISPLAY_ORDER']));
+				$categories->addEntity(
+					new SpecificationCategory($row['C_ID'], $row['C_NAME'], $row['C_DISPLAY_ORDER'])
+				);
 			}
-			if(!$categories->getEntity($row['C_ID'])->getSpecificationList()->contain($row['T_ID']))
+			if (!$categories->getEntity($row['C_ID'])->getSpecificationList()->contain($row['T_ID']))
 			{
-				$categories->getEntity($row['C_ID'])
-						   ->getSpecificationList()
-						   ->addEntity(new Specification($row['T_ID'], $row['T_NAME'], $row['T_DISPLAY_ORDER']));
+				$categories->getEntity($row['C_ID'])->getSpecificationList()->addEntity(
+					new Specification($row['T_ID'], $row['T_NAME'], $row['T_DISPLAY_ORDER'])
+				);
 			}
 		}
+
 		return $categories;
 	}
 
 	private function getSpecificationCategoryByNameQuery(array $categoryNames, array $typeNames): string
 	{
-		$implodeC = implode(',', array_map(function($str) {return "'$str'";}, $categoryNames));
-		$implodeT = implode(',', array_map(function($str) {return "'$str'";}, $typeNames));
+		$implodeC = implode(
+			',',
+			array_map(static function($str) {
+				return "'$str'";
+			}, $categoryNames)
+		);
+		$implodeT = implode(
+			',',
+			array_map(static function($str) {
+				return "'$str'";
+			}, $typeNames)
+		);
 		$whereInC = (empty($categoryNames) ? '' : "AND usc.ID IN ({$implodeC})");
 		$whereInT = (empty($typeNames) ? '' : "AND ust.ID IN ({$implodeT})");
+
 		return "SELECT usc.ID C_ID, usc.NAME C_NAME, usc.DISPLAY_ORDER C_DISPLAY_ORDER, ust.ID T_ID, 
                         ust.NAME T_NAME, ust.DISPLAY_ORDER T_DISPLAY_ORDER
 				FROM up_spec_category usc

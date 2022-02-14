@@ -2,6 +2,7 @@
 
 namespace Up\Core\Router;
 
+
 class Router
 {
 	private static $instance;
@@ -138,6 +139,7 @@ class Router
 		{
 			$path = mb_substr($path, 0, $queryParamsIndex);
 		}
+
 		return $path;
 	}
 }

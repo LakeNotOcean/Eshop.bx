@@ -3,13 +3,17 @@
 namespace Up\DAO\UserDAO;
 
 use Up\Core\Database\DefaultDatabase;
-use Up\Entity\UserRole;
 use Up\Entity\User;
+use Up\Entity\UserRole;
 
-class UserDAOmysql implements UserDAO
+
+class UserDAOmysql implements UserDAOInterface
 {
 	private $DBConnection;
 
+	/**
+	 * @param \Up\Core\Database\DefaultDatabase $DBConnection
+	 */
 	public function __construct(DefaultDatabase $DBConnection)
 	{
 		$this->DBConnection = $DBConnection;
@@ -27,12 +31,8 @@ class UserDAOmysql implements UserDAO
 		{
 			$resultList[$row['USER_LOGIN']] = $row['USER_PASSWORD'];
 		}
-		if (!array_key_exists($login, $resultList) || !password_verify($password, $resultList[$login]))
-		{
-			return false;
-		}
 
-		return true;
+		return array_key_exists($login, $resultList) && password_verify($password, $resultList[$login]);
 
 	}
 
