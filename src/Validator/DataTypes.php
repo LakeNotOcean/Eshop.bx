@@ -6,9 +6,9 @@ use Up\Core\Enum\Enum;
 
 class DataTypes extends Enum
 {
-	const email=0;
-	const phone=1;
-	const login=2;
-	const password=3;
-	const names=4;
+	const email='email';
+	const phone='phone';
+	const login='login';
+	const password='password';
+	const names='names';
 }

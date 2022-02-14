@@ -31,24 +31,23 @@ class Validator
 	private const ValidatorPathMethod = "Up\Validator\Validator::";
 
 	/** @param string|int $data
-	 * @param int $dataType
+	 * @param DataTypes $dataType
 	 *
 	 * @throws EnumException
 	 * @throws ReflectionException
 	 */
-	public static function validate($data, int $dataType): array
+	public static function validate($data, DataTypes $dataType): array
 	{
-		dataTypes::isValidValue($dataType);
 		$errors = [];
-		$rule = self::rules[$dataType];
+		$rule = self::rules[$dataType->getKey()];
 		foreach ($rule as $method => $args)
 		{
 			array_unshift($args, $data);
-			$classMethodName = self::ValidatorPathMethod . ValidatorMethodEnum::toString($method);
+			$classMethodName = self::ValidatorPathMethod . $method;
 			$result = call_user_func_array($classMethodName, $args);
 			if ($result !== '')
 			{
-				$errors[ValidatorMethodEnum::toString($method)] = $result;
+				$errors[$method] = $result;
 			}
 		}
 

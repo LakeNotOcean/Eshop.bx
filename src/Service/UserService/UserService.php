@@ -4,14 +4,14 @@ namespace Up\Service\UserService;
 
 use Exception;
 use Up\DAO\UserDAO\UserDAOInterface;
-use Up\Entity\User;
-use Up\Entity\UserRole;
+use Up\Entity\User\User;
+use Up\Entity\User\UserEnum;
+use Up\Entity\User\UserRole;
 
 
 class UserService implements UserServiceInterface
 {
-	private const Admin = 'Admin';
-	private const UserKey = 'USER';
+	private const UserSessionKey = 'USER';
 
 	protected $userDAO;
 
@@ -58,12 +58,12 @@ class UserService implements UserServiceInterface
 	public function getUserInfo(): User
 	{
 		$this->startSessionIfNotExists();
-		if (!isset($_SESSION[self::UserKey]))
+		if (!isset($_SESSION[self::UserSessionKey]))
 		{
-			$_SESSION[self::UserKey] = new User('', new UserRole());
+			$_SESSION[self::UserSessionKey] = new User('', new UserRole());
 		}
 
-		return $_SESSION[self::UserKey];
+		return $_SESSION[self::UserSessionKey];
 	}
 
 	public function registerUser(user $user, string $password): void
@@ -75,7 +75,7 @@ class UserService implements UserServiceInterface
 	private function addUserToSession(User $user): void
 	{
 		$this->startSessionIfNotExists();
-		$_SESSION[self::UserKey] = $user;
+		$_SESSION[self::UserSessionKey] = $user;
 	}
 
 	private function startSessionIfNotExists(): void
@@ -91,7 +91,7 @@ class UserService implements UserServiceInterface
 	 */
 	public function checkIsAdmin(): void
 	{
-		if ($this->getUserInfo()->getRole()->getName() !== self::Admin)
+		if ($this->getUserInfo()->getRole()->getName() !== UserEnum::Admin)
 		{
 			throw new Exception('You are not authorized to perform the operation ');
 		}
@@ -113,7 +113,7 @@ class UserService implements UserServiceInterface
 
 	public function getUsersInfo(): array
 	{
-		if ($this->getUserInfo()->getRole()->getName() !== self::Admin)
+		if ($this->getUserInfo()->getRole()->getName() !== UserEnum::Admin)
 		{
 			return $this->getUsersList();
 		}

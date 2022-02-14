@@ -6,11 +6,13 @@ use Exception;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
-use Up\Entity\User;
-use Up\Entity\UserRole;
+use Up\Entity\User\User;
+use Up\Entity\User\UserRole;
 use Up\Validator\DataTypes;
 use Up\Validator\Validator;
 use Up\Service\UserService\UserServiceInterface;
+
+
 
 class UserController
 {
@@ -32,12 +34,14 @@ class UserController
 		$login = $request->getPostParametersByName('login');
 		$phone = $request->getPostParametersByName('phone');
 		$email = $request->getPostParametersByName('email');
-		$error=[];
+
 		$password = $request->getPostParametersByName('password');
-		$error[]=Validator::validate($email,DataTypes::email);
-		$error[]=Validator::validate($phone,DataTypes::phone);
-		$error[]=Validator::validate($login,DataTypes::login);
-		$error[]=Validator::validate($email,DataTypes::email);
+
+		// $error=[];
+		// $error[]=Validator::validate($email,DataTypes::email());
+		// $error[]=Validator::validate($phone,DataTypes::phone());
+		// $error[]=Validator::validate($login,DataTypes::login());
+		// $error[]=Validator::validate($email,DataTypes::email());
 		try
 		{
 			$user = new User(
