@@ -1,14 +1,15 @@
 <?php
 /** @var array<Entity\Item> $items */
-
+/** @var array<Up\Entity\SpecificationCategory> $categories */
 /** @var int $result_count */
 /** @var int $currentPage */
 /** @var int $itemsAmount */
 /** @var int $pagesAmount */
+
 $pref = '_big';
 
 use Up\Core\Router\URLResolver;
-
+var_dump($_GET);
 ?>
 
 <link rel="stylesheet" href="./css/catalog.css">
@@ -17,19 +18,24 @@ use Up\Core\Router\URLResolver;
 	<div class="filters-item-list-row">
 		<div class="filters-column">
 			<div class="filters">
+				<form action="\"  method="get" id="form">
 				<div class="filter-category">
-					<div class="price-category">
-						<div class="filter-category-title">
-							Цена
-						</div>
+					<div class="price-category filter-category-specification">
+						<ul>
+							<li>
+
+								<div class="filter-category-title filter-category-active">
+									Цена
+								</div>
+								<input type="checkbox" class="filter-category-sub-specification" id="price"  />
+								<label class="filter-category-label price" for="price"  ></label>
+								<ul style="display:none">
 						<div class="price-category-bodies">
-							<div class="price-category-body">
+							<div class="filter-price-category-body">
 								<div class="price-category-body-text">
 									Мин. цена
 								</div>
-								<div class="price-category-body-int">
-									100
-								</div>
+								<input type=text id="minprice" name="minprice" value="100" class="price-category-body-int">
 							</div>
 							<div class="price-category-body-center">
 								-
@@ -38,22 +44,74 @@ use Up\Core\Router\URLResolver;
 								<div class="price-category-body-text">
 									Макс. цена
 								</div>
-								<div class="price-category-body-int">
-									1000
-								</div>
+
+									<input type=text id="maxprice" name="maxprice" value="1000" class="price-category-body-int">
+
 							</div>
 
 						</div>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					<div class="filter-category-specification">
+						<?
+						foreach ($categories as $category)
+						{
+							?>
+							<ul>
+								<li>
+									<a class="filter-category-active" href="#"><?=$category->getName()?></a>
+									<input type="checkbox" class="filter-category-sub-specification" id=<?=$category->getId()?>  />
+									<label class="filter-category-label" for=<?=$category->getId()?>  ></label>
+									<ul style="display:none">
+										<li>
+											<div class = filter-category-specification-line></div>
+												<? $specList = $category->getSpecificationList();
+												$specList = $specList->getEntitiesArray();
+												foreach ($specList as $spec){
+													?>
+													<div><?= $spec->getName() ?></div>
+													<?foreach ($spec->getValue() as $value=>$count){
+														?>
+														<div class="filter-category-specification-group">
+															<div>
+																<label>
+																<input type="checkbox" form="form" name="<?= $spec->getId() ?>[]" value="<?=$value?>">
+																	<?=$value?> </label>
+															</div>
+															<div class="filter-category-count">
+																(<?=$count?>)
+															</div>
+														</div>
+													<?}?>
+												<?} ?>
+										</li>
+									</ul>
+								</li>
+							</ul>
+
+						<?} ?>
 					</div>
 					<div class="tag-category">
 						<div class="filter-category-title">
-							Тег
+							Теги
 						</div>
 						<div class="tag-category-body">
-							Выбор
+							<?foreach ($tags as $tag)
+							{?>
+								<div class="switch">
+									<input type="checkbox" name="tag[]" value="<?=$tag->getID()?>" form="form">
+									<label><?=$tag->getName()?></label>
+								</div>
+							<?}?>
 						</div>
 
+
+
 					</div>
+					<input type="submit" form="form">
+				</form>
 				</div>
 			</div>
 		</div>

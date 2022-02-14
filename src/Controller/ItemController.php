@@ -50,12 +50,17 @@ class ItemController
 
 		$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
 		$itemsAmount = $this->itemService->getItemsAmount();
+		$categories = $this->itemService->getItemsCategories();
+		$tags = $this->itemService->getItemsTags();
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
+
 		$pages = $this->templateProcessor->render('catalog.php', [
 			'items' => $items,
 			'currentPage' => $currentPage,
 			'itemsAmount' => $itemsAmount,
 			'pagesAmount' => $pagesAmount,
+			'categories' => $categories,
+			'tags' => $tags,
 		], 'main.php', []);
 
 		return (new Response())->withBodyHTML($pages);

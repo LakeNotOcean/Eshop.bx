@@ -7,7 +7,8 @@ use Up\Entity\EntityArray;
 use Up\Entity\ItemType;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
-
+use Up\Entity\SpecificationCategoryFilter;
+use Up\Entity\SpecificationFilter;
 
 class SpecificationDAOmysql implements SpecificationDAOInterface
 {
@@ -19,6 +20,43 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 	public function __construct(DefaultDatabase $DBConnection)
 	{
 		$this->DBConnection = $DBConnection;
+	}
+
+	public function getCategoriesWithValueByItemTypeId(int $itemTypeId): array
+	{
+		$result = $this->DBConnection->query(SpecificationDAOqueries::getCategoriesWithValueByItemTypeIdQuery($itemTypeId));
+		$resultArray = [];
+		while ($row = $result->fetch())
+		{
+			$categoryId = $row['CAT_ID'];
+			if (!array_key_exists($categoryId, $resultArray))
+			{
+				$resultArray[$categoryId] = new SpecificationCategoryFilter(
+					$row['CAT_ID'], $row['CAT_NAME'], $row['CAT_ORDER']
+				);
+			}
+			$specId = $row['SPEC_ID'];
+			$specValues = $row['SPEC_VALUES'];
+			$specValue = explode('|##|',$specValues);
+			$value = $specValue[1];
+			$count = $specValue[0];
+
+			if (!array_key_exists($specId,$resultArray[$categoryId]->getSpecificationList()->getEntitiesArray()))
+			{
+				$specification = new SpecificationFilter(
+					$specId, $row['SPEC_NAME'], $row['SPEC_ORDER']
+				);
+					$specification->setValue($value,$count);
+					$resultArray[$categoryId]->addToSpecificationList($specification);
+			}
+			else
+			{
+				$specification = $resultArray[$categoryId]->getSpecificationList()->getEntity($specId);
+				$specification->setValue($value,$count);
+			}
+		}
+
+		return $resultArray;
 	}
 
 	public function getCategoriesByItemTypeId(int $itemTypeId): array
@@ -172,6 +210,8 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 
 		return $categoriesList;
 	}
+
+
 
 	public function addSpecificationsToItemById(int $itemId, array $specificationsList): void
 	{
