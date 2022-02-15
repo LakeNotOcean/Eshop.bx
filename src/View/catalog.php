@@ -63,27 +63,41 @@ use Up\Core\Router\URLResolver;
 			endforeach; ?>
 
 			<div class="navigation">
-				<!--				<div class="navigation-dots navigation-item">...</div>-->
-				<a href="/?page=1" class="navigation-page navigation-item"> << </a>
-				<?php
-				($currentPage > 3) ? $startPage = $currentPage - 3 : $startPage = 1;
-				($currentPage <= $pagesAmount - 3) ? $endPage = $currentPage + 3 : $endPage = $pagesAmount;
-				for ($i = $startPage; $i <= $endPage; $i++):
-					if ($currentPage === $i)
-					{
-						$activeClass = 'navigation-active';
-					}
-					else
-					{
-						$activeClass = '';
-					}
-					?>
-					<a href="/?page=<?= $i ?>" class="navigation-page navigation-item <?= $activeClass ?>"> <?= $i ?> </a>
+				<a href="/?page=<?= $currentPage - 1 ?>" class="navigation-page navigation-item
+				<?= $currentPage === 1 ? 'navigation-blocked' : '' ?>"> < </a>
+				<a href="/?page=1" class="navigation-page navigation-item
+				<?= $currentPage === 1 ? 'navigation-active' : '' ?>">1</a>
+
+				<?php if ($pagesAmount > 7 && $currentPage >= 1 + 4): ?>
+					<div class="navigation-dots navigation-item">···</div>
+				<?php endif;?>
 
 				<?php
-				endfor; ?>
+				$startPage = 2;
+				$endPage = 5;
+				if ($currentPage >= 5)
+				{
+					$startPage = $currentPage - 1;
+					$endPage = $currentPage + 1;
+				}
+				if ($currentPage > $pagesAmount - 4)
+				{
+					$startPage = $pagesAmount - 4;
+					$endPage = $pagesAmount - 1;
+				}
+				for ($i = $startPage; $i <= $endPage; $i++): ?>
+					<a href="/?page=<?= $i ?>" class="navigation-page navigation-item
+					<?= $currentPage === $i ? 'navigation-active' : '' ?>"> <?= $i ?> </a>
+				<?php endfor;?>
 
-				<a href="/?page=<?= $pagesAmount ?>" class="navigation-page navigation-item"> >> </a>
+				<?php if ($pagesAmount > 7 && $currentPage <= $pagesAmount - 4): ?>
+					<div class="navigation-dots navigation-item">···</div>
+				<?php endif;?>
+
+				<a href="/?page=<?= $pagesAmount?>" class="navigation-page navigation-item
+				<?= $currentPage === $pagesAmount ? 'navigation-active' : '' ?>"><?= $pagesAmount?></a>
+				<a href="/?page=<?= $currentPage + 1 ?>" class="navigation-page navigation-item
+				<?= $currentPage === $pagesAmount ? 'navigation-blocked' : '' ?>"> > </a>
 			</div>
 		</div>
 	</div>
