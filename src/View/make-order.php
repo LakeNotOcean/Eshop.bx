@@ -28,8 +28,8 @@ use Up\Entity\Item;
 		endforeach; ?>
 		<div class="user-data-title">Данные покупателя</div>
 		<div class="user-name">
-			<label for="name">
-				<input type="text" id="name" name="name" placeholder="Имя">
+			<label for="first-name">
+				<input type="text" id="first-name" name="first-name" placeholder="Имя" required>
 			</label>
 			<label for="second-name">
 				<input type="text" id="second-name" name="second-name" placeholder="Фамилия">
@@ -37,10 +37,10 @@ use Up\Entity\Item;
 		</div>
 		<div class="user-contact">
 			<label for="phone">
-				<input type="tel" id="phone" name="phone" placeholder="Телефон">
+				<input type="tel" pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}" id="phone" name="phone" placeholder="Телефон" required>
 			</label>
 			<label for="email">
-				<input type="email" id="email" name="email" placeholder="E-mail">
+				<input type="email" id="email" name="email" placeholder="E-mail" required>
 			</label>
 		</div>
 		<label for="comment">
@@ -49,3 +49,5 @@ use Up\Entity\Item;
 		<input type="submit" value="Подтвердить" class="btn-confirm">
 	</form>
 </div>
+
+<script src="/js/phone-input.js"></script>
