@@ -44,3 +44,23 @@ inputOther.addEventListener('change', () => {
 		previewOther.appendChild(image);
 	}
 });
+
+function resetPreview()
+{
+	while(previewMain.firstChild) {
+		previewMain.removeChild(previewMain.firstChild);
+	}
+	const image = document.createElement('img');
+	image.src = "/img/default_image.webp";
+	image.alt = "main-image";
+	image.classList.add('image-img');
+	previewMain.appendChild(image);
+
+	while(previewOther.firstChild) {
+		previewOther.removeChild(previewOther.firstChild);
+	}
+	const message = document.createElement('div');
+	message.classList.add('no-images-title');
+	message.innerText = 'Добавьте дополнительные фотографии для товара';
+	previewOther.appendChild(message);
+}

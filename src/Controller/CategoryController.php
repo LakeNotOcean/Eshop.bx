@@ -10,6 +10,7 @@ use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 use Up\Service\SpecificationService\SpecificationsServiceInterface;
 
+
 class CategoryController
 {
 	protected $templateProcessor;
@@ -169,4 +170,5 @@ class CategoryController
 		}, $categories);
 		return $response->withBodyJSON($categoriesArray);
 	}
+
 }

@@ -16,11 +16,7 @@
 		</label>
 		<input type="submit" value="Сохранить категорию в базу данных" class="btn-save">
 	</form>
-	<?php
-	if ($isNewCategoryAdded): ?>
-		<div id="popup" class="popup">Добавлена новая категория</div>
-	<?php
-	endif; ?>
+	<div id="popup" class="popup <?= !$isNewCategoryAdded ? 'hidden' : ''?>">Добавлена новая категория</div>
 </div>
 
 <script src="/js/popup-disappear.js"></script>
