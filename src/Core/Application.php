@@ -96,7 +96,7 @@ class Application
 		$middlewareManager->loadMiddlewares();
 		try
 		{
-			$response = $middlewareManager->invokeWithMiddleware([$controller, $method['callback'][1]],$params['request'], ...$args);
+				$response = $middlewareManager->invokeWithMiddleware([$controller, $method['callback'][1]], ...$args);
 		}
 		catch (Throwable $e)
 		{
