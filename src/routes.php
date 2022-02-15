@@ -31,8 +31,7 @@ $router->post('/admin/addCategory', [CategoryController::class, 'addCategoryAndS
 $router->get('/admin/addSpecification', [CategoryController::class, 'addSpecification'], 'add-specification');
 $router->post('/admin/addSpecification', [CategoryController::class, 'addSpecificationAndSaveToDB'], 'add-specification-db');
 
-$router->get('/category/detail', [CategoryController::class, 'getCategoriesWithSpecsJSON'], 'category-detail');
-$router->get('/categories', [CategoryController::class, 'getCategoriesJSON'], 'cat');
-//$router->get('/category/{positiveInt:id}', [CategoryController::class, 'getSpecsByCategoryIdJSON'], 'cat');
-
-$router->get('/categoriesByType', [CategoryController::class, 'getCategoriesByItemTypeIdJSON'], 'categories-by-type');
+//API
+$router->get('/api/v1/category/detail', [CategoryController::class, 'getCategoriesWithSpecsJSON'], 'category-detail');
+$router->get('/api/v1/categories', [CategoryController::class, 'getCategoriesJSON'], 'cat');
+$router->get('/api/v1/categoriesByType', [CategoryController::class, 'getCategoriesByItemTypeIdJSON'], 'categories-by-type');

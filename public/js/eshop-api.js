@@ -2,12 +2,12 @@ let allCategory = {};
 let templateCategory = {};
 
 async function loadCategoryAndSpecByType(typeId){
-	let r = await fetch('/categoriesByType?item-type=' + typeId);
+	let r = await fetch('/api/v1/categoriesByType?item-type=' + typeId);
 	return  r.json();
 }
 
 async function loadAllCategory(){
-	let r = await fetch('/category/detail');
+	let r = await fetch('/api/v1/category/detail');
 	return r.json();
 }
 
