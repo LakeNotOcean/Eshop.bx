@@ -1,0 +1,50 @@
+.btn {
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	border-radius: 10px;
+	padding: 0 5px;
+	border: 2px solid #D9D9D9;
+	background: #fff;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.btn:hover {
+	color: white;
+}
+
+.btn-normal {
+	flex: 0;
+	width: 400px;
+	margin: 30px auto;
+}
+
+.btn-normal:hover {
+	background: #F17F42;
+	border-color: #F17F42;
+	color: #ffffff;
+	font-weight: 500;
+}
+
+.btn-delete {
+	width: 200px;
+	color: #DF0310;
+}
+
+.btn-delete:hover {
+	background: #DF0310;
+	border-color: #DF0310;
+}
+
+.btn-add {
+	margin-top: 5px;
+	margin-bottom: 20px;
+	width: 300px;
+	color: #009AFF;
+}
+
+.btn-add:hover {
+	background: #009AFF;
+	border-color: #009AFF;
+}

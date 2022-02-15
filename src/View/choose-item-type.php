@@ -20,6 +20,6 @@ use Up\Entity\ItemType;
 			</select>
 			<a href="/admin/addItemType" class="btn-add-type">Добавить тип</a>
 		</label>
-		<input type="submit" value="Далее" class="btn-save">
+		<input type="submit" value="Далее" class="btn btn-normal">
 	</form>
 </div>

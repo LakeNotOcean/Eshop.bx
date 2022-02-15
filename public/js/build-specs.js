@@ -49,7 +49,7 @@ async function createSpec(btn, specId = null)
 	fieldDiv.append(specNameInput);
 
 	let btnDeleteDiv = document.createElement('div');
-	btnDeleteDiv.classList.add('btn', 'delete');
+	btnDeleteDiv.classList.add('btn', 'btn-delete');
 	btnDeleteDiv.innerText = 'Удалить';
 
 	btnDeleteDiv.addEventListener('click', () => {
@@ -104,7 +104,7 @@ async function createCategory(catId = null)
 	fieldDiv.append(inputCategoryInput);
 
 	let btnDeleteDiv = document.createElement('div');
-	btnDeleteDiv.classList.add('btn', 'delete');
+	btnDeleteDiv.classList.add('btn', 'btn-delete');
 	btnDeleteDiv.innerText = 'Удалить';
 
 	btnDeleteDiv.addEventListener('click', () => {
@@ -114,7 +114,7 @@ async function createCategory(catId = null)
 	categoryFieldDiv.append(fieldDiv, btnDeleteDiv);
 
 	let btnAddDiv = document.createElement('div');
-	btnAddDiv.classList.add('btn', 'add');
+	btnAddDiv.classList.add('btn', 'btn-add');
 	btnAddDiv.innerText = 'Добавить спецификацию';
 
 	btnAddDiv.addEventListener('click', async () => {

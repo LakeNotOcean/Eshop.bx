@@ -54,6 +54,7 @@ use Up\Core\Router\URLResolver;
 								<div class="rating-value"><?= (float)random_int(40, 50) / 10 ?></div>
 								<div class="review-count">(<?= random_int(5, 50) ?> отзывов)</div>
 							</div>
+							<a class="btn" href="#">Изменить</a>
 							<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
 						</div>
 					</div>
