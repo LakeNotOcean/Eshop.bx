@@ -20,11 +20,12 @@ class Validator
 		],
 		DataTypes::password => [
 			ValidatorMethodEnum::minLength => [5],
-			ValidatorMethodEnum::maxLength => [20],
+			ValidatorMethodEnum::maxLength => [50],
 			ValidatorMethodEnum::onlyLatin => [],
 		],
 		DataTypes::names => [
 			ValidatorMethodEnum::maxLength => [20],
+			ValidatorMethodEnum::minLength=>[1],
 			ValidatorMethodEnum::nameFormat => [],
 		],
 	];
@@ -128,7 +129,7 @@ class Validator
 
 	private static function phoneFormat($data): string
 	{
-		$template = "/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s/0-9]*$/g";
+		$template = "/^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/gm";
 		if (!preg_match($template, $data))
 		{
 			return "wrong phone format ";

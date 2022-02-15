@@ -32,11 +32,13 @@
 	display: flex;
 	flex-direction: column;
 	padding: 5px;
-	color:red;
 }
 .label-error{
 	margin:5px;
 	padding-left: 10px;
+	color:red;
+	visibility: hidden;
+	font-size: 10px;
 }
 
 .register-fields > :last-child{
@@ -100,4 +102,16 @@
 	border-color: #F17F42;
 	color: #ffffff;
 	font-weight: 500;
+}
+
+.error{
+	border-color: red;
+}
+
+.success{
+	border-color: green;
+}
+
+.visible{
+	visibility: visible;
 }
