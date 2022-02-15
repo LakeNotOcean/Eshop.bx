@@ -5,9 +5,13 @@
 /** @var int $currentPage */
 /** @var int $itemsAmount */
 /** @var int $pagesAmount */
+
+/** @var bool $isAdmin */
 $pref = '_big';
 
 use Up\Core\Router\URLResolver;
+
+$isAdmin = true;
 
 ?>
 
@@ -28,7 +32,7 @@ use Up\Core\Router\URLResolver;
 			<?php
 			foreach ($items as $item) : ?>
 
-				<a class="item" href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>">
+				<div class="item">
 					<picture>
 						<source srcset="../img/<?= $item->getId() . $pref ?>.webp" type="image/webp">
 						<source srcset="../img/<?= $item->getId() . $pref ?>.png" type="image/png">
@@ -37,7 +41,7 @@ use Up\Core\Router\URLResolver;
 					<div class="item-other">
 						<div class="item-other-to-top">
 							<div class="item-other-header">
-								<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
+								<a class="item-title" href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>"><?= htmlspecialchars($item->getTitle()) ?></a>
 								<svg class="add-to-favorites">
 									<use xlink:href="/img/sprites.svg#heart"></use>
 								</svg>
@@ -54,10 +58,16 @@ use Up\Core\Router\URLResolver;
 								<div class="rating-value"><?= (float)random_int(40, 50) / 10 ?></div>
 								<div class="review-count">(<?= random_int(5, 50) ?> отзывов)</div>
 							</div>
+							<?php if ($isAdmin): ?>
+							<div class="admin-btn-container">
+								<a class="btn btn-normal" href="">Изменить</a>
+								<a class="btn btn-delete" href="">Удалить</a>
+							</div>
+							<?php endif;?>
 							<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
 						</div>
 					</div>
-				</a>
+				</div>
 
 			<?php
 			endforeach; ?>

@@ -12,10 +12,10 @@
 		</label>
 		<div class="specifications">
 			<div class="specifications-title">Характеристики</div>
-			<div class="btn add add-category">Добавить категорию</div>
+			<div class="btn btn-add add-category">Добавить категорию</div>
 		</div>
 
-		<input type="submit" value="Сохранить тип товара в базу данных" class="btn-save">
+		<input type="submit" value="Сохранить тип товара в базу данных" class="btn-normal">
 	</form>
 	<?php
 	if ($isNewItemTypeAdded): ?>

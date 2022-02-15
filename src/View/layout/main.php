@@ -33,7 +33,7 @@
 			<div></div>
 		</div>
 	</form>
-	<div class="sign-in">Войти</div>
+	<div class="btn btn-normal sign-in">Войти</div>
 </nav>
 
 <main>

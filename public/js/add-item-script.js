@@ -64,7 +64,7 @@ async function createTemplate() {
 	for (let catId in templateCategory) {
 		let category = await createCategory(catId);
 		let catDiv = firstBtn.parentNode.insertBefore(category, firstBtn);
-		let specAddBtn = catDiv.querySelector('.category .add');
+		let specAddBtn = catDiv.querySelector('.category .btn-add');
 		specAddBtn.addEventListener('click', async () => {
 			let spec = await createSpec(specAddBtn);
 			specAddBtn.parentNode.insertBefore(spec, specAddBtn);
