@@ -30,6 +30,8 @@ $router->get('/admin/addCategory', [CategoryController::class, 'addCategory'], '
 $router->post('/admin/addCategory', [CategoryController::class, 'addCategoryAndSaveToDB'], 'add-category-db');
 $router->get('/admin/addSpecification', [CategoryController::class, 'addSpecification'], 'add-specification');
 $router->post('/admin/addSpecification', [CategoryController::class, 'addSpecificationAndSaveToDB'], 'add-specification-db');
+$router->get('/admin/', [ItemController::class, 'getItems'], 'home-admin');
+$router->get('/admin/editCategory', [CategoryController::class, 'editCategoriesPage'], 'edit-category-page');
 
 //API
 $router->get('/api/v1/category/detail', [CategoryController::class, 'getCategoriesWithSpecsJSON'], 'category-detail');

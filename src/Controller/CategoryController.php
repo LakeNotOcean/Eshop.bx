@@ -171,4 +171,17 @@ class CategoryController
 		return $response->withBodyJSON($categoriesArray);
 	}
 
+	public function editCategoriesPage(Request $request): Response
+	{
+		$categories = $this->specificationsService->getCategoriesWithSpecifications();
+		$page = $this->templateProcessor->render('edit-category.php', [
+			'categories' => $categories,
+			'isNewItemTypeAdded' => false
+		], 'layout/admin-main.php', []);
+
+		$response = new Response();
+
+		return $response->withBodyHTML($page);
+	}
+
 }

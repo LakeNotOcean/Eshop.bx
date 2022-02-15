@@ -50,14 +50,10 @@ class ItemController
 	 */
 	public function getItems(Request $request): Response
 	{
-		if ($request->containsQuery('page'))
-		{
-			$currentPage = (int)$request->getQueriesByName('page');
-		}
-		else
-		{
-			$currentPage = 1;
-		}
+		$isAdmin = true;
+
+		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
+		$layout = $isAdmin ? 'layout/admin-main.php' : 'layout/main.php';
 
 		$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
 		$itemsAmount = $this->itemService->getItemsAmount();
@@ -67,7 +63,7 @@ class ItemController
 			'currentPage' => $currentPage,
 			'itemsAmount' => $itemsAmount,
 			'pagesAmount' => $pagesAmount,
-		],                                        'layout/main.php', []);
+		],                                        $layout, []);
 
 		return (new Response())->withBodyHTML($pages);
 	}
