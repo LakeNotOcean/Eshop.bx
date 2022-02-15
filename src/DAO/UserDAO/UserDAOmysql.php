@@ -3,8 +3,9 @@
 namespace Up\DAO\UserDAO;
 
 use Up\Core\Database\DefaultDatabase;
-use Up\Entity\User;
-use Up\Entity\UserRole;
+use Up\Entity\User\User;
+use Up\Entity\User\UserEnum;
+use Up\Entity\User\UserRole;
 
 
 class UserDAOmysql implements UserDAOInterface
@@ -25,7 +26,8 @@ class UserDAOmysql implements UserDAOInterface
 			up_user.LOGIN as USER_LOGIN,
             up_user.PASSWORD as USER_PASSWORD
 		FROM up_user WHERE LOGIN='{$login}';";
-		$queryResult = $this->DBConnection->query($query);
+		$queryResult=$this->DBConnection->prepare($query);
+		$queryResult->execute();
 		$resultList = [];
 		while ($row = $queryResult->fetch())
 		{
@@ -95,10 +97,14 @@ class UserDAOmysql implements UserDAOInterface
 		return $resultList;
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 * @throws \Up\Core\Enum\EnumException
+	 */
 	private function createUserByRow($row): User
 	{
 		return new User(
-			$row['USER_LOGIN'], new UserRole($row['ROLE_ID'], $row['ROLE_NAME']), $row['USER_EMAIL'], $row['USER_PHONE']
+			$row['USER_LOGIN'], new UserRole($row['ROLE_ID'], new UserEnum($row['ROLE_NAME'])), $row['USER_EMAIL'], $row['USER_PHONE']
 		);
 	}
 

@@ -37,7 +37,7 @@ class DebugMiddleware extends AbstractMiddleware
 					$this->templateProcessor->render('debug.php', [
 						'request' => $request,
 						'exception' => $throwable,
-					],                               'main.php', [])
+					],                               'layout/main.php', [])
 				);
 			}
 		}
