@@ -5,7 +5,7 @@
 
 <link rel="stylesheet" href="/css/add-item.css">
 <div class="form-container">
-	<form action="/addItemType" method="post" enctype="multipart/form-data" class="form-add">
+	<form action="/admin/addItemType" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="item-type" class="field">
 			<span class="label-title">Тип товара</span>
 			<input type="text" id="item-type" name="item-type" placeholder="Введите название типа товара">
@@ -19,9 +19,10 @@
 	</form>
 	<?php
 	if ($isNewItemTypeAdded): ?>
-		<div id="popup" class="popup">Добавлен новый тип товара</div>
+		<div class="popup">Добавлен новый тип товара</div>
 	<?php
 	endif; ?>
 </div>
 <script src="/js/popup-disappear.js"></script>
+<script src="/js/eshop-api.js"></script>
 <script src="/js/build-item-type.js"></script>

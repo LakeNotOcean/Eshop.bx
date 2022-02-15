@@ -1,10 +1,32 @@
 <?php
 /** @var \Up\Entity\ItemDetail $item */
 
+$itemImages = ['/img/2_big.webp', '/img/2-1_big.webp', '/img/2-2_big.webp'];
 ?>
 
 <link rel="stylesheet" href="/css/item.css">
 <link rel="stylesheet" href="/lib/lightbox/css/lightbox.css">
+
+<div class="opened-images" style="display: none;">
+	<div class="open-images-container">
+		<div class="open-images-header">
+			<div class="btn-back"></div>
+			<div class="add-to-favorites">
+				<svg class="add-to-favorites-icon">
+					<use xlink:href="/img/sprites.svg#heart"></use>
+				</svg>
+				<div class="add-to-favorites-label">В избранное</div>
+			</div>
+		</div>
+		<div class="open-images-main">
+			<div class="image-list">
+				<?php foreach ($itemImages as $itemImage):?>
+					<img src="<?= $itemImage?>" alt="item-main-image" class="item-image">
+				<?php endforeach;?>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="container">
 	<a class="anchor" id="main"></a>
 	<div class="item-header">
@@ -20,20 +42,13 @@
 
 		<div class="item-main-sidebar">
 			<div class="item-main-images card-outline">
-				<div class="item-main-images-main">
-					<a href="/img/2_big.webp" data-lightbox='item-pic'>
-						<img src="/img/2_big.webp" alt="item-main-image">
-					</a>
-				</div>
 
-				<div class="item-main-images-all">
-					<!--						<a href=bigImage> <img src=smallImage> </a>-->
-					<a href="/img/2-1_big.webp" data-lightbox='item-pic'>
-						<img src="/img/2-1_small.webp" alt="videocard">
-					</a>
-					<a href="/img/2-2_big.webp" data-lightbox='item-pic'>
-						<img src="/img/2-2_small.webp" alt="videocard">
-					</a>
+				<div>
+					<img src="/img/2_big.webp" alt="item-main-image" class="main-image">
+				</div>
+				<div class="images-other">
+					<img src="/img/2-1_small.webp" alt="" class="other-image">
+					<img src="/img/2-2_small.webp" alt="" class="other-image">
 				</div>
 
 			</div>
@@ -136,7 +151,7 @@
 	</div>
 </div>
 
-<script src="/lib/lightbox/js/lightbox-plus-jquery.js"></script>
 <script src="/js/scroll.js"></script>
 <script src="/js/fix-node.js"></script>
 <script src="/js/fixed-scroll-menu.js"></script>
+<script src="/js/open-images.js"></script>

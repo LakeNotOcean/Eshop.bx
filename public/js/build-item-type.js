@@ -1,29 +1,14 @@
-let categories;
-let spec = {};
-
-async function getSpecification(catId){
-	if(catId in spec) return spec[catId]
-	let response = await fetch('/category/detail');
-	spec = await response.json();
-	return spec[catId];
-}
-
-fetch('/categories')
-	.then((response) => response.json().then(json => {
-		categories = json;
-	}));
-
-function getSpecOption(select, catId){
+async function getSpecOption(select, catId)
+{
 	while (select.firstChild) select.lastChild.remove();
-	getSpecification(catId).then(specs => {
-		for(let specId in specs){
-			let option = document.createElement('option');
-			option.value = specId;
-			option.text = specs[specId];
-			select.append(option);
-		}
-	});
-
+	let specs = await getSpecification(catId);
+	for (let specId in specs[1])
+	{
+		let option = document.createElement('option');
+		option.value = specId;
+		option.text = specs[1][specId];
+		select.append(option);
+	}
 }
 
 function changeChild(parent, catId){
@@ -49,12 +34,13 @@ for (let btnDeleteCategory of deleteCategory) {
 
 let addSpec = document.querySelectorAll('.category .add');
 for (let btnAddSpec of addSpec) {
-	btnAddSpec.addEventListener('click', () => {
-		btnAddSpec.parentNode.insertBefore(createSpec(btnAddSpec), btnAddSpec);
+	btnAddSpec.addEventListener('click', async () => {
+		let spec = await createSpec(btnAddSpec);
+		btnAddSpec.parentNode.insertBefore(spec, btnAddSpec);
 	});
 }
 
-function createSpec(btn) {
+async function createSpec(btn) {
 	let specDiv = document.createElement('div');
 	specDiv.classList.add('spec');
 
@@ -67,15 +53,8 @@ function createSpec(btn) {
 	let inputCategory = category.querySelector('.input-category');
 	let categoryId = inputCategory.value;
 
-	getSpecification(categoryId).then(specs => {
-		for(let specId in specs){
-			let option = document.createElement('option');
-			option.value = specId;
-			option.text = specs[specId];
-			specNameInput.append(option);
-		}
-	});
-	specNameInput.name = 'template-specs[]';
+	await getSpecOption(specNameInput, categoryId);
+
 
 	specNameInput.classList.add('input-spec-name');
 	fieldDiv.append(specNameInput);
@@ -94,12 +73,13 @@ function createSpec(btn) {
 
 let addCategory = document.querySelectorAll('.add-category');
 for (let btnAddCategory of addCategory) {
-	btnAddCategory.addEventListener('click', () => {
-		btnAddCategory.parentNode.insertBefore(createCategory(), btnAddCategory);
+	btnAddCategory.addEventListener('click', async () => {
+		let cat = await createCategory();
+		btnAddCategory.parentNode.insertBefore(cat, btnAddCategory);
 	});
 }
 
-function createCategory() {
+async function createCategory() {
 	let categoryDiv = document.createElement('div');
 	categoryDiv.classList.add('category');
 
@@ -111,10 +91,14 @@ function createCategory() {
 
 	let inputCategoryInput = document.createElement('select');
 	inputCategoryInput.classList.add('input-category');
-	for(let categoryId in categories){
+
+	let categories = await getCategory();
+
+	for (let categoryId in categories)
+	{
 		let option = document.createElement('option');
 		option.value = categoryId;
-		option.text = categories[categoryId];
+		option.text = categories[categoryId][0];
 		inputCategoryInput.append(option);
 	}
 
@@ -138,8 +122,9 @@ function createCategory() {
 	btnAddDiv.classList.add('btn', 'add');
 	btnAddDiv.innerText = "Добавить спецификацию";
 
-	btnAddDiv.addEventListener('click', () => {
-		btnAddDiv.parentNode.insertBefore(createSpec(btnAddDiv), btnAddDiv);
+	btnAddDiv.addEventListener('click', async () => {
+		let spec = await createSpec(btnAddDiv);
+		btnAddDiv.parentNode.insertBefore(spec, btnAddDiv);
 	});
 
 	categoryDiv.append(categoryFieldDiv, btnAddDiv);

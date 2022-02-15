@@ -1,0 +1,136 @@
+/*==========================
+opened-images
+==========================*/
+
+.opened-images {
+	z-index: 999;
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	width: 100vw;
+	min-height: calc(100vh - var(--nav-height));
+	background: #ffffff;
+	align-items: center;
+}
+
+.come-in {
+	animation: come-in .5s forwards;
+}
+
+.come-out {
+	animation: come-out .5s forwards, disappear 0s forwards;
+	animation-delay: 0s, .2s;
+}
+
+.collapse {
+	animation: collapse .5s forwards;
+}
+
+@keyframes come-in {
+	from {
+		top: 100vh;
+	}
+	to {
+		top: 0;
+	}
+}
+
+@keyframes come-out {
+	from {
+		top: 0;
+	}
+	to {
+		top: 100vh;
+	}
+}
+
+@keyframes collapse {
+	from {
+		overflow: hidden;
+		max-height: 100vh;
+	}
+	to {
+		overflow: hidden;
+		max-height: 0;
+	}
+}
+
+@keyframes disappear {
+	to {
+		position: absolute;
+		top: 0;
+		left: -100vw;
+		max-height: 0;
+		overflow: hidden;
+	}
+}
+
+.open-images-container {
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	padding: 30px 50px;
+	width: 100%;
+	max-width: 1500px;
+}
+
+.open-images-header {
+	display: flex;
+	justify-content: space-between;
+}
+
+.open-images-main {
+	display: flex;
+	justify-content: center;
+}
+
+.image-list {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.item-image {
+	object-fit: none;
+	margin: 30px;
+}
+
+/*==========================
+btn-back
+==========================*/
+
+.btn-back {
+	position: relative;
+	width: 20px;
+	height: 20px;
+	padding: 5px;
+	border-radius: 50%;
+	transform: rotateZ(90deg);
+	cursor: pointer;
+}
+
+.btn-back:hover {
+	background: #f7f7f7;
+}
+
+.btn-back::before, .btn-back::after {
+	content: '';
+	position: absolute;
+	top: 11px;
+	width: 12px;
+	height: 2px;
+	border-radius: 1in;
+	background: #333333;
+}
+
+.btn-back::before {
+	left: 7px;
+	transform-origin: left;
+	transform: rotateZ(45deg);
+}
+
+.btn-back::after {
+	right: 7px;
+	transform-origin: right;
+	transform: rotateZ(-45deg);
+}

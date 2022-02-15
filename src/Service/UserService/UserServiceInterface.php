@@ -2,8 +2,7 @@
 
 namespace Up\Service\UserService;
 
-use Up\Entity\User;
-
+use Up\Entity\User\User;
 
 interface UserServiceInterface
 {
