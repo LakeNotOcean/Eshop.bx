@@ -28,8 +28,8 @@ use Up\Entity\Item;
 		endforeach; ?>
 		<div class="user-data-title">Данные покупателя</div>
 		<div class="user-name">
-			<label for="name">
-				<input type="text" id="name" name="name" placeholder="Имя" required>
+			<label for="first-name">
+				<input type="text" id="first-name" name="first-name" placeholder="Имя" required>
 			</label>
 			<label for="second-name">
 				<input type="text" id="second-name" name="second-name" placeholder="Фамилия">

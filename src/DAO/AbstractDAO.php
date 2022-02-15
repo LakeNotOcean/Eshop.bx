@@ -2,6 +2,7 @@
 
 namespace Up\DAO;
 
+use PDOStatement;
 use Up\Core\Database\BaseDatabase;
 use ValueError;
 
@@ -12,6 +13,23 @@ abstract class AbstractDAO
 	 * @var BaseDatabase
 	 */
 	protected $dbConnection;
+
+	protected function getSelectPrepareStatement(string $tableName, array $whereConditions): PDOStatement
+	{
+		if (empty($whereConditions))
+		{
+			$columnsRepresent = var_export($whereConditions);
+			throw new ValueError(
+				"Parameters columns are empty. Columns: {$columnsRepresent}"
+			);
+		}
+
+		$preparedQuery = 'SELECT * FROM ' . $tableName . ' WHERE ' . $this->getWhereAndWherePreparedCondition(
+				$tableName, $whereConditions
+			);
+
+		return $this->dbConnection->prepare($preparedQuery);
+	}
 
 	/**
 	 * @param string $tableName
@@ -36,7 +54,7 @@ abstract class AbstractDAO
 		);
 	}
 
-	protected function getInsertValuesPrepareQuery(string $tableName, array $columns, int $rowsCount)
+	protected function getInsertPrepareStatement(string $tableName, array $columns, int $rowsCount = 1): PDOStatement
 	{
 		if (empty($columns))
 		{
@@ -47,11 +65,17 @@ abstract class AbstractDAO
 		}
 
 		$preparedQuery = 'insert into ' . $tableName . '(' . implode(', ', $columns) . ')' . ' values ';
-		$preparedQuery .= str_repeat(
-			'(' . implode(', ', array_fill(0, $rowsCount, '?')) . ')',
+		$preparedQuery .= rtrim(str_repeat(
+			'(' . implode(', ', array_fill(0, count($columns), '?')) . '),',
 			$rowsCount
-		);
+		), ',') . ';';
 
 		return $this->dbConnection->prepare($preparedQuery);
 	}
+
+	private function checkEmptyColumns(array $columns): void
+	{
+
+	}
+
 }
