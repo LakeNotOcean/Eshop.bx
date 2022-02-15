@@ -85,6 +85,11 @@ use Up\Core\Router\URLResolver;
 					$startPage = $pagesAmount - 4;
 					$endPage = $pagesAmount - 1;
 				}
+				if ($pagesAmount <= 7)
+				{
+					$startPage = 2;
+					$endPage = $pagesAmount - 1;
+				}
 				for ($i = $startPage; $i <= $endPage; $i++): ?>
 					<a href="/?page=<?= $i ?>" class="navigation-page navigation-item
 					<?= $currentPage === $i ? 'navigation-active' : '' ?>"> <?= $i ?> </a>
