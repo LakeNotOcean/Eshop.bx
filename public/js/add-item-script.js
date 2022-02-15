@@ -18,7 +18,7 @@ function popup(text){
 }
 
 function sendPost(item){
-	return fetch('/admin/testPost', {
+	return fetch('/admin/addItem', {
 		method: 'post',
 		body: item
 	});
@@ -41,6 +41,7 @@ document.querySelector('.form-add').addEventListener('submit', (e) => {
 	mainFields.forEach(field => {
 		item.append(field.name, field.value);
 	});
+	item.append('item-type', (new URLSearchParams(document.location.search)).get('item-type'))
 	sendPost(item).then((r) => {
 		if(r.ok){
 			popup('Товар добавлен!');
