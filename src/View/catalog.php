@@ -18,7 +18,7 @@ use Up\Core\Router\URLResolver;
 	<div class="filters-item-list-row">
 		<div class="filters-column">
 			<div class="filters">
-				<form id="filter-form" action="\"  method="get" id="form">
+				<form id="filter-form" action="\"  method="get" >
 				<div class="filter-category">
 					<div class="price-category">
 								<div class="filter-category-title filter-category-active">
@@ -66,7 +66,7 @@ use Up\Core\Router\URLResolver;
 														<div class="filter-category-specification-group">
 															<div>
 																<label>
-																<input type="checkbox" form="form" class="category_checkbox" name="<?= $spec->getId() ?>[]" value="<?=$value?>">
+																<input type="checkbox" form="filter-form" class="category_checkbox" name="<?= $spec->getId() ?>[]" value="<?=$value?>">
 																	<?=htmlspecialchars($value)?> </label>
 															</div>
 															<div class="filter-category-count">
@@ -92,7 +92,7 @@ use Up\Core\Router\URLResolver;
 						<div class="tag-category-body">
 							<?foreach ($tags as $tag) : ?>
 								<div class="switch">
-									<input type="checkbox" class="category_checkbox" name="tag[]" value="<?=$tag->getID()?>" form="form">
+									<input type="checkbox" class="category_checkbox" name="tag[]" value="<?=$tag->getID()?>" form="filter-form">
 									<label><?=$tag->getName()?></label>
 								</div>
 							<?php
@@ -102,8 +102,8 @@ use Up\Core\Router\URLResolver;
 
 
 					</div>
-					<input type="submit" class="filter-button filter-button-checkbox" id="button_on_checkbox" form="form" style="display:none" value="Принять">
-					<input type="submit" class="filter-button" form="form" value="Отфильтровать">
+					<input type="submit" class="filter-button filter-button-checkbox" id="button_on_checkbox" form="filter-form" style="display:none" value="Принять">
+					<input type="submit" class="filter-button" form="filter-form" value="Отфильтровать">
 				</form>
 				</div>
 			</div>
