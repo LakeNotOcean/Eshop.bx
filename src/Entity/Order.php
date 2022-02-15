@@ -2,6 +2,8 @@
 
 namespace Up\Entity;
 
+use Up\Entity\User\User;
+
 
 class Order extends Entity
 {
@@ -9,7 +11,7 @@ class Order extends Entity
 	protected $phone;
 	protected $email;
 	protected $comment;
-	protected $itemIds;
+	protected $items;
 	protected $status;
 	protected $dateCreate;
 	protected $dateUpdate;
@@ -88,19 +90,19 @@ class Order extends Entity
 	}
 
 	/**
-	 * @return array<int>
+	 * @return array<ItemDetail>
 	 */
-	public function getItemIds(): array
+	public function getItems(): array
 	{
-		return $this->itemIds;
+		return $this->items;
 	}
 
 	/**
-	 * @param array<int> $itemIds
+	 * @param array<ItemDetail> $items
 	 */
-	public function setItemIds(array $itemIds): void
+	public function setItems(array $items): void
 	{
-		$this->itemIds = $itemIds;
+		$this->items = $items;
 	}
 
 	/**
