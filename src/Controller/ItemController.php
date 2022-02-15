@@ -50,7 +50,6 @@ class ItemController
 	 */
 	public function getItems(Request $request): Response
 	{
-		throw new \RuntimeException('TEST FOR DEBUG');
 		if ($request->containsQuery('page'))
 		{
 			$currentPage = (int)$request->getQueriesByName('page');
