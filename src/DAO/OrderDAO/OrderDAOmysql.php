@@ -80,7 +80,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		$items = [];
 		foreach ($itemIds as $itemId)
 		{
-			if ($items[$itemId])
+			if (isset($items[$itemId]))
 			{
 				$items[$itemId]++;
 			}
