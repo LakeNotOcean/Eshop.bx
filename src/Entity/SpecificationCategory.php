@@ -21,9 +21,35 @@ class SpecificationCategory extends Entity
 		$this->specificationList = new EntityArray();
 	}
 
-	public function addToSpecificationList(Specification $specification): void
+	/**
+	 * @return array<int,Specification>
+	 */
+	public function getSpecifications(): array
+	{
+		return $this->specificationList->getEntitiesArray();
+	}
+
+	/**
+	 * @param array<int,Specification> $specifications
+	 */
+	public function setSpecifications(array $specifications): void
+	{
+		$this->specificationList->setEntitiesArray($specifications);
+	}
+
+	public function getSpecificationById(int $id): Specification
+	{
+		return $this->specificationList->getEntity($id);
+	}
+
+	public function setSpecification(Specification $specification): void
 	{
 		$this->specificationList->addEntity($specification);
+	}
+
+	public function hasSpecification(int $id): bool
+	{
+		return $this->specificationList->contains($id);
 	}
 
 	public function getDisplayOrder(): int
@@ -35,22 +61,6 @@ class SpecificationCategory extends Entity
 	{
 		$this->displayOrder = $displayOrder;
 	}
-
-	public function getSpecificationList(): EntityArray
-	{
-		return $this->specificationList;
-	}
-
-	public function setSpecificationList(EntityArray $entityArray)
-	{
-		$this->specificationList = $entityArray;
-	}
-	// public function specificationsSort():void
-	// {
-	// 	usort($this->specificationList,function($a,$b){
-	// 		return $a->getDisplayOrder()<=>$b->getDisplayOrder();
-	// 	});
-	// }
 
 	public function getName(): string
 	{

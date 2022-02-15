@@ -2,6 +2,7 @@
 
 namespace Up\DAO\SpecificationDAO;
 
+use http\Encoding\Stream\Inflate;
 use Up\Core\Database\DefaultDatabase;
 use Up\Entity\EntityArray;
 use Up\Entity\ItemType;
@@ -39,7 +40,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 			$specification = new Specification(
 				$specId, $row['SPEC_NAME'], $row['SPEC_ORDER']
 			);
-			$resultArray[$categoryId]->addToSpecificationList($specification);
+			$resultArray[$categoryId]->setSpecification($specification);
 		}
 
 		return $resultArray;
@@ -61,7 +62,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 			$specificationId = $row['SPEC_ID'];
 			if (!$categoriesList[$categoryId]->isSpecificationExist($specificationId))
 			{
-				$categoriesList[$categoryId]->addToSpecificationList($this->createSpecificationByRow($row));
+				$categoriesList[$categoryId]->setSpecification($this->createSpecificationByRow($row));
 			}
 		}
 
@@ -134,6 +135,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 	public function getCategoriesByTypes(): array
 	{
 		$queryResult = $this->DBConnection->query(SpecificationDAOqueries::getCategoriesByTypesIdQuery());
+		/** @var array<int,array<int,SpecificationCategory>> $categoriesList */
 		$categoriesList = [];
 		while ($row = $queryResult->fetch())
 		{
@@ -148,7 +150,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 				$categoriesList[$typeId][$categoryId] = $this->createCategoryByRow($row);
 			}
 			$specificationId = $row['SPEC_ID'];
-			$categoriesList[$categoryId][$specificationId]->addToSpecificationList(
+			$categoriesList[$categoryId][$specificationId]->setSpecification(
 				$this->createSpecificationByRow($row)
 			);
 		}
@@ -167,7 +169,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 			{
 				$categoriesList[$categoryId] = $this->createCategoryByRow($row);
 			}
-			$categoriesList[$categoryId]->addToSpecificationList($this->createSpecificationByRow($row));
+			$categoriesList[$categoryId]->setSpecification($this->createSpecificationByRow($row));
 		}
 
 		return $categoriesList;
@@ -184,26 +186,29 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 		}
 	}
 
-	public function getSpecificationCategoryByName(array $categoryNames, array $typeNames): EntityArray
+	/**
+	 * @param array<string> $categoryNames
+	 * @param array<string> $typeNames
+	 *
+	 * @return array<int,SpecificationCategory>
+	 */
+	public function getSpecificationCategoryByName(array $categoryNames, array $typeNames): array
 	{
-		$categories = new EntityArray();
+		$categories = [];
 		$result = $this->DBConnection->query($this->getSpecificationCategoryByNameQuery($categoryNames, $typeNames));
 		while ($row = $result->fetch())
 		{
-			if (!$categories->contains($row['C_ID']))
+			if (!isset($categories[$row['C_ID']]))
 			{
-				$categories->addEntity(
-					new SpecificationCategory($row['C_ID'], $row['C_NAME'], $row['C_DISPLAY_ORDER'])
-				);
+				$categories[$row['C_ID']] =  new SpecificationCategory($row['C_ID'], $row['C_NAME'], $row['C_DISPLAY_ORDER']);
 			}
-			if (!$categories->getEntity($row['C_ID'])->getSpecificationList()->contain($row['T_ID']))
+			if (!$categories[$row['C_ID']]->hasSpecification($row['T_ID']))
 			{
-				$categories->getEntity($row['C_ID'])->getSpecificationList()->addEntity(
+				$categories[$row['C_ID']]->setSpecification(
 					new Specification($row['T_ID'], $row['T_NAME'], $row['T_DISPLAY_ORDER'])
 				);
 			}
 		}
-
 		return $categories;
 	}
 

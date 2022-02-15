@@ -45,30 +45,71 @@ class ItemDetail extends Item
 		$this->itemType = $itemType;
 	}
 
-	public function getSpecificationCategoriesList(): EntityArray
+	/**
+	 * @return array<int,SpecificationCategory>
+	 */
+	public function getSpecificationCategoriesList(): array
 	{
-		return $this->specificationCategoriesList;
-	}
-
-	public function setSpecificationCategoryList(EntityArray $specificationCategoriesList): void
-	{
-		$this->specificationCategoriesList = $specificationCategoriesList;
+		return $this->specificationCategoriesList->getEntitiesArray();
 	}
 
 	/**
-	 * @return EntityArray
+	 * @param array<int,SpecificationCategory> $specificationCategoriesList
 	 */
-	public function getTags(): EntityArray
+	public function setSpecificationCategoryList(array $specificationCategoriesList): void
 	{
-		return $this->tags;
+		$this->specificationCategoriesList->setEntitiesArray($specificationCategoriesList);
+	}
+
+	public function setSpecificationCategory(SpecificationCategory $specificationCategory): void
+	{
+		$this->specificationCategoriesList->addEntity($specificationCategory);
 	}
 
 	/**
-	 * @param EntityArray $tags
+	 * @param int $id
+	 *
+	 * @return SpecificationCategory
 	 */
-	public function setTags(EntityArray $tags): void
+	public function getSpecificationCategoryById(int $id): SpecificationCategory
 	{
-		$this->tags = $tags;
+		return $this->specificationCategoriesList->getEntity($id);
+	}
+
+	public function hasSpecificationCategory(int $id): bool
+	{
+		return $this->specificationCategoriesList->contains($id);
+	}
+
+	/**
+	 * @return array<int,ItemsTag>
+	 */
+	public function getTags(): array
+	{
+		return $this->tags->getEntitiesArray();
+	}
+
+	/**
+	 * @param array<int,ItemsTag> $tags
+	 */
+	public function setTags(array $tags): void
+	{
+		$this->tags->setEntitiesArray($tags);
+	}
+
+	public function setTag(ItemsTag $tag): void
+	{
+		$this->tags->addEntity($tag);
+	}
+
+	public function getTagById(int $id): void
+	{
+		$this->tags->getEntity($id);
+	}
+
+	public function hasTag(int $id): bool
+	{
+		return $this->tags->contains($id);
 	}
 
 	/**
@@ -88,18 +129,33 @@ class ItemDetail extends Item
 	}
 
 	/**
-	 * @return EntityArray
+	 * @return array<int,ItemsImage>
 	 */
-	public function getImages(): EntityArray
+	public function getImages(): array
 	{
-		return $this->images;
+		return $this->images->getEntitiesArray();
 	}
 
 	/**
-	 * @param EntityArray $images
+	 * @param array<int,ItemsImage> $images
 	 */
-	public function setImages(EntityArray $images): void
+	public function setImages(array $images): void
 	{
-		$this->images = $images;
+		$this->images->setEntitiesArray($images);
+	}
+
+	public function getImageById(int $id): ItemsImage
+	{
+		return $this->images->getEntity($id);
+	}
+
+	public function setImage(ItemsImage $image): void
+	{
+		$this->images->addEntity($image);
+	}
+
+	public function hasImage(int $id): bool
+	{
+		return $this->images->contains($id);
 	}
 }

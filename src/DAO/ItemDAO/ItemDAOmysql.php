@@ -51,40 +51,35 @@ class ItemDAOmysql implements ItemDAOInterface
 			{
 				$this->mapDetailItemInfo($item, $row);
 			}
-			if (!$item->getTags()->contains($row['TAG_ID']))
+			if (!$item->hasTag($row['TAG_ID']))
 			{
-				$item->getTags()->addEntity($this->getTag($row));
+				$item->setTag($this->getTag($row));
 			}
-			if (!$item->getSpecificationCategoriesList()->contains($row['usc_ID']))
+			if (!$item->hasSpecificationCategory($row['usc_ID']))
 			{
-				$item->getSpecificationCategoriesList()->addEntity(
+				$item->setSpecificationCategory(
 					new SpecificationCategory(
 						$row['usc_ID'], $row['usc_NAME'], $row['usc_DISPLAY_ORDER']
 					)
 				);
 			}
-			if (
-				!$item->getSpecificationCategoriesList()->getEntity($row['usc_ID'])->getSpecificationList()->contains(
-					$row['SPEC_TYPE_ID']
-				)
-			)
+			if (!$item->getSpecificationCategoryById($row['usc_ID'])->hasSpecification($row['SPEC_TYPE_ID']))
 			{
-				$item->getSpecificationCategoriesList()->getEntity($row['usc_ID'])->getSpecificationList()->addEntity(
+				$item->getSpecificationCategoryById($row['usc_ID'])->setSpecification(
 					new Specification(
 						$row['SPEC_TYPE_ID'], $row['ust_NAME'], $row['ust_DISPLAY_ORDER'], $row['VALUE']
 					)
 				);
 			}
-			if (!$item->getImages()->contains($row['u_ID']))
+			if (!$item->hasImage($row['u_ID']))
 			{
-				$item->getImages()->addEntity($this->getItemsImage($row));
+				$item->setImage($this->getItemsImage($row));
 				if ($row['IS_MAIN'] and !$item->isSetMainImage())
 				{
-					$item->setMainImage($item->getImages()->getEntity($row['u_ID']));
+					$item->setMainImage($item->getImageById($row['u_ID']));
 				}
 			}
 		}
-
 		return $item;
 	}
 
@@ -102,17 +97,17 @@ class ItemDAOmysql implements ItemDAOInterface
 	{
 		$oldItem = $this->getItemDetailById($item->getId());
 
-		$oldTags = $oldItem->getTags()->getEntitiesArray();
-		$newTags = $item->getTags()->getEntitiesArray();
+		$oldTags = $oldItem->getTags();
+		$newTags = $item->getTags();
 
-		$oldSpecsCat = $oldItem->getSpecificationCategoriesList()->getEntitiesArray();
-		$newSpecsCat = $item->getSpecificationCategoriesList()->getEntitiesArray();
+		$oldSpecsCat = $oldItem->getSpecificationCategoriesList();
+		$newSpecsCat = $item->getSpecificationCategoriesList();
 
 		$oldSpecs = $this->getSpecsFromCategory($oldSpecsCat);
 		$newSpecs = $this->getSpecsFromCategory($newSpecsCat);
 
-		$oldImages = $oldItem->getImages()->getEntitiesArray();
-		$newImages = $item->getImages()->getEntitiesArray();
+		$oldImages = $oldItem->getImages();
+		$newImages = $item->getImages();
 
 		if (!empty($oldTags))
 		{
@@ -166,13 +161,13 @@ class ItemDAOmysql implements ItemDAOInterface
 		$this->DBConnection->query($this->getInsertItemQuery($item));
 		$id = $this->DBConnection->lastInsertId();
 		$item->setId($id);
-		$tags = $item->getTags()->getEntitiesArray();
+		$tags = $item->getTags();
 
-		$specsCat = $item->getSpecificationCategoriesList()->getEntitiesArray();
+		$specsCat = $item->getSpecificationCategoriesList();
 
 		$specs = $this->getSpecsFromCategory($specsCat);
 
-		$images = $item->getImages()->getEntitiesArray();
+		$images = $item->getImages();
 
 		$this->DBConnection->query($this->getInsertTagsQuery($id, $tags));
 		$this->DBConnection->query($this->getInsertSpecsQuery($id, $specs));
@@ -194,7 +189,7 @@ class ItemDAOmysql implements ItemDAOInterface
 		$specs = [];
 		foreach ($categories as $cat)
 		{
-			$category = $cat->getSpecificationList()->getEntitiesArray();
+			$category = $cat->getSpecifications();
 			foreach ($category as $id => $spec)
 			{
 				$specs[$id] = $spec;
