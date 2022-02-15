@@ -98,6 +98,16 @@ class SpecificationsService implements SpecificationsServiceInterface
 		return $this->specificationDAO->getCategories();
 	}
 
+	public function deleteCategoryById(int $id): void
+	{
+		$this->specificationDAO->deleteCategoryById($id);
+	}
+
+	public function deleteSpecificationById(int $id): void
+	{
+		$this->specificationDAO->deleteSpecificationById($id);
+	}
+
 	// public function specificationsSort(array &$categories): void
 	// {
 	// 	usort($categories, function($a, $b) {

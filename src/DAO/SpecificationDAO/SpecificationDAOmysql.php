@@ -126,10 +126,30 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 		return $specification;
 	}
 
+	public function deleteCategoryById(int $id): void
+	{
+		$this->DBConnection->query($this->getDeleteCategoryByIdQuery($id));
+	}
+
+	public function deleteSpecificationById(int $id): void
+	{
+		$this->DBConnection->query($this->getDeleteSpecificationByIdQuery($id));
+	}
+
+	private function getDeleteSpecificationByIdQuery(int $id): string
+	{
+		return "DELETE FROM up_spec_type WHERE ID={$id}";
+	}
+
+	private function getDeleteCategoryByIdQuery(int $id): string
+	{
+		return "DELETE FROM up_spec_category WHERE ID={$id}";
+	}
+
 	private function getSpecificationByCategoryByIdQuery(int $id): string
 	{
 		return "SELECT ID, NAME, DISPLAY_ORDER FROM up_spec_type
-				WHERE ID={$id}";
+				WHERE SPEC_CATEGORY_ID={$id}";
 	}
 
 	public function getCategoriesByTypes(): array
