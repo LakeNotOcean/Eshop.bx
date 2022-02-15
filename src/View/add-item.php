@@ -4,7 +4,7 @@
 
 <link rel="stylesheet" href="/css/add-item.css">
 <div class="form-container">
-	<form action="/testPost" method="post" enctype="multipart/form-data" class="form-add">
+	<form enctype="multipart/form-data" class="form-add">
 		<div class="main-fields-and-images">
 			<div class="main-fields">
 				<label for="item-title" class="field">
@@ -72,4 +72,5 @@
 	</form>
 </div>
 <script src="/js/preview-images.js"></script>
+<script src="/js/eshop-api.js"></script>
 <script src="/js/build-specs.js"></script>

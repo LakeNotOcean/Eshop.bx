@@ -46,13 +46,10 @@ class AddItemController
 	 */
 	public function addItem(Request $request): Response
 	{
-		$categories = $this->specificationsService->getCategoriesWithSpecifications();
-		$itemType = $this->specificationsService->getItemTemplate((int)$request->getQueriesByName('item-type'));
+		//$categories = $this->specificationsService->getCategoriesWithSpecifications();
+		//$itemType = $this->specificationsService->getItemTemplate((int)$request->getQueriesByName('item-type'));
 
-		$page = $this->templateProcessor->render('add-item.php', [
-			'categories' => $categories,
-			'itemType' => $itemType
-		], 'admin-main.php', []);
+		$page = $this->templateProcessor->render('add-item.php', [], 'admin-main.php', []);
 
 		$response = new Response();
 
@@ -190,9 +187,9 @@ class AddItemController
 	{
 		$response = new Response();
 		$response = $response->withBodyJSON(array_map(function(SpecificationCategory $cat){
-			return array_map(function(Specification $spec){
+			return [$cat->getName(), array_map(function(Specification $spec){
 				return $spec->getName();
-			}, $cat->getSpecificationList()->getEntitiesArray());
+			}, $cat->getSpecificationList()->getEntitiesArray())];
 		}, $this->specificationsService->getCategoriesWithSpecifications()));
 		return $response;
 	}
@@ -203,14 +200,7 @@ class AddItemController
 	public function getCategoriesByItemTypeIdJSON(Request $request): Response
 	{
 		$response = new Response();
-		if(!$request->containsQuery('item-type'))
-		{
-			$categories = $this->specificationsService->getCategoriesWithSpecifications();
-		}
-		else
-		{
-			$categories = $this->specificationsService->getCategoriesByItemTypeId($request->getQueriesByName('item-type'));
-		}
+		$categories = $this->specificationsService->getCategoriesByItemTypeId($request->getQueriesByName('item-type'));
 		$categoriesArray = array_map(function(SpecificationCategory $cat){
 			return [$cat->getName() ,array_map(function(Specification $spec){
 				return $spec->getName();
