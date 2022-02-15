@@ -49,7 +49,7 @@ class AddItemController
 		//$categories = $this->specificationsService->getCategoriesWithSpecifications();
 		//$itemType = $this->specificationsService->getItemTemplate((int)$request->getQueriesByName('item-type'));
 
-		$page = $this->templateProcessor->render('add-item.php', [], 'admin-main.php', []);
+		$page = $this->templateProcessor->render('add-item.php', [], 'layout/admin-main.php', []);
 
 		$response = new Response();
 
@@ -61,7 +61,7 @@ class AddItemController
 		$itemTypes = $this->specificationsService->getItemTypes();
 		$page = $this->templateProcessor->render('choose-item-type.php', [
 			'itemTypes' => $itemTypes
-		], 'admin-main.php', []);
+		], 'layout/admin-main.php', []);
 
 		$response = new Response();
 
@@ -74,7 +74,7 @@ class AddItemController
 		$page = $this->templateProcessor->render('add-item-type.php', [
 			'categories' => $categories,
 			'isNewItemTypeAdded' => false
-		], 'admin-main.php', []);
+		], 'layout/admin-main.php', []);
 
 		$response = new Response();
 
@@ -94,7 +94,7 @@ class AddItemController
 		$page = $this->templateProcessor->render('add-item-type.php', [
 			'categories' => $categories,
 			'isNewItemTypeAdded' => true
-		], 'admin-main.php', []);
+		], 'layout/admin-main.php', []);
 
 		$response = new Response();
 
@@ -105,7 +105,7 @@ class AddItemController
 	{
 		$page = $this->templateProcessor->render('add-category.php', [
 			'isNewCategoryAdded' => false
-		], 'admin-main.php', []);
+		], 'layout/admin-main.php', []);
 
 		$response = new Response();
 
@@ -123,7 +123,7 @@ class AddItemController
 		$this->specificationsService->addCategory($newCategory);
 		$page = $this->templateProcessor->render('add-category.php', [
 			'isNewCategoryAdded' => true
-		], 'admin-main.php', []);
+		], 'layout/admin-main.php', []);
 
 		$response = new Response();
 
@@ -136,7 +136,7 @@ class AddItemController
 		$page = $this->templateProcessor->render('add-specification.php', [
 			'categories' => $categories,
 			'isNewSpecAdded' => false
-		], 'admin-main.php', []);
+		], 'layout/admin-main.php', []);
 
 		$response = new Response();
 
@@ -158,7 +158,7 @@ class AddItemController
 		$page = $this->templateProcessor->render('add-specification.php', [
 			'categories' => $categories,
 			'isNewSpecAdded' => true
-		], 'admin-main.php', []);
+		], 'layout/admin-main.php', []);
 
 		$response = new Response();
 
