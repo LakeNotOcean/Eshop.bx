@@ -16,7 +16,6 @@
 
 .btn-normal {
 	flex: 0;
-	width: 400px;
 	margin: 30px auto;
 }
 
@@ -28,7 +27,6 @@
 }
 
 .btn-delete {
-	width: 200px;
 	color: #DF0310;
 }
 
@@ -40,7 +38,6 @@
 .btn-add {
 	margin-top: 5px;
 	margin-bottom: 20px;
-	width: 300px;
 	color: #009AFF;
 }
 
