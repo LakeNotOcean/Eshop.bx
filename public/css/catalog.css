@@ -158,7 +158,7 @@ items
 
 
 /*==========================
-filters
+filters main
 ==========================*/
 
 .filters-item-list-row {
@@ -183,17 +183,20 @@ filters
 
 .filter-category {
 	display: flex;
-	width: 300px;
-
+	width: 270px;
 	background: #FFFFFF;
 	margin-left: 22px;
 	margin-right: 23px;
 	flex-direction: column;
 	flex-wrap: nowrap;
-	align-items: flex-start;
 	justify-content: flex-start;
+	align-items: center;
 }
 
+
+/*==========================
+filters price category
+==========================*/
 .price-category {
 	display: flex;
 	flex-direction: column;
@@ -214,21 +217,16 @@ filters
 	width: 110px;
 	height: 40px;
 	border-radius: 10px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+	box-shadow: 2px 3px 4px 4px rgba(0, 0, 0, 0.2);
 }
 
-
-
-
-form{
-	overflow:hidden;
-}
-input .price-category-body-int{
+.price-category-body input
+{
 	outline: 0;
 	outline-offset: 0;
 	border: 0px;
+	border-radius: 10px;
 	font-family: 'Open Sans', sans-serif;
-
 }
 
 .price-category-body-int{
@@ -237,11 +235,16 @@ input .price-category-body-int{
 
 }
 
-
-
+/*==========================
+filters specification category
+==========================*/
 
 .filter-category-specification {
+	margin-top: 15px;
 	font-family: 'Open Sans', sans-serif;
+	display: flex;
+	flex-direction: column;
+	width: 270px;
 }
 .filter-category-specification ul {
 	list-style: none;
@@ -273,7 +276,7 @@ input .price-category-body-int{
 
 .filter-category-specification .filter-category-sub-specification, .filter-category-label {
 	top: 0;
-	right: -40px;
+	right: 0px;
 	position: absolute;
 	cursor: pointer;
 }
@@ -286,7 +289,7 @@ input .price-category-body-int{
 	color: #1266B1;
 	font-weight: bold;
 	font-family: Courier;
-	padding-left: 100px;
+	padding-left: 260px;
 }
 .filter-category-specification .filter-category-sub-specification.minus, .filter-category-sub-specification:checked + .filter-category-label:before {
 	content: '-';
@@ -339,7 +342,9 @@ input .price-category-body-int{
 	color: #000;
 }
 
-
+/*==========================
+filters tag category
+==========================*/
 
 
 .switch {
@@ -377,3 +382,30 @@ input .price-category-body-int{
 	background: linear-gradient(#be9030, #d08607);
 }
 
+
+/*==========================
+filters button category
+==========================*/
+
+.filter-button-checkbox {
+	position: fixed;
+	top: 200px;
+
+
+}
+
+.filter-button {
+	line-height: 40px;
+	text-align: center;
+	border-radius: 10px;
+	border: 2px solid #D9D9D9;
+	cursor: pointer;
+	margin-bottom: 10px;
+}
+
+.filter-button:hover {
+	font-weight: 500;
+	color: #FFFFFF;
+	border-color: #FF791E;
+	background: #FF791E;
+}

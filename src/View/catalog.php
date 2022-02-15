@@ -1,6 +1,7 @@
 <?php
-/** @var array<Entity\Item> $items */
+/** @var array<UP\Entity\Item> $items */
 /** @var array<Up\Entity\SpecificationCategory> $categories */
+/** @var array<Up\Entity\ItemsTag> $tags */
 /** @var int $result_count */
 /** @var int $currentPage */
 /** @var int $itemsAmount */
@@ -9,7 +10,6 @@
 $pref = '_big';
 
 use Up\Core\Router\URLResolver;
-var_dump($_GET);
 ?>
 
 <link rel="stylesheet" href="./css/catalog.css">
@@ -18,20 +18,14 @@ var_dump($_GET);
 	<div class="filters-item-list-row">
 		<div class="filters-column">
 			<div class="filters">
-				<form action="\"  method="get" id="form">
+				<form id="filter-form" action="\"  method="get" id="form">
 				<div class="filter-category">
-					<div class="price-category filter-category-specification">
-						<ul>
-							<li>
-
+					<div class="price-category">
 								<div class="filter-category-title filter-category-active">
 									Цена
 								</div>
-								<input type="checkbox" class="filter-category-sub-specification" id="price"  />
-								<label class="filter-category-label price" for="price"  ></label>
-								<ul style="display:none">
 						<div class="price-category-bodies">
-							<div class="filter-price-category-body">
+							<div class="price-category-body">
 								<div class="price-category-body-text">
 									Мин. цена
 								</div>
@@ -50,18 +44,13 @@ var_dump($_GET);
 							</div>
 
 						</div>
-								</ul>
-							</li>
-						</ul>
 					</div>
 					<div class="filter-category-specification">
 						<?
-						foreach ($categories as $category)
-						{
-							?>
+						foreach ($categories as $category) : ?>
 							<ul>
 								<li>
-									<a class="filter-category-active" href="#"><?=$category->getName()?></a>
+									<a class="filter-category-active" href="#"><?=htmlspecialchars($category->getName())?></a>
 									<input type="checkbox" class="filter-category-sub-specification" id=<?=$category->getId()?>  />
 									<label class="filter-category-label" for=<?=$category->getId()?>  ></label>
 									<ul style="display:none">
@@ -69,48 +58,52 @@ var_dump($_GET);
 											<div class = filter-category-specification-line></div>
 												<? $specList = $category->getSpecificationList();
 												$specList = $specList->getEntitiesArray();
-												foreach ($specList as $spec){
-													?>
-													<div><?= $spec->getName() ?></div>
-													<?foreach ($spec->getValue() as $value=>$count){
-														?>
+												foreach ($specList as $spec) : ?>
+													<div>
+														<?= htmlspecialchars($spec->getName()) ?>
+													</div>
+													<?foreach ($spec->getValue() as $value=>$count) : ?>
 														<div class="filter-category-specification-group">
 															<div>
 																<label>
-																<input type="checkbox" form="form" name="<?= $spec->getId() ?>[]" value="<?=$value?>">
-																	<?=$value?> </label>
+																<input type="checkbox" form="form" class="category_checkbox" name="<?= $spec->getId() ?>[]" value="<?=$value?>">
+																	<?=htmlspecialchars($value)?> </label>
 															</div>
 															<div class="filter-category-count">
 																(<?=$count?>)
 															</div>
 														</div>
-													<?}?>
-												<?} ?>
+											<?php
+											endforeach; ?>
+												<?php
+												endforeach; ?>
 										</li>
 									</ul>
 								</li>
 							</ul>
 
-						<?} ?>
+						<?php
+						endforeach; ?>
 					</div>
 					<div class="tag-category">
 						<div class="filter-category-title">
 							Теги
 						</div>
 						<div class="tag-category-body">
-							<?foreach ($tags as $tag)
-							{?>
+							<?foreach ($tags as $tag) : ?>
 								<div class="switch">
-									<input type="checkbox" name="tag[]" value="<?=$tag->getID()?>" form="form">
+									<input type="checkbox" class="category_checkbox" name="tag[]" value="<?=$tag->getID()?>" form="form">
 									<label><?=$tag->getName()?></label>
 								</div>
-							<?}?>
+							<?php
+							endforeach; ?>
 						</div>
 
 
 
 					</div>
-					<input type="submit" form="form">
+					<input type="submit" class="filter-button filter-button-checkbox" id="button_on_checkbox" form="form" style="display:none" value="Принять">
+					<input type="submit" class="filter-button" form="form" value="Отфильтровать">
 				</form>
 				</div>
 			</div>
@@ -181,4 +174,5 @@ var_dump($_GET);
 	</div>
 </div>
 <script src="/js/fix-node.js"></script>
-<script src="./js/fixed-filters.js"></script>
+<script src="/js/fixed-filters.js"></script>
+<script src="/js/filter-button.js"></script>

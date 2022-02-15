@@ -36,23 +36,20 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 				);
 			}
 			$specId = $row['SPEC_ID'];
-			$specValues = $row['SPEC_VALUES'];
-			$specValue = explode('|##|',$specValues);
-			$value = $specValue[1];
-			$count = $specValue[0];
-
+			$specValue = $row['SPEC_VALUE'];
+			$specCount = $row['SPEC_COUNT'];
 			if (!array_key_exists($specId,$resultArray[$categoryId]->getSpecificationList()->getEntitiesArray()))
 			{
 				$specification = new SpecificationFilter(
 					$specId, $row['SPEC_NAME'], $row['SPEC_ORDER']
 				);
-					$specification->setValue($value,$count);
+					$specification->setValue($specValue,$specCount);
 					$resultArray[$categoryId]->addToSpecificationList($specification);
 			}
 			else
 			{
 				$specification = $resultArray[$categoryId]->getSpecificationList()->getEntity($specId);
-				$specification->setValue($value,$count);
+				$specification->setValue($specValue,$specCount);
 			}
 		}
 
