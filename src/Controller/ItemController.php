@@ -15,8 +15,8 @@ use Up\Entity\SpecificationCategory;
 use Up\Lib\Paginator\Paginator;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
-use Up\Service\TagService\TagService;
 use Up\Service\TagService\TagServiceInterface;
+
 
 class ItemController
 {

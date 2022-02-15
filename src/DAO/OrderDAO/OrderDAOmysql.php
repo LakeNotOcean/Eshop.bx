@@ -62,36 +62,36 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 				'DATE_UPDATE' => $order->getDateUpdate()];
 	}
 
-	public function addOrderItems(int $orderId, array $itemIds): void
+	public function addOrderItems(int $orderId, array $items): void
 	{
 		$preparedStatement = $this->getInsertPrepareStatement(
 			'up_order_item',
 			['ORDER_ID', 'ITEM_ID', 'COUNT']
 		);
-		$data = $this->prepareOrderItems($orderId, $itemIds);
+		$data = $this->prepareOrderItems($orderId, $items);
 		foreach ($data as $row)
 		{
 			$preparedStatement->execute($row);
 		}
 	}
 
-	private function prepareOrderItems(int $orderId, array $itemIds): array
+	private function prepareOrderItems(int $orderId, array $items): array
 	{
-		$items = [];
-		foreach ($itemIds as $itemId)
+		$itemsCount = [];
+		foreach ($items as $item)
 		{
-			if (isset($items[$itemId]))
+			if (isset($itemsCount[$item->getId()]))
 			{
-				$items[$itemId]++;
+				$itemsCount[$item->getId()]++;
 			}
 			else
 			{
-				$items[$itemId] = 1;
+				$itemsCount[$item->getId()] = 1;
 			}
 		}
 
 		$result = [];
-		foreach ($items as $itemId => $itemCount)
+		foreach ($itemsCount as $itemId => $itemCount)
 		{
 			$result[] = [$orderId, $itemId, $itemCount];
 		}
