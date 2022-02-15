@@ -149,7 +149,7 @@ use Up\Core\Router\URLResolver;
 
 			<div class="navigation">
 				<!--				<div class="navigation-dots navigation-item">...</div>-->
-				<a href="/?page=1" class="navigation-page navigation-item"> << </a>
+				<div id="1" class="navigation-page navigation-item"> << </div>
 				<?php
 				($currentPage > 3) ? $startPage = $currentPage - 3 : $startPage = 1;
 				($currentPage <= $pagesAmount - 3) ? $endPage = $currentPage + 3 : $endPage = $pagesAmount;
@@ -163,12 +163,12 @@ use Up\Core\Router\URLResolver;
 						$activeClass = '';
 					}
 					?>
-					<a href="/?page=<?= $i ?>" class="navigation-page navigation-item <?= $activeClass ?>"> <?= $i ?> </a>
+					<div id="<?= $i ?>" class="navigation-page navigation-item <?= $activeClass ?>"><?= $i ?></div>
 
 				<?php
 				endfor; ?>
 
-				<a href="/?page=<?= $pagesAmount ?>" class="navigation-page navigation-item"> >> </a>
+				<div id="<?=$pagesAmount?>" class="navigation-page navigation-item"> >> </div>
 			</div>
 		</div>
 	</div>
@@ -176,3 +176,4 @@ use Up\Core\Router\URLResolver;
 <script src="/js/fix-node.js"></script>
 <script src="/js/fixed-filters.js"></script>
 <script src="/js/filter-button.js"></script>
+<script src="/js/queryPush.js"></script>
