@@ -22,6 +22,7 @@ class ItemService implements ItemServiceInterface
 		$this->specificationDAO = $specificationDAO;
 	}
 
+
 	public function getItems(array $limitOffset): array
 	{
 		return $this->itemDAO->getItems($limitOffset['offset'], $limitOffset['amountItems']);

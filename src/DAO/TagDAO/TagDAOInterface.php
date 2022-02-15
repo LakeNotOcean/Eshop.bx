@@ -3,11 +3,21 @@
 namespace Up\DAO\TagDAO;
 
 use Up\Entity\EntityArray;
-
+use Up\Entity\ItemsTag;
 
 interface TagDAOInterface
 {
-	public function save(array $tags): EntityArray;
+	/**
+	 * @param array<int,ItemsTag> $tags
+	 *
+	 * @return array<int,ItemsTag>
+	 */
+	public function save(array $tags): array;
 
-	public function getTagsByNames(array $names): EntityArray;
+	/**
+	 * @param array<string> $names
+	 *
+	 * @return array<int,ItemsTag>
+	 */
+	public function getTagsByNames(array $names): array;
 }

@@ -106,7 +106,6 @@ class ItemController
 		$item->setTags($tags);
 
 		$categoriesArray = $request->getPostParametersByName('specs');
-		$categories = new EntityArray();
 		foreach ($categoriesArray as $idCat => $categoryArray)
 		{
 			$category = new SpecificationCategory($idCat);
@@ -114,16 +113,14 @@ class ItemController
 			{
 				$specification = new Specification($idSpec);
 				$specification->setValue($specValue);
-				$category->addToSpecificationList($specification);
+				$category->setSpecification($specification);
 			}
-			$categories->addEntity($category);
+			$item->setSpecificationCategory($category);
 		}
-		$item->setSpecificationCategoryList($categories);
 
 		$item->setMainImage(new ItemsImage(1, '1.png', true));
-		$imagesArray = new EntityArray();
-		$imagesArray->addEntity(new ItemsImage(1, '1.png', true));
-		$item->setImages($imagesArray);
+
+		$item->setImage(new ItemsImage(1, '1.png', true));
 
 		$this->itemService->save($item);
 

@@ -151,7 +151,7 @@ class CategoryController
 		$response = $response->withBodyJSON(array_map(function(SpecificationCategory $cat){
 			return [$cat->getName(), array_map(function(Specification $spec){
 				return $spec->getName();
-			}, $cat->getSpecificationList()->getEntitiesArray())];
+			}, $cat->getSpecifications())];
 		}, $this->specificationsService->getCategoriesWithSpecifications()));
 		return $response;
 	}
@@ -166,7 +166,7 @@ class CategoryController
 		$categoriesArray = array_map(function(SpecificationCategory $cat){
 			return [$cat->getName() ,array_map(function(Specification $spec){
 				return $spec->getName();
-			}, $cat->getSpecificationList()->getEntitiesArray())];
+			}, $cat->getSpecifications())];
 		}, $categories);
 		return $response->withBodyJSON($categoriesArray);
 	}
