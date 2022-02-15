@@ -8,7 +8,7 @@ use Up\Controller\UserController;
 
 $router = Up\Core\Router\Router::getInstance();
 
-$router->post("/testPost", [AddItemController::class, 'test'], 'home');
+$router->post("/admin/testPost", [AddItemController::class, 'test'], 'home');
 
 //User
 $router->get('/', [ItemController::class, 'getItems'], 'home');
@@ -21,14 +21,14 @@ $router->post('/register', [UserController::class, 'registerUser'], 'register-us
 $router->post('/login', [UserController::class, 'loginUser'], 'login-user');
 
 //Admin
-$router->get('/addItem', [AddItemController::class, 'addItem'], 'add-item');
-$router->get('/chooseItemType', [AddItemController::class, 'chooseItemType'], 'choose-item-type');
-$router->get('/addItemType', [AddItemController::class, 'addItemType'], 'add-item-type');
-$router->post('/addItemType', [AddItemController::class, 'addItemTypeAndSaveToDB'], 'add-item-type-db');
-$router->get('/addCategory', [AddItemController::class, 'addCategory'], 'add-category');
-$router->post('/addCategory', [AddItemController::class, 'addCategoryAndSaveToDB'], 'add-category-db');
-$router->get('/addSpecification', [AddItemController::class, 'addSpecification'], 'add-specification');
-$router->post('/addSpecification', [AddItemController::class, 'addSpecificationAndSaveToDB'], 'add-specification-db');
+$router->get('/admin/addItem', [AddItemController::class, 'addItem'], 'add-item');
+$router->get('/admin/chooseItemType', [AddItemController::class, 'chooseItemType'], 'choose-item-type');
+$router->get('/admin/addItemType', [AddItemController::class, 'addItemType'], 'add-item-type');
+$router->post('/admin/addItemType', [AddItemController::class, 'addItemTypeAndSaveToDB'], 'add-item-type-db');
+$router->get('/admin/addCategory', [AddItemController::class, 'addCategory'], 'add-category');
+$router->post('/admin/addCategory', [AddItemController::class, 'addCategoryAndSaveToDB'], 'add-category-db');
+$router->get('/admin/addSpecification', [AddItemController::class, 'addSpecification'], 'add-specification');
+$router->post('/admin/addSpecification', [AddItemController::class, 'addSpecificationAndSaveToDB'], 'add-specification-db');
 
 $router->get('/category/detail', [AddItemController::class, 'getCategoriesWithSpecsJSON'], 'category-detail');
 $router->get('/categories', [AddItemController::class, 'getCategoriesJSON'], 'cat');

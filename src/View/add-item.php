@@ -74,3 +74,4 @@
 <script src="/js/preview-images.js"></script>
 <script src="/js/eshop-api.js"></script>
 <script src="/js/build-specs.js"></script>
+<script src="/js/add-item-script.js"></script>

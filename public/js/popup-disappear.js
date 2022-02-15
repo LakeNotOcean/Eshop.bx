@@ -1,4 +1,4 @@
-let popup = document.getElementById('popup');
+let popup = document.querySelector('.popup');
 
 if (popup) {
 	setTimeout(() => {
