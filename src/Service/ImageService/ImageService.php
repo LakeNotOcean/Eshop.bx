@@ -104,6 +104,7 @@ class ImageService implements ImageServiceInterface
 
 	/**
 	 * @param string $originalFilename
+	 * @param string $originalFilenameMime
 	 *
 	 * @return array{small:string, medium:string, big:string}
 	 * @throws MimeTypeException
@@ -118,7 +119,7 @@ class ImageService implements ImageServiceInterface
 			$sizedImagePath = $this->getSizedImagePath($originalFilename, $sizeName);
 			if (!copy($originalFilePath, $sizedImagePath))
 			{
-				throw new \RuntimeException("Can't copy file from {$originalFilePath} to {$sizedImagePath}");
+				throw new OSError("Can't copy file from {$originalFilePath} to {$sizedImagePath}");
 			}
 
 			$this->resizeImage($sizedImagePath, $sizeValue, $originalFilenameMime);
@@ -139,7 +140,7 @@ class ImageService implements ImageServiceInterface
 			!is_dir($originalFilePath)
 			&& !mkdir(
 				$originalFilePath,
-				777,
+				0777,
 				true
 			)
 			&& !is_dir($originalFilePath)
@@ -147,7 +148,6 @@ class ImageService implements ImageServiceInterface
 		{
 			throw new OSError(sprintf('Directory "%s" was not created', $originalFilePath));
 		}
-
 		foreach (array_keys($this->imageDefaultSizes) as $dirForSizedImages)
 		{
 			if (is_dir($this->imageDirPath . $dirForSizedImages))
@@ -155,7 +155,7 @@ class ImageService implements ImageServiceInterface
 				continue;
 			}
 			if (
-				!mkdir($this->imageDirPath . $dirForSizedImages, 777, true)
+				!mkdir($this->imageDirPath . $dirForSizedImages, 0777, true)
 				&& !is_dir($this->imageDirPath . $dirForSizedImages)
 			)
 			{
@@ -254,10 +254,5 @@ class ImageService implements ImageServiceInterface
 			$image = imagescale($image, $size, floor($size * $height / $width));
 		}
 		static::validMimeTypeToSaveImageFunction[$mimeType]($image, $filePath);
-	}
-
-	private function getMimeTypeByFilePath(string $filePath)
-	{
-		return MimeMapper::getMimeByExtension(pathinfo($filePath, PATHINFO_EXTENSION));
 	}
 }
