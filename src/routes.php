@@ -30,12 +30,20 @@ $router->get('/admin/addCategory', [CategoryController::class, 'addCategory'], '
 $router->post('/admin/addCategory', [CategoryController::class, 'addCategoryAndSaveToDB'], 'add-category-db');
 $router->get('/admin/addSpecification', [CategoryController::class, 'addSpecification'], 'add-specification');
 $router->post('/admin/addSpecification', [CategoryController::class, 'addSpecificationAndSaveToDB'], 'add-specification-db');
+
 $router->get('/admin/', [ItemController::class, 'getItems'], 'home-admin');
 $router->get('/admin/deleteCategory', [CategoryController::class, 'deleteCategoryPage'], 'delete-category-page');
 $router->post('/admin/deleteCategory', [CategoryController::class, 'deleteCategory'], 'delete-category-post');
 $router->get('/admin/chooseCategory', [CategoryController::class, 'chooseCategoryToSpecDelete'], 'choose-category');
 $router->get('/admin/deleteSpec/{positiveInt:id}',[CategoryController::class, 'deleteSpecPage'],'delete-specification-page');
 $router->post('/admin/deleteSpecification', [CategoryController::class, 'deleteSpec'], 'delete-specification');
+
+
+$router->get('/admin/editCategory', [CategoryController::class, 'editCategoriesPage'], 'edit-category-page');
+
+$router->get('/admin/', [ItemController::class, 'getItems'], 'home-admin');
+$router->get('/admin/getOrders', [OrderController::class, 'getOrders'], 'orders-admin');
+
 
 //API
 $router->get('/api/v1/category/detail', [CategoryController::class, 'getCategoriesWithSpecsJSON'], 'category-detail');

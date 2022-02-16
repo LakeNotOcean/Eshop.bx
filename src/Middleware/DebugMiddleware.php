@@ -35,7 +35,7 @@ class DebugMiddleware extends AbstractMiddleware
 			{
 				return (new Response())->withBodyHTML(
 					$this->templateProcessor->render('debug.php', [
-						'request' => $request,
+						'request' => $this->getRequestArray($request),
 						'exceptions' => $this->getExceptionTrace($throwable),
 					],                               'layout/main.php', [])
 				);
@@ -64,7 +64,8 @@ class DebugMiddleware extends AbstractMiddleware
 		$file = $throwable->getFile();
 		$line = $throwable->getLine();
 		$function = $throwable->getTrace()[0]['function'];
-		return $this->getExceptionData($file, $line, $function);
+		$message = $throwable->getMessage();
+		return $this->getExceptionData($file, $line, $function, $message);
 	}
 
 	private function getExceptionInfo(array $exception): ?array
@@ -76,13 +77,18 @@ class DebugMiddleware extends AbstractMiddleware
 			return null;
 		}
 		$function = $exception['function'] ?? null;
-		return $this->getExceptionData($file, $line, $function);
+		$message = $exception['message'] ?? '';
+		return $this->getExceptionData($file, $line, $function, $message);
 	}
 
-	private function getExceptionData(string $file, string $line, string $function): array
+	private function getExceptionData(string $file, string $line, string $function, string $message): array
 	{
 		$exceptionData = [];
 		$exceptionData['info'] = "$file, line $line, in $function";
+		if (!empty($message))
+		{
+			$exceptionData['info'] .= ", with message: $message";
+		}
 		$exceptionData['codeLine'] = $this->getCodeLine($file, $line);
 		return $exceptionData;
 	}
@@ -91,6 +97,37 @@ class DebugMiddleware extends AbstractMiddleware
 	{
 		$lines = file($file);
 		return "$line. {$lines[$line-1]}";
+	}
+
+	private function getRequestArray(Request $request): array
+	{
+		$requestArray = [];
+
+		$queries = $request->getQueries();
+		if (isset($queries))
+		{
+			$requestArray['Queries'] = $queries;
+		}
+
+		$post = $request->getPost();
+		if (isset($post))
+		{
+			$requestArray['Post'] = $post;
+		}
+
+		$cookies = $request->getCookies();
+		if (isset($cookies))
+		{
+			$requestArray['Cookies'] = $cookies;
+		}
+
+		$session = $request->getSession();
+		if (isset($session))
+		{
+			$requestArray['Session'] = $session;
+		}
+
+		return $requestArray;
 	}
 
 }

@@ -1,4 +1,5 @@
 @import "opened-images.css";
+@import "lib/card.css";
 
 main {
 	background: white;
@@ -16,12 +17,6 @@ main {
 	flex-direction: column;
 	padding: 0 50px;
 	max-width: 1300px;
-}
-
-.card-outline {
-	border-radius: 10px;
-	box-shadow: 0 4px 10px 2px #0000001A;
-	border: 1px solid #DDDDDD;
 }
 
 /*==========================
