@@ -49,6 +49,7 @@ class CategoryController
 
 		$response = new Response();
 
+
 		return $response->withBodyHTML($page);
 	}
 

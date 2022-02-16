@@ -104,6 +104,15 @@
 	font-weight: 500;
 }
 
+
+.btn:active {
+	background: #e5e5e5;
+	-webkit-box-shadow: inset 0 0 5px #c1c1c1;
+	-moz-box-shadow: inset 0 0 5px #c1c1c1;
+	box-shadow: inset 0 0 5px #c1c1c1;
+	outline: none;
+}
+
 .error{
 	border-color: red;
 }
@@ -114,4 +123,21 @@
 
 .visible{
 	visibility: visible;
+}
+
+.result-message {
+	position: fixed;
+	height: 40px;
+	line-height: 40px;
+	left: 50%;
+	bottom: 30px;
+	transform-origin: center;
+	transform: translateX(-50%);
+	padding: 0 20px;
+	border-radius: 1in;
+	color: #ffffff;
+	background: green;
+	text-align: center;
+	font-weight: 500;
+	transition: .1s;
 }

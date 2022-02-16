@@ -25,6 +25,7 @@
 					<span class="label-error" data-source="secondName">Неверный формат фамилии</span>
 				</div>
 			</div>
+		</label>
 		<label for="login" class="field">
 			<div class="label-input">
 				<span class="label-title">Логин</span>
@@ -33,10 +34,6 @@
 					<span class="label-error" data-source="login">Логин должен состоять из не менее чем 5 символов латинского алфавита и цифр</span>
 				</div>
 			</div>
-		</label>
-
-
-
 		</label>
 		<label for="login" class="field">
 			<div class="label-input">
@@ -78,5 +75,5 @@
 	</div>
 
 </div>
-
-<script src="/js/register/registrate-user.js"></script>
+<script src="js/user/help-user.js" type="module"></script>
+<script src="/js/user/registrate-user.js" type="module"></script>
