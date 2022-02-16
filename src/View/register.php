@@ -43,7 +43,7 @@
 				<span class="label-title">Пароль</span>
 				<div class="input-error">
 					<input type="password" class="input" id="password" name="password" placeholder="Пароль">
-					<span class="label-error" data-source="password">Логин должен состоять из не менее чем 5 символов латинского алфавита и цифр</span>
+					<span class="label-error" data-source="password">Пароль должен состоять из не менее чем 5 символов латинского алфавита и цифр</span>
 				</div>
 			</div>
 		</label>
@@ -59,7 +59,7 @@
 				<div class="label-input">
 					<span class="label-title">Email</span>
 					<div class="input-error">
-						<input type="text" class="input" id="email" name="email" placeholder="Email">
+						<input type="email" class="input" id="email" name="email" placeholder="Email">
 						<span class="label-error" data-source="email">Неверный формат email</span>
 					</div>
 				</div>
@@ -69,7 +69,7 @@
 			<div class="label-input">
 				<span class="label-title">Контактный телефон</span>
 				<div class="input-error">
-					<input type="text" class="input" id="phone" name="phone" placeholder="Контактный телефон">
+					<input type="tel" class="input" id="phone" name="phone" placeholder="Контактный телефон" required/>
 					<span class="label-error" data-source="phone">Неверный формат телефона</span>
 				</div>
 			</div>
