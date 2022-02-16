@@ -5,9 +5,13 @@
 /** @var int $currentPage */
 /** @var int $itemsAmount */
 /** @var int $pagesAmount */
+
+/** @var bool $isAdmin */
 $pref = '_big';
 
 use Up\Core\Router\URLResolver;
+
+$isAdmin = true;
 
 ?>
 
@@ -26,18 +30,22 @@ use Up\Core\Router\URLResolver;
 		<div class="item-list">
 
 			<?php
-			foreach ($items as $item) : ?>
+			foreach ($items as $item):
+				$imageUrl = URLResolver::resolve('item-detail', ['id' => $item->getId()]);
+			?>
 
-				<a class="item" href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>">
-					<picture>
-						<source srcset="../img/<?= $item->getId() . $pref ?>.webp" type="image/webp">
-						<source srcset="../img/<?= $item->getId() . $pref ?>.png" type="image/png">
-						<img class="item-image" src="../img/<?= $item->getId() ?>.png" alt="Item Image">
-					</picture>
+				<div class="item">
+					<a href="<?= $imageUrl?>">
+						<picture>
+							<source srcset="../img/<?= $item->getId() . $pref ?>.webp" type="image/webp">
+							<source srcset="../img/<?= $item->getId() . $pref ?>.png" type="image/png">
+							<img class="item-image" src="../img/<?= $item->getId() ?>.png" alt="Item Image">
+						</picture>
+					</a>
 					<div class="item-other">
 						<div class="item-other-to-top">
 							<div class="item-other-header">
-								<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
+								<a class="item-title" href="<?= $imageUrl ?>"><?= htmlspecialchars($item->getTitle()) ?></a>
 								<svg class="add-to-favorites">
 									<use xlink:href="/img/sprites.svg#heart"></use>
 								</svg>
@@ -54,36 +62,61 @@ use Up\Core\Router\URLResolver;
 								<div class="rating-value"><?= (float)random_int(40, 50) / 10 ?></div>
 								<div class="review-count">(<?= random_int(5, 50) ?> отзывов)</div>
 							</div>
+							<?php if ($isAdmin): ?>
+							<div class="admin-btn-container">
+								<a class="btn btn-normal" href="">Изменить</a>
+								<a class="btn btn-delete" href="">Удалить</a>
+							</div>
+							<?php endif;?>
 							<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
 						</div>
 					</div>
-				</a>
+				</div>
 
 			<?php
 			endforeach; ?>
 
 			<div class="navigation">
-				<!--				<div class="navigation-dots navigation-item">...</div>-->
-				<a href="/?page=1" class="navigation-page navigation-item"> << </a>
-				<?php
-				($currentPage > 3) ? $startPage = $currentPage - 3 : $startPage = 1;
-				($currentPage <= $pagesAmount - 3) ? $endPage = $currentPage + 3 : $endPage = $pagesAmount;
-				for ($i = $startPage; $i <= $endPage; $i++):
-					if ($currentPage === $i)
-					{
-						$activeClass = 'navigation-active';
-					}
-					else
-					{
-						$activeClass = '';
-					}
-					?>
-					<a href="/?page=<?= $i ?>" class="navigation-page navigation-item <?= $activeClass ?>"> <?= $i ?> </a>
+				<a href="/?page=<?= $currentPage - 1 ?>" class="navigation-page navigation-item
+				<?= $currentPage === 1 ? 'navigation-blocked' : '' ?>"> < </a>
+				<a href="/?page=1" class="navigation-page navigation-item
+				<?= $currentPage === 1 ? 'navigation-active' : '' ?>">1</a>
+
+				<?php if ($pagesAmount > 7 && $currentPage >= 1 + 4): ?>
+					<div class="navigation-dots navigation-item">···</div>
+				<?php endif;?>
 
 				<?php
-				endfor; ?>
+				$startPage = 2;
+				$endPage = 5;
+				if ($currentPage >= 5)
+				{
+					$startPage = $currentPage - 1;
+					$endPage = $currentPage + 1;
+				}
+				if ($currentPage > $pagesAmount - 4)
+				{
+					$startPage = $pagesAmount - 4;
+					$endPage = $pagesAmount - 1;
+				}
+				if ($pagesAmount <= 7)
+				{
+					$startPage = 2;
+					$endPage = $pagesAmount - 1;
+				}
+				for ($i = $startPage; $i <= $endPage; $i++): ?>
+					<a href="/?page=<?= $i ?>" class="navigation-page navigation-item
+					<?= $currentPage === $i ? 'navigation-active' : '' ?>"> <?= $i ?> </a>
+				<?php endfor;?>
 
-				<a href="/?page=<?= $pagesAmount ?>" class="navigation-page navigation-item"> >> </a>
+				<?php if ($pagesAmount > 7 && $currentPage <= $pagesAmount - 4): ?>
+					<div class="navigation-dots navigation-item">···</div>
+				<?php endif;?>
+
+				<a href="/?page=<?= $pagesAmount?>" class="navigation-page navigation-item
+				<?= $currentPage === $pagesAmount ? 'navigation-active' : '' ?>"><?= $pagesAmount?></a>
+				<a href="/?page=<?= $currentPage + 1 ?>" class="navigation-page navigation-item
+				<?= $currentPage === $pagesAmount ? 'navigation-blocked' : '' ?>"> > </a>
 			</div>
 		</div>
 	</div>

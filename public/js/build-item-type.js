@@ -18,21 +18,21 @@ function changeChild(parent, catId){
 	});
 }
 
-let deleteSpec = document.querySelectorAll('.spec .delete');
+let deleteSpec = document.querySelectorAll('.spec .btn-delete');
 for (let btnDeleteSpec of deleteSpec) {
 	btnDeleteSpec.addEventListener('click', () => {
 		btnDeleteSpec.parentNode.parentNode.removeChild(btnDeleteSpec.parentNode);
 	});
 }
 
-let deleteCategory = document.querySelectorAll('.category-field .delete');
+let deleteCategory = document.querySelectorAll('.category-field .btn-delete');
 for (let btnDeleteCategory of deleteCategory) {
 	btnDeleteCategory.addEventListener('click', () => {
 		btnDeleteCategory.parentNode.parentNode.parentNode.removeChild(btnDeleteCategory.parentNode.parentNode);
 	});
 }
 
-let addSpec = document.querySelectorAll('.category .add');
+let addSpec = document.querySelectorAll('.category .btn-add');
 for (let btnAddSpec of addSpec) {
 	btnAddSpec.addEventListener('click', async () => {
 		let spec = await createSpec(btnAddSpec);
@@ -60,7 +60,7 @@ async function createSpec(btn) {
 	fieldDiv.append(specNameInput);
 
 	let btnDeleteDiv = document.createElement('div');
-	btnDeleteDiv.classList.add('btn', 'delete');
+	btnDeleteDiv.classList.add('btn', 'btn-delete');
 	btnDeleteDiv.innerText = "Удалить";
 
 	btnDeleteDiv.addEventListener('click', () => {
@@ -109,7 +109,7 @@ async function createCategory() {
 	fieldDiv.append(inputCategoryInput);
 
 	let btnDeleteDiv = document.createElement('div');
-	btnDeleteDiv.classList.add('btn', 'delete');
+	btnDeleteDiv.classList.add('btn', 'btn-delete');
 	btnDeleteDiv.innerText = "Удалить";
 
 	btnDeleteDiv.addEventListener('click', () => {
@@ -119,7 +119,7 @@ async function createCategory() {
 	categoryFieldDiv.append(fieldDiv, btnDeleteDiv);
 
 	let btnAddDiv = document.createElement('div');
-	btnAddDiv.classList.add('btn', 'add');
+	btnAddDiv.classList.add('btn', 'btn-add');
 	btnAddDiv.innerText = "Добавить спецификацию";
 
 	btnAddDiv.addEventListener('click', async () => {

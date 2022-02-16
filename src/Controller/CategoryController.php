@@ -10,6 +10,7 @@ use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 use Up\Service\SpecificationService\SpecificationsServiceInterface;
 
+
 class CategoryController
 {
 	protected $templateProcessor;
@@ -150,7 +151,7 @@ class CategoryController
 		$response = $response->withBodyJSON(array_map(function(SpecificationCategory $cat){
 			return [$cat->getName(), array_map(function(Specification $spec){
 				return $spec->getName();
-			}, $cat->getSpecificationList()->getEntitiesArray())];
+			}, $cat->getSpecifications())];
 		}, $this->specificationsService->getCategoriesWithSpecifications()));
 		return $response;
 	}
@@ -165,8 +166,22 @@ class CategoryController
 		$categoriesArray = array_map(function(SpecificationCategory $cat){
 			return [$cat->getName() ,array_map(function(Specification $spec){
 				return $spec->getName();
-			}, $cat->getSpecificationList()->getEntitiesArray())];
+			}, $cat->getSpecifications())];
 		}, $categories);
 		return $response->withBodyJSON($categoriesArray);
 	}
+
+	public function editCategoriesPage(Request $request): Response
+	{
+		$categories = $this->specificationsService->getCategoriesWithSpecifications();
+		$page = $this->templateProcessor->render('edit-category.php', [
+			'categories' => $categories,
+			'isNewItemTypeAdded' => false
+		], 'layout/admin-main.php', []);
+
+		$response = new Response();
+
+		return $response->withBodyHTML($page);
+	}
+
 }

@@ -22,12 +22,12 @@
 <body>
 
 <nav>
-	<div class="start">
-		<a href="/">
-			<svg class="logo">
-				<use xlink:href="/img/sprites.svg#logo"></use>
-			</svg>
-		</a>
+	<a href="/">
+		<svg class="logo">
+			<use xlink:href="/img/sprites.svg#logo"></use>
+		</svg>
+	</a>
+	<div class="nav-bar">
 		<div class="nav-item nav-item-active">Добавить товар
 			<div class="menu-container">
 				<div class="menu">
@@ -39,7 +39,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="sign-out">Выйти</div>
+	<div class="btn btn-normal">Выйти</div>
 </nav>
 
 <main>

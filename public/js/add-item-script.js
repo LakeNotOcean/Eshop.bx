@@ -1,23 +1,27 @@
 createTemplate().then();
 
-function resetForm(form){
+function resetForm(form) {
 	form.reset();
+	resetPreview();
 	let categories = form.querySelectorAll('.category');
 	categories.forEach(category => category.remove());
 	createTemplate().then();
 }
 
-function popup(text){
+function popup(text) {
 	let popup = document.createElement('div');
 	popup.textContent = text;
 	popup.classList.add('popup');
 	document.querySelector('.form-container').append(popup);
 	setTimeout(() => {
-		popup.remove();
+		popup.classList.add('hidden');
 	}, 2000);
+	setTimeout(() => {
+		popup.remove();
+	}, 2100);
 }
 
-function sendPost(item){
+function sendPost(item) {
 	return fetch('/admin/addItem', {
 		method: 'post',
 		body: item
@@ -43,33 +47,29 @@ document.querySelector('.form-add').addEventListener('submit', (e) => {
 	});
 	item.append('item-type', (new URLSearchParams(document.location.search)).get('item-type'))
 	sendPost(item).then((r) => {
-		if(r.ok){
-			popup('Товар добавлен!');
+		if(r.ok) {
+			popup('Товар добавлен');
 			resetForm(e.target);
-		}else {
+		} else {
 			popup('Товар не удалось добавить.')
 		}
 	});
 });
 
 
-
-async function createTemplate()
-{
+async function createTemplate() {
 	if(!(new URLSearchParams(document.location.search)).get('item-type')) return;
 	templateCategory = await loadCategoryAndSpecByType((new URLSearchParams(document.location.search)).get('item-type'));
 	let firstBtn = document.querySelector('.add-category');
-	for (let catId in templateCategory)
-	{
+	for (let catId in templateCategory) {
 		let category = await createCategory(catId);
 		let catDiv = firstBtn.parentNode.insertBefore(category, firstBtn);
-		let specAddBtn = catDiv.querySelector('.category .add');
+		let specAddBtn = catDiv.querySelector('.category .btn-add');
 		specAddBtn.addEventListener('click', async () => {
 			let spec = await createSpec(specAddBtn);
 			specAddBtn.parentNode.insertBefore(spec, specAddBtn);
 		});
-		for (let specId in templateCategory[catId][1])
-		{
+		for (let specId in templateCategory[catId][1]) {
 			let spec = await createSpec(specAddBtn, specId);
 			specAddBtn.parentNode.insertBefore(spec, specAddBtn);
 		}

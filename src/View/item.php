@@ -89,10 +89,10 @@ $itemImages = ['/img/2_big.webp', '/img/2-1_big.webp', '/img/2-2_big.webp'];
 				<a class="anchor" id="specs"></a>
 				<div class="item-section-title">Характеристики</div>
 				<?php
-				foreach ($item->getSpecificationCategoriesList()->getEntitiesArray() as $category): ?>
+				foreach ($item->getSpecificationCategoriesList() as $category): ?>
 					<div class="spec-category"><?= htmlspecialchars($category->getName()) ?></div>
 					<?php
-					foreach ($category->getSpecificationList()->getEntitiesArray() as $spec): ?>
+					foreach ($category->getSpecifications() as $spec): ?>
 						<div class="item-spec">
 							<div class="item-spec-name"><?= htmlspecialchars($spec->getName()) ?></div>
 							<div class="item-spec-value"><?= htmlspecialchars($spec->getValue()) ?></div>

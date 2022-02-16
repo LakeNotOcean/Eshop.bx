@@ -1,7 +1,19 @@
 <?php
 
 namespace Up\Entity;
-
+/**
+ *
+ * При использовании EntityArray внутри другого Entity рекомендуется скрыть это от клиентского кода,
+ * определив в вашем клссе методы
+ * ::getYourEntities(): 						array<int,YourEntity>
+ * ::setYourEntities(array<int,YourEntity>): 	void
+ * ::getYourEntityById(id): 					YourEntity
+ * ::setYourEntity(YourEntity): 				void
+ * ::hasYourEntity(id): 						bool
+ *
+ * Желательно, чтобы ваш класс ни принимал EntityArray, ни отдавал EntityArray
+ *
+ */
 
 class EntityArray
 {
@@ -28,7 +40,10 @@ class EntityArray
 		return $this->entities;
 	}
 
-	public function setEntitiesArray(Entity ...$entities): void
+	/**
+	 * @param array<int,Entity> $entities
+	 */
+	public function setEntitiesArray(array $entities): void
 	{
 		$this->entities = [];
 		foreach ($entities as $entity)

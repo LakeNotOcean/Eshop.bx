@@ -6,16 +6,21 @@
 <link rel="stylesheet" href="/css/add-item.css">
 <div class="form-container">
 	<form action="/admin/addItemType" method="post" enctype="multipart/form-data" class="form-add">
-		<label for="item-type" class="field">
-			<span class="label-title">Тип товара</span>
-			<input type="text" id="item-type" name="item-type" placeholder="Введите название типа товара">
-		</label>
 		<div class="specifications">
 			<div class="specifications-title">Характеристики</div>
-			<div class="btn btn-add add-category">Добавить категорию</div>
+			<div class="category">
+				<div class="category-field">
+					<div class="field">
+						<select class="input-category">
+						</select>
+					</div>
+					<div class="btn delete">Удалить</div>
+				</div>
+				<div class="btn add">Добавить спецификацию</div>
+			</div>
 		</div>
 
-		<input type="submit" value="Сохранить тип товара в базу данных" class="btn-normal">
+		<input type="submit" value="Сохранить тип товара в базу данных" class="btn-save">
 	</form>
 	<?php
 	if ($isNewItemTypeAdded): ?>

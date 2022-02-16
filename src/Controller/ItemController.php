@@ -15,8 +15,8 @@ use Up\Entity\SpecificationCategory;
 use Up\Lib\Paginator\Paginator;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
-use Up\Service\TagService\TagService;
 use Up\Service\TagService\TagServiceInterface;
+
 
 class ItemController
 {
@@ -50,14 +50,10 @@ class ItemController
 	 */
 	public function getItems(Request $request): Response
 	{
-		if ($request->containsQuery('page'))
-		{
-			$currentPage = (int)$request->getQueriesByName('page');
-		}
-		else
-		{
-			$currentPage = 1;
-		}
+		$isAdmin = true;
+
+		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
+		$layout = $isAdmin ? 'layout/admin-main.php' : 'layout/main.php';
 
 		$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
 		$itemsAmount = $this->itemService->getItemsAmount();
@@ -67,7 +63,7 @@ class ItemController
 			'currentPage' => $currentPage,
 			'itemsAmount' => $itemsAmount,
 			'pagesAmount' => $pagesAmount,
-		],                                        'layout/main.php', []);
+		],                                        $layout, []);
 
 		return (new Response())->withBodyHTML($pages);
 	}
@@ -106,7 +102,6 @@ class ItemController
 		$item->setTags($tags);
 
 		$categoriesArray = $request->getPostParametersByName('specs');
-		$categories = new EntityArray();
 		foreach ($categoriesArray as $idCat => $categoryArray)
 		{
 			$category = new SpecificationCategory($idCat);
@@ -114,16 +109,14 @@ class ItemController
 			{
 				$specification = new Specification($idSpec);
 				$specification->setValue($specValue);
-				$category->addToSpecificationList($specification);
+				$category->setSpecification($specification);
 			}
-			$categories->addEntity($category);
+			$item->setSpecificationCategory($category);
 		}
-		$item->setSpecificationCategoryList($categories);
 
 		$item->setMainImage(new ItemsImage(1, '1.png', true));
-		$imagesArray = new EntityArray();
-		$imagesArray->addEntity(new ItemsImage(1, '1.png', true));
-		$item->setImages($imagesArray);
+
+		$item->setImage(new ItemsImage(1, '1.png', true));
 
 		$this->itemService->save($item);
 

@@ -28,7 +28,7 @@ use Up\Entity\SpecificationCategory;
 			<span class="label-title">Порядок отображения</span>
 			<input type="number" id="spec-order" name="spec-order" placeholder="Введите порядок отображения спецификации" value="0">
 		</label>
-		<input type="submit" value="Сохранить спецификацию в базу данных" class="btn-save">
+		<input type="submit" value="Сохранить спецификацию в базу данных" class="btn-normal">
 	</form>
 	<?php
 	if ($isNewSpecAdded): ?>
