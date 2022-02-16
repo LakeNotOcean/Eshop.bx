@@ -30,18 +30,22 @@ $isAdmin = true;
 		<div class="item-list">
 
 			<?php
-			foreach ($items as $item) : ?>
+			foreach ($items as $item):
+				$imageUrl = URLResolver::resolve('item-detail', ['id' => $item->getId()]);
+			?>
 
 				<div class="item">
-					<picture>
-						<source srcset="../img/<?= $item->getId() . $pref ?>.webp" type="image/webp">
-						<source srcset="../img/<?= $item->getId() . $pref ?>.png" type="image/png">
-						<img class="item-image" src="../img/<?= $item->getId() ?>.png" alt="Item Image">
-					</picture>
+					<a href="<?= $imageUrl?>">
+						<picture>
+							<source srcset="../img/<?= $item->getId() . $pref ?>.webp" type="image/webp">
+							<source srcset="../img/<?= $item->getId() . $pref ?>.png" type="image/png">
+							<img class="item-image" src="../img/<?= $item->getId() ?>.png" alt="Item Image">
+						</picture>
+					</a>
 					<div class="item-other">
 						<div class="item-other-to-top">
 							<div class="item-other-header">
-								<a class="item-title" href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>"><?= htmlspecialchars($item->getTitle()) ?></a>
+								<a class="item-title" href="<?= $imageUrl ?>"><?= htmlspecialchars($item->getTitle()) ?></a>
 								<svg class="add-to-favorites">
 									<use xlink:href="/img/sprites.svg#heart"></use>
 								</svg>
