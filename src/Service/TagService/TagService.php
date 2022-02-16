@@ -19,9 +19,14 @@ class TagService implements TagServiceInterface
 		$this->tagDAO = $tagDAO;
 	}
 
-	public function save(array $tags): EntityArray
+	/**
+	 * @param array<string> $tags
+	 *
+	 * @return array<int,ItemsTag>
+	 */
+	public function save(array $tags): array
 	{
-		$tags = array_map(static function(string $tag) {
+		$tags = array_map(function(string $tag) {
 			return new ItemsTag(0, $tag);
 		}, $tags);
 

@@ -19,7 +19,12 @@ class TagDAOmysql implements TagDAOInterface
 		$this->DBConnection = $DBConnection;
 	}
 
-	public function save(array $tags): EntityArray
+	/**
+	 * @param array $tags
+	 *
+	 * @return array<int,ItemsTag>
+	 */
+	public function save(array $tags): array
 	{
 		$names = array_map(function(ItemsTag $tag) {
 			return $tag->getName();
@@ -29,7 +34,7 @@ class TagDAOmysql implements TagDAOInterface
 			$names,
 			array_map(function(ItemsTag $tag) {
 				return $tag->getName();
-			}, $addedTags->getEntitiesArray())
+			}, $addedTags)
 		);
 		if (!empty($toAdd))
 		{
@@ -39,14 +44,19 @@ class TagDAOmysql implements TagDAOInterface
 		return $this->getTagsByNames($names);
 	}
 
-	public function getTagsByNames(array $names): EntityArray
+	/**
+	 * @param array<string> $names
+	 *
+	 * @return array<int,ItemsTag>
+	 */
+	public function getTagsByNames(array $names): array
 	{
-		$tags = new EntityArray();
+		$tags = [];
 		$result = $this->DBConnection->prepare($this->getTagsByNamesQuery($names));
 		$result->execute();
 		while ($row = $result->fetch())
 		{
-			$tags->addEntity(new ItemsTag($row['ID'], $row['TITLE']));
+			$tags[$row['ID']] = new ItemsTag($row['ID'], $row['TITLE']);
 		}
 
 		return $tags;

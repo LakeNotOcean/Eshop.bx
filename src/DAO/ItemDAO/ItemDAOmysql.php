@@ -41,6 +41,26 @@ class ItemDAOmysql implements ItemDAOInterface
 		return $items;
 	}
 
+
+	public function getItemsByQuery(int $offset, int $amountItems, string $searchQuery): array
+	{
+		$dbQuery = $this->getItemsQuery($offset, $amountItems, $searchQuery);
+		$result = $this->DBConnection->prepare($dbQuery);
+		$result->execute(["%$searchQuery%"]);
+		$items = [];
+		foreach ($result as $row)
+		{
+			$item = new Item();
+			$this->mapItemCommonInfo($item, $row);
+			$image = new ItemsImage();
+			$this->mapItemsImageInfo($image, $row);
+			$item->setMainImage($image);
+			$items[] = $item;
+		}
+
+		return $items;
+	}
+
 	public function getItemDetailById(int $id): ItemDetail
 	{
 		$result = $this->DBConnection->query($this->getItemDetailByIdQuery($id));
@@ -51,40 +71,35 @@ class ItemDAOmysql implements ItemDAOInterface
 			{
 				$this->mapDetailItemInfo($item, $row);
 			}
-			if (!$item->getTags()->contains($row['TAG_ID']))
+			if (!$item->hasTag($row['TAG_ID']))
 			{
-				$item->getTags()->addEntity($this->getTag($row));
+				$item->setTag($this->getTag($row));
 			}
-			if (!$item->getSpecificationCategoriesList()->contains($row['usc_ID']))
+			if (!$item->hasSpecificationCategory($row['usc_ID']))
 			{
-				$item->getSpecificationCategoriesList()->addEntity(
+				$item->setSpecificationCategory(
 					new SpecificationCategory(
 						$row['usc_ID'], $row['usc_NAME'], $row['usc_DISPLAY_ORDER']
 					)
 				);
 			}
-			if (
-				!$item->getSpecificationCategoriesList()->getEntity($row['usc_ID'])->getSpecificationList()->contains(
-					$row['SPEC_TYPE_ID']
-				)
-			)
+			if (!$item->getSpecificationCategoryById($row['usc_ID'])->hasSpecification($row['SPEC_TYPE_ID']))
 			{
-				$item->getSpecificationCategoriesList()->getEntity($row['usc_ID'])->getSpecificationList()->addEntity(
+				$item->getSpecificationCategoryById($row['usc_ID'])->setSpecification(
 					new Specification(
 						$row['SPEC_TYPE_ID'], $row['ust_NAME'], $row['ust_DISPLAY_ORDER'], $row['VALUE']
 					)
 				);
 			}
-			if (!$item->getImages()->contains($row['u_ID']))
+			if (!$item->hasImage($row['u_ID']))
 			{
-				$item->getImages()->addEntity($this->getItemsImage($row));
+				$item->setImage($this->getItemsImage($row));
 				if ($row['IS_MAIN'] and !$item->isSetMainImage())
 				{
-					$item->setMainImage($item->getImages()->getEntity($row['u_ID']));
+					$item->setMainImage($item->getImageById($row['u_ID']));
 				}
 			}
 		}
-
 		return $item;
 	}
 
@@ -102,17 +117,17 @@ class ItemDAOmysql implements ItemDAOInterface
 	{
 		$oldItem = $this->getItemDetailById($item->getId());
 
-		$oldTags = $oldItem->getTags()->getEntitiesArray();
-		$newTags = $item->getTags()->getEntitiesArray();
+		$oldTags = $oldItem->getTags();
+		$newTags = $item->getTags();
 
-		$oldSpecsCat = $oldItem->getSpecificationCategoriesList()->getEntitiesArray();
-		$newSpecsCat = $item->getSpecificationCategoriesList()->getEntitiesArray();
+		$oldSpecsCat = $oldItem->getSpecificationCategoriesList();
+		$newSpecsCat = $item->getSpecificationCategoriesList();
 
 		$oldSpecs = $this->getSpecsFromCategory($oldSpecsCat);
 		$newSpecs = $this->getSpecsFromCategory($newSpecsCat);
 
-		$oldImages = $oldItem->getImages()->getEntitiesArray();
-		$newImages = $item->getImages()->getEntitiesArray();
+		$oldImages = $oldItem->getImages();
+		$newImages = $item->getImages();
 
 		if (!empty($oldTags))
 		{
@@ -166,13 +181,13 @@ class ItemDAOmysql implements ItemDAOInterface
 		$this->DBConnection->query($this->getInsertItemQuery($item));
 		$id = $this->DBConnection->lastInsertId();
 		$item->setId($id);
-		$tags = $item->getTags()->getEntitiesArray();
+		$tags = $item->getTags();
 
-		$specsCat = $item->getSpecificationCategoriesList()->getEntitiesArray();
+		$specsCat = $item->getSpecificationCategoriesList();
 
 		$specs = $this->getSpecsFromCategory($specsCat);
 
-		$images = $item->getImages()->getEntitiesArray();
+		$images = $item->getImages();
 
 		$this->DBConnection->query($this->getInsertTagsQuery($id, $tags));
 		$this->DBConnection->query($this->getInsertSpecsQuery($id, $specs));
@@ -194,7 +209,7 @@ class ItemDAOmysql implements ItemDAOInterface
 		$specs = [];
 		foreach ($categories as $cat)
 		{
-			$category = $cat->getSpecificationList()->getEntitiesArray();
+			$category = $cat->getSpecifications();
 			foreach ($category as $id => $spec)
 			{
 				$specs[$id] = $spec;
@@ -204,17 +219,21 @@ class ItemDAOmysql implements ItemDAOInterface
 		return $specs;
 	}
 
-	public function getItemsAmount(): int
+	public function getItemsAmount(string $searchQuery = ''): int
 	{
 		$query = 'SELECT count(1) AS num_items FROM up_item WHERE ACTIVE = 1';
+		if ($searchQuery !== '')
+		{
+			$query .= " AND TITLE LIKE '%$searchQuery%' ";
+		}
 		$result = $this->DBConnection->query($query);
 
 		return $result->fetch()['num_items'];
 	}
 
-	private function getItemsQuery(int $offset, int $amountItems): string
+	private function getItemsQuery(int $offset, int $amountItems, string $searchQuery = ''): string
 	{
-		return "SELECT ui.ID as ui_ID,
+		$result = "SELECT ui.ID as ui_ID,
                         TITLE as TITLE,
                         PRICE as PRICE,
                         SORT_ORDER as SORT_ORDER,
@@ -225,9 +244,15 @@ class ItemDAOmysql implements ItemDAOInterface
                         u.IS_MAIN IMAGE_IS_MAIN
 				FROM up_item ui
 				INNER JOIN up_image u on ui.ID = u.ITEM_ID AND u.IS_MAIN = 1
-				WHERE ACTIVE = 1
+				WHERE ACTIVE = 1";
+		if ($searchQuery !== '')
+		{
+			$result .= " AND TITLE LIKE ? ";
+		}
+		$result .= "
 				ORDER BY ui.SORT_ORDER
 				LIMIT {$offset}, {$amountItems};";
+		return $result;
 	}
 
 	private function getItemDetailByIdQuery(int $id): string

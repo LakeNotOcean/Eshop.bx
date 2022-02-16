@@ -23,22 +23,26 @@ class ItemController
 	protected $templateProcessor;
 	protected $itemService;
 	protected $imageService;
+	protected $tagService;
 	protected $itemsInPage = 10;
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
 	 * @param \Up\Service\ItemService\ItemService $itemService
 	 * @param \Up\Service\ImageService\ImageService $imageService
+	 * @param \Up\Service\TagService\TagService $tagService
 	 */
 	public function __construct(
 		TemplateProcessorInterface $templateProcessor,
 		ItemServiceInterface       $itemService,
-		ImageServiceInterface      $imageService
+		ImageServiceInterface      $imageService,
+		TagServiceInterface        $tagService
 	)
 	{
 		$this->templateProcessor = $templateProcessor;
 		$this->itemService = $itemService;
 		$this->imageService = $imageService;
+		$this->tagService = $tagService;
 	}
 
 	/**
@@ -46,33 +50,44 @@ class ItemController
 	 */
 	public function getItems(Request $request): Response
 	{
-		if ($request->containsQuery('page'))
+		$isAdmin = false;
+
+		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
+		$currentPage = $currentPage > 0 ? $currentPage : 1;
+		$layout = $isAdmin ? 'layout/admin-main.php' : 'layout/main.php';
+
+		if ($request->containsQuery('query'))
 		{
-			$currentPage = (int)$request->getQueriesByName('page');
+			$query = $request->getQueriesByName('query');
+			$items = $this->itemService->getItemsByQuery(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query);
+			$itemsAmount = $this->itemService->getItemsAmount($query);
 		}
 		else
 		{
-			$currentPage = 1;
+			$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
+			$itemsAmount = $this->itemService->getItemsAmount();
+			$query = '';
 		}
-
-		$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
-		$itemsAmount = $this->itemService->getItemsAmount();
 		$categories = $this->itemService->getItemsCategories();
 		$tags = $this->itemService->getItemsTags();
+
+
+
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
 		$pages = $this->templateProcessor->render('catalog.php', [
 			'items' => $items,
 			'currentPage' => $currentPage,
 			'itemsAmount' => $itemsAmount,
 			'pagesAmount' => $pagesAmount,
+			'query' => $query,
 			'categories' => $categories,
 			'tags' => $tags,
-		],                                        'layout/main.php', []);
+		],                                        $layout, ['query' => $query]);
 
 		return (new Response())->withBodyHTML($pages);
 	}
 
-	public function getItem(Request $request, $id): Response
+	public function getItem(Request $request, int $id): Response
 	{
 		$item = $this->itemService->getItemById($id);
 		$pages = $this->templateProcessor->render('item.php', ['item' => $item], 'layout/main.php', []);
@@ -106,7 +121,6 @@ class ItemController
 		$item->setTags($tags);
 
 		$categoriesArray = $request->getPostParametersByName('specs');
-		$categories = new EntityArray();
 		foreach ($categoriesArray as $idCat => $categoryArray)
 		{
 			$category = new SpecificationCategory($idCat);
@@ -114,16 +128,14 @@ class ItemController
 			{
 				$specification = new Specification($idSpec);
 				$specification->setValue($specValue);
-				$category->addToSpecificationList($specification);
+				$category->setSpecification($specification);
 			}
-			$categories->addEntity($category);
+			$item->setSpecificationCategory($category);
 		}
-		$item->setSpecificationCategoryList($categories);
 
 		$item->setMainImage(new ItemsImage(1, '1.png', true));
-		$imagesArray = new EntityArray();
-		$imagesArray->addEntity(new ItemsImage(1, '1.png', true));
-		$item->setImages($imagesArray);
+
+		$item->setImage(new ItemsImage(1, '1.png', true));
 
 		$this->itemService->save($item);
 

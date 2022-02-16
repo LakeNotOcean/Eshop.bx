@@ -28,7 +28,7 @@ class OrderService implements OrderServiceInterface
 	{
 		$this->orderDAO->addOrder($order);
 		$orderId = $this->orderDAO->getOrderIdByOrder($order);
-		$this->orderDAO->addOrderItems($orderId, $order->getItemIds());
+		$this->orderDAO->addOrderItems($orderId, $order->getItems());
 	}
 
 }

@@ -65,10 +65,10 @@
 
 		<div class="specifications">
 			<div class="specifications-title">Характеристики</div>
-			<div class="btn add add-category">Добавить категорию</div>
+			<div class="btn btn-add add-category">Добавить категорию</div>
 		</div>
 
-		<input type="submit" value="Сохранить товар в базу данных" class="btn btn-save">
+		<input type="submit" value="Сохранить товар в базу данных" class="btn btn-normal">
 	</form>
 </div>
 <script src="/js/preview-images.js"></script>

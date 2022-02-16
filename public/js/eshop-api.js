@@ -13,7 +13,7 @@ async function loadAllCategory(){
 
 async function getCategory()
 {
-	if (Object.keys(allCategory).length != 0)
+	if (Object.keys(allCategory).length !== 0)
 	{
 		return allCategory;
 	}

@@ -68,11 +68,11 @@ class OrderController
 		$comment = $request->getPostParametersByName('comment');
 
 		$order = new Order($customerName, $phone, $email, $comment);
-		$order->setStatus('IN_PROCESSING'); // OrderStatus::IN_PROCESSING()
+		$order->setStatus('IN_PROCESSING'); //TODO enum and OrderStatus::IN_PROCESSING()
 		$now = $this->getDatetime();
 		$order->setDateCreate($now);
 		$order->setDateUpdate($now);
-		$order->setItemIds($itemIds);
+		$order->setItems($items);
 		//TODO get user from session and $order->setUser($user);
 
 		$this->orderService->saveOrder($order);

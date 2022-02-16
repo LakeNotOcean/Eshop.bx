@@ -147,4 +147,39 @@ class Request
 
 		return $from[$key];
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getQueries(): array
+	{
+		return $this->queries;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getPost(): array
+	{
+		return $this->post;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getCookies(): array
+	{
+		return $this->cookies;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getSession(): array
+	{
+		return $this->session;
+	}
+
+
+
 }

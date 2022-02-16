@@ -27,9 +27,15 @@ class ItemService implements ItemServiceInterface
 		$this->tagDAO = $tagDAO;
 	}
 
+
 	public function getItems(array $limitOffset): array
 	{
 		return $this->itemDAO->getItems($limitOffset['offset'], $limitOffset['amountItems']);
+	}
+
+	public function getItemsByQuery(array $limitOffset, string $searchQuery): array
+	{
+		return $this->itemDAO->getItemsByQuery($limitOffset['offset'], $limitOffset['amountItems'], $searchQuery);
 	}
 
 	public function getItemById(int $id): ItemDetail
@@ -40,9 +46,9 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItemDetailById($id);
 	}
 
-	public function getItemsAmount(): int
+	public function getItemsAmount(string $query = ''): int
 	{
-		return $this->itemDAO->getItemsAmount();
+		return $this->itemDAO->getItemsAmount($query);
 	}
 
 	public function getItemsTags(): array

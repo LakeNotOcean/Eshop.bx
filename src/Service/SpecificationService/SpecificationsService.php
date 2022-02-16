@@ -76,7 +76,7 @@ class SpecificationsService implements SpecificationsServiceInterface
 		$categories = $this->specificationDAO->getCategoriesWithSpecifications();
 		foreach ($categories as $category)
 		{
-			$specifications = $category->getSpecificationList()->getEntitiesArray();
+			$specifications = $category->getSpecifications();
 			foreach ($specifications as $currSpec)
 			{
 				if ($currSpec->getName() === $specification->getName())

@@ -14,13 +14,9 @@
 			<span class="label-title">Порядок отображения</span>
 			<input type="number" id="category-order" name="category-order" placeholder="Введите порядок отображения" value="0">
 		</label>
-		<input type="submit" value="Сохранить категорию в базу данных" class="btn-save">
+		<input type="submit" value="Сохранить категорию в базу данных" class="btn-normal">
 	</form>
-	<?php
-	if ($isNewCategoryAdded): ?>
-		<div id="popup" class="popup">Добавлена новая категория</div>
-	<?php
-	endif; ?>
+	<div id="popup" class="popup <?= !$isNewCategoryAdded ? 'hidden' : ''?>">Добавлена новая категория</div>
 </div>
 
 <script src="/js/popup-disappear.js"></script>
