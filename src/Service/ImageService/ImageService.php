@@ -66,7 +66,7 @@ class ImageService implements ImageServiceInterface
 	 * Загружает картинку в файл с картинками. Сохраняет в фаловой системе оригинальное изображение и его версии
 	 * с измененными размерами
 	 *
-	 * @param array{name:string, type:string, tmp_name:string, error:int} $imageParams
+	 * @param array{name:string, type:string, tmp_name:string} $imageParams
 	 * @param bool $isMain
 	 *
 	 * @return ItemsImage
@@ -88,6 +88,35 @@ class ImageService implements ImageServiceInterface
 		$originalImagePath = $this->getOriginalImagePathByFilename($originalFilename);
 
 		$this->moveTmpFileToDirectory($imageParams['tmp_name'], $originalImagePath);
+		$sizedImagesPath = $this->createSizedImagesByOriginal($originalFilename, $mimeType);
+
+		$itemImage = new ItemsImage();
+		$itemImage->setIsMain($isMain);
+		$itemImage->setOriginalImagePath($originalImagePath);
+		foreach ($sizedImagesPath as $sizeName => $path)
+		{
+			$itemImage->setPath($sizeName, $path);
+		}
+
+		return $itemImage;
+	}
+
+	public function test(array $imageParams, bool $isMain): ItemsImage
+	{
+		$mimeType = $imageParams['type'];
+		if (!$this->isValidImageMime($mimeType))
+		{
+			throw new MimeTypeException("Invalid mime file type. Now: {$mimeType}");
+		}
+
+		$this->createImageDirs();
+		$originalFilename = $this->getUniqueFilename(
+			$imageParams['name'],
+			$mimeType
+		);
+		$originalImagePath = $this->getOriginalImagePathByFilename($originalFilename);
+
+		copy($imageParams['tmp_name'], $originalImagePath);
 		$sizedImagesPath = $this->createSizedImagesByOriginal($originalFilename, $mimeType);
 
 		$itemImage = new ItemsImage();

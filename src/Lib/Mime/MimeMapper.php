@@ -157,6 +157,7 @@ class MimeMapper
 		'audio/wave' => 'wav',
 		'audio/wav' => 'wav',
 		'application/wbxml' => 'wbxml',
+		'image/webp' => 'webp',
 		'video/webm' => 'webm',
 		'audio/x-ms-wma' => 'wma',
 		'application/wmlc' => 'wmlc',
