@@ -5,47 +5,35 @@ namespace Up\Entity;
 
 class ItemsImage extends Entity
 {
-	protected $id = 0;
-	protected $path = '';
-	protected $isMain = false;
+	protected $originalImagePath;
+	protected $paths;
+	protected $isMain;
 
-	public function __construct(int $id = 0, string $path = '', bool $isMain = false)
+	public function __construct(int $id = 0, array $paths = [], bool $isMain = false, string $originalImagePath = '')
 	{
 		$this->id = $id;
-		$this->path = $path;
+		$this->paths = $paths;
 		$this->isMain = $isMain;
+		$this->originalImagePath = $originalImagePath;
 	}
 
 	/**
-	 * @return int
-	 */
-	public function getId(): int
-	{
-		return $this->id;
-	}
-
-	/**
-	 * @param int $id
-	 */
-	public function setId(int $id): void
-	{
-		$this->id = $id;
-	}
-
-	/**
+	 * @param string $size
+	 *
 	 * @return string
 	 */
-	public function getPath(): string
+	public function getPath(string $size): string
 	{
-		return $this->path;
+		return $this->paths[$size];
 	}
 
 	/**
 	 * @param string $path
+	 * @param string $size
 	 */
-	public function setPath(string $path): void
+	public function setPath(string $size, string $path): void
 	{
-		$this->path = $path;
+		$this->paths[$size] = $path;
 	}
 
 	/**
@@ -62,5 +50,21 @@ class ItemsImage extends Entity
 	public function setIsMain(bool $isMain): void
 	{
 		$this->isMain = $isMain;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getOriginalImagePath(): string
+	{
+		return $this->originalImagePath;
+	}
+
+	/**
+	 * @param string $originalImagePath
+	 */
+	public function setOriginalImagePath(string $originalImagePath): void
+	{
+		$this->originalImagePath = $originalImagePath;
 	}
 }

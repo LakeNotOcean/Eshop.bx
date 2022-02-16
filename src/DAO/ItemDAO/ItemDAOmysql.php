@@ -219,7 +219,7 @@ class ItemDAOmysql implements ItemDAOInterface
                         u.PATH IMAGE_PATH,
                         u.IS_MAIN IMAGE_IS_MAIN
 				FROM up_item ui
-				INNER JOIN up_image u on ui.ID = u.ITEM_ID AND u.IS_MAIN = 1
+				INNER JOIN up_original_image u on ui.ID = u.ITEM_ID AND u.IS_MAIN = 1
 				WHERE ACTIVE = 1
 				ORDER BY ui.SORT_ORDER
 				LIMIT {$offset}, {$amountItems};";
@@ -244,7 +244,7 @@ class ItemDAOmysql implements ItemDAOInterface
                 INNER JOIN up_item_spec uis on ui.ID = uis.ITEM_ID
                 INNER JOIN up_spec_type ust on uis.SPEC_TYPE_ID = ust.ID
                 INNER JOIN up_spec_category usc on ust.SPEC_CATEGORY_ID = usc.ID
-                INNER JOIN up_image u on ui.ID = u.ITEM_ID;";
+                INNER JOIN up_original_image u on ui.ID = u.ITEM_ID;";
 	}
 
 	private function getDeleteWhereAndWhereInQuery(int $id, array $ids, array $table): string
@@ -283,11 +283,11 @@ class ItemDAOmysql implements ItemDAOInterface
 		$insert = implode(
 			',',
 			array_map(function(ItemsImage $image) use ($id) {
-				return "('{$image->getPath()}',{$id},{$image->isMain()})";
+				return "('{$image->getPaths()}',{$id},{$image->isMain()})";
 			}, $images)
 		);
 
-		return "INSERT INTO up_image(PATH, ITEM_ID, IS_MAIN) VALUES {$insert};";
+		return "INSERT INTO up_original_image(PATH, ITEM_ID, IS_MAIN) VALUES {$insert};";
 	}
 
 	private function getInsertItemQuery(ItemDetail $item): string

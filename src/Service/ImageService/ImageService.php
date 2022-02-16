@@ -2,6 +2,7 @@
 
 namespace Up\Service\ImageService;
 
+use http\Exception;
 use http\Exception\RuntimeException;
 use Up\Core\Error\OSError;
 use Up\Core\Settings\Settings;
@@ -27,6 +28,8 @@ class ImageService implements ImageServiceInterface
 		'image/webp' => 'imagewebp',
 	];
 	protected $imageDirPath;
+	protected const OriginalImagesDir = 'original/';
+
 	/**
 	 * @var array<string, int>
 	 */
@@ -74,18 +77,22 @@ class ImageService implements ImageServiceInterface
 			throw new MimeTypeException("Invalid mime file type. Now: {$mimeType}");
 		}
 
-		$this->createImageDir();
-		$filenameWithoutPostfix = $this->getUniqueFilename(
+		$this->createImageDirs();
+		$originalFilename = $this->getUniqueFilename(
 			$imageParams['name'],
 			$mimeType
 		);
-		$filenameWithSize = $this->addSizePosfixToFilename($filenameWithoutPostfix, $this->imageDefaultSizes['big']);
-		$this->moveTmpFileToDirectory($imageParams['tmp_name'], $filenameWithSize);
-		$this->resizeImage($filenameWithSize, $this->imageDefaultSizes['big'], $mimeType);
+		$originalFilenamePath = $this->getOriginalImagePathByFilename($originalFilename);
+
+		$this->moveTmpFileToDirectory($imageParams['tmp_name'], $originalFilenamePath);
+		$sizedImagesPath = $this->createSizedImagesByOriginal($originalFilename, $mimeType);
 
 		$itemImage = new ItemsImage();
 		$itemImage->setIsMain($isMain);
-		$itemImage->setPath($this->getPathByFilename($filenameWithoutPostfix));
+		foreach ($sizedImagesPath as $sizeName => $path)
+		{
+			$itemImage->setPath($sizeName, $path);
+		}
 
 		return $itemImage;
 	}
@@ -96,42 +103,86 @@ class ImageService implements ImageServiceInterface
 	}
 
 	/**
-	 * @param bool $exist_ok
+	 * @param string $originalFilename
 	 *
-	 * @return void
-	 * @throws OSError
+	 * @return array{small:string, medium:string, big:string}
+	 * @throws MimeTypeException
 	 */
-	private function createImageDir(bool $exist_ok = true): void
+	private function createSizedImagesByOriginal(string $originalFilename, string $originalFilenameMime): array
 	{
-		if (is_dir($this->imageDirPath))
+		$originalFilePath = $this->getOriginalImagePathByFilename($originalFilename);
+		$sizedImagePaths = [];
+
+		foreach ($this->imageDefaultSizes as $sizeName => $sizeValue)
 		{
-			if (!$exist_ok)
+			$sizedImagePath = $this->getSizedImagePath($originalFilename, $sizeName);
+			if (!copy($originalFilePath, $sizedImagePath))
 			{
-				throw new OSError("Directory {$this->imageDirPath} already exist");
+				throw new \RuntimeException("Can't copy file from {$originalFilePath} to {$sizedImagePath}");
 			}
 
-			return;
+			$this->resizeImage($sizedImagePath, $sizeValue, $originalFilenameMime);
+			$sizedImagePaths[$sizeName] = $sizedImagePath;
 		}
 
-		if (!mkdir($this->imageDirPath) && !is_dir($this->imageDirPath))
-		{
-			throw new OSError(sprintf('Directory "%s" was not created', $this->imageDirPath));
-		}
+		return $sizedImagePaths;
 	}
 
 	/**
-	 * @param string $imageFilename
+	 * @return void
+	 * @throws OSError
+	 */
+	private function createImageDirs(): void
+	{
+		$originalFilePath = $this->imageDirPath . $this::OriginalImagesDir;
+		if (
+			!is_dir($originalFilePath)
+			&& !mkdir(
+				$originalFilePath,
+				777,
+				true
+			)
+			&& !is_dir($originalFilePath)
+		)
+		{
+			throw new OSError(sprintf('Directory "%s" was not created', $originalFilePath));
+		}
+
+		foreach (array_keys($this->imageDefaultSizes) as $dirForSizedImages)
+		{
+			if (is_dir($this->imageDirPath . $dirForSizedImages))
+			{
+				continue;
+			}
+			if (
+				!mkdir($this->imageDirPath . $dirForSizedImages, 777, true)
+				&& !is_dir($this->imageDirPath . $dirForSizedImages)
+			)
+			{
+				throw new OSError(sprintf('Directory "%s" was not created', $this->imageDirPath . $dirForSizedImages));
+			}
+
+		}
+	}
+
+	private function getOriginalImagePathByFilename(string $filename): string
+	{
+		return $this->imageDirPath . $this::OriginalImagesDir . $filename;
+	}
+
+	/**
+	 * @param string $originalImageFilename
 	 * @param string $mimeType
 	 *
 	 * @return string
 	 */
-	private function getUniqueFilename(string $imageFilename, string $mimeType): string
+	private function getUniqueFilename(string $originalImageFilename, string $mimeType): string
 	{
 		$fileExtension = MimeMapper::getExtensionByMime($mimeType);
-		$hash = ($this::filenameHashFunc)($imageFilename);
+		$hash = ($this::filenameHashFunc)($originalImageFilename);
 		$filename = $this->generateFilename($hash, $fileExtension);
 
-		if (!$this->imageInDirectoryExist($filename))
+		if (!$this->originalImageInDirectoryExist($filename))
 		{
 			return $filename;
 		}
@@ -141,7 +192,7 @@ class ImageService implements ImageServiceInterface
 			$hash . (string)$hashPostfixCounter,
 			$fileExtension,
 		);
-		while ($this->imageInDirectoryExist($resultFilename))
+		while ($this->originalImageInDirectoryExist($resultFilename))
 		{
 			$hashPostfixCounter++;
 			$resultFilename = $this->generateFilename(
@@ -153,44 +204,39 @@ class ImageService implements ImageServiceInterface
 		return $resultFilename;
 	}
 
-	private function addSizePosfixToFilename(string $imageFilename, int $size): string
-	{
-		$fileExtension = explode('.', $imageFilename);
-		$fileExtension = end($fileExtension);
-
-		return $this->generateFilename($imageFilename . '_' . (string)$size, $fileExtension);
-	}
-
 	private function generateFilename(string $imageFilename, string $fileExtension): string
 	{
 		return $imageFilename . '.' . $fileExtension;
 	}
 
-	private function imageInDirectoryExist(string $imageFilename): bool
+	private function originalImageInDirectoryExist(string $imageFilename): bool
 	{
-		return file_exists($this->getPathByFilename($imageFilename));
+		return file_exists($this->imageDirPath . $this::OriginalImagesDir . $imageFilename);
 	}
 
-	private function getPathByFilename(string $filename): string
+	private function getSizedImagePath(string $filename, string $size): string
 	{
-		return $this->imageDirPath . $filename;
+		return $this->imageDirPath . $size . '/' . $filename;
 	}
 
-	private function moveTmpFileToDirectory(string $tmpFilePath, string $resultFileName): void
+	private function moveTmpFileToDirectory(string $tmpFilePath, string $resultPath): void
 	{
-		move_uploaded_file($tmpFilePath, $this->getPathByFilename($resultFileName));
+		if (!move_uploaded_file($tmpFilePath, $resultPath))
+		{
+			throw new OSError("Can't upload file {$tmpFilePath} to {$resultPath}");
+		}
 	}
 
 	/**
 	 * @throws MimeTypeException
 	 */
-	private function resizeImage(string $filename, int $size, string $mimeType): void
+	private function resizeImage(string $filePath, int $size, string $mimeType): void
 	{
 		if (!isset(static::validMimeTypeToCreateImageFunction[$mimeType]))
 		{
 			throw new MimeTypeException("Invalid mime file type. Now: {$mimeType}");
 		}
-		$filePath = $this->getPathByFilename($filename);
+
 		$image = static::validMimeTypeToCreateImageFunction[$mimeType]($filePath);
 		if (!$image)
 		{
@@ -208,5 +254,10 @@ class ImageService implements ImageServiceInterface
 			$image = imagescale($image, $size, floor($size * $height / $width));
 		}
 		static::validMimeTypeToSaveImageFunction[$mimeType]($image, $filePath);
+	}
+
+	private function getMimeTypeByFilePath(string $filePath)
+	{
+		return MimeMapper::getMimeByExtension(pathinfo($filePath, PATHINFO_EXTENSION));
 	}
 }
