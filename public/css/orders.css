@@ -1,4 +1,5 @@
 @import 'lib/card.css';
+@import 'input.css';
 
 .container {
 	flex: 1;
@@ -22,6 +23,7 @@
 .order-line {
 	margin: 5px;
 	display: flex;
+	align-items: center;
 }
 
 .order-label {
