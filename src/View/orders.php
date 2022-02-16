@@ -40,7 +40,7 @@
 					endforeach; ?>
 					<div class="order-line">
 						<div class="order-label">Итого:</div>
-						<div class="order-value"><?= $order->getTotalCost()?> ₽</div>
+						<div class="order-total"><?= $order->getTotalCost()?> ₽</div>
 					</div>
 				</div>
 				<div class="order-line">
