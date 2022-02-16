@@ -87,6 +87,16 @@ class OrderController
 		return (new Response())->withBodyHTML($page);
 	}
 
+	public function getOrders(Request $request): Response
+	{
+		$orders = $this->orderService->getOrders();
+		$page = $this->templateProcessor->render('orders.php', [
+			'orders' => $orders,
+		],                                       'layout/admin-main.php', []);
+
+		return (new Response())->withBodyHTML($page);
+	}
+
 	private function calculateTotalCost(array $items): int
 	{
 		$cost = 0;

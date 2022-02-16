@@ -23,6 +23,7 @@ $router->post('/login', [UserController::class, 'loginUser'], 'login-user');
 //Admin
 $router->get('/admin/addItem', [ItemController::class, 'addItem'], 'add-item');
 $router->post('/admin/addItem', [ItemController::class, 'createNewItem'], 'home');
+
 $router->get('/admin/chooseItemType', [CategoryController::class, 'chooseItemType'], 'choose-item-type');
 $router->get('/admin/addItemType', [CategoryController::class, 'addItemType'], 'add-item-type');
 $router->post('/admin/addItemType', [CategoryController::class, 'addItemTypeAndSaveToDB'], 'add-item-type-db');
@@ -30,8 +31,10 @@ $router->get('/admin/addCategory', [CategoryController::class, 'addCategory'], '
 $router->post('/admin/addCategory', [CategoryController::class, 'addCategoryAndSaveToDB'], 'add-category-db');
 $router->get('/admin/addSpecification', [CategoryController::class, 'addSpecification'], 'add-specification');
 $router->post('/admin/addSpecification', [CategoryController::class, 'addSpecificationAndSaveToDB'], 'add-specification-db');
-$router->get('/admin/', [ItemController::class, 'getItems'], 'home-admin');
 $router->get('/admin/editCategory', [CategoryController::class, 'editCategoriesPage'], 'edit-category-page');
+
+$router->get('/admin/', [ItemController::class, 'getItems'], 'home-admin');
+$router->get('/admin/getOrders', [OrderController::class, 'getOrders'], 'orders-admin');
 
 //API
 $router->get('/api/v1/category/detail', [CategoryController::class, 'getCategoriesWithSpecsJSON'], 'category-detail');
