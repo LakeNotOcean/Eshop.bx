@@ -1,0 +1,14 @@
+@import 'lib/card.css';
+
+.container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 30px 50px;
+	max-width: 1500px;
+}
+
+.order {
+	padding: 10px;
+}
