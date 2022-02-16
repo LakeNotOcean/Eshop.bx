@@ -6,7 +6,7 @@
 	max-width: 1300px;
 }
 
-.traceback-title {
+.traceback-title, .request-title {
 	font-weight: bold;
 	font-size: 18px;
 	margin-bottom: 20px;
@@ -16,4 +16,15 @@
 	margin: 15px 0 15px 30px;
 	padding: 5px;
 	background: #dddddd;
+}
+
+.method-name {
+	font-weight: 600;
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+
+.method-parameter {
+	margin: 5px 0 5px 10px;
+	font-size: 15px;
 }

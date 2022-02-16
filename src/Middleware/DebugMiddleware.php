@@ -35,7 +35,7 @@ class DebugMiddleware extends AbstractMiddleware
 			{
 				return (new Response())->withBodyHTML(
 					$this->templateProcessor->render('debug.php', [
-						'request' => $request,
+						'request' => $this->getRequestArray($request),
 						'exceptions' => $this->getExceptionTrace($throwable),
 					],                               'layout/main.php', [])
 				);
@@ -91,6 +91,37 @@ class DebugMiddleware extends AbstractMiddleware
 	{
 		$lines = file($file);
 		return "$line. {$lines[$line-1]}";
+	}
+
+	private function getRequestArray(Request $request): array
+	{
+		$requestArray = [];
+
+		$queries = $request->getQueries();
+		if (isset($queries))
+		{
+			$requestArray['Queries'] = $queries;
+		}
+
+		$post = $request->getPost();
+		if (isset($post))
+		{
+			$requestArray['Post'] = $post;
+		}
+
+		$cookies = $request->getCookies();
+		if (isset($cookies))
+		{
+			$requestArray['Cookies'] = $cookies;
+		}
+
+		$session = $request->getSession();
+		if (isset($session))
+		{
+			$requestArray['Session'] = $session;
+		}
+
+		return $requestArray;
 	}
 
 }
