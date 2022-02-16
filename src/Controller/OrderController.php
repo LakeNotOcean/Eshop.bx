@@ -110,9 +110,7 @@ class OrderController
 
 	private function getDatetime(): string
 	{
-		$st = time();
-		$date = new DateTime("@$st");
-		return date_format($date, 'Y-m-d H:i:s');
+		return date('Y-m-d H:i:s');
 	}
 
 }
