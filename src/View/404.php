@@ -3,6 +3,7 @@
 <div class="container">
 	<div class="title-404">Страница 404!</div>
 </div>
+
 <script>
 	//region classes
 	class Square
@@ -175,23 +176,20 @@
 	//endregion classes
 
 	//region init
-	let title404 = document.querySelector('.title-404');
-	let container = document.querySelector('.container');
-	let width = container.getBoundingClientRect().width;
-	let height = container.getBoundingClientRect().height
-		- title404.getBoundingClientRect().height
-		- 140;
 	let canvas = document.createElement('canvas');
+	let container = document.querySelector('.container');
 
-	let rowLength = 40;
-	let pieceSize = width/rowLength;
+	canvas.height = container.getBoundingClientRect().height - 70;
+	canvas.width = canvas.height/1.5;
 
-	canvas.width = Math.floor(width/pieceSize) * pieceSize;
-	canvas.height = Math.floor(height/pieceSize) * pieceSize;
+	let rowLength = 20;
+	let pieceSize = canvas.width/rowLength;
+
 	container.append(canvas);
+
 	let ctx = canvas.getContext('2d');
 	//endregion init
-	let columnHeight = Math.floor(height/pieceSize);
+	let columnHeight = Math.floor(canvas.height/pieceSize);
 
 	let squares = [];
 	let currentPiece = new Piece(pieceSize);
@@ -423,4 +421,12 @@
 	update()
 	setInterval(update, 500);
 	//endregion helper functions
+
+	window.addEventListener('resize', () => {
+		let oldHeight = canvas.height;
+		let oldWidth = canvas.width;
+		canvas.height = container.getBoundingClientRect().height;
+		canvas.width = canvas.height/1.5;
+		ctx.scale(canvas.height/oldHeight, canvas.width/oldWidth);
+	});
 </script>

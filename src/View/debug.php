@@ -1,9 +1,7 @@
 <?php
 
-use Up\Core\Message\Request;
-
 /** @var array $exceptions */
-/** @var Request $request */
+/** @var array $request */
 
 ?>
 
@@ -23,9 +21,22 @@ use Up\Core\Message\Request;
 		</div>
 	<?php endforeach;?>
 
-	<h1 class="traceback-title">Request</h1>
+	<h1 class="request-title">Request</h1>
 
-	<div class="request">
-		<?= var_export($request) ?>
+	<div class="method">
+		<?php
+		foreach ($request as $methodName => $method):
+		if (empty($method))
+		{
+			continue;
+		}
+		?>
+			<div class="method-name"><?= $methodName?></div>
+			<?php foreach ($method as $key => $value):?>
+				<div class="method-parameter">
+					<?= "\"$key\" => $value"?>
+				</div>
+			<?php endforeach;?>
+		<?php endforeach;?>
 	</div>
 </div>

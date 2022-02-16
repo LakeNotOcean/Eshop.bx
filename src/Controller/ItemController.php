@@ -50,6 +50,7 @@ class ItemController
 	 */
 	public function getItems(Request $request): Response
 	{
+		throw new \Exception();
 		$isAdmin = true;
 
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
