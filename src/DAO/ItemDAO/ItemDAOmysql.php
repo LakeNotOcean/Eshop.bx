@@ -215,11 +215,11 @@ class ItemDAOmysql implements ItemDAOInterface
                         SORT_ORDER as SORT_ORDER,
                         SHORT_DESC as SHORT_DESC,
                         ACTIVE as ACTIVE,
-                        u.ID IMAGE_ID,
-                        u.PATH IMAGE_PATH,
-                        u.IS_MAIN IMAGE_IS_MAIN
+                        uoi.ID IMAGE_ID,
+                        uoi.PATH IMAGE_PATH,
+                        uoi.IS_MAIN IMAGE_IS_MAIN
 				FROM up_item ui
-				INNER JOIN up_original_image u on ui.ID = u.ITEM_ID AND u.IS_MAIN = 1
+				INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1   
 				WHERE ACTIVE = 1
 				ORDER BY ui.SORT_ORDER
 				LIMIT {$offset}, {$amountItems};";

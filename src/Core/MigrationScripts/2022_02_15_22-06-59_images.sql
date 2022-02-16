@@ -1,6 +1,6 @@
 rename table up_image to up_original_image;
 
-create table up_sized_image
+create table up_image_with_size
 (
 	ID                int auto_increment,
 	ORIGINAL_IMAGE_ID int          not null,
@@ -13,8 +13,8 @@ create table up_sized_image
 );
 
 create unique index up_sized_image_ID_uindex
-	on up_sized_image (ID);
+	on up_image_with_size (ID);
 
 create unique index up_sized_image_PATH_uindex
-	on up_sized_image (PATH);
+	on up_image_with_size (PATH);
 

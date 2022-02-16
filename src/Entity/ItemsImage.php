@@ -37,6 +37,14 @@ class ItemsImage extends Entity
 	}
 
 	/**
+	 * @return array<string>
+	 */
+	public function getSizes(): array
+	{
+		return array_keys($this->paths);
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function isMain(): bool

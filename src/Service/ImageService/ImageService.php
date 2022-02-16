@@ -63,6 +63,9 @@ class ImageService implements ImageServiceInterface
 	}
 
 	/**
+	 * Загружает картинку в файл с картинками. Сохраняет в фаловой системе оригинальное изображение и его версии
+	 * с измененными размерами
+	 *
 	 * @param array{name:string, type:string, tmp_name:string, error:int} $imageParams
 	 * @param bool $isMain
 	 *
@@ -82,13 +85,14 @@ class ImageService implements ImageServiceInterface
 			$imageParams['name'],
 			$mimeType
 		);
-		$originalFilenamePath = $this->getOriginalImagePathByFilename($originalFilename);
+		$originalImagePath = $this->getOriginalImagePathByFilename($originalFilename);
 
-		$this->moveTmpFileToDirectory($imageParams['tmp_name'], $originalFilenamePath);
+		$this->moveTmpFileToDirectory($imageParams['tmp_name'], $originalImagePath);
 		$sizedImagesPath = $this->createSizedImagesByOriginal($originalFilename, $mimeType);
 
 		$itemImage = new ItemsImage();
 		$itemImage->setIsMain($isMain);
+		$itemImage->setOriginalImagePath($originalImagePath);
 		foreach ($sizedImagesPath as $sizeName => $path)
 		{
 			$itemImage->setPath($sizeName, $path);
@@ -171,20 +175,20 @@ class ImageService implements ImageServiceInterface
 	}
 
 	/**
-	 * @param string $originalImageFilename
+	 * @param string $filename
 	 * @param string $mimeType
 	 *
 	 * @return string
 	 */
-	private function getUniqueFilename(string $originalImageFilename, string $mimeType): string
+	private function getUniqueFilename(string $filename, string $mimeType): string
 	{
 		$fileExtension = MimeMapper::getExtensionByMime($mimeType);
-		$hash = ($this::filenameHashFunc)($originalImageFilename);
-		$filename = $this->generateFilename($hash, $fileExtension);
+		$hash = ($this::filenameHashFunc)($filename);
+		$newFilename = $this->generateFilename($hash, $fileExtension);
 
-		if (!$this->originalImageInDirectoryExist($filename))
+		if (!$this->originalImageInDirectoryExist($newFilename))
 		{
-			return $filename;
+			return $newFilename;
 		}
 
 		$hashPostfixCounter = 1;
