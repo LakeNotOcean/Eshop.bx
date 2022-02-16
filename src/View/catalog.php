@@ -177,32 +177,19 @@ $isAdmin = true;
 
 			<div class="navigation">
 				<!--				<div class="navigation-dots navigation-item">...</div>-->
-				<div id="1" class="navigation-page navigation-item"> << </div>
 				<?//= http_build_query(array_merge(['page' => $currentPage - 1], $_GET)) ?>
-				<a href="/?<?= http_build_query(array_merge($_GET, ['page' => ($currentPage - 1)])) ?>" class="navigation-page navigation-item
-				<?= $currentPage === 1 ? 'navigation-blocked' : '' ?>"> < </a>
-				<a href="/?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>" class="navigation-page navigation-item
-				<?= $currentPage === 1 ? 'navigation-active' : '' ?>">1</a>
+				<div id="<?=$currentPage - 1?>" class="navigation-page navigation-item
+				<?= $currentPage === 1 ? 'navigation-blocked' : '' ?>"> < </div>
+				<div id="1" class="navigation-page navigation-item
+				<?= $currentPage === 1 ? 'navigation-active' : '' ?>">1</div>
 
 				<?php if ($pagesAmount > 7 && $currentPage >= 1 + 4): ?>
 					<div class="navigation-dots navigation-item">···</div>
 				<?php endif;?>
 
-				<?php
-				($currentPage > 3) ? $startPage = $currentPage - 3 : $startPage = 1;
-				($currentPage <= $pagesAmount - 3) ? $endPage = $currentPage + 3 : $endPage = $pagesAmount;
-				for ($i = $startPage; $i <= $endPage; $i++):
-					if ($currentPage === $i)
-					{
-						$activeClass = 'navigation-active';
-					}
-					else
-					{
-						$activeClass = '';
-					}
-					?>
-					<div id="<?= $i ?>" class="navigation-page navigation-item <?= $activeClass ?>"><?= $i ?></div>
-				$startPage = 2;
+
+
+				<?php $startPage = 2;
 				$endPage = 5;
 				if ($currentPage >= 5)
 				{
@@ -220,22 +207,20 @@ $isAdmin = true;
 					$endPage = $pagesAmount - 1;
 				}
 				for ($i = $startPage; $i <= $endPage; $i++): ?>
-					<a href="/?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>" class="navigation-page navigation-item
-					<?= $currentPage === $i ? 'navigation-active' : '' ?>"> <?= $i ?> </a>
+					<div id="<?= $i ?>" class="navigation-page navigation-item
+					<?= $currentPage === $i ? 'navigation-active' : '' ?>"> <?= $i ?> </div>
 				<?php endfor;?>
 
 				<?php if ($pagesAmount > 7 && $currentPage <= $pagesAmount - 4): ?>
 					<div class="navigation-dots navigation-item">···</div>
 				<?php endif;?>
-
-				<div id="<?=$pagesAmount?>" class="navigation-page navigation-item"> >> </div>
 				<?php if ($pagesAmount > 1): ?>
-				<a href="/?<?= http_build_query(array_merge($_GET, ['page' => $pagesAmount])) ?>" class="navigation-page navigation-item
-				<?= $currentPage === $pagesAmount ? 'navigation-active' : '' ?>"><?= $pagesAmount?></a>
+				<div id="<?=$pagesAmount?>" class="navigation-page navigation-item
+				<?= $currentPage === $pagesAmount ? 'navigation-active' : '' ?>"><?= $pagesAmount?></div>
 				<?php endif;?>
 
-				<a href="/?<?= http_build_query(array_merge($_GET, ['page' => ($currentPage + 1)])) ?>" class="navigation-page navigation-item
-				<?= $currentPage >= $pagesAmount ? 'navigation-blocked' : '' ?>"> > </a>
+				<div id="<?=$currentPage + 1?>" class="navigation-page navigation-item
+				<?= $currentPage >= $pagesAmount ? 'navigation-blocked' : '' ?>"> > </div>
 			</div>
 		</div>
 	</div>
