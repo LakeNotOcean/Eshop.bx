@@ -60,7 +60,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 				);
 			}
 			$specificationId = $row['SPEC_ID'];
-			if (!$categoriesList[$categoryId]->isSpecificationExist($specificationId))
+			if (!$categoriesList[$categoryId]->hasSpecification($specificationId))
 			{
 				$categoriesList[$categoryId]->setSpecification($this->createSpecificationByRow($row));
 			}

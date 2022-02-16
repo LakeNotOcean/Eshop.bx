@@ -7,6 +7,7 @@ use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
 use Up\Entity\EntityArray;
+use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\ItemsImage;
 use Up\Entity\ItemType;
@@ -63,6 +64,7 @@ class ItemController
 			'currentPage' => $currentPage,
 			'itemsAmount' => $itemsAmount,
 			'pagesAmount' => $pagesAmount,
+			'isAdmin' => $isAdmin
 		],                                        $layout, []);
 
 		return (new Response())->withBodyHTML($pages);
@@ -79,9 +81,29 @@ class ItemController
 	/**
 	 * @throws NoSuchQueryParameterException
 	 */
-	public function addItem(Request $request): Response
+	public function addItem(Request $request, int $id = 0): Response
 	{
-		$page = $this->templateProcessor->render('add-item.php', [], 'layout/admin-main.php', []);
+		if($id === 0)
+		{
+			$page = $this->templateProcessor->render('add-item.php', [], 'layout/admin-main.php', []);
+		}
+		else
+		{
+			$item = $this->itemService->getItemById($id);
+			$page = $this->templateProcessor->render('add-item.php', ['item' => $item], 'layout/admin-main.php', []);
+		}
+
+		$response = new Response();
+
+		return $response->withBodyHTML($page);
+	}
+
+	public function updateItemPage(Request $request, int $id): Response
+	{
+		$item = $this->itemService->getItemById($id);
+		$page = $this->templateProcessor->render('add-item.php', [
+			'item' => $item
+		], 'layout/admin-main.php', []);
 
 		$response = new Response();
 
@@ -123,6 +145,25 @@ class ItemController
 		return (new Response())->withBodyHTML('');
 	}
 
+	public function deactivateItem(Request $request, int $id): Response
+	{
+		$this->itemService->deactivateItem($id);
+		return (new Response())->withBodyHTML('');
+	}
+
+	public function updateCommonInfo(Request $request): Response
+	{
+		$item = new Item();
+		$item->setId($request->getPostParametersByName('item-id'));
+		$item->setSortOrder($request->getPostParametersByName('item-sort_order'));
+		$item->setShortDescription($request->getPostParametersByName('item-short-description'));
+		$item->setPrice($request->getPostParametersByName('item-price'));
+		$item->setTitle($request->getPostParametersByName('item-title'));
+		$this->itemService->updateCommonInfo($item);
+		$response = new Response();
+		return $response->withBodyHTML('');
+	}
+
 	private function mapCommonItemInfoFromRequest(ItemDetail $item, Request $request)
 	{
 		$item->setTitle($request->getPostParametersByName('item-title'));
@@ -130,7 +171,11 @@ class ItemController
 		$item->setShortDescription($request->getPostParametersByName('item-short-description'));
 		$item->setFullDescription($request->getPostParametersByName('item-full-description'));
 		$item->setIsActive(true);
-		$item->setSortOrder(3);
+		$item->setSortOrder($request->getPostParametersByName('item-sort_order'));
 		$item->setItemType(new ItemType($request->getPostParametersByName('item-type'), ''));
+		if ($request->containsPost('item-id'))
+		{
+			$item->setId($request->getPostParametersByName('item-id'));
+		}
 	}
 }

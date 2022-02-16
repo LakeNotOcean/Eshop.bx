@@ -1,5 +1,5 @@
 <?php
-/** @var array<Entity\Item> $items */
+/** @var array<Item> $items */
 
 /** @var int $result_count */
 /** @var int $currentPage */
@@ -10,8 +10,7 @@
 $pref = '_big';
 
 use Up\Core\Router\URLResolver;
-
-$isAdmin = true;
+use Up\Entity\Item;
 
 ?>
 
@@ -32,7 +31,7 @@ $isAdmin = true;
 			<?php
 			foreach ($items as $item) : ?>
 
-				<div class="item">
+				<<?= $isAdmin ? 'form enctype="multipart/form-data" action="' . URLResolver::resolve('fast-item-update') . '" method="post"' : "a href=\"" . URLResolver::resolve('item-detail', ['id' => $item->getId()]) . "\"" ?> class="item">
 					<picture>
 						<source srcset="../img/<?= $item->getId() . $pref ?>.webp" type="image/webp">
 						<source srcset="../img/<?= $item->getId() . $pref ?>.png" type="image/png">
@@ -41,14 +40,22 @@ $isAdmin = true;
 					<div class="item-other">
 						<div class="item-other-to-top">
 							<div class="item-other-header">
-								<a class="item-title" href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>"><?= htmlspecialchars($item->getTitle()) ?></a>
+								<?php if ($isAdmin): ?>
+								<input name="item-title" value="<?= htmlspecialchars($item->getTitle()) ?>">
+								<?php else: ?>
+								<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
+								<?php endif;?>
 								<svg class="add-to-favorites">
 									<use xlink:href="/img/sprites.svg#heart"></use>
 								</svg>
 							</div>
+							<?php if ($isAdmin): ?>
+							<textarea name="item-short-description"> <?= htmlspecialchars($item->getShortDescription()) ?> </textarea>
+							<?php else: ?>
 							<div class="item-short-description">
 								<?= htmlspecialchars($item->getShortDescription()) ?>
 							</div>
+							<?php endif;?>
 						</div>
 						<div class="item-other-footer">
 							<div class="rating">
@@ -59,15 +66,20 @@ $isAdmin = true;
 								<div class="review-count">(<?= random_int(5, 50) ?> отзывов)</div>
 							</div>
 							<?php if ($isAdmin): ?>
+							<input name="item-sort_order" class="display-order" type="number" value="<?= $item->getSortOrder() ?>">
 							<div class="admin-btn-container">
-								<a class="btn btn-normal" href="">Изменить</a>
-								<a class="btn btn-delete" href="">Удалить</a>
+								<a class="btn btn-normal" href="<?=URLResolver::resolve('edit-item-page', ['id' => $item->getId()])?>">Редактировать</a>
+								<input type="submit" class="btn btn-normal" value="Сохранить">
+								<a class="btn btn-delete">Удалить</a>
 							</div>
-							<?php endif;?>
+							<input name="item-price" class="price" type="number" value="<?= htmlspecialchars($item->getPrice()) ?>">₽
+							<input name="item-id" value="<?= $item->getId() ?>" type="hidden">
+							<?php else: ?>
 							<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
+							<?php endif;?>
 						</div>
 					</div>
-				</div>
+				</<?= $isAdmin ? 'form' : 'a' ?>>
 
 			<?php
 			endforeach; ?>
@@ -120,3 +132,6 @@ $isAdmin = true;
 
 <script src="/js/fix-node.js"></script>
 <script src="/js/fixed-filters.js"></script>
+<?php if ($isAdmin): ?>
+<script src="/js/delete-item.js"></script>
+<?php endif;?>

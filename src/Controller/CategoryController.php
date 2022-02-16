@@ -235,4 +235,16 @@ class CategoryController
 		return $response->withBodyHTML($page);
 	}
 
+	public function getCategoriesByItemIdJSON(Request $request, int $id): Response
+	{
+		$response = new Response();
+		$categories = $this->specificationsService->getItemCategoriesByItemId($id);
+		$categoriesArray = array_map(function(SpecificationCategory $cat){
+			return [$cat->getName() ,array_map(function(Specification $spec){
+				return [$spec->getName(), $spec->getValue()];
+			}, $cat->getSpecifications())];
+		}, $categories);
+		return $response->withBodyJSON($categoriesArray);
+	}
+
 }
