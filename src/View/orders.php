@@ -1,13 +1,23 @@
 <?php
 
-/** @var array<\Up\Entity\Order> $orders */
+/** @var array<\Up\Entity\Order\Order> $orders */
 
 ?>
 
 <link rel="stylesheet" href="/css/orders.css">
 
 <div class="container">
-
+	<div class="order-line">
+		<div class="order-label">Статус заказа:</div>
+		<div class="order-status-filter">
+			<select id="type-data" name="item-type">
+				<option value="IN_PROCESSING">В обработке</option>
+				<option value="DELIVERY">Ожидает доставки</option>
+				<option value="DONE">Завершён</option>
+				<option value="CANCELLED">Отменён</option>
+			</select>
+		</div>
+	</div>
 	<div class="order-list">
 		<?php foreach ($orders as $order):?>
 			<div class="order card">

@@ -7,7 +7,8 @@ use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
-use Up\Entity\Order;
+use Up\Entity\Order\Order;
+use Up\Entity\Order\OrderStatus;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\OrderService\OrderServiceInterface;
 
@@ -68,7 +69,7 @@ class OrderController
 		$comment = $request->getPostParametersByName('comment');
 
 		$order = new Order($customerName, $phone, $email, $comment);
-		$order->setStatus('IN_PROCESSING'); //TODO enum and OrderStatus::IN_PROCESSING()
+		$order->setStatus(OrderStatus::IN_PROCESSING());
 		$now = $this->getDatetime();
 		$order->setDateCreate($now);
 		$order->setDateUpdate($now);
