@@ -5,6 +5,7 @@
 /** @var int $currentPage */
 /** @var int $itemsAmount */
 /** @var int $pagesAmount */
+/** @var string $query */
 
 /** @var bool $isAdmin */
 $pref = '_big';
@@ -17,7 +18,14 @@ $isAdmin = true;
 
 <link rel="stylesheet" href="/css/catalog.css">
 <div class="container">
-	<div class="search_result_count">Видеокарты: найдено <?= $itemsAmount ?> штук</div>
+	<div class="search_result_count">
+		<?php if ($query === ''): ?>
+		Видеокарты: найдено <?= $itemsAmount ?> товаров
+		<?php else: ?>
+		Результаты поиска по запросу "<?= $query ?>": найдено <?= $itemsAmount ?> товаров
+		<?php endif; ?>
+
+	</div>
 	<div class="filters-item-list-row">
 		<div class="filters-column">
 			<div class="filters">
@@ -28,6 +36,12 @@ $isAdmin = true;
 			</div>
 		</div>
 		<div class="item-list">
+
+			<?php if ($itemsAmount === 0): ?>
+			<div class="item-no-results">
+				По вашему запросу не найдено ни одного товара! Попробуйте изменить условия поиска
+			</div>
+			<?php endif; ?>
 
 			<?php
 			foreach ($items as $item):
@@ -77,9 +91,10 @@ $isAdmin = true;
 			endforeach; ?>
 
 			<div class="navigation">
-				<a href="/?page=<?= $currentPage - 1 ?>" class="navigation-page navigation-item
+				<?//= http_build_query(array_merge(['page' => $currentPage - 1], $_GET)) ?>
+				<a href="/?<?= http_build_query(array_merge($_GET, ['page' => ($currentPage - 1)])) ?>" class="navigation-page navigation-item
 				<?= $currentPage === 1 ? 'navigation-blocked' : '' ?>"> < </a>
-				<a href="/?page=1" class="navigation-page navigation-item
+				<a href="/?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>" class="navigation-page navigation-item
 				<?= $currentPage === 1 ? 'navigation-active' : '' ?>">1</a>
 
 				<?php if ($pagesAmount > 7 && $currentPage >= 1 + 4): ?>
@@ -105,7 +120,7 @@ $isAdmin = true;
 					$endPage = $pagesAmount - 1;
 				}
 				for ($i = $startPage; $i <= $endPage; $i++): ?>
-					<a href="/?page=<?= $i ?>" class="navigation-page navigation-item
+					<a href="/?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>" class="navigation-page navigation-item
 					<?= $currentPage === $i ? 'navigation-active' : '' ?>"> <?= $i ?> </a>
 				<?php endfor;?>
 
@@ -113,10 +128,13 @@ $isAdmin = true;
 					<div class="navigation-dots navigation-item">···</div>
 				<?php endif;?>
 
-				<a href="/?page=<?= $pagesAmount?>" class="navigation-page navigation-item
+				<?php if ($pagesAmount > 1): ?>
+				<a href="/?<?= http_build_query(array_merge($_GET, ['page' => $pagesAmount])) ?>" class="navigation-page navigation-item
 				<?= $currentPage === $pagesAmount ? 'navigation-active' : '' ?>"><?= $pagesAmount?></a>
-				<a href="/?page=<?= $currentPage + 1 ?>" class="navigation-page navigation-item
-				<?= $currentPage === $pagesAmount ? 'navigation-blocked' : '' ?>"> > </a>
+				<?php endif;?>
+
+				<a href="/?<?= http_build_query(array_merge($_GET, ['page' => ($currentPage + 1)])) ?>" class="navigation-page navigation-item
+				<?= $currentPage >= $pagesAmount ? 'navigation-blocked' : '' ?>"> > </a>
 			</div>
 		</div>
 	</div>

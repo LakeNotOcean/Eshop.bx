@@ -24,7 +24,7 @@ class ItemController
 	protected $itemService;
 	protected $imageService;
 	protected $tagService;
-	protected $itemsInPage = 10;
+	protected $itemsInPage = 2;
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
@@ -50,25 +50,39 @@ class ItemController
 	 */
 	public function getItems(Request $request): Response
 	{
-		$isAdmin = true;
+		$isAdmin = false;
 
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
+		$currentPage = $currentPage > 0 ? $currentPage : 1;
 		$layout = $isAdmin ? 'layout/admin-main.php' : 'layout/main.php';
 
-		$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
-		$itemsAmount = $this->itemService->getItemsAmount();
+		if ($request->containsQuery('query'))
+		{
+			$query = $request->getQueriesByName('query');
+			$items = $this->itemService->getItemsByQuery(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query);
+			$itemsAmount = $this->itemService->getItemsAmount($query);
+		}
+		else
+		{
+			$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
+			$itemsAmount = $this->itemService->getItemsAmount();
+			$query = '';
+		}
+
+
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
 		$pages = $this->templateProcessor->render('catalog.php', [
 			'items' => $items,
 			'currentPage' => $currentPage,
 			'itemsAmount' => $itemsAmount,
 			'pagesAmount' => $pagesAmount,
-		],                                        $layout, []);
+			'query' => $query,
+		],                                        $layout, ['query' => $query]);
 
 		return (new Response())->withBodyHTML($pages);
 	}
 
-	public function getItem(Request $request, $id): Response
+	public function getItem(Request $request, int $id): Response
 	{
 		$item = $this->itemService->getItemById($id);
 		$pages = $this->templateProcessor->render('item.php', ['item' => $item], 'layout/main.php', []);

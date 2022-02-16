@@ -60,6 +60,14 @@ items
 	transition: .3s;
 }
 
+.item-no-results {
+	padding: 50px;
+	font-size: 24px;
+	font-weight: bold;
+	text-align: center;
+	line-height: 2;
+}
+
 /*==========================
 item-image
 ==========================*/

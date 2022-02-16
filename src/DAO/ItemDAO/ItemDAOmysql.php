@@ -41,6 +41,26 @@ class ItemDAOmysql implements ItemDAOInterface
 		return $items;
 	}
 
+
+	public function getItemsByQuery(int $offset, int $amountItems, string $searchQuery): array
+	{
+		$dbQuery = $this->getItemsQuery($offset, $amountItems, $searchQuery);
+		$result = $this->DBConnection->prepare($dbQuery);
+		$result->execute(["%$searchQuery%"]);
+		$items = [];
+		foreach ($result as $row)
+		{
+			$item = new Item();
+			$this->mapItemCommonInfo($item, $row);
+			$image = new ItemsImage();
+			$this->mapItemsImageInfo($image, $row);
+			$item->setMainImage($image);
+			$items[] = $item;
+		}
+
+		return $items;
+	}
+
 	public function getItemDetailById(int $id): ItemDetail
 	{
 		$result = $this->DBConnection->query($this->getItemDetailByIdQuery($id));
@@ -199,17 +219,21 @@ class ItemDAOmysql implements ItemDAOInterface
 		return $specs;
 	}
 
-	public function getItemsAmount(): int
+	public function getItemsAmount(string $searchQuery = ''): int
 	{
 		$query = 'SELECT count(1) AS num_items FROM up_item WHERE ACTIVE = 1';
+		if ($searchQuery !== '')
+		{
+			$query .= " AND TITLE LIKE '%$searchQuery%' ";
+		}
 		$result = $this->DBConnection->query($query);
 
 		return $result->fetch()['num_items'];
 	}
 
-	private function getItemsQuery(int $offset, int $amountItems): string
+	private function getItemsQuery(int $offset, int $amountItems, string $searchQuery = ''): string
 	{
-		return "SELECT ui.ID as ui_ID,
+		$result = "SELECT ui.ID as ui_ID,
                         TITLE as TITLE,
                         PRICE as PRICE,
                         SORT_ORDER as SORT_ORDER,
@@ -220,9 +244,15 @@ class ItemDAOmysql implements ItemDAOInterface
                         u.IS_MAIN IMAGE_IS_MAIN
 				FROM up_item ui
 				INNER JOIN up_image u on ui.ID = u.ITEM_ID AND u.IS_MAIN = 1
-				WHERE ACTIVE = 1
+				WHERE ACTIVE = 1";
+		if ($searchQuery !== '')
+		{
+			$result .= " AND TITLE LIKE ? ";
+		}
+		$result .= "
 				ORDER BY ui.SORT_ORDER
 				LIMIT {$offset}, {$amountItems};";
+		return $result;
 	}
 
 	private function getItemDetailByIdQuery(int $id): string
