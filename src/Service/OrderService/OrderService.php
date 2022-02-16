@@ -4,7 +4,7 @@ namespace Up\Service\OrderService;
 
 use Up\DAO\ItemDAO\ItemDAOInterface;
 use Up\DAO\OrderDAO\OrderDAOInterface;
-use Up\Entity\Order;
+use Up\Entity\Order\Order;
 
 
 class OrderService implements OrderServiceInterface
@@ -36,7 +36,7 @@ class OrderService implements OrderServiceInterface
 	public function saveOrder(Order $order): void
 	{
 		$this->orderDAO->addOrder($order);
-		$orderId = $this->orderDAO->getOrderIdByOrder($order);
+		$orderId = $this->orderDAO->getLastInsertId();
 		$this->orderDAO->addOrderItems($orderId, $order->getItems());
 	}
 

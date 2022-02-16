@@ -2,14 +2,14 @@
 
 namespace Up\DAO\OrderDAO;
 
-use Up\Entity\Order;
+use Up\Entity\Order\Order;
 
 
 interface OrderDAOInterface
 {
 	public function getOrders(): array;
 
-	public function getOrderIdByOrder(Order $order): int;
+	public function getLastInsertId(): int;
 
 	public function addOrder(Order $order): void;
 

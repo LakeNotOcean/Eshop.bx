@@ -4,8 +4,8 @@ namespace Up\DAO\OrderDAO;
 
 use Up\Core\Database\DefaultDatabase;
 use Up\DAO\AbstractDAO;
-use Up\Entity\Order;
-
+use Up\Entity\Order\Order;
+use Up\Entity\Order\OrderStatus;
 
 class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 {
@@ -31,7 +31,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		{
 			$order = new Order($row['CUSTOMER_NAME'], $row['PHONE'], $row['EMAIL'], $row['COMMENT']);
 			$order->setId($row['ID']);
-			$order->setStatus($row['STATUS']);
+			$order->setStatus(OrderStatus::from($row['STATUS']));
 			$order->setDateCreate($row['DATE_CREATE']);
 			$order->setDateUpdate($row['DATE_UPDATE']);
 			$orders[] = $order;
@@ -39,16 +39,9 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		return $orders;
 	}
 
-	public function getOrderIdByOrder(Order $order): int
+	public function getLastInsertId(): int
 	{
-		$preparedStatement = $this->getSelectPrepareStatement(
-			'up_order',
-			['CUSTOMER_NAME' => '=', 'PHONE' => '=', 'EMAIL' => '=', 'COMMENT' => '=',
-			 'STATUS' => '=', 'DATE_CREATE' => '=', 'DATE_UPDATE' => '=']
-		);
-		$preparedStatement->execute($this->prepareOrderAssociated($order));
-		$orderData = $preparedStatement->fetch();
-		return $orderData['ID'];
+		return $this->dbConnection->lastInsertId();
 	}
 
 	public function addOrder(Order $order): void
@@ -64,17 +57,6 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	{
 		return [$order->getCustomerName(), $order->getPhone(), $order->getEmail(), $order->getComment(),
 				$order->getStatus(), $order->getDateCreate(), $order->getDateUpdate()];
-	}
-
-	private function prepareOrderAssociated(Order $order): array
-	{
-		return ['CUSTOMER_NAME' => $order->getCustomerName(),
-				'PHONE' => $order->getPhone(),
-				'EMAIL' => $order->getEmail(),
-				'COMMENT' => $order->getComment(),
-				'STATUS' => $order->getStatus(),
-				'DATE_CREATE' => $order->getDateCreate(),
-				'DATE_UPDATE' => $order->getDateUpdate()];
 	}
 
 	public function addOrderItems(int $orderId, array $items): void

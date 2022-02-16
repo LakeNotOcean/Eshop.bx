@@ -2,7 +2,7 @@
 
 namespace Up\Service\OrderService;
 
-use Up\Entity\Order;
+use Up\Entity\Order\Order;
 
 
 interface OrderServiceInterface
