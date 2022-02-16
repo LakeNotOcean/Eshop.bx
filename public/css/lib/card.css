@@ -1,0 +1,16 @@
+.card {
+	background: #FFFFFF;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+	border-radius: 10px;
+	transition: .3s;
+}
+
+.card-hover:hover {
+	box-shadow: 0 8px 6px rgba(0, 0, 0, 0.3);
+}
+
+.card-outline {
+	border-radius: 10px;
+	box-shadow: 0 4px 10px 2px #0000001A;
+	border: 1px solid #DDDDDD;
+}

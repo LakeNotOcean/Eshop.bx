@@ -2,6 +2,7 @@
 
 namespace Up\DAO\ItemDAO;
 
+use PDOStatement;
 use Up\Core\Database\DefaultDatabase;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
@@ -38,6 +39,22 @@ class ItemDAOmysql implements ItemDAOInterface
 			$items[] = $item;
 		}
 
+		return $items;
+	}
+
+	public function getItemsByOrderId(int $orderId): array
+	{
+		$result = $this->DBConnection->query($this->getItemsByOrderIdQuery($orderId));
+
+		$items = [];
+		while ($row = $result->fetch())
+		{
+			$item = new Item();
+			$item->setId($row['ID']);
+			$item->setTitle($row['TITLE']);
+			$item->setPrice($row['PRICE']);
+			$items[] = $item;
+		}
 		return $items;
 	}
 
@@ -223,6 +240,13 @@ class ItemDAOmysql implements ItemDAOInterface
 				WHERE ACTIVE = 1
 				ORDER BY ui.SORT_ORDER
 				LIMIT {$offset}, {$amountItems};";
+	}
+
+	private function getItemsByOrderIdQuery(int $orderId): string
+	{
+		return "SELECT * FROM up_item
+                INNER JOIN up_order_item on ITEM_ID = ID
+				WHERE ORDER_ID = $orderId;";
 	}
 
 	private function getItemDetailByIdQuery(int $id): string

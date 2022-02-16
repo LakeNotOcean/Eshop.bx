@@ -20,7 +20,7 @@ $isAdmin = true;
 	<div class="search_result_count">Видеокарты: найдено <?= $itemsAmount ?> штук</div>
 	<div class="filters-item-list-row">
 		<div class="filters-column">
-			<div class="filters">
+			<div class="filters card">
 				Фильтры
 				<div class="filter-category">
 					<div class="price-category"></div>
@@ -34,7 +34,7 @@ $isAdmin = true;
 				$imageUrl = URLResolver::resolve('item-detail', ['id' => $item->getId()]);
 			?>
 
-				<div class="item">
+				<div class="item card card-hover">
 					<a href="<?= $imageUrl?>">
 						<picture>
 							<source srcset="../img/<?= $item->getId() . $pref ?>.webp" type="image/webp">

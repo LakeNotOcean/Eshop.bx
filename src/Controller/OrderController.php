@@ -80,9 +80,19 @@ class OrderController
 		$page = $this->templateProcessor->render('finish-order.php', [
 			'items' => $items,
 		],                                       'layout/order.php', [
-													 'cost' => $this->calculateTotalCost($items),
+													 'cost' => $order->getTotalCost(),
 													 'orderSize' => count($items),
 												 ]);
+
+		return (new Response())->withBodyHTML($page);
+	}
+
+	public function getOrders(Request $request): Response
+	{
+		$orders = $this->orderService->getOrders();
+		$page = $this->templateProcessor->render('orders.php', [
+			'orders' => $orders,
+		],                                       'layout/admin-main.php', []);
 
 		return (new Response())->withBodyHTML($page);
 	}
@@ -100,9 +110,7 @@ class OrderController
 
 	private function getDatetime(): string
 	{
-		$st = time();
-		$date = new DateTime("@$st");
-		return date_format($date, 'Y-m-d H:i:s');
+		return date('Y-m-d H:i:s');
 	}
 
 }
