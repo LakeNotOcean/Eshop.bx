@@ -169,4 +169,15 @@ class Order extends Entity
 		$this->user = $user;
 	}
 
+	public function getTotalCost(): int
+	{
+		$cost = 0;
+		foreach ($this->items as $item)
+		{
+			$cost += $item->getPrice();
+		}
+
+		return $cost;
+	}
+
 }

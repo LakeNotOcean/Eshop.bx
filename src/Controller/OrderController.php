@@ -80,7 +80,7 @@ class OrderController
 		$page = $this->templateProcessor->render('finish-order.php', [
 			'items' => $items,
 		],                                       'layout/order.php', [
-													 'cost' => $this->calculateTotalCost($items),
+													 'cost' => $order->getTotalCost(),
 													 'orderSize' => count($items),
 												 ]);
 
