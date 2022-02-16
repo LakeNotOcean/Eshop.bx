@@ -18,10 +18,25 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		$this->dbConnection = $dbConnection;
 	}
 
+	/**
+	 * @return array<Order>
+	 */
 	public function getOrders(): array
 	{
-		// TODO: Implement getOrders() method.
-		return [];
+		$preparedStatement = $this->getSelectPrepareStatement('up_order');
+		$preparedStatement->execute();
+
+		$orders = [];
+		while ($row = $preparedStatement->fetch())
+		{
+			$order = new Order($row['CUSTOMER_NAME'], $row['PHONE'], $row['EMAIL'], $row['COMMENT']);
+			$order->setId($row['ID']);
+			$order->setStatus($row['STATUS']);
+			$order->setDateCreate($row['DATE_CREATE']);
+			$order->setDateUpdate($row['DATE_UPDATE']);
+			$orders[] = $order;
+		}
+		return $orders;
 	}
 
 	public function getOrderIdByOrder(Order $order): int
