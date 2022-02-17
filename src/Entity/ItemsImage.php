@@ -33,12 +33,25 @@ class ItemsImage extends Entity
 	}
 
 	/**
+	 * @return array<string,string>
+	 */
+	public function getPathArray(): array
+	{
+		return $this->paths;
+	}
+
+	/**
 	 * @param string $path
 	 * @param string $size
 	 */
 	public function setPath(string $size, string $path): void
 	{
 		$this->paths[$size] = $path;
+	}
+
+	public function hasSize(string $size): bool
+	{
+		return array_key_exists($size, $this->paths);
 	}
 
 	/**

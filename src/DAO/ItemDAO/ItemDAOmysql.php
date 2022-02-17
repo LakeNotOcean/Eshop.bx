@@ -110,6 +110,10 @@ class ItemDAOmysql implements ItemDAOInterface
 					$item->setMainImage($item->getImageById($row['u_ID']));
 				}
 			}
+			if(!$item->getImageById($row['u_ID'])->hasSize($row['SIZE']))
+			{
+				$item->getImageById($row['u_ID'])->setPath($row['SIZE'], $row['SIZE_PATH']);
+			}
 		}
 
 		return $item;
@@ -138,8 +142,6 @@ class ItemDAOmysql implements ItemDAOInterface
 		$oldSpecs = $this->getSpecsFromCategory($oldSpecsCat);
 		$newSpecs = $this->getSpecsFromCategory($newSpecsCat);
 
-		$oldImages = $oldItem->getImages();
-		$newImages = $item->getImages();
 
 		if (!empty($oldTags))
 		{
@@ -161,16 +163,6 @@ class ItemDAOmysql implements ItemDAOInterface
 				])
 			);
 		}
-		if (!empty($oldImages))
-		{
-			$this->DBConnection->query(
-				$this->getDeleteWhereAndWhereInQuery($item->getId(), array_keys($oldImages), [
-					'table_name' => 'up_image',
-					'item_id_name' => 'ITEM_ID',
-					'other_id_name' => 'ID',
-				])
-			);
-		}
 		if (!empty($newTags))
 		{
 			$this->DBConnection->query($this->getInsertTagsQuery($item->getId(), $newTags));
@@ -178,10 +170,6 @@ class ItemDAOmysql implements ItemDAOInterface
 		if (!empty($newSpecs))
 		{
 			$this->DBConnection->query($this->getInsertSpecsQuery($item->getId(), $newSpecs));
-		}
-		if (!empty($newImages))
-		{
-			$this->DBConnection->query($this->getInsertImagesQuery($item->getId(), $newImages));
 		}
 		$this->DBConnection->query($this->getUpdateItemQuery($item));
 
@@ -199,14 +187,9 @@ class ItemDAOmysql implements ItemDAOInterface
 
 		$specs = $this->getSpecsFromCategory($specsCat);
 
-		$images = $item->getImages();
 
 		$this->DBConnection->query($this->getInsertTagsQuery($id, $tags));
 		$this->DBConnection->query($this->getInsertSpecsQuery($id, $specs));
-		if (!empty($images))
-		{
-			$this->DBConnection->query($this->getInsertImagesQuery($id, $images));
-		}
 
 		return $item;
 	}
@@ -306,7 +289,7 @@ class ItemDAOmysql implements ItemDAOInterface
 					   FULL_DESC as FULL_DESC,
 					   ACTIVE as ACTIVE,ITEM_TYPE_ID as ITEM_TYPE_ID, uit.NAME as TYPE_NAME,
 					   uis.SPEC_TYPE_ID as SPEC_TYPE_ID, uis.VALUE as VALUE, ust.NAME as ust_NAME, ust.DISPLAY_ORDER as ust_DISPLAY_ORDER, usc.ID as usc_ID,
-						usc.NAME as usc_NAME, usc.DISPLAY_ORDER as usc_DISPLAY_ORDER, u.ID as u_ID, u.IS_MAIN as IS_MAIN, u.PATH as PATH
+						usc.NAME as usc_NAME, usc.DISPLAY_ORDER as usc_DISPLAY_ORDER, u.ID as u_ID, u.IS_MAIN as IS_MAIN, u.PATH as ORIGINAL_PATH, uiws.PATH as SIZE_PATH, uiws.SIZE as SIZE
 				FROM up_item ui inner join up_item_type uit on ui.ITEM_TYPE_ID = uit.ID AND ui.ID={$id}
                 LEFT JOIN up_item_tag ut on ut.ITEM_ID = ui.ID
                 LEFT JOIN up_tag on up_tag.ID=ut.TAG_ID
@@ -314,7 +297,7 @@ class ItemDAOmysql implements ItemDAOInterface
                 INNER JOIN up_spec_type ust on uis.SPEC_TYPE_ID = ust.ID
                 INNER JOIN up_spec_category usc on ust.SPEC_CATEGORY_ID = usc.ID
                 INNER JOIN up_original_image u on ui.ID = u.ITEM_ID
-				INNER JOIN up_image_with_size uiws on ui.ID = uiws.ORIGINAL_IMAGE_ID;";
+				INNER JOIN up_image_with_size uiws on u.ID = uiws.ORIGINAL_IMAGE_ID;";
 	}
 
 	private function getDeleteWhereAndWhereInQuery(int $id, array $ids, array $table): string
@@ -348,16 +331,37 @@ class ItemDAOmysql implements ItemDAOInterface
 		return "INSERT INTO up_item_spec (ITEM_ID, SPEC_TYPE_ID, VALUE) VALUES {$insert};";
 	}
 
-	private function getInsertImagesQuery(int $id, array $images): string
+	private function getInsertOriginalImagesQuery(int $id, array $images): string
 	{
 		$insert = implode(
 			',',
 			array_map(function(ItemsImage $image) use ($id) {
-				return "('{$image->getPaths()}',{$id},{$image->isMain()})";
+				return "('{$image->getOriginalImagePath()}',{$id},{$image->isMain()})";
 			}, $images)
 		);
 
 		return "INSERT INTO up_original_image(PATH, ITEM_ID, IS_MAIN) VALUES {$insert};";
+	}
+
+	/**
+	 * @param int $id
+	 * @param array<ItemsImage> $images
+	 *
+	 * @return string
+	 */
+	private function getInsertImagesWithSizeQuery(array $images): string
+	{
+		$insertArray = [];
+		foreach ($images as $image)
+		{
+			$sizes = $image->getSizes();
+			foreach ($sizes as $size => $path)
+			{
+				$insertArray[] = "({$image->getId()}, '{$path}', '{$size}')";
+			}
+		}
+		$insert = implode(',', $insertArray);
+		return "INSERT INTO up_image_with_size(ORIGINAL_IMAGE_ID, PATH, SIZE) VALUES {$insert};";
 	}
 
 	private function getInsertItemQuery(ItemDetail $item): string
@@ -424,8 +428,8 @@ class ItemDAOmysql implements ItemDAOInterface
 	{
 		$image = new ItemsImage();
 		$image->setId($row['u_ID']);
-		$image->setIsMain($row['ORIGINAL_IMAGE_IS_MAIN']);
-		$image->setPath($row['IMAGE_WITH_SIZE_SIZE'], $row['IMAGE_WITH_SIZE_PATH']);
+		$image->setIsMain($row['IS_MAIN']);
+		$image->setOriginalImagePath($row['ORIGINAL_PATH']);
 
 		return $image;
 	}

@@ -6,6 +6,7 @@ use http\Exception;
 use http\Exception\RuntimeException;
 use Up\Core\Error\OSError;
 use Up\Core\Settings\Settings;
+use Up\DAO\ImageDAO\ImageDAOInterface;
 use Up\Entity\ItemsImage;
 use Up\Lib\Mime\Error\MimeTypeException;
 use Up\Lib\Mime\MimeMapper;
@@ -35,8 +36,13 @@ class ImageService implements ImageServiceInterface
 	 */
 	protected $imageDefaultSizes = [];
 
-	public function __construct()
+	protected $imageDAO;
+	/**
+	 * @param \Up\DAO\ImageDAO\ImageDAOmysql $imageDAO
+	 */
+	public function __construct(ImageDAOInterface $imageDAO)
 	{
+		$this->imageDAO = $imageDAO;
 		$settings = Settings::getInstance();
 		$this->imageDirPath = $settings->getSettings('imageDirPath');
 		$this->imageDefaultSizes['small'] = $settings->getSettings('smallImageSize');
@@ -45,34 +51,32 @@ class ImageService implements ImageServiceInterface
 	}
 
 	/**
-	 * @param array<array{name:string, type:string, tmp_name:string, error:int}> $imagesParams
-	 * @param array<bool> $isMains
+	 * @param array<array{name:string, type:string, tmp_name:string, error:int, is_main:bool}> $imagesParams
 	 *
 	 * @return array<ItemsImage>
 	 * @throws MimeTypeException
 	 */
-	public function addImages(array $imagesParams, array $isMains): array
+	public function addImages(array $imagesParams, int $itemId): array
 	{
-		return array_map(
-			function($imageParams, $isMain) {
-				return $this->addImage($imageParams, $isMain);
+		$images = array_map(
+			function($imageParams) {
+				return $this->addImage($imageParams);
 			},
 			$imagesParams,
-			$isMains
 		);
+		return $this->imageDAO->saveAll($images, $itemId);
 	}
 
 	/**
 	 * Загружает картинку в файл с картинками. Сохраняет в фаловой системе оригинальное изображение и его версии
 	 * с измененными размерами
 	 *
-	 * @param array{name:string, type:string, tmp_name:string} $imageParams
-	 * @param bool $isMain
+	 * @param array{name:string, type:string, tmp_name:string, is_main:bool} $imageParams
 	 *
 	 * @return ItemsImage
 	 * @throws MimeTypeException
 	 */
-	public function addImage(array $imageParams, bool $isMain): ItemsImage
+	public function addImage(array $imageParams): ItemsImage
 	{
 		$mimeType = $imageParams['type'];
 		if (!$this->isValidImageMime($mimeType))
@@ -102,7 +106,7 @@ class ImageService implements ImageServiceInterface
 		}
 
 		$itemImage = new ItemsImage();
-		$itemImage->setIsMain($isMain);
+		$itemImage->setIsMain($imageParams['is_main']);
 		$itemImage->setOriginalImagePath($originalImagePath);
 
 		foreach ($sizedImagePaths as $sizeName => $path)
@@ -220,6 +224,12 @@ class ImageService implements ImageServiceInterface
 		return $resultFilename;
 	}
 
+	public function deleteImageById(int $imageId): void
+	{
+		// TODO: Сначала нужно получить из бд картинки по id, удалить их из файловой системы, а затем удалить из бд
+		$this->imageDAO->deleteById($imageId);
+	}
+
 	private function generateFilename(string $imageFilename, string $fileExtension): string
 	{
 		return $imageFilename . '.' . $fileExtension;
@@ -256,7 +266,7 @@ class ImageService implements ImageServiceInterface
 		$image = static::validMimeTypeToCreateImageFunction[$mimeType]($filePath);
 		if (!$image)
 		{
-			throw new RuntimeException("Can't find file {$filePath}");
+			throw new \RuntimeException("Can't find file {$filePath}");
 		}
 
 		$width = imagesx($image);

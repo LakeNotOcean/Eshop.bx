@@ -35,7 +35,7 @@ use Up\Entity\Item;
 					<picture>
 						<source srcset="../img/<?= $item->getId() . $pref ?>.webp" type="image/webp">
 						<source srcset="../img/<?= $item->getId() . $pref ?>.png" type="image/png">
-						<img class="item-image" src="../img/<?= $item->getId() ?>.png" alt="Item Image">
+						<img class="item-image" src="<?= '/' . $item->getMainImage()->getPath('medium') ?>" alt="Item Image">
 					</picture>
 					<div class="item-other">
 						<div class="item-other-to-top">

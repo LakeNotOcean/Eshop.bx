@@ -1,5 +1,6 @@
 <?php
 
+use Up\Controller\ImageController;
 use Up\Controller\ItemController;
 use Up\Controller\OrderController;
 use Up\Controller\UserController;
@@ -41,6 +42,7 @@ $router->post('/admin/deleteSpecification', [CategoryController::class, 'deleteS
 $router->get('/admin/editItem/{positiveInt:id}', [ItemController::class, 'addItem'], 'edit-item-page');
 $router->post('/admin/deactivateItem/{positiveInt:id}', [ItemController::class, 'deactivateItem'], 'deactivate-item');
 $router->post('/admin/fastUpdateItem', [ItemController::class, 'updateCommonInfo'], 'fast-item-update');
+$router->post('/admin/deleteImage/{positiveInt:id}', [ImageController::class, 'deleteImageById'], 'delete-image');
 
 
 $router->get('/admin/editCategory', [CategoryController::class, 'editCategoriesPage'], 'edit-category-page');

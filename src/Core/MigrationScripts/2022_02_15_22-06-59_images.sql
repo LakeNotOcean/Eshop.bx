@@ -12,6 +12,15 @@ create table up_image_with_size
 		foreign key (ORIGINAL_IMAGE_ID) references up_original_image (ID)
 );
 
+alter table up_image_with_size modify PATH varchar(150) not null;
+
+alter table up_image_with_size drop foreign key up_sized_image_up_original_image_ID_fk;
+
+alter table up_image_with_size
+	add constraint up_sized_image_up_original_image_ID_fk
+		foreign key (ORIGINAL_IMAGE_ID) references up_original_image (ID)
+			on delete cascade;
+
 
 create unique index up_sized_image_ID_uindex
 	on up_image_with_size (ID);
