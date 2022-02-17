@@ -2,14 +2,15 @@
 
 namespace Up\DAO\OrderDAO;
 
-use Up\Entity\Order;
+use Up\Entity\Order\Order;
+use Up\Entity\Order\OrderStatus;
 
 
 interface OrderDAOInterface
 {
-	public function getOrders(): array;
+	public function getOrders(int $offset, int $amountItems, OrderStatus $status, string $searchQuery): array;
 
-	public function getOrderIdByOrder(Order $order): int;
+	public function getItemsAmount(OrderStatus $status, string $searchQuery): int;
 
 	public function addOrder(Order $order): void;
 
