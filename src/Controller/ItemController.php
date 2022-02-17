@@ -54,7 +54,7 @@ class ItemController
 	{
 
 
-		$isAdmin = true;
+		$isAdmin = false;
 
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
 		$currentPage = $currentPage > 0 ? $currentPage : 1;

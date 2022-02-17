@@ -15,7 +15,7 @@ use Up\Core\Router\URLResolver;
 use Up\Entity\Item;
 
 
-$isAdmin = true;
+$isAdmin = false;
 $maxPrice = 90000;
 $minPrice = 100;
 ?>
