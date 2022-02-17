@@ -60,7 +60,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 				);
 			}
 			$specificationId = $row['SPEC_ID'];
-			if (!$categoriesList[$categoryId]->isSpecificationExist($specificationId))
+			if (!$categoriesList[$categoryId]->hasSpecification($specificationId))
 			{
 				$categoriesList[$categoryId]->setSpecification($this->createSpecificationByRow($row));
 			}
@@ -102,8 +102,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 
 	public function getItemTypeByName(string $name): ItemType
 	{
-		$prepare = $this->DBConnection->prepare($this->getItemTypeByNameQuery($name));
-		$prepare->execute();
+		$prepare = $this->DBConnection->query($this->getItemTypeByNameQuery($name));
 		$itemTypeData = $prepare->fetch();
 
 		return new ItemType($itemTypeData['ID'], $itemTypeData['NAME']);
@@ -126,10 +125,30 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 		return $specification;
 	}
 
+	public function deleteCategoryById(int $id): void
+	{
+		$this->DBConnection->query($this->getDeleteCategoryByIdQuery($id));
+	}
+
+	public function deleteSpecificationById(int $id): void
+	{
+		$this->DBConnection->query($this->getDeleteSpecificationByIdQuery($id));
+	}
+
+	private function getDeleteSpecificationByIdQuery(int $id): string
+	{
+		return "DELETE FROM up_spec_type WHERE ID={$id}";
+	}
+
+	private function getDeleteCategoryByIdQuery(int $id): string
+	{
+		return "DELETE FROM up_spec_category WHERE ID={$id}";
+	}
+
 	private function getSpecificationByCategoryByIdQuery(int $id): string
 	{
 		return "SELECT ID, NAME, DISPLAY_ORDER FROM up_spec_type
-				WHERE ID={$id}";
+				WHERE SPEC_CATEGORY_ID={$id}";
 	}
 
 	public function getCategoriesByTypes(): array

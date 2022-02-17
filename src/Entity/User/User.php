@@ -25,6 +25,8 @@ class User
 		$this->role = $role;
 		$this->email = $email;
 		$this->phone = $phone;
+		$this->firstName=$firstName;
+		$this->secondName=$secondName;
 	}
 
 	/**

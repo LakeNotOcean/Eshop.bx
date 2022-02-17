@@ -14,21 +14,16 @@ abstract class AbstractDAO
 	 */
 	protected $dbConnection;
 
-	protected function getSelectPrepareStatement(string $tableName, array $whereConditions): PDOStatement
+	protected function getSelectPrepareStatement(string $tableName, array $whereConditions = []): PDOStatement
 	{
-		if (empty($whereConditions))
+		$preparedQuery = 'SELECT * FROM ' . $tableName;
+
+		if (!empty($whereConditions))
 		{
-			$columnsRepresent = var_export($whereConditions);
-			throw new ValueError(
-				"Parameters columns are empty. Columns: {$columnsRepresent}"
-			);
+			$preparedQuery .= ' WHERE ' . $this->getWhereConditions($tableName, $whereConditions);
 		}
 
-		$preparedQuery = 'SELECT * FROM ' . $tableName . ' WHERE ' . $this->getWhereAndWherePreparedCondition(
-				$tableName, $whereConditions
-			);
-
-		return $this->dbConnection->prepare($preparedQuery);
+		return $this->dbConnection->prepare($preparedQuery . ';');
 	}
 
 	/**
@@ -40,7 +35,7 @@ abstract class AbstractDAO
 	 * @return string
 	 * Пример: 'up_image.IS_MAIN = :IS_MAIN and up_image.ID > :ID'
 	 */
-	protected function getWhereAndWherePreparedCondition(string $tableName, array $whereConditions): string
+	protected function getWhereConditions(string $tableName, array $whereConditions): string
 	{
 		return implode(
 			' and ',
@@ -56,6 +51,18 @@ abstract class AbstractDAO
 
 	protected function getInsertPrepareStatement(string $tableName, array $columns, int $rowsCount = 1): PDOStatement
 	{
+		$this->checkEmptyColumns($columns);
+		$preparedQuery = 'insert into ' . $tableName . '(' . implode(', ', $columns) . ')' . ' values ';
+		$preparedQuery .= rtrim(str_repeat(
+			'(' . implode(', ', array_fill(0, count($columns), '?')) . '),',
+			$rowsCount
+		), ',');
+
+		return $this->dbConnection->prepare($preparedQuery . ';');
+	}
+
+	private function checkEmptyColumns(array $columns): void
+	{
 		if (empty($columns))
 		{
 			$columnsRepresent = var_export($columns);
@@ -63,19 +70,6 @@ abstract class AbstractDAO
 				"Parameters columns are empty. Columns: {$columnsRepresent}"
 			);
 		}
-
-		$preparedQuery = 'insert into ' . $tableName . '(' . implode(', ', $columns) . ')' . ' values ';
-		$preparedQuery .= rtrim(str_repeat(
-			'(' . implode(', ', array_fill(0, count($columns), '?')) . '),',
-			$rowsCount
-		), ',') . ';';
-
-		return $this->dbConnection->prepare($preparedQuery);
-	}
-
-	private function checkEmptyColumns(array $columns): void
-	{
-
 	}
 
 }

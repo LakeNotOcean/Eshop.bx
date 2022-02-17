@@ -28,16 +28,28 @@
 		</svg>
 	</a>
 	<div class="nav-bar">
-		<div class="nav-item nav-item-active">Добавить товар
+		<div class="nav-item">
+			<div class="nav-item-label">Товары</div>
 			<div class="menu-container">
 				<div class="menu">
 					<a class="menu-item" href="/admin/chooseItemType">Добавить товар</a>
 					<a class="menu-item" href="/admin/addItemType">Добавить тип товара</a>
 					<a class="menu-item" href="/admin/addCategory">Добавить категорию</a>
 					<a class="menu-item" href="/admin/addSpecification">Добавить спецификацию</a>
+					<a class="menu-item" href="/admin/deleteCategory">Удалить категорию</a>
+					<a class="menu-item" href="/admin/chooseCategory">Удалить спецификацию</a>
 				</div>
 			</div>
 		</div>
+		<div class="nav-item">
+			<div class="nav-item-label">Заказы</div>
+			<div class="menu-container">
+				<div class="menu">
+					<a class="menu-item" href="/admin/getOrders">Список заказов</a>
+				</div>
+			</div>
+		</div>
+		<script src="/js/admin-menu.js"></script>
 	</div>
 	<div class="btn btn-normal">Выйти</div>
 </nav>

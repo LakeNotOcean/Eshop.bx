@@ -2,6 +2,7 @@
 
 namespace Up\DAO\ItemDAO;
 
+use PDOStatement;
 use Up\Core\Database\DefaultDatabase;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
@@ -51,6 +52,22 @@ class ItemDAOmysql implements ItemDAOInterface
 			}
 		}
 
+		return $items;
+	}
+
+	public function getItemsByOrderId(int $orderId): array
+	{
+		$result = $this->DBConnection->query($this->getItemsByOrderIdQuery($orderId));
+
+		$items = [];
+		while ($row = $result->fetch())
+		{
+			$item = new Item();
+			$item->setId($row['ID']);
+			$item->setTitle($row['TITLE']);
+			$item->setPrice($row['PRICE']);
+			$items[] = $item;
+		}
 		return $items;
 	}
 
@@ -222,6 +239,29 @@ class ItemDAOmysql implements ItemDAOInterface
 		return $result->fetch()['num_items'];
 	}
 
+	public function deactivateItem(int $id): void
+	{
+		$this->DBConnection->query("UPDATE up_item SET ACTIVE = 0 WHERE ID={$id}");
+	}
+
+	public function updateCommonInfo(Item $item): Item
+	{
+		$this->DBConnection->query($this->getUpdateCommonInfoQuery($item));
+		return $item;
+	}
+
+	private function getUpdateCommonInfoQuery(Item $item): string
+	{
+		$date = date('Y-m-d H:i:s');
+		return "UPDATE up_item 
+				SET TITLE='{$item->getTitle()}', 
+				    PRICE={$item->getPrice()}, 
+				    SHORT_DESC='{$item->getShortDescription()}', 
+				    SORT_ORDER={$item->getSortOrder()},
+				    DATE_UPDATE='{$date}'
+				WHERE ID={$item->getId()}";
+	}
+
 	private function getItemsQuery(int $offset, int $amountItems): string
 	{
 		return "SELECT ui.ID as ui_ID,
@@ -245,6 +285,13 @@ class ItemDAOmysql implements ItemDAOInterface
 				)
 				ORDER BY ui.SORT_ORDER desc, ui.ID;
 ";
+	}
+
+	private function getItemsByOrderIdQuery(int $orderId): string
+	{
+		return "SELECT * FROM up_item
+                INNER JOIN up_order_item on ITEM_ID = ID
+				WHERE ORDER_ID = $orderId;";
 	}
 
 	private function getItemDetailByIdQuery(int $id): string
@@ -328,14 +375,14 @@ class ItemDAOmysql implements ItemDAOInterface
 		$date = date('Y-m-d H:i:s');
 
 		return "UPDATE up_item
-				SET TITLE={$item->getTitle()},
+				SET TITLE='{$item->getTitle()}',
 					PRICE={$item->getPrice()},
-					SHORT_DESC={$item->getShortDescription()},
-					FULL_DESC={$item->getFullDescription()},
+					SHORT_DESC='{$item->getShortDescription()}',
+					FULL_DESC='{$item->getFullDescription()}',
 					SORT_ORDER={$item->getSortOrder()},
 					ACTIVE={$item->getIsActive()},
 				    ITEM_TYPE_ID={$item->getItemType()->getId()},
-				    DATE_UPDATE={$date}
+				    DATE_UPDATE='{$date}'
 				WHERE ID={$item->getId()};";
 	}
 

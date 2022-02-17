@@ -35,4 +35,8 @@ interface SpecificationDAOInterface
 
 	public function getSpecificationByCategoryId(int $id): array;
 
+	public function deleteCategoryById(int $id): void;
+
+	public function deleteSpecificationById(int $id): void;
+
 }

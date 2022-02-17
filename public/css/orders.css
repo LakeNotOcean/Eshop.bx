@@ -1,0 +1,57 @@
+@import 'lib/card.css';
+
+.container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 30px 50px;
+	max-width: 1500px;
+}
+
+.order-list {
+	display: flex;
+	flex-direction: column;
+}
+
+.order {
+	padding: 10px;
+}
+
+.order-line {
+	margin: 5px;
+	display: flex;
+}
+
+.order-label {
+	font-weight: 600;
+	margin-right: 20px;
+}
+
+.order-items {
+	display: flex;
+	flex-direction: column;
+	margin: 10px 5px;
+}
+
+.order-item {
+	display: flex;
+	margin: 5px;
+}
+
+.item-number {
+	max-width: 30px;
+}
+
+.item-title {
+	margin: 0 10px;
+}
+
+.item-price {
+	flex: 1;
+	white-space: nowrap;
+}
+
+.item-price {
+	font-weight: 600;
+}

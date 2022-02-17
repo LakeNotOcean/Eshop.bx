@@ -26,4 +26,9 @@ interface SpecificationsServiceInterface
 	public function getSpecificationByCategoryId(int $id): array;
 
 	public function getCategoriesByItemTypeId(int $id): array;
+
+	public function deleteCategoryById(int $id): void;
+
+	public function deleteSpecificationById(int $id): void;
+	public function getItemCategoriesByItemId(int $itemId): array;
 }
