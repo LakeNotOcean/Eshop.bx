@@ -181,7 +181,6 @@ $minPrice = 100;
 							<?php else: ?>
 							<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
 							<?php endif;?>
-							<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
 						</div>
 					</div>
 				</<?= $isAdmin ? 'form' : 'a' ?>>
