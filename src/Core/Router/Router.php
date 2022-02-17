@@ -119,6 +119,23 @@ class Router
 	}
 
 	/**
+	 * @throws Error\RoutingException
+	 */
+	public function getRouteName(string $url)
+	{
+		$path = $this->removeIfExistGetParametersFromPath($url);
+		foreach ($this->routes as $route)
+		{
+			$matches = [];
+			if (preg_match($route['urlRegex'], $path, $matches))
+			{
+				return $route['name'];
+			}
+		}
+		throw new Error\RoutingException("Не найдена ручка соответствующая имени {$route['name']}");
+	}
+
+	/**
 	 * @throws Error\URLParameterTypeException
 	 */
 	private function createRegexCaptureGroup($params): string
