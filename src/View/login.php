@@ -31,6 +31,5 @@
 	</div>
 </div>
 
-<script src="js/user/help-user.js" type="module"></script>
-<script src="/js/user/authorize-user.js" type="module	"></script>
-
+<script src="/js/user/help-user.js" type="module"></script>
+<script src="/js/user/authorize-user.js" type="module"></script>

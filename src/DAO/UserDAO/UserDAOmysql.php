@@ -49,7 +49,7 @@ class UserDAOmysql implements UserDAOInterface
 		$password = password_hash($password, PASSWORD_BCRYPT);
 
 		$query = "INSERT INTO up_user (LOGIN, EMAIL, PHONE, PASSWORD, ROLE_ID,FIRST_NAME,SECOND_NAME) 
-			VALUES ('{$user->getLogin()}','{$user->getEmail()}','{$user->getPhone()}','$password','2','{$user->getFirstName()}','{$user->getSecondName()}')";
+			VALUES ('{$user->getLogin()}','{$user->getEmail()}','{$user->getPhone()}','$password',2,'{$user->getFirstName()}','{$user->getSecondName()}')";
 
 		$queryResult = $this->DBConnection->prepare($query);
 		$queryResult->execute();

@@ -11,8 +11,8 @@ class UserRole
 	{
 		if (is_null($name))
 		{
-			$name = UserEnum::Guest;
-			$id = 0;
+			$this->name = UserEnum::Guest;
+			$this->id = 0;
 		}
 		else
 		{
@@ -35,7 +35,7 @@ class UserRole
 	 */
 	public function getName(): string
 	{
-		return $this->name->getValue();
+		return $this->name;
 	}
 
 	private static function getIdByName(string $name): int

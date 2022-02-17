@@ -57,14 +57,18 @@ class UserController
 		}
 		catch (Exception $e)
 		{
-			$page = $this->templateProcessor->render('user.php', [], 'layout/main.php', []);
+			$page = $this->templateProcessor->render('user.php', [], 'layout/main.php', [
+				'isAuthenticated' => $this->userServiceImpl->isAuthenticated()
+			]);
 			$response = new Response();
 			$response = $response->withStatus(409);
 
 			return $response->withBodyHTML($page);
 		}
 		$response = new Response();
-		$page = $this->templateProcessor->render('user.php', [], 'layout/main.php', []);
+		$page = $this->templateProcessor->render('user.php', [], 'layout/main.php', [
+			'isAuthenticated' => $this->userServiceImpl->isAuthenticated()
+		]);
 
 		return $response->withBodyHTML($page);
 	}
@@ -88,7 +92,9 @@ class UserController
 		}
 		catch (Exception $e)
 		{
-			$page = $this->templateProcessor->render('login.php', [], 'layout/main.php', []);
+			$page = $this->templateProcessor->render('login.php', [], 'layout/main.php', [
+				'isAuthenticated' => $this->userServiceImpl->isAuthenticated()
+			]);
 			$response = new Response();
 			$response = $response->withStatus(409);
 
@@ -96,25 +102,35 @@ class UserController
 		}
 
 		$response = new Response();
-		$page = $this->templateProcessor->render('login.php', [], 'layout/main.php', []);
+		$page = $this->templateProcessor->render('login.php', [], 'layout/main.php', [
+			'isAuthenticated' => $this->userServiceImpl->isAuthenticated()
+		]);
 
 		return $response->withBodyHTML($page);
 	}
 
 	public function loginUserPage(Request $request)
 	{
-		$page = $this->templateProcessor->render('login.php', ['state' => 'process'], 'layout/main.php', []);
-		$respons = new Response();
+		$page = $this->templateProcessor->render('login.php', [
+			'state' => 'process'
+		], 'layout/main.php', [
+			'isAuthenticated' => $this->userServiceImpl->isAuthenticated()
+		]);
+		$response = new Response();
 
-		return $respons->withBodyHTML($page);
+		return $response->withBodyHTML($page);
 	}
 
 	public function registerUserPage(Request $request)
 	{
-		$page = $this->templateProcessor->render('register.php', ['state' => 'process'], 'layout/main.php', []);
-		$respons = new Response();
+		$page = $this->templateProcessor->render('register.php', [
+			'state' => 'process'
+		], 'layout/main.php', [
+			'isAuthenticated' => $this->userServiceImpl->isAuthenticated()
+		]);
+		$response = new Response();
 
-		return $respons->withBodyHTML($page);
+		return $response->withBodyHTML($page);
 	}
 
 }

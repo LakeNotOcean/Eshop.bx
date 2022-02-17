@@ -1,7 +1,11 @@
 <?php
 /** @var string $content */
 
+/** @var bool $isAdmin */
 /** @var bool $isAuthenticated */
+
+use Up\Core\Router\URLResolver;
+
 ?>
 
 <!doctype html>
@@ -19,6 +23,7 @@
 	<meta name="msapplication-TileColor" content="#da532c">
 	<meta name="theme-color" content="#ffffff">
 	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/admin-main.css">
 </head>
 <body>
 
@@ -34,15 +39,39 @@
 			<div></div>
 		</div>
 	</form>
+	<div class="nav-bar">
+		<div class="nav-item">
+			<div class="nav-item-label">Товары</div>
+			<div class="menu-container">
+				<div class="menu">
+					<a class="menu-item" href="/admin/chooseItemType">Добавить товар</a>
+					<a class="menu-item" href="/admin/addItemType">Добавить тип товара</a>
+					<a class="menu-item" href="/admin/addCategory">Добавить категорию</a>
+					<a class="menu-item" href="/admin/addSpecification">Добавить спецификацию</a>
+					<a class="menu-item" href="/admin/deleteCategory">Удалить категорию</a>
+					<a class="menu-item" href="/admin/chooseCategory">Удалить спецификацию</a>
+				</div>
+			</div>
+		</div>
+		<div class="nav-item">
+			<div class="nav-item-label">Заказы</div>
+			<div class="menu-container">
+				<div class="menu">
+					<a class="menu-item" href="/admin/getOrders">Список заказов</a>
+				</div>
+			</div>
+		</div>
+		<script src="/js/admin-menu.js"></script>
+	</div>
 	<?php if ($isAuthenticated): ?>
-		<a href="<?= \Up\Core\Router\URLResolver::resolve('logout-user') ?>">
+		<a href="<?= URLResolver::resolve('logout-user') ?>">
 			<div class="btn btn-normal sign-in">Выйти</div>
 		</a>
 	<?php else: ?>
-		<a href="<?= \Up\Core\Router\URLResolver::resolve('login-user-page') ?>">
+		<a href="<?= URLResolver::resolve('login-user-page') ?>">
 			<div class="btn btn-normal sign-in">Войти</div>
 		</a>
-		<a href="<?= \Up\Core\Router\URLResolver::resolve('register-user') ?>">
+		<a href="<?= URLResolver::resolve('register-user') ?>">
 			<div class="btn btn-normal sign-in">Зарегистрироваться</div>
 		</a>
 	<?php endif; ?>

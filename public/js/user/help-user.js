@@ -74,5 +74,4 @@ function stringFormat(value, args)
 	let regex = new RegExp(template);
 	let match = value.match(regex) || [];
 	return match[0] === value && value.length >= minLength && value.length <= maxLength;
-
 }
