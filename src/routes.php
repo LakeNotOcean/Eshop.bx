@@ -20,6 +20,7 @@ $router->get('/register', [UserController::class, 'registerUserPage'], 'register
 $router->get('/login', [UserController::class, 'loginUserPage'], 'login-user-page');
 $router->post('/register', [UserController::class, 'registerUser'], 'register-user');
 $router->post('/login', [UserController::class, 'loginUser'], 'login-user');
+$router->get('/logout', [UserController::class, 'logout'], 'logout-user');
 
 //Admin
 $router->get('/admin/addItem', [ItemController::class, 'addItem'], 'add-item');
