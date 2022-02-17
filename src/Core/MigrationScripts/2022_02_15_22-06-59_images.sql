@@ -27,6 +27,15 @@ alter table up_image_with_size
 		foreign key (ORIGINAL_IMAGE_ID) references up_original_image (ID)
 			on delete cascade;
 
+alter table up_original_image
+	drop foreign key up_image_up_item_ID_fk;
+
+alter table up_original_image
+	add constraint up_image_up_item_ID_fk
+		foreign key (ITEM_ID) references up_item (ID)
+			on delete cascade;
+
+
 
 delete
 from up_original_image
