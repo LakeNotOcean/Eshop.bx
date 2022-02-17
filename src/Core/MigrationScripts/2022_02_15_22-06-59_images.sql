@@ -4,7 +4,7 @@ create table up_image_with_size
 (
 	ID                int auto_increment,
 	ORIGINAL_IMAGE_ID int          not null,
-	PATH              varchar(255) not null,
+	PATH              varchar(150) not null,
 	SIZE              varchar(15)  not null,
 	constraint up_sized_image_pk
 		primary key (ID),
@@ -18,6 +18,15 @@ create unique index up_sized_image_ID_uindex
 
 create unique index up_sized_image_PATH_uindex
 	on up_image_with_size (PATH);
+
+alter table up_image_with_size
+	drop foreign key up_sized_image_up_original_image_ID_fk;
+
+alter table up_image_with_size
+	add constraint up_sized_image_up_original_image_ID_fk
+		foreign key (ORIGINAL_IMAGE_ID) references up_original_image (ID)
+			on delete cascade;
+
 
 delete
 from up_original_image
