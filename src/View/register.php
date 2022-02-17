@@ -75,5 +75,6 @@
 	</div>
 
 </div>
-<script src="js/user/help-user.js" type="module"></script>
+
+<script src="/js/user/help-user.js" type="module"></script>
 <script src="/js/user/registrate-user.js" type="module"></script>

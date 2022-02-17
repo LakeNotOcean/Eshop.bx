@@ -37,7 +37,7 @@ export function makePostQuery(inputFields, urlPost, successMess = '', unsuccessf
 		if (response.ok)
 		{
 			resultMessage(successMess);
-			window.location.replace('http://eshop.bx');
+			window.location = '/';
 		}
 		else
 		{
