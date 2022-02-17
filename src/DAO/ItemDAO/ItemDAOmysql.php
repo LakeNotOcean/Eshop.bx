@@ -3,7 +3,6 @@
 namespace Up\DAO\ItemDAO;
 
 use Up\Core\Database\DefaultDatabase;
-use Up\Core\Logger\Logger;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\ItemsImage;
@@ -16,14 +15,13 @@ use Up\Entity\SpecificationCategory;
 class ItemDAOmysql implements ItemDAOInterface
 {
 	private $DBConnection;
-	protected $logger;
+
 	/**
 	 * @param \Up\Core\Database\DefaultDatabase $DBConnection
 	 */
 	public function __construct(DefaultDatabase $DBConnection)
 	{
 		$this->DBConnection = $DBConnection;
-		$this->logger = new Logger();
 	}
 
 	public function getItems(int $offset, int $amountItems): array
@@ -75,6 +73,22 @@ class ItemDAOmysql implements ItemDAOInterface
 			$image = new ItemsImage();
 			$this->mapItemsImageInfo($image, $row);
 			$item->setMainImage($image);
+			$items[] = $item;
+		}
+		return $items;
+	}
+
+	public function getItemsByOrderId(int $orderId): array
+	{
+		$result = $this->DBConnection->query($this->getItemsByOrderIdQuery($orderId));
+
+		$items = [];
+		while ($row = $result->fetch())
+		{
+			$item = new Item();
+			$item->setId($row['ID']);
+			$item->setTitle($row['TITLE']);
+			$item->setPrice($row['PRICE']);
 			$items[] = $item;
 		}
 		return $items;
@@ -291,6 +305,13 @@ class ItemDAOmysql implements ItemDAOInterface
 				WHERE ACTIVE = 1 AND PRICE > ? AND PRICE < ?
 				ORDER BY ui.SORT_ORDER";
 		return $result;
+	}
+
+	private function getItemsByOrderIdQuery(int $orderId): string
+	{
+		return "SELECT * FROM up_item
+                INNER JOIN up_order_item on ITEM_ID = ID
+				WHERE ORDER_ID = $orderId;";
 	}
 
 	private function getItemDetailByIdQuery(int $id): string

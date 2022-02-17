@@ -137,8 +137,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 
 	public function getItemTypeByName(string $name): ItemType
 	{
-		$prepare = $this->DBConnection->prepare($this->getItemTypeByNameQuery($name));
-		$prepare->execute();
+		$prepare = $this->DBConnection->query($this->getItemTypeByNameQuery($name));
 		$itemTypeData = $prepare->fetch();
 
 		return new ItemType($itemTypeData['ID'], $itemTypeData['NAME']);

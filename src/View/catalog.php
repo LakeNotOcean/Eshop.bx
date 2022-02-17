@@ -135,7 +135,7 @@ $minPrice = 100;
 				$imageUrl = URLResolver::resolve('item-detail', ['id' => $item->getId()]);
 			?>
 
-				<div class="item">
+				<div class="item card card-hover">
 					<a href="<?= $imageUrl?>">
 						<picture>
 							<source srcset="../img/<?= $item->getId() . $pref ?>.webp" type="image/webp">
