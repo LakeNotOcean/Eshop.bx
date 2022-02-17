@@ -14,6 +14,8 @@ $pref = '_big';
 use Up\Core\Router\URLResolver;
 
 $isAdmin = true;
+$maxPrice = 1000;
+$minPrice = 100;
 
 ?>
 
@@ -41,7 +43,7 @@ $isAdmin = true;
 								<div class="price-category-body-text">
 									Мин. цена
 								</div>
-								<input type=text id="minprice" name="minprice" value="100" class="price-category-body-int">
+								<input type=text id="min-price" name="min-price" placeholder="<?=$minPrice?>" class="price-category-body-int">
 							</div>
 							<div class="price-category-body-center">
 								-
@@ -51,7 +53,7 @@ $isAdmin = true;
 									Макс. цена
 								</div>
 
-									<input type=text id="maxprice" name="maxprice" value="1000" class="price-category-body-int">
+									<input type=text id="max-price" name="maxp-rice" placeholder="<?=$maxPrice?>" class="price-category-body-int">
 
 							</div>
 
@@ -114,8 +116,9 @@ $isAdmin = true;
 
 
 					</div>
-					<input type="submit" class="filter-button filter-button-checkbox" id="button_on_checkbox" form="filter-form" style="display:none" value="Принять">
-					<input type="submit" class="filter-button" form="filter-form" value="Отфильтровать">
+					<input type="button" class="filter-button filter-button-checkbox redirect-button" id="button_on_checkbox"  style="display:none" value="Принять">
+					<input type="button" class="filter-button redirect-button" value="Отфильтровать">
+					<input type="button" class="filter-button reset-button" value="Сбросить">
 				</form>
 				</div>
 			</div>
@@ -178,9 +181,9 @@ $isAdmin = true;
 			<div class="navigation">
 				<!--				<div class="navigation-dots navigation-item">...</div>-->
 				<?//= http_build_query(array_merge(['page' => $currentPage - 1], $_GET)) ?>
-				<div id="<?=$currentPage - 1?>" class="navigation-page navigation-item
+				<div id="<?=$currentPage - 1?>" class="navigation-page navigation-item redirect-button
 				<?= $currentPage === 1 ? 'navigation-blocked' : '' ?>"> < </div>
-				<div id="1" class="navigation-page navigation-item
+				<div id="1" class="navigation-page navigation-item redirect-button
 				<?= $currentPage === 1 ? 'navigation-active' : '' ?>">1</div>
 
 				<?php if ($pagesAmount > 7 && $currentPage >= 1 + 4): ?>
@@ -207,7 +210,7 @@ $isAdmin = true;
 					$endPage = $pagesAmount - 1;
 				}
 				for ($i = $startPage; $i <= $endPage; $i++): ?>
-					<div id="<?= $i ?>" class="navigation-page navigation-item
+					<div id="<?= $i ?>" class="navigation-page navigation-item redirect-button
 					<?= $currentPage === $i ? 'navigation-active' : '' ?>"> <?= $i ?> </div>
 				<?php endfor;?>
 
@@ -215,18 +218,24 @@ $isAdmin = true;
 					<div class="navigation-dots navigation-item">···</div>
 				<?php endif;?>
 				<?php if ($pagesAmount > 1): ?>
-				<div id="<?=$pagesAmount?>" class="navigation-page navigation-item
+				<div id="<?=$pagesAmount?>" class="navigation-page navigation-item redirect-button
 				<?= $currentPage === $pagesAmount ? 'navigation-active' : '' ?>"><?= $pagesAmount?></div>
 				<?php endif;?>
 
-				<div id="<?=$currentPage + 1?>" class="navigation-page navigation-item
+				<div id="<?=$currentPage + 1?>" class="navigation-page navigation-item redirect-button
 				<?= $currentPage >= $pagesAmount ? 'navigation-blocked' : '' ?>"> > </div>
 			</div>
 		</div>
 	</div>
 </div>
 
+<script src="/js/filter-reset.js"></script>
 <script src="/js/fix-node.js"></script>
 <script src="/js/fixed-filters.js"></script>
 <script src="/js/filter-button.js"></script>
+<script src="/js/get-search-query.js"></script>
+<script src="/js/filter-get-query.js"></script>
 <script src="/js/queryPush.js"></script>
+<script src="/js/filter-set-query.js"></script>
+
+

@@ -1,30 +1,71 @@
 
-let pageButtons = document.getElementsByClassName('navigation-page');
+let pageButtons = document.getElementsByClassName('redirect-button');
 for (let pageButton of pageButtons)
 {
 	pageButton.addEventListener('click', (e) => {
-		let value = e.target.id;
-		let url = new URL(window.location);
-		url.searchParams.set("page", value);
-		url = url.search;
-		localStorage.setItem('fullQuery', url)
-		location = url
+		let filterQuery = getFilterQuery();
+		let searchQuery = getSearchQuery();
+		let finalQuery = filterQuery + searchQuery;
+		let searchParams = new URLSearchParams(finalQuery)
+		searchParams.set('page',pageButton.id)
+		finalQuery = searchParams.toString()
+		finalQuery = prepareQuery(finalQuery)
+		localStorage.setItem('query',finalQuery)
+		location = finalQuery;
 	});
 }
 
 	let filterButtons = document.getElementsByClassName('filter-button');
 	for (let filterButton of filterButtons)
 	{
-
 		filterButton.addEventListener('click',(e) => {
-			let url = new URL(window.location);
-			url.searchParams.set("page", "1");
-			url.searchParams.get("query");
-			url = url.search;
-			localStorage.setItem('fullQuery', url);
-			location = url;
+			let filterQuery = getFilterQuery();
+			let searchQuery = getSearchQuery();
+			let pageQuery = "&page=1"
+			let finalQuery = filterQuery + searchQuery + pageQuery;
+			finalQuery = prepareQuery(finalQuery)
+			localStorage.setItem('query', finalQuery);
+			location = finalQuery;
 		});
 
 }
 
+	let searchButton = document.querySelector(".search-field")
+	searchButton.addEventListener("keydown",(e)=>{
 
+		if (e.keyCode === 13)
+		{
+
+			let searchQuery = getSearchQuery();
+
+			let pageQuery = "&page=1";
+			let finalQuery = searchQuery + pageQuery;
+			finalQuery = prepareQuery(finalQuery)
+
+			localStorage.setItem('query',finalQuery)
+			location = finalQuery;
+		}
+	})
+
+function prepareQuery(finalQuery)
+{
+
+	if (finalQuery.slice(0,1)==='&')
+	{
+		finalQuery = finalQuery.slice(1);
+	}
+	if (finalQuery.slice(-1) === "&")
+	{
+
+		finalQuery = finalQuery.slice(0,-1)
+	}
+	if (finalQuery.length === 1)
+	{
+		finalQuery = "";
+	}
+	else
+	{
+		finalQuery = '?' + finalQuery;
+	}
+	return finalQuery;
+}
