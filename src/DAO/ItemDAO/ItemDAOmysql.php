@@ -448,70 +448,74 @@ class ItemDAOmysql implements ItemDAOInterface
 FROM up_item as ui";
 		if (!empty($tags))
 		{
-			$query.= "INNER join (select
-	            ITEM_ID as ITEM_ID,
-	            TAG_ID as TAG_ID
-            FROM up_item_tag
-            where ";
+			$query.= " INNER join (select ITEM_ID,
+    TAG_ID
+FROM
+(select
+	upt.ITEM_ID as ITEM_ID,
+    upt.TAG_ID as TAG_ID,
+    COUNT(TAG_ID) as COUNT
+FROM up_item_tag as upt
+where ";
 			$where = [];
 			foreach ($tags as $tag)
 			{
 				$where[]='TAG_ID = '.$tag;
 			}
-			$query .= implode(' AND ', $where);
+			$query .= implode(' OR ', $where);
+			$query .= "
+group by ITEM_ID
+) as l
+WHERE COUNT = ";
+			$query .= count($tags);
 			$query .= ") as uig on uig.ITEM_ID = ID";
 		}
 		if (!empty($specs))
 		{
 			$query .= "
 INNER JOIN (select
-	            ITEM_ID as ITEM_ID,
-	            SPEC_TYPE_ID as SPEC_TYPE_ID,
-				VALUE as VALUE
-            FROM up_item_spec
-            WHERE ";
+	ITEM_ID
+FROM
+(select
+	 ITEM_ID as ITEM_ID,
+	 COUNT(VALUE) as COUNT
+ FROM up_item_spec
+ WHERE ";
 			$where = [];
 			foreach ($specs as $spec=>$value)
 			{
-				$where[]="SPEC_TYPE_ID = " . $spec;
-				$where[]="VALUE = ". "'" . $value . "'";
+				$spec = explode('=',$value);
+				$where[]="(SPEC_TYPE_ID = " . $spec[0]. " AND VALUE = ". "'" . $spec[1] . "')";
 			}
-			$query .= implode(' AND ', $where);
+			$query .= implode(' OR ', $where);
+			$query .= " GROUP BY ITEM_ID) as ls
+WHERE COUNT =";
+			$query .= count($specs);
 			$query .= ") as uis on uis.ITEM_ID = ID";
 		}
+		if (!($price === ""))
 
-
-		$query .="
+		{
+			$query .="
 INNER JOIN (select ID as ITEM_ID,
                    PRICE as PRICE
             FROM up_item
             WHERE ";
-
-		if ($price === "")
-		{
-			$query .= "1";
-		}
-		else
-		{
 			$minMaxPrice = explode('-',$price);
 			$query .= 'PRICE > '. $minMaxPrice[0] . ' AND PRICE < ' . $minMaxPrice[1];
+			$query .= ") as uip on uip.ITEM_ID = ID";
 		}
-
-		$query .=") as uip on uip.ITEM_ID = ID
+		if (!($searchQuery === ""))
+		{
+			$query .="
 INNER JOIN (select ID as ITEM_ID,
                    TITLE as TITLE
             FROM up_item
             WHERE TITLE LIKE '%";
-		if ($searchQuery === "")
-		{
-			$query .= "1";
-		}
-		else
-		{
 			$query .= $searchQuery;
+			$query .= "%') as uit on uit.ITEM_ID = ID";
 		}
-
-		$query .="%') as uit on uit.ITEM_ID = ID
+		$query .="
 		INNER JOIN up_image u on ui.ID = u.ITEM_ID AND u.IS_MAIN = 1
 		WHERE ACTIVE = 1 
 		ORDER BY ui.SORT_ORDER
