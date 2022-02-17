@@ -248,7 +248,7 @@ filters main
 	justify-content: flex-start;
 	align-items: center;
 
-	max-height: 500px;
+	max-height: 800px;
 	overflow: auto;
 }
 

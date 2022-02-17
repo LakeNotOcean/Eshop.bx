@@ -3,15 +3,14 @@ let pageButtons = document.getElementsByClassName('redirect-button');
 for (let pageButton of pageButtons)
 {
 	pageButton.addEventListener('click', (e) => {
-		let filterQuery = getFilterQuery();
-		let searchQuery = getSearchQuery();
-		let finalQuery = filterQuery + searchQuery;
-		let searchParams = new URLSearchParams(finalQuery)
+
+
+		let searchParams = new URLSearchParams(location.search.toString())
 		searchParams.set('page',pageButton.id)
 		finalQuery = searchParams.toString()
 		finalQuery = prepareQuery(finalQuery)
 		localStorage.setItem('query',finalQuery)
-		location = finalQuery;
+		location = decodeURIComponent(finalQuery);
 	});
 }
 
@@ -20,7 +19,6 @@ for (let pageButton of pageButtons)
 	{
 		filterButton.addEventListener('click',(e) => {
 			let filterQuery = getFilterQuery();
-
 			let searchQuery = getSearchQuery();
 			let pageQuery = "&page=1"
 			let finalQuery = filterQuery + searchQuery + pageQuery;
