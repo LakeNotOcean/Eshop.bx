@@ -32,7 +32,7 @@ $minPrice = 100;
 	</div>
 	<div class="filters-item-list-row">
 		<div class="filters-column">
-			<div class="filters">
+			<div class="filters card">
 				<form id="filter-form" action="\"  method="get" >
 				<div class="filter-category">
 					<div class="price-category">
