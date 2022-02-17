@@ -19,23 +19,22 @@ class UserRole
 			$this->id = self::getIdByName($name->getValue());
 			$this->name = $name;
 		}
-
 	}
 
 	/**
-	 * @return int
-	 */
+	* @return int
+	*/
 	public function getId(): int
 	{
 		return $this->id;
 	}
 
 	/**
-	 * @return string
-	 */
+	* @return string
+	*/
 	public function getName(): string
 	{
-		return $this->name;
+		return $this->name->getValue();
 	}
 
 	private static function getIdByName(string $name): int
