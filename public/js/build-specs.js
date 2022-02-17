@@ -1,4 +1,13 @@
-
+async function getCatOption(inputCategoryInput){
+	let categories = await getCategory();
+	for (let categoryId in categories)
+	{
+		let option = document.createElement('option');
+		option.value = categoryId;
+		option.text = categories[categoryId][0];
+		inputCategoryInput.append(option);
+	}
+}
 
 async function getSpecOption(select, catId)
 {
@@ -21,7 +30,7 @@ function changeChild(parent, catId)
 	});
 }
 
-async function createSpec(btn, specId = null)
+async function createSpec(btn, specId = null, value = null)
 {
 	let specDiv = document.createElement('div');
 	specDiv.classList.add('spec');
@@ -43,6 +52,9 @@ async function createSpec(btn, specId = null)
 	if (specId != null)
 	{
 		specNameInput.value = specId;
+	}
+	if(value != null){
+		specValueInput.value = value;
 	}
 
 	specNameInput.classList.add('input-spec-name');
@@ -83,18 +95,11 @@ async function createCategory(catId = null)
 	let inputCategoryInput = document.createElement('select');
 	inputCategoryInput.classList.add('input-category');
 
-	let categories = await getCategory();
+	await getCatOption(inputCategoryInput);
 
-	for (let categoryId in categories)
+	if (catId != null)
 	{
-		let option = document.createElement('option');
-		option.value = categoryId;
-		option.text = categories[categoryId][0];
-		inputCategoryInput.append(option);
-		if (catId != null)
-		{
-			inputCategoryInput.value = catId;
-		}
+		inputCategoryInput.value = catId;
 	}
 
 	inputCategoryInput.addEventListener('change', (event) => {

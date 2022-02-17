@@ -1,11 +1,30 @@
 createTemplate().then();
 
+createItemTemplate()
+async function createItemTemplate(){
+	let idInput = document.querySelector('[name=item-id]');
+	if(idInput == null) return;
+	let itemId = idInput.value;
+	let categories = await loadCategoryAndSpecByItemId(itemId);
+	let firstBtn = document.querySelector('.add-category');
+	for (let catId in categories){
+		let category = await createCategory(catId);
+		let catDiv = firstBtn.parentNode.insertBefore(category, firstBtn);
+		let specAddBtn = catDiv.querySelector('.category .btn-add');
+		for (let specId in categories[catId][1]) {
+			let spec = await createSpec(specAddBtn, specId, categories[catId][1][specId][1]);
+			specAddBtn.parentNode.insertBefore(spec, specAddBtn);
+		}
+	}
+}
+
 function resetForm(form) {
 	form.reset();
 	resetPreview();
 	let categories = form.querySelectorAll('.category');
 	categories.forEach(category => category.remove());
 	createTemplate().then();
+	createItemTemplate();
 }
 
 function popup(text) {
@@ -45,7 +64,8 @@ document.querySelector('.form-add').addEventListener('submit', (e) => {
 	mainFields.forEach(field => {
 		item.append(field.name, field.value);
 	});
-	item.append('item-type', (new URLSearchParams(document.location.search)).get('item-type'))
+	if((new URLSearchParams(document.location.search)).has('item-type'))
+		item.append('item-type', (new URLSearchParams(document.location.search)).get('item-type'))
 	sendPost(item).then((r) => {
 		if(r.ok) {
 			popup('Товар добавлен');
@@ -65,10 +85,6 @@ async function createTemplate() {
 		let category = await createCategory(catId);
 		let catDiv = firstBtn.parentNode.insertBefore(category, firstBtn);
 		let specAddBtn = catDiv.querySelector('.category .btn-add');
-		specAddBtn.addEventListener('click', async () => {
-			let spec = await createSpec(specAddBtn);
-			specAddBtn.parentNode.insertBefore(spec, specAddBtn);
-		});
 		for (let specId in templateCategory[catId][1]) {
 			let spec = await createSpec(specAddBtn, specId);
 			specAddBtn.parentNode.insertBefore(spec, specAddBtn);
