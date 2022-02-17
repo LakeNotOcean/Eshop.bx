@@ -5,7 +5,7 @@ function fixNode(node, prevNode) {
 	let navStyle = window.getComputedStyle(navNode);
 	let offset = parseInt(navStyle.height) + parseInt(prevNodeStyle.marginTop);
 
-	let y = prevNode.getBoundingClientRect().bottom - parseInt(navStyle.height);
+	let y = prevNode.getBoundingClientRect().bottom - parseInt(navStyle.height) + window.scrollY;
 
 	document.addEventListener('scroll', () => {
 		if (window.scrollY >= y) {

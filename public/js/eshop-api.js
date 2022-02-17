@@ -17,6 +17,10 @@ async function loadAllCategory(){
 	return r.json();
 }
 
+async function deleteImageById(id){
+	return fetch('/admin/deleteImage/' + id, {method: 'POST'});
+}
+
 async function getCategory()
 {
 	if (Object.keys(allCategory).length !== 0)

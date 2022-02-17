@@ -49,7 +49,7 @@ function sendPost(item) {
 
 document.querySelector('.form-add').addEventListener('submit', (e) => {
 	e.preventDefault();
-	let item = new URLSearchParams();
+	let item = new FormData();
 	let catNodes = document.querySelectorAll('.category');
 	catNodes.forEach((el) => {
 		let catId = el.querySelector('.input-category').value;
@@ -66,6 +66,13 @@ document.querySelector('.form-add').addEventListener('submit', (e) => {
 	});
 	if((new URLSearchParams(document.location.search)).has('item-type'))
 		item.append('item-type', (new URLSearchParams(document.location.search)).get('item-type'))
+	let mainImgInput = document.querySelector('[name=main-image]')
+	item.append('main-image', mainImgInput.files[0]);
+	let otherImgInput = document.querySelector('[name=other-images]');
+	for (let file of otherImgInput.files)
+	{
+		item.append('other-images[]', file);
+	}
 	sendPost(item).then((r) => {
 		if(r.ok) {
 			popup('Товар добавлен');

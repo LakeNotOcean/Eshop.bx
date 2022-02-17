@@ -154,6 +154,23 @@ item-main-header
 	margin-right: 15px;
 }
 
+.item-main-tags {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.item-main-tag {
+	padding: 10px;
+	margin: 5px;
+	border-radius: 20px;
+	border: 1px solid #333;
+}
+
+.item-main-short-desc-text {
+	margin: 5px;
+}
+
 /*==========================
 item-main-buy
 ==========================*/
