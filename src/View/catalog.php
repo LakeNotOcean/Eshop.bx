@@ -33,8 +33,7 @@ use Up\Entity\Item;
 
 				<<?= $isAdmin ? 'form enctype="multipart/form-data" action="' . URLResolver::resolve('fast-item-update') . '" method="post"' : "a href=\"" . URLResolver::resolve('item-detail', ['id' => $item->getId()]) . "\"" ?> class="item card card-hover">
 					<picture>
-						<source srcset="../img/<?= $item->getId() . $pref ?>.webp" type="image/webp">
-						<source srcset="../img/<?= $item->getId() . $pref ?>.png" type="image/png">
+						<source srcset="<?='/' . $item->getMainImage()->getPath('medium', 'webp') ?>" type="image/webp">
 						<img class="item-image" src="<?= '/' . $item->getMainImage()->getPath('medium') ?>" alt="Item Image">
 					</picture>
 					<div class="item-other">
