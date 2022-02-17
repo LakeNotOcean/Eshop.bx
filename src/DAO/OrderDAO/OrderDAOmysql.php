@@ -21,10 +21,10 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	/**
 	 * @return array<Order>
 	 */
-	public function getOrders(): array
+	public function getOrders(int $offset, int $amountItems, OrderStatus $status, string $searchQuery): array
 	{
-		$preparedStatement = $this->getSelectPrepareStatement('up_order');
-		$preparedStatement->execute();
+		$preparedStatement = $this->dbConnection->prepare($this->getOrdersQuery($offset, $amountItems));
+		$preparedStatement->execute([$status->getValue(), "%$searchQuery%"]);
 
 		$orders = [];
 		while ($row = $preparedStatement->fetch())
@@ -39,9 +39,27 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		return $orders;
 	}
 
-	public function getLastInsertId(): int
+	private function getOrdersQuery(int $offset, int $amountItems): string
 	{
-		return $this->dbConnection->lastInsertId();
+		return "SELECT * FROM up_order 
+				WHERE STATUS = ? and CUSTOMER_NAME like ?
+				ORDER BY DATE_UPDATE
+				LIMIT {$offset}, {$amountItems};";
+	}
+
+	public function getItemsAmount(OrderStatus $status, string $searchQuery): int
+	{
+		$preparedStatement = $this->dbConnection->prepare($this->getItemsAmountQuery());
+		$preparedStatement->execute([$status, "%$searchQuery%"]);
+
+		return $preparedStatement->fetch()['orders_count'];
+	}
+
+	private function getItemsAmountQuery(): string
+	{
+		return "
+			SELECT count(ID) AS orders_count FROM up_order 
+			WHERE STATUS = ? and CUSTOMER_NAME like ?";
 	}
 
 	public function addOrder(Order $order): void

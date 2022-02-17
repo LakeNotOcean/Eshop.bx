@@ -1,5 +1,5 @@
 @import "lib/btn.css";
-@import "input.css";
+@import "lib/input.css";
 
 .form-container {
 	flex: 1;

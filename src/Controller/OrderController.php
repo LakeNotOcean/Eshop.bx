@@ -9,6 +9,7 @@ use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
 use Up\Entity\Order\Order;
 use Up\Entity\Order\OrderStatus;
+use Up\Lib\Paginator\Paginator;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\OrderService\OrderServiceInterface;
 
@@ -18,6 +19,8 @@ class OrderController
 	protected $templateProcessor;
 	protected $itemService;
 	protected $orderService;
+
+	protected $ordersOnPage = 10;
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
@@ -90,9 +93,22 @@ class OrderController
 
 	public function getOrders(Request $request): Response
 	{
-		$orders = $this->orderService->getOrders();
+		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
+		$status = $request->containsQuery('status') ? OrderStatus::from($request->getQueriesByName('status'))
+			: OrderStatus::IN_PROCESSING();
+		$query = $request->containsQuery('query') ? $request->getQueriesByName('query') : '';
+
+		$orders = $this->orderService->getOrders(
+			Paginator::getLimitOffset($currentPage, $this->ordersOnPage), $status, $query);
+		$ordersAmount = $this->orderService->getOrdersAmount($status, $query);
+		$pagesAmount = Paginator::getPageCount($ordersAmount, $this->ordersOnPage);
+
 		$page = $this->templateProcessor->render('orders.php', [
 			'orders' => $orders,
+			'currentPage' => $currentPage,
+			'itemsAmount' => $ordersAmount,
+			'pagesAmount' => $pagesAmount,
+			'query' => $query,
 		],                                       'layout/admin-main.php', []);
 
 		return (new Response())->withBodyHTML($page);
