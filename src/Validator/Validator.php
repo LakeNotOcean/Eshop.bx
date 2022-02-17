@@ -20,11 +20,12 @@ class Validator
 		],
 		DataTypes::password => [
 			ValidatorMethodEnum::minLength => [5],
-			ValidatorMethodEnum::maxLength => [20],
+			ValidatorMethodEnum::maxLength => [50],
 			ValidatorMethodEnum::onlyLatin => [],
 		],
 		DataTypes::names => [
 			ValidatorMethodEnum::maxLength => [20],
+			ValidatorMethodEnum::minLength=>[1],
 			ValidatorMethodEnum::nameFormat => [],
 		],
 	];
@@ -36,9 +37,9 @@ class Validator
 	 * @throws EnumException
 	 * @throws ReflectionException
 	 */
-	public static function validate($data, DataTypes $dataType): array
+	public static function validate($data, DataTypes $dataType): string
 	{
-		$errors = [];
+		$errorString = '';
 		$rule = self::rules[$dataType->getKey()];
 		foreach ($rule as $method => $args)
 		{
@@ -47,11 +48,11 @@ class Validator
 			$result = call_user_func_array($classMethodName, $args);
 			if ($result !== '')
 			{
-				$errors[$method] = $result;
+				$errorString=$errorString.' '. $result;
 			}
 		}
 
-		return $errors;
+		return $errorString;
 	}
 
 	private static function emailFormat(string $data): string
@@ -128,7 +129,7 @@ class Validator
 
 	private static function phoneFormat($data): string
 	{
-		$template = "/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s/0-9]*$/g";
+		$template = "/^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/u";
 		if (!preg_match($template, $data))
 		{
 			return "wrong phone format ";

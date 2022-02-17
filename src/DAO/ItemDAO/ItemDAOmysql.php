@@ -265,6 +265,29 @@ class ItemDAOmysql implements ItemDAOInterface
 	}
 
 
+	public function deactivateItem(int $id): void
+	{
+		$this->DBConnection->query("UPDATE up_item SET ACTIVE = 0 WHERE ID={$id}");
+	}
+
+	public function updateCommonInfo(Item $item): Item
+	{
+		$this->DBConnection->query($this->getUpdateCommonInfoQuery($item));
+		return $item;
+	}
+
+	private function getUpdateCommonInfoQuery(Item $item): string
+	{
+		$date = date('Y-m-d H:i:s');
+		return "UPDATE up_item 
+				SET TITLE='{$item->getTitle()}', 
+				    PRICE={$item->getPrice()}, 
+				    SHORT_DESC='{$item->getShortDescription()}', 
+				    SORT_ORDER={$item->getSortOrder()},
+				    DATE_UPDATE='{$date}'
+				WHERE ID={$item->getId()}";
+	}
+
 	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs)
 	{
 		$query = $this->getItemsAmountByFiltersQuery($query,$price,$tags,$specs);
@@ -404,14 +427,14 @@ class ItemDAOmysql implements ItemDAOInterface
 		$date = date('Y-m-d H:i:s');
 
 		return "UPDATE up_item
-				SET TITLE={$item->getTitle()},
+				SET TITLE='{$item->getTitle()}',
 					PRICE={$item->getPrice()},
-					SHORT_DESC={$item->getShortDescription()},
-					FULL_DESC={$item->getFullDescription()},
+					SHORT_DESC='{$item->getShortDescription()}',
+					FULL_DESC='{$item->getFullDescription()}',
 					SORT_ORDER={$item->getSortOrder()},
 					ACTIVE={$item->getIsActive()},
 				    ITEM_TYPE_ID={$item->getItemType()->getId()},
-				    DATE_UPDATE={$date}
+				    DATE_UPDATE='{$date}'
 				WHERE ID={$item->getId()};";
 	}
 
