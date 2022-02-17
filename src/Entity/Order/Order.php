@@ -1,7 +1,9 @@
 <?php
 
-namespace Up\Entity;
+namespace Up\Entity\Order;
 
+use Up\Entity\Entity;
+use Up\Entity\ItemDetail;
 use Up\Entity\User\User;
 
 
@@ -106,17 +108,17 @@ class Order extends Entity
 	}
 
 	/**
-	 * @return string
+	 * @return OrderStatus
 	 */
-	public function getStatus(): string
+	public function getStatus(): OrderStatus
 	{
 		return $this->status;
 	}
 
 	/**
-	 * @param string $status
+	 * @param OrderStatus $status
 	 */
-	public function setStatus(string $status): void
+	public function setStatus(OrderStatus $status): void
 	{
 		$this->status = $status;
 	}

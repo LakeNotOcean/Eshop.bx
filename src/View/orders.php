@@ -1,13 +1,33 @@
 <?php
 
-/** @var array<\Up\Entity\Order> $orders */
+/** @var array<\Up\Entity\Order\Order> $orders */
+/** @var int $currentPage */
+/** @var int $pagesAmount */
+/** @var string $query */
 
 ?>
 
 <link rel="stylesheet" href="/css/orders.css">
 
 <div class="container">
-
+	<div class="order-line">
+		<div class="order-label">Статус заказа:</div>
+		<div class="order-status-filter">
+			<select id="statusSelect" name="item-type">
+				<option value="IN_PROCESSING">В обработке</option>
+				<option value="DELIVERY">Ожидает доставки</option>
+				<option value="DONE">Завершён</option>
+				<option value="CANCELLED">Отменён</option>
+			</select>
+		</div>
+		<form action="/admin/getOrders" method="get" enctype="multipart/form-data" class="search">
+			<input type="text" id="query" name="query" class="search-field" placeholder="Поиск по сайту"
+				   value="<?= htmlspecialchars($query)?>">
+			<div class="search-icon">
+				<div></div>
+			</div>
+		</form>
+	</div>
 	<div class="order-list">
 		<?php foreach ($orders as $order):?>
 			<div class="order card">
@@ -40,7 +60,7 @@
 					endforeach; ?>
 					<div class="order-line">
 						<div class="order-label">Итого:</div>
-						<div class="order-value"><?= $order->getTotalCost()?> ₽</div>
+						<div class="order-total"><?= $order->getTotalCost()?> ₽</div>
 					</div>
 				</div>
 				<div class="order-line">
@@ -50,4 +70,52 @@
 			</div>
 		<?php endforeach;?>
 	</div>
+
+	<div class="navigation">
+		<a href="/admin/getOrders?page=<?= $currentPage - 1 ?>" class="navigation-page navigation-item
+				<?= $currentPage === 1 ? 'navigation-blocked' : '' ?>"> < </a>
+		<a href="/admin/getOrders?page=1" class="navigation-page navigation-item
+				<?= $currentPage === 1 ? 'navigation-active' : '' ?>">1</a>
+
+		<?php if ($pagesAmount > 7 && $currentPage >= 1 + 4): ?>
+			<div class="navigation-dots navigation-item">···</div>
+		<?php endif;?>
+
+		<?php
+		$startPage = 2;
+		$endPage = 5;
+		if ($currentPage >= 5)
+		{
+			$startPage = $currentPage - 1;
+			$endPage = $currentPage + 1;
+		}
+		if ($currentPage > $pagesAmount - 4)
+		{
+			$startPage = $pagesAmount - 4;
+			$endPage = $pagesAmount - 1;
+		}
+		if ($pagesAmount <= 7)
+		{
+			$startPage = 2;
+			$endPage = $pagesAmount - 1;
+		}
+		for ($i = $startPage; $i <= $endPage; $i++): ?>
+			<a href="/admin/getOrders?page=<?= $i ?>" class="navigation-page navigation-item
+					<?= $currentPage === $i ? 'navigation-active' : '' ?>"> <?= $i ?> </a>
+		<?php endfor;?>
+
+		<?php if ($pagesAmount > 7 && $currentPage <= $pagesAmount - 4): ?>
+			<div class="navigation-dots navigation-item">···</div>
+		<?php endif;?>
+
+		<?php if ($pagesAmount > 1): ?>
+			<a href="/admin/getOrders?page=<?= $pagesAmount?>" class="navigation-page navigation-item
+				<?= $currentPage === $pagesAmount ? 'navigation-active' : '' ?>"><?= $pagesAmount?></a>
+		<?php endif;?>
+
+		<a href="/admin/getOrders?page=<?= $currentPage + 1 ?>" class="navigation-page navigation-item
+				<?= $currentPage === $pagesAmount ? 'navigation-blocked' : '' ?>"> > </a>
+	</div>
 </div>
+
+<script src="/js/change-status.js"></script>
