@@ -49,6 +49,7 @@ class CategoryController
 
 		$response = new Response();
 
+
 		return $response->withBodyHTML($page);
 	}
 
@@ -171,17 +172,80 @@ class CategoryController
 		return $response->withBodyJSON($categoriesArray);
 	}
 
-	public function editCategoriesPage(Request $request): Response
+	public function deleteCategoryPage(Request $request): Response
 	{
-		$categories = $this->specificationsService->getCategoriesWithSpecifications();
-		$page = $this->templateProcessor->render('edit-category.php', [
-			'categories' => $categories,
-			'isNewItemTypeAdded' => false
-		], 'layout/admin-main.php', []);
-
 		$response = new Response();
-
+		$categories = $this->specificationsService->getCategories();
+		$page = $this->templateProcessor->render('delete-category.php', [
+			'categories' => $categories,
+			'isCategoryDeleted' => false
+		], 'layout/admin-main.php', []);
 		return $response->withBodyHTML($page);
+	}
+
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
+	public function deleteCategory(Request $request): Response
+	{
+		$response = new Response();
+		$id = $request->getPostParametersByName('category-id');
+		$this->specificationsService->deleteCategoryById($id);
+		$categories = $this->specificationsService->getCategories();
+		$page = $this->templateProcessor->render('delete-category.php', [
+			'categories' => $categories,
+			'isCategoryDeleted' => true
+		], 'layout/admin-main.php', []);
+		return $response->withBodyHTML($page);
+	}
+
+	public function chooseCategoryToSpecDelete(Request $request): Response
+	{
+		$response = new Response();
+		$categories = $this->specificationsService->getCategories();
+		$page = $this->templateProcessor->render('choose-category-specs-delete.php', [
+			'categories' => $categories
+		], 'layout/admin-main.php', []);
+		return $response->withBodyHTML($page);
+	}
+
+	public function deleteSpecPage(Request $request, int $id): Response
+	{
+		$response = new Response();
+		$specifications = $this->specificationsService->getSpecificationByCategoryId($id);
+		$page = $this->templateProcessor->render('delete-specification.php', [
+			'specifications' => $specifications,
+			'categoryId' => $id,
+			'isSpecificationDeleted' => false
+		], 'layout/admin-main.php', []);
+		return $response->withBodyHTML($page);
+	}
+
+	public function deleteSpec(Request $request): Response
+	{
+		$response = new Response();
+		$specId = $request->getPostParametersByName('specification-id');
+		$categoryId = $request->getPostParametersByName('category-id');
+		$this->specificationsService->deleteSpecificationById($specId);
+		$specifications = $this->specificationsService->getSpecificationByCategoryId($categoryId);
+		$page = $this->templateProcessor->render('delete-specification.php', [
+			'specifications' => $specifications,
+			'categoryId' => $categoryId,
+			'isSpecificationDeleted' => true
+		], 'layout/admin-main.php', []);
+		return $response->withBodyHTML($page);
+	}
+
+	public function getCategoriesByItemIdJSON(Request $request, int $id): Response
+	{
+		$response = new Response();
+		$categories = $this->specificationsService->getItemCategoriesByItemId($id);
+		$categoriesArray = array_map(function(SpecificationCategory $cat){
+			return [$cat->getName() ,array_map(function(Specification $spec){
+				return [$spec->getName(), $spec->getValue()];
+			}, $cat->getSpecifications())];
+		}, $categories);
+		return $response->withBodyJSON($categoriesArray);
 	}
 
 }

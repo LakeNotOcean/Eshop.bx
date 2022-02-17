@@ -104,6 +104,10 @@ item-other-footer
 	justify-content: space-between;
 }
 
+.display-order {
+	width: 30px;
+}
+
 /*==========================
 add-to-favorites
 ==========================*/

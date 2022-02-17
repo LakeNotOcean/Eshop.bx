@@ -4,6 +4,7 @@ namespace Up\Service\ItemService;
 
 use Up\DAO\ItemDAO\ItemDAOInterface;
 use Up\DAO\SpecificationDAO\SpecificationDAOInterface;
+use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 
 
@@ -44,5 +45,15 @@ class ItemService implements ItemServiceInterface
 	public function save(ItemDetail $item): ItemDetail
 	{
 		return $this->itemDAO->save($item);
+	}
+
+	public function deactivateItem(int $id): void
+	{
+		$this->itemDAO->deactivateItem($id);
+	}
+
+	public function updateCommonInfo(Item $item): Item
+	{
+		return $this->itemDAO->updateCommonInfo($item);
 	}
 }

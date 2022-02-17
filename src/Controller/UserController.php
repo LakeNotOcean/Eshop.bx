@@ -2,17 +2,17 @@
 
 namespace Up\Controller;
 
+use Error;
 use Exception;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
 use Up\Entity\User\User;
+use Up\Entity\User\UserEnum;
 use Up\Entity\User\UserRole;
 use Up\Validator\DataTypes;
 use Up\Validator\Validator;
 use Up\Service\UserService\UserServiceInterface;
-
-
 
 class UserController
 {
@@ -36,62 +36,69 @@ class UserController
 		$email = $request->getPostParametersByName('email');
 
 		$password = $request->getPostParametersByName('password');
+		$firstName = $request->getPostParametersByName('firstName');
+		$secondName = $request->getPostParametersByName('secondName');
 
-		// $error=[];
-		// $error[]=Validator::validate($email,DataTypes::email());
-		// $error[]=Validator::validate($phone,DataTypes::phone());
-		// $error[]=Validator::validate($login,DataTypes::login());
-		// $error[]=Validator::validate($email,DataTypes::email());
-		try
+		$errorString = Validator::validate($email, DataTypes::email());
+		$errorString .= Validator::validate($phone, DataTypes::phone());
+		$errorString .= Validator::validate($login, DataTypes::login());
+		$errorString .= Validator::validate($password, DataTypes::password());
+		$errorString .= Validator::validate($firstName, DataTypes::names());
+		$errorString .= Validator::validate($secondName, DataTypes::names());
+
+		if ($errorString !== '')
 		{
-			$user = new User(
-				$login, new UserRole(), $email, $phone
-			);
+			throw new Error($errorString);
 		}
-		catch (Exception $e)
-		{
-			//todo - неверное поле, указать неверное поле.
-			$page = $this->templateProcessor->render('register.php', ['state' => 'unsuccessful'], 'main.php', []);
-		}
+		$user = new User($login, new UserRole(UserEnum::User()), $email, $phone, $firstName, $secondName);
 		try
 		{
 			$this->userServiceImpl->registerUser($user, $password);
 		}
 		catch (Exception $e)
 		{
-			//todo - такой пользователь есть
-			$page = $this->templateProcessor->render('register.php', ['state' => 'unsuccessful'], 'layout/main.php', []);
-		}
-		catch (Exception $e) //todo - для каждого случая свой exception
-		{
-			//todo - неверный пароль
-			$page = $this->templateProcessor->render('register.php', ['state' => 'unsuccessful'], 'layout/main.php', []);
-		}
-		$page = $this->templateProcessor->render('register.php', ['state' => 'successful'], 'layout/main.php', []);
-		$respons = new Response();
+			$page = $this->templateProcessor->render('user.php', [], 'layout/main.php', []);
+			$response = new Response();
+			$response = $response->withStatus(409);
 
-		return $respons->withBodyHTML($page);
+			return $response->withBodyHTML($page);
+		}
+		$response = new Response();
+		$page = $this->templateProcessor->render('user.php', [], 'layout/main.php', []);
 
+		return $response->withBodyHTML($page);
 	}
 
 	public function loginUser(Request $request): Response
 	{
 		$login = $request->getPostParametersByName('login');
 		$password = $request->getPostParametersByName('password');
+
+		$errorString = Validator::validate($login, DataTypes::login());
+		$errorString .= Validator::validate($password, DataTypes::password());
+
+		if ($errorString !== '')
+		{
+			throw new Error($errorString);
+		}
+
 		try
 		{
 			$this->userServiceImpl->authorizeUserByLogin($login, $password);
-			header("Location: /");
 		}
 		catch (Exception $e)
 		{
-			//todo -  неверный пароль или логин
-			$page = $this->templateProcessor->render('login.php', ['state' => 'unsuccessful'], 'layout/main.php', []);
+			$page = $this->templateProcessor->render('login.php', [], 'layout/main.php', []);
+			$response = new Response();
+			$response = $response->withStatus(409);
+
+			return $response->withBodyHTML($page);
 		}
 
-		$respons = new Response();
+		$response = new Response();
+		$page = $this->templateProcessor->render('login.php', [], 'layout/main.php', []);
 
-		return $respons->withBodyHTML($page);
+		return $response->withBodyHTML($page);
 	}
 
 	public function loginUserPage(Request $request)

@@ -7,7 +7,6 @@ use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
 use Up\Entity\User\UserRole;
 
-
 class UserDAOmysql implements UserDAOInterface
 {
 	private $DBConnection;
@@ -26,7 +25,7 @@ class UserDAOmysql implements UserDAOInterface
 			up_user.LOGIN as USER_LOGIN,
             up_user.PASSWORD as USER_PASSWORD
 		FROM up_user WHERE LOGIN='{$login}';";
-		$queryResult=$this->DBConnection->prepare($query);
+		$queryResult = $this->DBConnection->prepare($query);
 		$queryResult->execute();
 		$resultList = [];
 		while ($row = $queryResult->fetch())
@@ -49,8 +48,8 @@ class UserDAOmysql implements UserDAOInterface
 	{
 		$password = password_hash($password, PASSWORD_BCRYPT);
 
-		$query = "INSERT INTO up_user (LOGIN, EMAIL, PHONE, PASSWORD, ROLE_ID) 
-			VALUES ('{$user->getLogin()}','{$user->getEmail()}','{$user->getPhone()}','$password','2')";
+		$query = "INSERT INTO up_user (LOGIN, EMAIL, PHONE, PASSWORD, ROLE_ID,FIRST_NAME,SECOND_NAME) 
+			VALUES ('{$user->getLogin()}','{$user->getEmail()}','{$user->getPhone()}','$password','2','{$user->getFirstName()}','{$user->getSecondName()}')";
 
 		$queryResult = $this->DBConnection->prepare($query);
 		$queryResult->execute();
@@ -79,7 +78,9 @@ class UserDAOmysql implements UserDAOInterface
             uu.PHONE as USER_PHONE,
             uu.EMAIL as USER_EMAIL,
             ur.ID as ROLE_ID,
-            ur.NAME as ROLE_NAME
+            ur.NAME as ROLE_NAME,   
+            uu.FIRST_NAME as USER_FIRST_NAME,
+            uu.SECOND_NAME as USER_SECOND_NAME
 		FROM up_user uu
 		LEFT JOIN up_role ur on ur.ID = uu.ROLE_ID";
 		if ($login !== '')
@@ -104,7 +105,12 @@ class UserDAOmysql implements UserDAOInterface
 	private function createUserByRow($row): User
 	{
 		return new User(
-			$row['USER_LOGIN'], new UserRole($row['ROLE_ID'], new UserEnum($row['ROLE_NAME'])), $row['USER_EMAIL'], $row['USER_PHONE']
+			$row['USER_LOGIN'],
+			new UserRole(new UserEnum($row['ROLE_NAME'])),
+			$row['USER_EMAIL'],
+			$row['USER_PHONE'],
+			$row['USER_FIRST_NAME'],
+			$row['USER_SECOND_NAME']
 		);
 	}
 

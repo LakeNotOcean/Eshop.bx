@@ -36,6 +36,8 @@
 					<a class="menu-item" href="/admin/addItemType">Добавить тип товара</a>
 					<a class="menu-item" href="/admin/addCategory">Добавить категорию</a>
 					<a class="menu-item" href="/admin/addSpecification">Добавить спецификацию</a>
+					<a class="menu-item" href="/admin/deleteCategory">Удалить категорию</a>
+					<a class="menu-item" href="/admin/chooseCategory">Удалить спецификацию</a>
 				</div>
 			</div>
 		</div>
