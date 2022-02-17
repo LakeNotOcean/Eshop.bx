@@ -122,7 +122,7 @@ class UserService implements UserServiceInterface
 
 	private function sessionDestroy(): void
 	{
-		session_start();
+		// session_start();
 		session_unset();
 		session_destroy();
 		session_write_close();

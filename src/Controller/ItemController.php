@@ -13,6 +13,8 @@ use Up\Entity\ItemsImage;
 use Up\Entity\ItemType;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
+use Up\Entity\User\UserEnum;
+use Up\Entity\User\UserRole;
 use Up\Lib\Paginator\Paginator;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
@@ -25,7 +27,6 @@ class ItemController
 	protected $itemService;
 	protected $imageService;
 	protected $tagService;
-	protected $userService;
 
 	protected $itemsInPage = 10;
 
@@ -34,21 +35,18 @@ class ItemController
 	 * @param \Up\Service\ItemService\ItemService $itemService
 	 * @param \Up\Service\ImageService\ImageService $imageService
 	 * @param \Up\Service\TagService\TagService $tagService
-	 * @param \Up\Service\UserService\UserService $userService
 	 */
 	public function __construct(
 		TemplateProcessorInterface $templateProcessor,
 		ItemServiceInterface       $itemService,
 		ImageServiceInterface      $imageService,
-		TagServiceInterface        $tagService,
-		UserServiceInterface       $userService
+		TagServiceInterface        $tagService
 	)
 	{
 		$this->templateProcessor = $templateProcessor;
 		$this->itemService = $itemService;
 		$this->imageService = $imageService;
 		$this->tagService = $tagService;
-		$this->userService = $userService;
 	}
 
 	/**
@@ -79,7 +77,7 @@ class ItemController
 			'pagesAmount' => $pagesAmount,
 			'isAdmin' => $isAdmin
 		], 'layout/main.php', [
-			'isAuthenticated' => $this->userService->isAuthenticated(),
+			'isAuthenticated' => $request->getUser()->getRole()->getName() != UserEnum::Guest(),
 			'isAdmin' => $isAdmin
 		]);
 

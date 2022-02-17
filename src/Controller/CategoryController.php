@@ -19,9 +19,11 @@ class CategoryController
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
 	 * @param \Up\Service\SpecificationService\SpecificationsService $specificationsService
+	 * @param \Up\Service\UserService\UserService $specificationsService
 	 */
 	public function __construct(TemplateProcessorInterface     $templateProcessor,
-								SpecificationsServiceInterface $specificationsService)
+								SpecificationsServiceInterface $specificationsService,
+	)
 	{
 		$this->templateProcessor = $templateProcessor;
 		$this->specificationsService = $specificationsService;
@@ -32,7 +34,7 @@ class CategoryController
 		$itemTypes = $this->specificationsService->getItemTypes();
 		$page = $this->templateProcessor->render('choose-item-type.php', [
 			'itemTypes' => $itemTypes
-		], 'layout/admin-main.php', []);
+		], 'layout/main.php', []);
 
 		$response = new Response();
 

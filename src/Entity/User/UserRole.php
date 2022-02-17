@@ -30,11 +30,11 @@ class UserRole
 	}
 
 	/**
-	* @return string
+	* @return UserEnum
 	*/
-	public function getName(): string
+	public function getName(): UserEnum
 	{
-		return $this->name->getValue();
+		return $this->name;
 	}
 
 	private static function getIdByName(string $name): int
