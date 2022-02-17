@@ -6,10 +6,13 @@ use Error;
 use Exception;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
+use Up\Core\Router\Error\ResolveException;
 use Up\Core\TemplateProcessorInterface;
 use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
 use Up\Entity\User\UserRole;
+use Up\Lib\Redirect;
+use Up\Service\UserService\Error\UserServiceException;
 use Up\Validator\DataTypes;
 use Up\Validator\Validator;
 use Up\Service\UserService\UserServiceInterface;
@@ -86,7 +89,7 @@ class UserController
 		{
 			$this->userServiceImpl->authorizeUserByLogin($login, $password);
 		}
-		catch (Exception $e)
+		catch (UserServiceException $e)
 		{
 			$page = $this->templateProcessor->render('login.php', [], 'layout/main.php', []);
 			$response = new Response();
@@ -117,4 +120,12 @@ class UserController
 		return $respons->withBodyHTML($page);
 	}
 
+	/**
+	 * @throws ResolveException
+	 */
+	public function logout(Request $request)
+	{
+		$this->userServiceImpl->removeUserFromSession();
+		return Redirect::createResponse('home');
+	}
 }
