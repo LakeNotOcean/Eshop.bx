@@ -11,7 +11,6 @@ use Up\Entity\ItemType;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 
-
 class ItemDAOmysql implements ItemDAOInterface
 {
 	private $DBConnection;
@@ -24,18 +23,32 @@ class ItemDAOmysql implements ItemDAOInterface
 		$this->DBConnection = $DBConnection;
 	}
 
+	/**
+	 * @param int $offset Смещение количества объектов
+	 * @param int $amountItems Количество item-ов в выборке
+	 *
+	 * @return array
+	 */
 	public function getItems(int $offset, int $amountItems): array
 	{
 		$result = $this->DBConnection->query($this->getItemsQuery($offset, $amountItems));
 		$items = [];
 		while ($row = $result->fetch())
 		{
-			$item = new Item();
-			$this->mapItemCommonInfo($item, $row);
-			$image = new ItemsImage();
-			$this->mapItemsImageInfo($image, $row);
-			$item->setMainImage($image);
-			$items[] = $item;
+			$itemId = (int)$row['ui_ID'];
+			if (!array_key_exists($itemId, $items))
+			{
+				$item = new Item();
+				$this->mapItemCommonInfo($item, $row);
+				$image = new ItemsImage();
+				$this->mapItemsImageInfo($image, $row);
+				$item->setMainImage($image);
+				$items[$itemId] = $item;
+			}
+			else
+			{
+				$this->mapItemsImageInfo($items[$itemId]->getMainImage(), $row);
+			}
 		}
 
 		return $items;
@@ -43,6 +56,7 @@ class ItemDAOmysql implements ItemDAOInterface
 
 	public function getItemDetailById(int $id): ItemDetail
 	{
+		// TODO: поменять не забудь под новый запрос
 		$result = $this->DBConnection->query($this->getItemDetailByIdQuery($id));
 		$item = new ItemDetail();
 		while ($row = $result->fetch())
@@ -80,6 +94,7 @@ class ItemDAOmysql implements ItemDAOInterface
 				}
 			}
 		}
+
 		return $item;
 	}
 
@@ -210,19 +225,26 @@ class ItemDAOmysql implements ItemDAOInterface
 	private function getItemsQuery(int $offset, int $amountItems): string
 	{
 		return "SELECT ui.ID as ui_ID,
-                        TITLE as TITLE,
-                        PRICE as PRICE,
-                        SORT_ORDER as SORT_ORDER,
-                        SHORT_DESC as SHORT_DESC,
-                        ACTIVE as ACTIVE,
-                        uoi.ID IMAGE_ID,
-                        uoi.PATH IMAGE_PATH,
-                        uoi.IS_MAIN IMAGE_IS_MAIN
+					   TITLE as TITLE,
+					   PRICE as PRICE,
+					   SORT_ORDER as SORT_ORDER,
+					   SHORT_DESC as SHORT_DESC,
+					   ACTIVE as ACTIVE,
+					   uoi.ID as ORIGINAL_IMAGE_ID,
+					   uoi.PATH as ORIGINAL_IMAGE_PATH,
+					   uoi.IS_MAIN as ORIGINAL_IMAGE_IS_MAIN,
+					   uiws.PATH as IMAGE_WITH_SIZE_PATH,
+					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE
 				FROM up_item ui
-				INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1   
-				WHERE ACTIVE = 1
-				ORDER BY ui.SORT_ORDER
-				LIMIT {$offset}, {$amountItems};";
+						 INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
+						 INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
+				WHERE ui.ID IN (
+					select uiI.ID from (
+										   SELECT ID FROM up_item ui2 WHERE ACTIVE = 1 ORDER BY ui2.SORT_ORDER desc, ui2.ID LIMIT {$offset}, {$amountItems}
+									   ) as uiI
+				)
+				ORDER BY ui.SORT_ORDER desc, ui.ID;
+";
 	}
 
 	private function getItemDetailByIdQuery(int $id): string
@@ -244,7 +266,8 @@ class ItemDAOmysql implements ItemDAOInterface
                 INNER JOIN up_item_spec uis on ui.ID = uis.ITEM_ID
                 INNER JOIN up_spec_type ust on uis.SPEC_TYPE_ID = ust.ID
                 INNER JOIN up_spec_category usc on ust.SPEC_CATEGORY_ID = usc.ID
-                INNER JOIN up_original_image u on ui.ID = u.ITEM_ID;";
+                INNER JOIN up_original_image u on ui.ID = u.ITEM_ID
+				INNER JOIN up_image_with_size uiws on ui.ID = uiws.ORIGINAL_IMAGE_ID;";
 	}
 
 	private function getDeleteWhereAndWhereInQuery(int $id, array $ids, array $table): string
@@ -335,9 +358,10 @@ class ItemDAOmysql implements ItemDAOInterface
 
 	private function mapItemsImageInfo(ItemsImage $image, array $row)
 	{
-		$image->setId($row['IMAGE_ID']);
-		$image->setPath($row['IMAGE_PATH']);
-		$image->setIsMain($row['IMAGE_IS_MAIN']);
+		$image->setId($row['ORIGINAL_IMAGE_ID']);
+		$image->setPath($row['IMAGE_WITH_SIZE_SIZE'], $row['IMAGE_WITH_SIZE_PATH']);
+		$image->setOriginalImagePath($row['ORIGINAL_IMAGE_PATH']);
+		$image->setIsMain($row['ORIGINAL_IMAGE_IS_MAIN']);
 	}
 
 	private function getTag(array $row): ItemsTag
@@ -353,8 +377,8 @@ class ItemDAOmysql implements ItemDAOInterface
 	{
 		$image = new ItemsImage();
 		$image->setId($row['u_ID']);
-		$image->setIsMain($row['IS_MAIN']);
-		$image->setPath($row['PATH']);
+		$image->setIsMain($row['ORIGINAL_IMAGE_IS_MAIN']);
+		$image->setPath($row['IMAGE_WITH_SIZE_SIZE'], $row['IMAGE_WITH_SIZE_PATH']);
 
 		return $image;
 	}
