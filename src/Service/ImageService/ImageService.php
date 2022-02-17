@@ -88,41 +88,24 @@ class ImageService implements ImageServiceInterface
 		$originalImagePath = $this->getOriginalImagePathByFilename($originalFilename);
 
 		$this->moveTmpFileToDirectory($imageParams['tmp_name'], $originalImagePath);
-		$sizedImagesPath = $this->createSizedImagesByOriginal($originalFilename, $mimeType);
+		$sizedImagePaths = $this->createSizedImagesByOriginal($originalFilename, $mimeType);
+
+		foreach ($sizedImagePaths as $path)
+		{
+			$availableMime  = array_keys($this::validMimeTypeToSaveImageFunction);
+			$missingMimes = array_diff($availableMime, [mime_content_type($path)]);
+
+			foreach ($missingMimes as $missingMime)
+			{
+				$this->createImageWithAnotherExtension($path, MimeMapper::getExtensionByMime($missingMime), $missingMime);
+			}
+		}
 
 		$itemImage = new ItemsImage();
 		$itemImage->setIsMain($isMain);
 		$itemImage->setOriginalImagePath($originalImagePath);
-		foreach ($sizedImagesPath as $sizeName => $path)
-		{
-			$itemImage->setPath($sizeName, $path);
-		}
 
-		return $itemImage;
-	}
-
-	public function test(array $imageParams, bool $isMain): ItemsImage
-	{
-		$mimeType = $imageParams['type'];
-		if (!$this->isValidImageMime($mimeType))
-		{
-			throw new MimeTypeException("Invalid mime file type. Now: {$mimeType}");
-		}
-
-		$this->createImageDirs();
-		$originalFilename = $this->getUniqueFilename(
-			$imageParams['name'],
-			$mimeType
-		);
-		$originalImagePath = $this->getOriginalImagePathByFilename($originalFilename);
-
-		copy($imageParams['tmp_name'], $originalImagePath);
-		$sizedImagesPath = $this->createSizedImagesByOriginal($originalFilename, $mimeType);
-
-		$itemImage = new ItemsImage();
-		$itemImage->setIsMain($isMain);
-		$itemImage->setOriginalImagePath($originalImagePath);
-		foreach ($sizedImagesPath as $sizeName => $path)
+		foreach ($sizedImagePaths as $sizeName => $path)
 		{
 			$itemImage->setPath($sizeName, $path);
 		}
@@ -287,5 +270,20 @@ class ImageService implements ImageServiceInterface
 			$image = imagescale($image, $size, floor($size * $height / $width));
 		}
 		static::validMimeTypeToSaveImageFunction[$mimeType]($image, $filePath);
+	}
+
+	public function createImageWithAnotherExtension(string $imagePath, string $anotherExtension, string $resultFileMime): string
+	{
+		$createImageFunc = static::validMimeTypeToCreateImageFunction[
+			mime_content_type($imagePath)
+		];
+		$image = $createImageFunc($imagePath);
+
+		$resultPath = $imagePath . '.' . $anotherExtension;
+		static::validMimeTypeToSaveImageFunction[
+		$resultFileMime
+			]($image, $resultPath);
+
+		return $resultPath;
 	}
 }

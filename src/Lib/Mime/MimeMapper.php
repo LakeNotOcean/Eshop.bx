@@ -192,9 +192,4 @@ class MimeMapper
 	{
 		return static::mimeToExtension[$mime];
 	}
-
-	public static function getMimeByExtension(string $extensionName)
-	{
-		return mime_content_type('1.' . $extensionName);
-	}
 }
