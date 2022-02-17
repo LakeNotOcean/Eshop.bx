@@ -19,7 +19,7 @@ use Up\Entity\Item;
 	<div class="search_result_count">Видеокарты: найдено <?= $itemsAmount ?> штук</div>
 	<div class="filters-item-list-row">
 		<div class="filters-column">
-			<div class="filters">
+			<div class="filters card">
 				Фильтры
 				<div class="filter-category">
 					<div class="price-category"></div>
@@ -31,7 +31,7 @@ use Up\Entity\Item;
 			<?php
 			foreach ($items as $item) : ?>
 
-				<<?= $isAdmin ? 'form enctype="multipart/form-data" action="' . URLResolver::resolve('fast-item-update') . '" method="post"' : "a href=\"" . URLResolver::resolve('item-detail', ['id' => $item->getId()]) . "\"" ?> class="item">
+				<<?= $isAdmin ? 'form enctype="multipart/form-data" action="' . URLResolver::resolve('fast-item-update') . '" method="post"' : "a href=\"" . URLResolver::resolve('item-detail', ['id' => $item->getId()]) . "\"" ?> class="item card card-hover">
 					<picture>
 						<source srcset="../img/<?= $item->getId() . $pref ?>.webp" type="image/webp">
 						<source srcset="../img/<?= $item->getId() . $pref ?>.png" type="image/png">
