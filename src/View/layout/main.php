@@ -1,6 +1,7 @@
 <?php
 /** @var string $content */
 
+/** @var bool $isAuthenticated */
 ?>
 
 <!doctype html>
@@ -33,7 +34,18 @@
 			<div></div>
 		</div>
 	</form>
-	<div class="btn btn-normal sign-in">Войти</div>
+	<?php if ($isAuthenticated): ?>
+		<a href="<?= \Up\Core\Router\URLResolver::resolve('logout-user') ?>">
+			<div class="btn btn-normal sign-in">Выйти</div>
+		</a>
+	<?php else: ?>
+		<a href="<?= \Up\Core\Router\URLResolver::resolve('login-user-page') ?>">
+			<div class="btn btn-normal sign-in">Войти</div>
+		</a>
+		<a href="<?= \Up\Core\Router\URLResolver::resolve('register-user') ?>">
+			<div class="btn btn-normal sign-in">Зарегистрироваться</div>
+		</a>
+	<?php endif; ?>
 </nav>
 
 <main>
