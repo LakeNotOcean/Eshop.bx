@@ -92,13 +92,55 @@ images
 	text-decoration: underline;
 }
 
+/*==========================
+image
+==========================*/
+
 .image-img {
+	position: relative;
 	width: 130px;
 	height: 130px;
 	margin: 10px;
 	object-fit: contain;
 	border-radius: 10px;
 	background: #ffffff;
+}
+
+.image-container {
+	display: inline-block;
+	position: relative;
+}
+
+.image-remove-btn {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	background: #DF0310;
+	right: 0;
+	top: 0;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.image-remove-btn::before, .image-remove-btn::after {
+	position: absolute;
+	content: '';
+	top: 3px;
+	width: 14px;
+	height: 3px;
+	background: #ffffff;
+}
+
+.image-remove-btn::before {
+	left: 5px;
+	transform-origin: left;
+	transform: rotateZ(45deg);
+}
+
+.image-remove-btn::after {
+	right: 5px;
+	transform-origin: right;
+	transform: rotateZ(-45deg);
 }
 
 .no-images-title {
