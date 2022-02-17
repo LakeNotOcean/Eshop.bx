@@ -56,6 +56,11 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItemsAmount($query);
 	}
 
+	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs):int
+	{
+		return $this->itemDAO->getItemsAmountByFilters($query,$price,$tags,$specs);
+	}
+
 	public function getItemsTags(): array
 	{
 		$entityArray = $this->tagDAO->getAllTags();

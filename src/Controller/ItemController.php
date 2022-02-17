@@ -62,7 +62,7 @@ class ItemController
 			$tags = $request->containsQuery('tag') ? $request->getQueriesByName('tag') : [];
 			$specs = $request->containsQuery('spec') ? $request->getQueriesByName('spec') : [];
 			$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query,$price,$tags,$specs);
-			$itemsAmount = $this->itemService->getItemsAmount($query);
+			$itemsAmount = $this->itemService->getItemsAmountByFilters($query,$price,$tags,$specs);
 		}
 		elseif ($request->containsQuery('query'))
 		{

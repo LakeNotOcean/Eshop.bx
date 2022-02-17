@@ -264,6 +264,16 @@ class ItemDAOmysql implements ItemDAOInterface
 		return $result->fetch()['num_items'];
 	}
 
+
+	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs)
+	{
+		$query = $this->getItemsAmountByFiltersQuery($query,$price,$tags,$specs);
+		$result = $this->DBConnection->query($query);
+		return $result->fetch()['num_items'];
+	}
+
+
+
 	private function getItemsQuery(int $offset, int $amountItems, string $searchQuery = ''): string
 	{
 		$result = "SELECT ui.ID as ui_ID,
@@ -463,9 +473,9 @@ class ItemDAOmysql implements ItemDAOInterface
 	ui.DATE_CREATE,
 	ui.DATE_UPDATE,
 	ui.ITEM_TYPE_ID,
-	u.ID IMAGE_ID,
-    u.PATH IMAGE_PATH,
-    u.IS_MAIN IMAGE_IS_MAIN
+	u.ID as IMAGE_ID,
+    u.PATH as IMAGE_PATH,
+    u.IS_MAIN as IMAGE_IS_MAIN
 FROM up_item as ui";
 		if (!empty($tags))
 		{
@@ -543,6 +553,130 @@ INNER JOIN (select ID as ITEM_ID,
 		LIMIT {$offset}, {$amountItems}";
 		return $query;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+private function getItemsAmountByFiltersQuery(string $searchQuery,string $price,array $tags,array $specs):string
+{
+
+	$query = "
+	SELECT DISTINCT 
+	count(1) as num_items
+FROM up_item as ui";
+	if (!empty($tags))
+	{
+		$query.= " INNER join (select ITEM_ID,
+    TAG_ID
+FROM
+(select
+	upt.ITEM_ID as ITEM_ID,
+    upt.TAG_ID as TAG_ID,
+    COUNT(TAG_ID) as COUNT
+FROM up_item_tag as upt
+where ";
+		$where = [];
+		foreach ($tags as $tag)
+		{
+			$where[]='TAG_ID = '.$tag;
+		}
+		$query .= implode(' OR ', $where);
+		$query .= "
+group by ITEM_ID
+) as l
+WHERE COUNT = ";
+		$query .= count($tags);
+		$query .= ") as uig on uig.ITEM_ID = ID";
+	}
+	if (!empty($specs))
+	{
+		$query .= "
+INNER JOIN (select
+	ITEM_ID
+FROM
+(select
+	 ITEM_ID as ITEM_ID,
+	 COUNT(VALUE) as COUNT
+ FROM up_item_spec
+ WHERE ";
+		$where = [];
+		foreach ($specs as $spec=>$value)
+		{
+			$spec = explode('=',$value);
+			$where[]="(SPEC_TYPE_ID = " . $spec[0]. " AND VALUE = ". "'" . $spec[1] . "')";
+		}
+		$query .= implode(' OR ', $where);
+		$query .= " GROUP BY ITEM_ID) as ls
+WHERE COUNT =";
+		$query .= count($specs);
+		$query .= ") as uis on uis.ITEM_ID = ID";
+	}
+	if (!($price === ""))
+
+	{
+		$query .="
+INNER JOIN (select ID as ITEM_ID,
+                   PRICE as PRICE
+            FROM up_item
+            WHERE ";
+		$minMaxPrice = explode('-',$price);
+		$query .= 'PRICE > '. $minMaxPrice[0] . ' AND PRICE < ' . $minMaxPrice[1];
+		$query .= ") as uip on uip.ITEM_ID = ID";
+	}
+	if (!($searchQuery === ""))
+	{
+		$query .="
+INNER JOIN (select ID as ITEM_ID,
+                   TITLE as TITLE
+            FROM up_item
+            WHERE TITLE LIKE '%";
+		$query .= $searchQuery;
+		$query .= "%') as uit on uit.ITEM_ID = ID";
+	}
+	$query .="
+		WHERE ACTIVE = 1";
+	return $query;
 }
-
-
+}
