@@ -3,6 +3,7 @@
 namespace Up\DAO\ItemDAO;
 
 use Up\Core\Database\DefaultDatabase;
+use Up\Core\Logger\Logger;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\ItemsImage;
@@ -15,13 +16,14 @@ use Up\Entity\SpecificationCategory;
 class ItemDAOmysql implements ItemDAOInterface
 {
 	private $DBConnection;
-
+	protected $logger;
 	/**
 	 * @param \Up\Core\Database\DefaultDatabase $DBConnection
 	 */
 	public function __construct(DefaultDatabase $DBConnection)
 	{
 		$this->DBConnection = $DBConnection;
+		$this->logger = new Logger();
 	}
 
 	public function getItems(int $offset, int $amountItems): array
@@ -58,6 +60,23 @@ class ItemDAOmysql implements ItemDAOInterface
 			$items[] = $item;
 		}
 
+		return $items;
+	}
+
+	public function getItemsByFilters(int $offset, int $amountItems,string $query,string $price,array $tags,array $specs): array
+	{
+		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$query,$price,$tags,$specs);
+		$result = $this->DBConnection->query($dbQuery);
+		$items = [];
+		foreach ($result as $row)
+		{
+			$item = new Item();
+			$this->mapItemCommonInfo($item, $row);
+			$image = new ItemsImage();
+			$this->mapItemsImageInfo($image, $row);
+			$item->setMainImage($image);
+			$items[] = $item;
+		}
 		return $items;
 	}
 
@@ -255,6 +274,25 @@ class ItemDAOmysql implements ItemDAOInterface
 		return $result;
 	}
 
+
+	private function getItemsByPriceQuery(): string
+	{
+		$result = "SELECT ui.ID as ui_ID,
+                        TITLE as TITLE,
+                        PRICE as PRICE,
+                        SORT_ORDER as SORT_ORDER,
+                        SHORT_DESC as SHORT_DESC,
+                        ACTIVE as ACTIVE,
+                        u.ID IMAGE_ID,
+                        u.PATH IMAGE_PATH,
+                        u.IS_MAIN IMAGE_IS_MAIN
+				FROM up_item ui
+				INNER JOIN up_image u on ui.ID = u.ITEM_ID AND u.IS_MAIN = 1
+				WHERE ACTIVE = 1 AND PRICE > ? AND PRICE < ?
+				ORDER BY ui.SORT_ORDER";
+		return $result;
+	}
+
 	private function getItemDetailByIdQuery(int $id): string
 	{
 		return "SELECT ui.ID as ui_ID,
@@ -388,4 +426,98 @@ class ItemDAOmysql implements ItemDAOInterface
 
 		return $image;
 	}
+
+	private function getItemsByFiltersQuery($offset, $amountItems,string $searchQuery,string $price,array $tags,array $specs):string
+	{
+
+		$query = "
+	SELECT DISTINCT 
+	ui.ID as ui_ID,
+	ui.TITLE,
+	ui.PRICE,
+	ui.SHORT_DESC,
+	ui.FULL_DESC,
+	ui.SORT_ORDER,
+	ui.ACTIVE,
+	ui.DATE_CREATE,
+	ui.DATE_UPDATE,
+	ui.ITEM_TYPE_ID,
+	u.ID IMAGE_ID,
+    u.PATH IMAGE_PATH,
+    u.IS_MAIN IMAGE_IS_MAIN
+FROM up_item as ui";
+		if (!empty($tags))
+		{
+			$query.= "INNER join (select
+	            ITEM_ID as ITEM_ID,
+	            TAG_ID as TAG_ID
+            FROM up_item_tag
+            where ";
+			$where = [];
+			foreach ($tags as $tag)
+			{
+				$where[]='TAG_ID = '.$tag;
+			}
+			$query .= implode(' AND ', $where);
+			$query .= ") as uig on uig.ITEM_ID = ID";
+		}
+		if (!empty($specs))
+		{
+			$query .= "
+INNER JOIN (select
+	            ITEM_ID as ITEM_ID,
+	            SPEC_TYPE_ID as SPEC_TYPE_ID,
+				VALUE as VALUE
+            FROM up_item_spec
+            WHERE ";
+			$where = [];
+			foreach ($specs as $spec=>$value)
+			{
+				$where[]="SPEC_TYPE_ID = " . $spec;
+				$where[]="VALUE = ". "'" . $value . "'";
+			}
+			$query .= implode(' AND ', $where);
+			$query .= ") as uis on uis.ITEM_ID = ID";
+		}
+
+
+		$query .="
+INNER JOIN (select ID as ITEM_ID,
+                   PRICE as PRICE
+            FROM up_item
+            WHERE ";
+
+		if ($price === "")
+		{
+			$query .= "1";
+		}
+		else
+		{
+			$minMaxPrice = explode('-',$price);
+			$query .= 'PRICE > '. $minMaxPrice[0] . ' AND PRICE < ' . $minMaxPrice[1];
+		}
+
+		$query .=") as uip on uip.ITEM_ID = ID
+INNER JOIN (select ID as ITEM_ID,
+                   TITLE as TITLE
+            FROM up_item
+            WHERE TITLE LIKE '%";
+		if ($searchQuery === "")
+		{
+			$query .= "1";
+		}
+		else
+		{
+			$query .= $searchQuery;
+		}
+
+		$query .="%') as uit on uit.ITEM_ID = ID
+		INNER JOIN up_image u on ui.ID = u.ITEM_ID AND u.IS_MAIN = 1
+		WHERE ACTIVE = 1 
+		ORDER BY ui.SORT_ORDER
+		LIMIT {$offset}, {$amountItems}";
+		return $query;
+	}
 }
+
+

@@ -20,6 +20,7 @@ for (let pageButton of pageButtons)
 	{
 		filterButton.addEventListener('click',(e) => {
 			let filterQuery = getFilterQuery();
+
 			let searchQuery = getSearchQuery();
 			let pageQuery = "&page=1"
 			let finalQuery = filterQuery + searchQuery + pageQuery;

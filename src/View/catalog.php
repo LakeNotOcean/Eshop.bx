@@ -14,9 +14,8 @@ $pref = '_big';
 use Up\Core\Router\URLResolver;
 
 $isAdmin = true;
-$maxPrice = 1000;
+$maxPrice = 90000;
 $minPrice = 100;
-
 ?>
 
 <link rel="stylesheet" href="/css/catalog.css">
@@ -80,7 +79,7 @@ $minPrice = 100;
 														<div class="filter-category-specification-group">
 															<div>
 																<label>
-																<input type="checkbox" form="filter-form" class="category_checkbox" name="<?= $spec->getId() ?>[]" value="<?=$value?>">
+																<input type="checkbox" form="filter-form" class="category_spec_checkbox category_checkbox" name="<?= $spec->getId() ?>" value="<?=$value?>">
 																	<?=htmlspecialchars($value)?> </label>
 															</div>
 															<div class="filter-category-count">
@@ -106,7 +105,7 @@ $minPrice = 100;
 						<div class="tag-category-body">
 							<?foreach ($tags as $tag) : ?>
 								<div class="switch">
-									<input type="checkbox" class="category_checkbox" name="tag[]" value="<?=$tag->getID()?>" form="filter-form">
+									<input type="checkbox" class="category_tag_checkbox category_checkbox" value="<?=$tag->getID()?>" form="filter-form">
 									<label><?=$tag->getName()?></label>
 								</div>
 							<?php

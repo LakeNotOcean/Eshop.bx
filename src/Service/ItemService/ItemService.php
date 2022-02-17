@@ -38,6 +38,11 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItemsByQuery($limitOffset['offset'], $limitOffset['amountItems'], $searchQuery);
 	}
 
+	public function getItemsByFilters(array $limitOffset,string $query = '',string $price = '',array $tags = [],array $specs = []): array
+	{
+		return $this->itemDAO->getItemsByFilters($limitOffset['offset'], $limitOffset['amountItems'],$query, $price, $tags,$specs);
+	}
+
 	public function getItemById(int $id): ItemDetail
 	{
 		//$itemCategories = $this->specificationDAO->getItemCategoriesByItem($item);

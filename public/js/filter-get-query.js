@@ -1,8 +1,7 @@
 
 function getFilterQuery()
 {
-
-	let filterCheckboxes = document.getElementsByClassName('category_checkbox');
+	let filterCheckboxes = document.getElementsByClassName('category_spec_checkbox');
 	let finalQuery = '';
 	for (let filterCheckbox of filterCheckboxes)
 	{
@@ -10,31 +9,44 @@ function getFilterQuery()
 		{
 			let param = filterCheckbox.name;
 			let value = filterCheckbox.value;
-			finalQuery += param + '=' + value + '&'
+			finalQuery += 'spec[]=' + param + '=' + value + '&'
 		}
 	}
-
-	let minPriceInput = document.getElementsByClassName('min-price');
-	let maxPriceInput = document.getElementsByClassName('min-price');
-	if (minPriceInput.value!==undefined || maxPriceInput.value!==undefined)
+	let tagCheckboxes = document.getElementsByClassName('category_tag_checkbox');
+	for (let tagCheckbox of tagCheckboxes)
+	{
+		if (tagCheckbox.checked === true)
+		{
+			let value = tagCheckbox.value;
+			finalQuery += 'tag[]=' + value + '&'
+		}
+	}
+	let minPriceInput = document.getElementById('min-price');
+	let maxPriceInput = document.getElementById('max-price');
+	if (minPriceInput.value==='' && maxPriceInput.value==='')
+	{
+		return finalQuery;
+	}
+	else
 	{
 		let minPrice = 0;
 		let maxPrice = 0;
-		if (minPriceInput.value===undefined)
+		if (minPriceInput.value==='')
 		{
-			 minPrice= minPriceInput.placeholder;
+			minPrice= minPriceInput.placeholder;
 		}
 		else
 		{
-			minPrice = minPriceInput.value()
+			minPrice = minPriceInput.value
 		}
-		if (maxPriceInput.value===undefined)
+		if (maxPriceInput.value==='')
 		{
+
 			maxPrice = maxPriceInput.placeholder;
 		}
 		else
 		{
-			maxPrice = maxPriceInput.value()
+			maxPrice = maxPriceInput.value
 		}
 		finalQuery += "price" + "=" + minPrice + "-" + maxPrice + "&"
 	}
