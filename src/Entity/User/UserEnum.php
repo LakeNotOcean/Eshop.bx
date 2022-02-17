@@ -4,6 +4,7 @@ namespace Up\Entity\User;
 
 use Up\Core\Enum\Enum;
 
+
 class UserEnum extends Enum
 {
 	public const Guest = "Guest";

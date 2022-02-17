@@ -157,6 +157,7 @@ class MimeMapper
 		'audio/wave' => 'wav',
 		'audio/wav' => 'wav',
 		'application/wbxml' => 'wbxml',
+		'image/webp' => 'webp',
 		'video/webm' => 'webm',
 		'audio/x-ms-wma' => 'wma',
 		'application/wmlc' => 'wmlc',
@@ -190,10 +191,5 @@ class MimeMapper
 	public static function getExtensionByMime(string $mime): string
 	{
 		return static::mimeToExtension[$mime];
-	}
-
-	public static function getMimeByExtension(string $extensionName)
-	{
-		return mime_content_type('1.' . $extensionName);
 	}
 }
