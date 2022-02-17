@@ -61,24 +61,43 @@
 				<div class="main-image">
 					<div class="input-image-header">
 						<span class="label-title">Фото обложки</span>
-						<input type="file" accept=".webp" id="main-image" name="main-image" class="upload-image">
+						<input type="file" accept="image/*" id="main-image" name="main-image" class="upload-image">
 						<label for="main-image" class="btn-change">Изменить</label>
 					</div>
 					<div id="main-image-preview" class="preview">
+						<?php if (($item) && $item->getMainImage() != null): ?>
+						<div class="image-container">
+							<img src="<?= '/' . $item->getMainImage()->getPath('medium') ?>" alt="main-image" class="image-img" name="<?=$item->getMainImage()->getId()?>">
+							<div class="image-remove-btn"></div>
+						</div>
+						<?php else: ?>
 						<div class="image-container">
 							<img src="/img/default_image.webp" alt="main-image" class="image-img">
 							<div class="image-remove-btn"></div>
 						</div>
+						<?php endif;?>
 					</div>
 				</div>
 				<div class="other-images">
 					<div class="input-image-header">
 						<span class="label-title">Порядок фотографий</span>
-						<input type="file" multiple="multiple" accept=".webp" id="other-images" name="other-images" class="upload-image">
+						<input type="file" multiple="multiple" accept="image/*" id="other-images" name="other-images" class="upload-image">
 						<label for="other-images" class="btn-change">Изменить</label>
 					</div>
 					<div id="other-images-preview" class="preview">
+						<?php
+						if (($item) && count($item->getImages()) > 0): ?>
+						<?php foreach ($item->getImages() as $image): ?>
+							<?php if (!$image->isMain()): ?>
+									<div class="image-container">
+										<img src="<?= '/' . $image->getPath('medium') ?>" alt="other-image" class="image-img old-img" name="<?=$image->getId()?>">
+										<div class="image-remove-btn"></div>
+									</div>
+							<?php endif; ?>
+						<?php endforeach; ?>
+						<?php else: ?>
 						<div class="no-images-title">Добавьте дополнительные фотографии для товара</div>
+						<?php endif; ?>
 					</div>
 				</div>
 			</div>

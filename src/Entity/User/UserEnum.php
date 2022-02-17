@@ -7,8 +7,8 @@ use Up\Core\Enum\Enum;
 
 class UserEnum extends Enum
 {
-	const Guest="Guest";
-	const User="User";
-	const Moderator="Moderator";
-	const Admin="Admin";
+	public const Guest = "Guest";
+	public const User = "User";
+	public const Moderator = "Moderator";
+	public const Admin = "Admin";
 }

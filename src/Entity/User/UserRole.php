@@ -11,7 +11,7 @@ class UserRole
 	{
 		if (is_null($name))
 		{
-			$this->name = UserEnum::Guest;
+			$this->name = UserEnum::Guest();
 			$this->id = 0;
 		}
 		else

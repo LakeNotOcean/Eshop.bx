@@ -151,12 +151,30 @@ class ItemController
 			}
 			$item->setSpecificationCategory($category);
 		}
+		$imagesInfo = [];
+		if($request->containsFile('main-image'))
+		{
+			$mainImage = $request->getFilesByName('main-image');
+			$imagesInfo[] = ['name' => $mainImage['name'], 'type' => $mainImage['type'], 'tmp_name' => $mainImage['tmp_name'], 'is_main' => true];
+		}
+		if($request->containsFile('other-images'))
+		{
+			$otherImages = $request->getFilesByName('other-images');
+		}
+		$countOtherImages = count($otherImages['name']);
 
-		$item->setMainImage(new ItemsImage(1, '1.png', true));
 
-		$item->setImage(new ItemsImage(1, '1.png', true));
 
-		$this->itemService->save($item);
+		for($i = 0; $i < $countOtherImages; $i++)
+		{
+			$imagesInfo[] = ['name' => $otherImages['name'][$i], 'type' => $otherImages['type'][$i], 'tmp_name' => $otherImages['tmp_name'][$i], 'is_main' => false];
+		}
+
+		$itemId = $this->itemService->save($item)->getId();
+		if(!empty($imagesInfo))
+		{
+			$this->imageService->addImages($imagesInfo, $itemId);
+		}
 
 		return (new Response())->withBodyHTML('');
 	}

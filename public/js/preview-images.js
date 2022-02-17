@@ -29,13 +29,22 @@ inputMain.addEventListener('change', () => {
 
 let inputOther = document.getElementById('other-images');
 let previewOther = document.getElementById('other-images-preview');
+let oldImages = previewOther.querySelectorAll('.old-img');
+oldImages.forEach((oldImage) => {
+	oldImage.nextElementSibling.addEventListener('click', async () =>{
+		deleteImageById(oldImage.name);
+		oldImage.parentNode.remove();
+	});
+});
 
 inputOther.addEventListener('change', () => {
-	while(previewOther.firstChild) {
-		previewOther.removeChild(previewOther.firstChild);
-	}
+	let images = previewOther.querySelectorAll('img');
+	images.forEach((image) => {
+		if(!image.classList.contains('old-img'))
+			image.parentNode.remove();
+	});
 	const files = inputOther.files;
-	if (files.length === 0) {
+	if (files.length === 0 && !images.hasChildNodes()) {
 		const message = document.createElement('div');
 		message.classList.add('no-images-title');
 		message.innerText = 'Добавьте дополнительные фотографии для товара';
@@ -45,9 +54,10 @@ inputOther.addEventListener('change', () => {
 		const otherImage = createImage(URL.createObjectURL(file), file.name);
 		previewOther.appendChild(otherImage);
 	}
-
-	const imageRemoveButtons = previewOther.querySelectorAll('.image-remove-btn');
-	for (let imageRemoveBtn of imageRemoveButtons) {
+	let newImages = previewOther.querySelectorAll('.new-img');
+	//const imageRemoveButtons = previewOther.querySelectorAll('.image-remove-btn');
+	for (let newImage of newImages) {
+		let imageRemoveBtn = newImage.nextElementSibling;
 		imageRemoveBtn.addEventListener('click', () => {
 			const imageContainer = imageRemoveBtn.parentNode;
 			const image = imageContainer.querySelector('.image-img');
@@ -89,6 +99,7 @@ function createImage(path, alt)
 	image.src = path;
 	image.alt = alt;
 	image.classList.add('image-img');
+	image.classList.add('new-img');
 	div.append(image);
 
 	const imageRemoveBtn = document.createElement('div');
