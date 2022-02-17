@@ -50,10 +50,10 @@ use Up\Entity\Item;
 								</svg>
 							</div>
 							<?php if ($isAdmin): ?>
-							<textarea name="item-short-description"> <?= htmlspecialchars($item->getShortDescription()) ?> </textarea>
+							<textarea name="item-short-description"><?=htmlspecialchars($item->getShortDescription())?></textarea>
 							<?php else: ?>
 							<div class="item-short-description">
-								<?= htmlspecialchars($item->getShortDescription()) ?>
+								<?=htmlspecialchars($item->getShortDescription())?>
 							</div>
 							<?php endif;?>
 						</div>
