@@ -59,11 +59,8 @@ class ItemController
 		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
 		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
 
-
-
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
 		$currentPage = $currentPage > 0 ? $currentPage : 1;
-		$layout = $isAdmin ? 'layout/admin-main.php' : 'layout/main.php';
 		if ($request->containsQuery('price') || $request->containsQuery('tag') || $request->containsQuery('spec'))
 		{
 			$query = $request->containsQuery('query') ? $request->getQueriesByName('query') : '';
@@ -104,7 +101,8 @@ class ItemController
 			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false
 		], 'layout/main.php', [
 			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAdmin' => $isAdmin,
+			'query' => $query
 		]);
 
 		return (new Response())->withBodyHTML($pages);
@@ -193,13 +191,12 @@ class ItemController
 			$mainImage = $request->getFilesByName('main-image');
 			$imagesInfo[] = ['name' => $mainImage['name'], 'type' => $mainImage['type'], 'tmp_name' => $mainImage['tmp_name'], 'is_main' => true];
 		}
+		$countOtherImages = 0;
 		if($request->containsFile('other-images'))
 		{
 			$otherImages = $request->getFilesByName('other-images');
+			$countOtherImages = count($otherImages['name']);
 		}
-		$countOtherImages = count($otherImages['name']);
-
-
 
 		for($i = 0; $i < $countOtherImages; $i++)
 		{

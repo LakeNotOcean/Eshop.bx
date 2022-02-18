@@ -13,8 +13,6 @@
 	font-size: 18px;
 }
 
-
-
 /*==========================
 items
 ==========================*/
@@ -235,10 +233,12 @@ filters main
 
 .filters {
 	width: 300px;
-	max-height: 100%;
 	background: #FFFFFF;
 	border-radius: 10px;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+	--filters-height: calc(100vh - var(--nav-height) - 100px);
+	max-height: var(--filters-height);
 }
 
 .filter-category {
@@ -252,7 +252,7 @@ filters main
 	justify-content: flex-start;
 	align-items: center;
 
-	max-height: 800px;
+	max-height: var(--filters-height);
 	overflow: auto;
 }
 
@@ -260,15 +260,14 @@ filters main
 	display: none;
 }
 
-
 /*==========================
 filters price category
 ==========================*/
+
 .price-category {
 	display: flex;
 	flex-direction: column;
 	width: 270px;
-
 }
 
 .filter-category-title{
@@ -280,6 +279,7 @@ filters price category
 	display: flex;
 	justify-content: space-around;
 }
+
 .price-category-body{
 	width: 110px;
 	height: 40px;
@@ -291,7 +291,7 @@ filters price category
 {
 	outline: 0;
 	outline-offset: 0;
-	border: 0px;
+	border: 0;
 	border-radius: 10px;
 	font-family: 'Open Sans', sans-serif;
 }
@@ -299,7 +299,6 @@ filters price category
 .price-category-body-int{
 	width: 100px;
 	font-size: 20px;
-
 }
 
 /*==========================
@@ -340,13 +339,13 @@ filters specification category
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-
 .filter-category-specification .filter-category-sub-specification, .filter-category-label {
 	top: 0;
-	right: 0px;
+	right: 0;
 	position: absolute;
 	cursor: pointer;
 }
+
 .filter-category-specification .filter-category-sub-specification.plus,
 .filter-category-label:before,
 .filter-category-specification .filter-category-sub-specification.minus,
@@ -358,14 +357,17 @@ filters specification category
 	font-family: Courier;
 	padding-left: 260px;
 }
+
 .filter-category-specification .filter-category-sub-specification.minus, .filter-category-sub-specification:checked + .filter-category-label:before {
 	content: '-';
 }
+
 .filter-category-specification a {
 	color: red;
 	font-size: 16px;
 	text-decoration:none;
 }
+
 .filter-category-specification ul li li a {
 	color: #666;
 	font-size: 15px;
@@ -373,11 +375,11 @@ filters specification category
 	text-decoration:none;
 
 }
+
 .filter-category-specification a.filter-category-active {
 	color: #000000;
 	font-family: 'Open Sans', sans-serif;
 	text-transform: none;
-
 }
 
 .filter-category-specification a:hover {
@@ -385,19 +387,22 @@ filters specification category
 	color: red !important;
 }
 
-
 .filter-category-specification > ul > li ul {
 	display: none;
 }
+
 .filter-category-specification > ul > li a.filter-category-active + span + ul {
 	display: block !important;
 }
+
 .filter-category-specification > ul > li .filter-category-sub-specification:checked ~ ul {
 	display: block !important;
 }
+
 .filter-category-specification input[type=checkbox].filter-category-sub-specification {
 	display:none;
 }
+
 .filter-category-specification ul li li a:before {
 	content: '+';
 	font-size: 20px;
@@ -405,6 +410,7 @@ filters specification category
 	color: #666;
 	font-weight: bold;
 }
+
 .filter-category-specification > ul li li a:hover:before {
 	color: #000;
 }
@@ -412,7 +418,6 @@ filters specification category
 /*==========================
 filters tag category
 ==========================*/
-
 
 .switch {
 	height: 20px;
@@ -444,11 +449,9 @@ filters tag category
 	cursor: pointer;
 }
 
-
 .switch input:checked ~ label { /* Button */
 	background: linear-gradient(#be9030, #d08607);
 }
-
 
 /*==========================
 filters button category

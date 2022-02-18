@@ -31,7 +31,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 	<div class="filters-item-list-row">
 		<div class="filters-column">
 			<div class="filters card">
-				<form id="filter-form" action="\"  method="get" >
+				<form id="filter-form" action="/"  method="get" >
 				<div class="filter-category">
 					<div class="price-category">
 								<div class="filter-category-title filter-category-active">
@@ -51,31 +51,29 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 								<div class="price-category-body-text">
 									Макс. цена
 								</div>
-
 									<input type=text id="max-price" name="maxp-rice" placeholder="<?=$price['maxPrice']?>" class="price-category-body-int price-category-body-int-max">
-
 							</div>
 
 						</div>
 					</div>
 					<div class="filter-category-specification">
-						<?
+						<?php
 						foreach ($categories as $category) : ?>
 							<ul>
 								<li>
-									<a class="filter-category-active" href="#"><?=htmlspecialchars($category->getName())?></a>
+									<a class="filter-category-active"><?=htmlspecialchars($category->getName())?></a>
 									<input type="checkbox" class="filter-category-sub-specification" id=<?=$category->getId()?>  />
 									<label class="filter-category-label" for=<?=$category->getId()?>  ></label>
 									<ul style="display:none">
 										<li>
 											<div class = filter-category-specification-line></div>
-												<? $specList = $category->getSpecificationList();
+												<?php $specList = $category->getSpecificationList();
 												$specList = $specList->getEntitiesArray();
 												foreach ($specList as $spec) : ?>
 													<div>
 														<?= htmlspecialchars($spec->getName()) ?>
 													</div>
-													<?foreach ($spec->getValue() as $value=>$count) : ?>
+													<?php foreach ($spec->getValue() as $value=>$count) : ?>
 														<div class="filter-category-specification-group">
 															<div>
 																<label>
