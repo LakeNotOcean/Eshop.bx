@@ -9,39 +9,39 @@
 		<div class="main-fields-and-images">
 			<div class="main-fields">
 				<?php
-				if ($item): ?>
+				if (isset($item)): ?>
 					<input type="hidden" name="item-id" value="<?= $item->getId() ?> ">
 					<input type="hidden" name="item-type" value="<?= $item->getItemType()->getId() ?>">
 				<?php
 				endif; ?>
 				<label for="item-title" class="field">
 					<span class="label-title">Название товара</span>
-					<input type="text" id="item-title" name="item-title" placeholder="Ввести название товара" value="<?= ($item)
-						? $item->getTitle() : '' ?>">
+					<input type="text" id="item-title" name="item-title" placeholder="Ввести название товара"
+						   value="<?= isset($item) ? $item->getTitle() : '' ?>">
 				</label>
 
 				<label for="item-price" class="field">
 					<span class="label-title">Стоимость товара</span>
-					<input type="number" id="item-price" name="item-price" placeholder="Ввести стоимость товара" value="<?= ($item)
-						? $item->getPrice() : '' ?>">
+					<input type="number" id="item-price" name="item-price" placeholder="Ввести стоимость товара"
+						   value="<?= isset($item) ? $item->getPrice() : '' ?>">
 				</label>
 
 				<label for="item-short-description" class="field">
 					<span class="label-title">Краткое описание</span>
-					<input type="text" id="item-short-description" name="item-short-description" placeholder="Ввести краткое описание товара" value="<?= ($item)
-						? $item->getShortDescription() : '' ?>">
+					<input type="text" id="item-short-description" name="item-short-description" placeholder="Ввести краткое описание товара"
+						   value="<?= isset($item) ? $item->getShortDescription() : '' ?>">
 				</label>
 
 				<label for="item-full-description" class="field">
 					<span class="label-title">Описание</span>
-					<input type="text" id="item-full-description" name="item-full-description" placeholder="Ввести полное описание товара" value="<?= ($item)
-						? $item->getFullDescription() : '' ?>">
+					<input type="text" id="item-full-description" name="item-full-description" placeholder="Ввести полное описание товара"
+						   value="<?= isset($item) ? $item->getFullDescription() : '' ?>">
 				</label>
 
 				<label for="item-tags" class="field">
 					<span class="label-title">Теги</span>
-					<input type="text" id="item-tags" name="item-tags" placeholder="Ввести теги через запятую" value="<?= ($item)
-						? implode(
+					<input type="text" id="item-tags" name="item-tags" placeholder="Ввести теги через запятую"
+						   value="<?= isset($item) ? implode(
 							',',
 							array_map(function(\Up\Entity\ItemsTag $tag) {
 								return $tag->getName();
@@ -51,8 +51,8 @@
 
 				<label for="item-sort_order" class="field">
 					<span class="label-title">Порядок сортировки</span>
-					<input type="number" id="item-sort_order" name="item-sort_order" placeholder="Ввести порядок сортировки" value="<?= ($item)
-						? $item->getSortOrder() : '' ?>">
+					<input type="number" id="item-sort_order" name="item-sort_order" placeholder="Ввести порядок сортировки"
+						   value="<?= isset($item) ? $item->getSortOrder() : '' ?>">
 				</label>
 			</div>
 
@@ -65,7 +65,7 @@
 						<label for="main-image" class="btn-change">Изменить</label>
 					</div>
 					<div id="main-image-preview" class="preview">
-						<?php if (($item) && $item->getMainImage() != null): ?>
+						<?php if (isset($item) && $item->getMainImage() !== null): ?>
 						<div class="image-container">
 							<img src="<?= '/' . $item->getMainImage()->getPath('medium') ?>" alt="main-image" class="image-img" name="<?=$item->getMainImage()->getId()?>">
 							<div class="image-remove-btn"></div>
@@ -86,7 +86,7 @@
 					</div>
 					<div id="other-images-preview" class="preview">
 						<?php
-						if (($item) && count($item->getImages()) > 0): ?>
+						if (isset($item) && count($item->getImages()) > 0): ?>
 						<?php foreach ($item->getImages() as $image): ?>
 							<?php if (!$image->isMain()): ?>
 									<div class="image-container">

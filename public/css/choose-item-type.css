@@ -1,6 +1,7 @@
 .btn-add-type {
+	box-sizing: border-box;
 	display: block;
-	line-height: 40px;
+	line-height: 36px;
 	height: 40px;
 	margin-left: 20px;
 	background: #ffffff;

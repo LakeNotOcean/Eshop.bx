@@ -23,7 +23,7 @@ class MiddlewareManager
 	 *
 	 * @return void
 	 */
-	public function registerMiddlewares(array $middlewaresClassName)
+	public function registerMiddlewares(array $middlewaresClassName): void
 	{
 		$this->middlewareClassNames = array_merge($this->middlewareClassNames, $middlewaresClassName);
 	}

@@ -3,6 +3,8 @@
 namespace Up\Core\Message;
 
 
+use Up\Entity\User\User;
+
 class Request
 {
 	private $queries = [];
@@ -13,6 +15,8 @@ class Request
 	private $method = '';
 	private $headers = [];
 	private $requestUrl = '';
+
+	private $user;
 
 	/**
 	 * @return Request
@@ -180,6 +184,20 @@ class Request
 		return $this->session;
 	}
 
+	/**
+	 * @return User
+	 */
+	public function getUser(): User
+	{
+		return $this->user;
+	}
 
+	/**
+	 * @param User $user
+	 */
+	public function setUser(User $user): void
+	{
+		$this->user = $user;
+	}
 
 }

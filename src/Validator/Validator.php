@@ -10,7 +10,7 @@ class Validator
 	private const rules = [
 		DataTypes::email => [
 			ValidatorMethodEnum::emailFormat => [],
-			ValidatorMethodEnum::maxLength => [20],
+			ValidatorMethodEnum::maxLength => [127],
 		],
 		DataTypes::phone => [ValidatorMethodEnum::phoneFormat => []],
 		DataTypes::login => [
@@ -48,7 +48,7 @@ class Validator
 			$result = call_user_func_array($classMethodName, $args);
 			if ($result !== '')
 			{
-				$errorString=$errorString.' '. $result;
+				$errorString = $errorString.' '. $result;
 			}
 		}
 

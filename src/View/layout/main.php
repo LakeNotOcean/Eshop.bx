@@ -1,7 +1,11 @@
 <?php
 /** @var string $content */
 
+/** @var bool $isAdmin */
 /** @var bool $isAuthenticated */
+
+use Up\Core\Router\URLResolver;
+
 ?>
 
 <!doctype html>
@@ -34,25 +38,59 @@
 			<div></div>
 		</div>
 	</form>
+
+	<?php if ($isAdmin): ?>
+		<div class="nav-bar">
+			<div class="nav-item">
+				<div class="nav-item-label">Товары</div>
+				<div class="menu-container">
+					<div class="menu">
+						<a class="menu-item" href="/admin/chooseItemType">Добавить товар</a>
+						<a class="menu-item" href="/admin/addItemType">Добавить тип товара</a>
+						<a class="menu-item" href="/admin/addCategory">Добавить категорию</a>
+						<a class="menu-item" href="/admin/addSpecification">Добавить спецификацию</a>
+						<a class="menu-item" href="/admin/deleteCategory">Удалить категорию</a>
+						<a class="menu-item" href="/admin/chooseCategory">Удалить спецификацию</a>
+					</div>
+				</div>
+			</div>
+			<div class="nav-item">
+				<div class="nav-item-label">Заказы</div>
+				<div class="menu-container">
+					<div class="menu">
+						<a class="menu-item" href="/admin/getOrders">Список заказов</a>
+					</div>
+				</div>
+			</div>
+			<script src="/js/admin-menu.js"></script>
+		</div>
+	<?php endif;?>
+
 	<?php if ($isAuthenticated): ?>
-		<a href="<?= \Up\Core\Router\URLResolver::resolve('logout-user') ?>">
+		<a href="<?= URLResolver::resolve('logout-user') ?>">
 			<div class="btn btn-normal sign-in">Выйти</div>
 		</a>
 	<?php else: ?>
-		<a href="<?= \Up\Core\Router\URLResolver::resolve('login-user-page') ?>">
+		<a href="<?= URLResolver::resolve('login-user-page') ?>">
 			<div class="btn btn-normal sign-in">Войти</div>
 		</a>
-		<a href="<?= \Up\Core\Router\URLResolver::resolve('register-user') ?>">
+		<a href="<?= URLResolver::resolve('register-user') ?>">
 			<div class="btn btn-normal sign-in">Зарегистрироваться</div>
 		</a>
 	<?php endif; ?>
 </nav>
 
 <main>
-	<?= $content ?>
-	<div class="footer">
-		2022, EShop Inc. · <a href="/">Главная страница</a> · <a href="/">Помощь</a> · <a href="/">Поддержка</a>
+	<div class="center">
+		<?= $content ?>
 	</div>
+
+	<?php
+	if (!$isAdmin): ?>
+		<div class="footer">
+			© 2022, EShop Inc. · <a href="/">Главная страница</a> · <a href="/">Помощь</a> · <a href="/">Поддержка</a>
+		</div>
+	<?php endif;?>
 </main>
 
 </body>

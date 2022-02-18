@@ -22,8 +22,8 @@ class UserRole
 	}
 
 	/**
-	 * @return int
-	 */
+	* @return int
+	*/
 	public function getId(): int
 	{
 		return $this->id;

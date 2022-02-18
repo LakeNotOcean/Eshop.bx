@@ -17,6 +17,7 @@ use Up\Validator\DataTypes;
 use Up\Validator\Validator;
 use Up\Service\UserService\UserServiceInterface;
 
+
 class UserController
 {
 	protected $templateProcessor;
@@ -50,6 +51,8 @@ class UserController
 		$errorString .= Validator::validate($firstName, DataTypes::names());
 		$errorString .= Validator::validate($secondName, DataTypes::names());
 
+		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
+
 		if ($errorString !== '')
 		{
 			throw new Error($errorString);
@@ -61,14 +64,20 @@ class UserController
 		}
 		catch (Exception $e)
 		{
-			$page = $this->templateProcessor->render('user.php', [], 'layout/main.php', []);
+			$page = $this->templateProcessor->render('user.php', [], 'layout/main.php', [
+				'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
+				'isAdmin' => $isAdmin
+			]);
 			$response = new Response();
 			$response = $response->withStatus(409);
 
 			return $response->withBodyHTML($page);
 		}
 		$response = new Response();
-		$page = $this->templateProcessor->render('user.php', [], 'layout/main.php', []);
+		$page = $this->templateProcessor->render('user.php', [], 'layout/main.php', [
+			'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
+			'isAdmin' => $isAdmin
+		]);
 
 		return $response->withBodyHTML($page);
 	}
@@ -95,10 +104,15 @@ class UserController
 		}
 		catch (UserServiceException $e)
 		{
-			return (new Response())->withStatus(409)->withBodyHTML($this->templateProcessor->render(
-				'login.php', ['error' => $e->getMessage()],
-				'layout/main.php', []
-			));
+			$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
+			$page = $this->templateProcessor->render('login.php', [], 'layout/main.php', [
+				'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
+				'isAdmin' => $isAdmin
+			]);
+			$response = new Response();
+			$response = $response->withStatus(409);
+
+			return $response->withBodyHTML($page);
 		}
 
 		return Redirect::createResponseByURLName('home');
@@ -124,10 +138,16 @@ class UserController
 
 	public function registerUserPage(Request $request)
 	{
-		$page = $this->templateProcessor->render('register.php', ['state' => 'process'], 'layout/main.php', []);
-		$respons = new Response();
+		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
+		$page = $this->templateProcessor->render('register.php', [
+			'state' => 'process'
+		], 'layout/main.php', [
+			'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
+			'isAdmin' => $isAdmin
+		]);
+		$response = new Response();
 
-		return $respons->withBodyHTML($page);
+		return $response->withBodyHTML($page);
 	}
 
 	/**
@@ -138,4 +158,5 @@ class UserController
 		$this->userServiceImpl->removeUserFromSession();
 		return Redirect::createResponseByURLName('home');
 	}
+
 }

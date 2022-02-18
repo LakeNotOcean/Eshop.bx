@@ -83,7 +83,7 @@ class UserService implements UserServiceInterface
 	 */
 	public function checkIsAdmin(): void
 	{
-		if ($this->getUserInfo()->getRole()->getName() !== UserEnum::Admin)
+		if ($this->getUserInfo()->getRole()->getName() != UserEnum::Admin())
 		{
 			throw new Exception('You are not authorized to perform the operation ');
 		}
@@ -96,12 +96,12 @@ class UserService implements UserServiceInterface
 
 	public function isAuthenticated()
 	{
-		return $this->getUserInfo()->getRole()->getName()->getValue() !== UserEnum::Guest;
+		return $this->getUserInfo()->getRole()->getName() != UserEnum::Guest();
 	}
 
 	public function getUsersInfo(): array
 	{
-		if ($this->getUserInfo()->getRole()->getName() !== UserEnum::Admin)
+		if ($this->getUserInfo()->getRole()->getName() != UserEnum::Admin())
 		{
 			return $this->getUsersList();
 		}

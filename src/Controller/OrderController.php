@@ -9,6 +9,7 @@ use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
 use Up\Entity\Order\Order;
 use Up\Entity\Order\OrderStatus;
+use Up\Entity\User\UserEnum;
 use Up\Lib\Paginator\Paginator;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\OrderService\OrderServiceInterface;
@@ -42,10 +43,11 @@ class OrderController
 		$items = [$item];
 		$page = $this->templateProcessor->render('make-order.php', [
 			'items' => $items,
-		],                                       'layout/order.php', [
-													 'cost' => $this->calculateTotalCost($items),
-													 'orderSize' => count($items),
-												 ]);
+			'user' => $request->getUser()
+		],'layout/order.php', [
+			'cost' => $this->calculateTotalCost($items),
+			'orderSize' => count($items),
+		]);
 
 		return (new Response())->withBodyHTML($page);
 	}
@@ -77,22 +79,25 @@ class OrderController
 		$order->setDateCreate($now);
 		$order->setDateUpdate($now);
 		$order->setItems($items);
-		//TODO get user from session and $order->setUser($user);
+		$order->setUser($request->getUser());
 
 		$this->orderService->saveOrder($order);
 
 		$page = $this->templateProcessor->render('finish-order.php', [
 			'items' => $items,
-		],                                       'layout/order.php', [
-													 'cost' => $order->getTotalCost(),
-													 'orderSize' => count($items),
-												 ]);
+		], 'layout/order.php', [
+			'cost' => $order->getTotalCost(),
+			'orderSize' => count($items),
+		]);
 
 		return (new Response())->withBodyHTML($page);
 	}
 
 	public function getOrders(Request $request): Response
 	{
+		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
+		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
+
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
 		$status = $request->containsQuery('status') ? OrderStatus::from($request->getQueriesByName('status'))
 			: OrderStatus::IN_PROCESSING();
@@ -109,7 +114,10 @@ class OrderController
 			'itemsAmount' => $ordersAmount,
 			'pagesAmount' => $pagesAmount,
 			'query' => $query,
-		],                                       'layout/admin-main.php', []);
+		], 'layout/main.php', [
+			'isAuthenticated' => $isAuthenticated,
+			'isAdmin' => $isAdmin
+		]);
 
 		return (new Response())->withBodyHTML($page);
 	}
@@ -121,7 +129,6 @@ class OrderController
 		{
 			$cost += $item->getPrice();
 		}
-
 		return $cost;
 	}
 
