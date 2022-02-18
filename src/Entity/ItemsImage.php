@@ -23,12 +23,8 @@ class ItemsImage extends Entity
 	 *
 	 * @return string
 	 */
-	public function getPath(string $size, string $extension = null): string
+	public function getPath(string $size, string $extension): string
 	{
-		if (is_null($extension))
-		{
-			return $this->paths[$size];
-		}
 		return $this->paths[$size] . '.' . $extension;
 	}
 
