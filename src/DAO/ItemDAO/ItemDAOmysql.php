@@ -73,7 +73,6 @@ class ItemDAOmysql implements ItemDAOInterface
 
 	public function getItemDetailById(int $id): ItemDetail
 	{
-		// TODO: поменять не забудь под новый запрос
 		$result = $this->DBConnection->query($this->getItemDetailByIdQuery($id));
 		$item = new ItemDetail();
 		while ($row = $result->fetch())
