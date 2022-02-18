@@ -2,6 +2,7 @@ let filterCheckboxes = document.getElementsByClassName('category_checkbox');
 let priceInputs = document.getElementsByClassName('price-category-body-int');
 let paramsQuery = (new URL(document.location)).searchParams;
 let currentLocation= decodeURI(location.search.toString())
+let searchField = document.getElementsByClassName('search-field')
 for (let filterCheckbox of filterCheckboxes)
 {
 	let param = filterCheckbox.name;
@@ -31,4 +32,11 @@ for (let priceInput of priceInputs)
 			priceInput.value = maxPrice;
 		}
 	}
+
+
+}
+
+if (currentLocation.indexOf('query') !== -1)
+{
+	searchField.value =  paramsQuery.get('query');
 }

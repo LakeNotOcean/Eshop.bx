@@ -104,6 +104,7 @@ class ItemController
 			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false
 		], 'layout/main.php', [
 			'isAuthenticated' => $isAuthenticated,
+			'query' => $query,
 			'isAdmin' => $isAdmin
 		]);
 
