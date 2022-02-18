@@ -5,4 +5,6 @@ categorySelector.addEventListener('change', (e) =>{
 	btnSave.href = '/admin/deleteSpec/' + e.target.value;
 });
 
-btnSave.href = '/admin/deleteSpec/' + categorySelector.options[0].value;
+window.onload = function() {
+	btnSave.href = '/admin/deleteSpec/' + categorySelector.value;
+};
