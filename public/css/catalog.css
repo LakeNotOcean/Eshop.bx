@@ -1,8 +1,11 @@
+@import "lib/pagination.css";
+
 .container {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 	background: #F6F6F6;
+	max-width: 1500px;
 }
 
 .search_result_count {
@@ -152,51 +155,6 @@ rating
 	font-size: 18px;
 	font-weight: bold;
 	color: #333333;
-}
-
-/*==========================
-paginator
-==========================*/
-
-.navigation {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	height: 60px;
-	margin: 50px;
-}
-
-.navigation-item {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 40px;
-	width: 40px;
-	border-radius: 50%;
-	font-size: 15px;
-	font-weight: 600;
-}
-
-.navigation-page {
-	background-color: white;
-	color: black;
-	margin: 0 10px;
-	transition: .3s;
-}
-
-.navigation-blocked {
-	pointer-events: none;
-	color: #dddddd;
-}
-
-.navigation-page:hover {
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-	transition: .3s;
-}
-
-.navigation-active {
-	background-color: #333;
-	color: white;
 }
 
 /*==========================
@@ -350,7 +308,6 @@ filters specification category
 	font-size: 26px;
 	color: #1266B1;
 	font-weight: bold;
-	font-family: Courier;
 	padding-left: 260px;
 }
 
@@ -449,27 +406,23 @@ filters tag category
 	background: linear-gradient(#be9030, #d08607);
 }
 
+.filter-button-checkbox {
+	position: absolute;
+}
+
 /*==========================
-filters button category
+filter-buttons
 ==========================*/
 
-.filter-button-checkbox {
-	position: fixed;
-	top: 200px;
+.filter-buttons {
+	box-sizing: border-box;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	padding: 10px;
+	margin: 10px;
 }
 
 .filter-button {
-	line-height: 40px;
-	text-align: center;
-	border-radius: 10px;
-	border: 2px solid #D9D9D9;
-	cursor: pointer;
-	margin-bottom: 10px;
-}
-
-.filter-button:hover {
-	font-weight: 500;
-	color: #FFFFFF;
-	border-color: #FF791E;
-	background: #FF791E;
+	margin: 0;
 }

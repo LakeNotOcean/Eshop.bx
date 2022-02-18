@@ -26,8 +26,8 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 		<?php else: ?>
 		Результаты поиска по запросу "<?= $query ?>": найдено <?= $itemsAmount ?> товаров
 		<?php endif; ?>
-
 	</div>
+
 	<div class="filters-item-list-row">
 		<div class="filters-column">
 			<div class="filters card">
@@ -42,7 +42,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 								<div class="price-category-body-text">
 									Мин. цена
 								</div>
-								<input type=text id="min-price" name="min-price" placeholder="<?=$price['minPrice']?>" class="price-category-body-int price-category-body-int-min">
+								<input type=text id="min-price" name="min-price" placeholder="<?= $price['minPrice']?>" class="price-category-body-int price-category-body-int-min">
 							</div>
 							<div class="price-category-body-center">
 								-
@@ -51,9 +51,8 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 								<div class="price-category-body-text">
 									Макс. цена
 								</div>
-									<input type=text id="max-price" name="maxp-rice" placeholder="<?=$price['maxPrice']?>" class="price-category-body-int price-category-body-int-max">
+									<input type=text id="max-price" name="maxp-rice" placeholder="<?= $price['maxPrice']?>" class="price-category-body-int price-category-body-int-max">
 							</div>
-
 						</div>
 					</div>
 					<div class="filter-category-specification">
@@ -109,13 +108,13 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 							<?php
 							endforeach; ?>
 						</div>
-
-
-
 					</div>
 					<input type="button" class="filter-button filter-button-checkbox redirect-button" id="button_on_checkbox"  style="display:none" value="Принять">
-					<input type="button" class="filter-button redirect-button" value="Отфильтровать">
-					<input type="button" class="filter-button reset-button" value="Сбросить">
+
+					<div class="filter-buttons">
+						<div class="btn btn-normal filter-button redirect-button">Отфильтровать</div>
+						<div class="btn btn-normal filter-button reset-button">Сбросить</div>
+					</div>
 				</form>
 				</div>
 			</div>
@@ -235,10 +234,12 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 	</div>
 </div>
 
-<script src="/js/filter-reset.js"></script>
 <script src="/js/fix-node.js"></script>
 <script src="/js/fixed-filters.js"></script>
+
 <script src="/js/filter-button.js"></script>
+<script src="/js/filter-reset.js"></script>
+
 <script src="/js/get-search-query.js"></script>
 <script src="/js/filter-get-query.js"></script>
 <script src="/js/queryPush.js"></script>
