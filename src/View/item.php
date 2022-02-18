@@ -1,7 +1,7 @@
 <?php
 /** @var \Up\Entity\ItemDetail $item */
 
-$itemImages = ['/img/2_big.webp', '/img/2-1_big.webp', '/img/2-2_big.webp'];
+//$itemImages = ['/img/2_big.webp', '/img/2-1_big.webp', '/img/2-2_big.webp'];
 ?>
 
 <link rel="stylesheet" href="/css/item.css">
@@ -20,8 +20,8 @@ $itemImages = ['/img/2_big.webp', '/img/2-1_big.webp', '/img/2-2_big.webp'];
 		</div>
 		<div class="open-images-main">
 			<div class="image-list">
-				<?php foreach ($itemImages as $itemImage):?>
-					<img src="<?= $itemImage?>" alt="item-main-image" class="item-image">
+				<?php foreach ($item->getImages() as $itemImage):?>
+					<img src="<?='/' . $itemImage->getPath('medium')?>" alt="item-main-image" class="item-image">
 				<?php endforeach;?>
 			</div>
 		</div>
@@ -44,11 +44,14 @@ $itemImages = ['/img/2_big.webp', '/img/2-1_big.webp', '/img/2-2_big.webp'];
 			<div class="item-main-images card-outline">
 
 				<div>
-					<img src="/img/2_big.webp" alt="item-main-image" class="main-image">
+					<img src=" <?='/'.$item->getMainImage()->getPath('big')?>" alt="item-main-image" class="main-image">
 				</div>
 				<div class="images-other">
-					<img src="/img/2-1_small.webp" alt="" class="other-image">
-					<img src="/img/2-2_small.webp" alt="" class="other-image">
+					<?php foreach ($item->getImages() as $image): ?>
+						<?php if (!$image->isMain()): ?>
+							<img src="<?='/' . $image->getPath('small') ?>" alt="" class="other-image">
+						<?php endif; ?>
+					<?php endforeach; ?>
 				</div>
 
 			</div>
