@@ -21,7 +21,10 @@
 		<div class="open-images-main">
 			<div class="image-list">
 				<?php foreach ($item->getImages() as $itemImage):?>
-					<img src="<?='/' . $itemImage->getPath('medium')?>" alt="item-main-image" class="item-image">
+				<picture>
+					<source srcset="<?='/' . $itemImage->getPath('medium', 'webp') ?>" type="image/webp">
+					<img src="<?='/' . $itemImage->getPath('medium', 'jpeg')?>" alt="item-main-image" class="item-image">
+				</picture>
 				<?php endforeach;?>
 			</div>
 		</div>
@@ -44,12 +47,20 @@
 			<div class="item-main-images card-outline">
 
 				<div>
-					<img src=" <?='/'.$item->getMainImage()->getPath('big')?>" alt="item-main-image" class="main-image">
+					<picture>
+						<source srcset="<?='/' . $item->getMainImage()->getPath('medium', 'webp') ?>" type="image/webp">
+						<img src=" <?='/'.$item->getMainImage()->getPath('big', 'jpeg')?>" alt="item-main-image" class="main-image">
+					</picture>
+
 				</div>
 				<div class="images-other">
 					<?php foreach ($item->getImages() as $image): ?>
 						<?php if (!$image->isMain()): ?>
-							<img src="<?='/' . $image->getPath('small') ?>" alt="" class="other-image">
+						<picture>
+							<source srcset="<?='/' . $image->getPath('medium', 'webp') ?>" type="image/webp">
+							<img src="<?='/' . $image->getPath('small', 'jpeg') ?>" alt="" class="other-image">
+						</picture>
+
 						<?php endif; ?>
 					<?php endforeach; ?>
 				</div>

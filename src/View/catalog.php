@@ -36,7 +36,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 				<<?= $isAdmin ? 'form enctype="multipart/form-data" action="' . URLResolver::resolve('fast-item-update') . '" method="post"' : "a href=\"" . URLResolver::resolve('item-detail', ['id' => $item->getId()]) . "\"" ?> class="item card card-hover">
 					<picture>
 						<source srcset="<?='/' . $item->getMainImage()->getPath('medium', 'webp') ?>" type="image/webp">
-						<img class="item-image" src="<?= '/' . $item->getMainImage()->getPath('medium') ?>" alt="Item Image">
+						<img class="item-image" src="<?= '/' . $item->getMainImage()->getPath('medium', 'jpeg') ?>" alt="Item Image">
 					</picture>
 					<div class="item-other">
 						<div class="item-other-to-top">
