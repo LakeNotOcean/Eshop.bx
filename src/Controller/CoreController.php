@@ -5,6 +5,7 @@ namespace Up\Controller;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
+use Up\Entity\User\UserEnum;
 
 class CoreController
 {
@@ -20,8 +21,14 @@ class CoreController
 
 	public function get404(Request $request)
 	{
+		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
+		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
+
 		return (new Response())->withBodyHTML(
-			$this->templateProcessor->render('404.php', [], 'layout/main.php', [])
+			$this->templateProcessor->render('404.php', [], 'layout/main.php', [
+				'isAuthenticated' => $isAuthenticated,
+				'isAdmin' => $isAdmin
+			])
 		);
 	}
 }
