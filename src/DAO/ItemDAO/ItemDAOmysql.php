@@ -366,7 +366,8 @@ class ItemDAOmysql implements ItemDAOInterface
                 INNER JOIN up_item_spec uis on ui.ID = uis.ITEM_ID
                 INNER JOIN up_spec_type ust on uis.SPEC_TYPE_ID = ust.ID
                 INNER JOIN up_spec_category usc on ust.SPEC_CATEGORY_ID = usc.ID
-                INNER JOIN up_image u on ui.ID = u.ITEM_ID;";
+                INNER JOIN up_image u on ui.ID = u.ITEM_ID
+				ORDER BY ust_DISPLAY_ORDER, usc_DISPLAY_ORDER;";
 	}
 
 	private function getDeleteWhereAndWhereInQuery(int $id, array $ids, array $table): string

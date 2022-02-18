@@ -4,8 +4,8 @@ namespace Up\DAO\OrderDAO;
 
 use Up\Core\Database\DefaultDatabase;
 use Up\DAO\AbstractDAO;
-use Up\Entity\Order;
-
+use Up\Entity\Order\Order;
+use Up\Entity\Order\OrderStatus;
 
 class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 {
@@ -21,17 +21,17 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	/**
 	 * @return array<Order>
 	 */
-	public function getOrders(): array
+	public function getOrders(int $offset, int $amountItems, OrderStatus $status, string $searchQuery): array
 	{
-		$preparedStatement = $this->getSelectPrepareStatement('up_order');
-		$preparedStatement->execute();
+		$preparedStatement = $this->dbConnection->prepare($this->getOrdersQuery($offset, $amountItems));
+		$preparedStatement->execute([$status->getValue(), "%$searchQuery%"]);
 
 		$orders = [];
 		while ($row = $preparedStatement->fetch())
 		{
 			$order = new Order($row['CUSTOMER_NAME'], $row['PHONE'], $row['EMAIL'], $row['COMMENT']);
 			$order->setId($row['ID']);
-			$order->setStatus($row['STATUS']);
+			$order->setStatus(OrderStatus::from($row['STATUS']));
 			$order->setDateCreate($row['DATE_CREATE']);
 			$order->setDateUpdate($row['DATE_UPDATE']);
 			$orders[] = $order;
@@ -39,16 +39,27 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		return $orders;
 	}
 
-	public function getOrderIdByOrder(Order $order): int
+	private function getOrdersQuery(int $offset, int $amountItems): string
 	{
-		$preparedStatement = $this->getSelectPrepareStatement(
-			'up_order',
-			['CUSTOMER_NAME' => '=', 'PHONE' => '=', 'EMAIL' => '=', 'COMMENT' => '=',
-			 'STATUS' => '=', 'DATE_CREATE' => '=', 'DATE_UPDATE' => '=']
-		);
-		$preparedStatement->execute($this->prepareOrderAssociated($order));
-		$orderData = $preparedStatement->fetch();
-		return $orderData['ID'];
+		return "SELECT * FROM up_order 
+				WHERE STATUS = ? and CUSTOMER_NAME like ?
+				ORDER BY DATE_UPDATE
+				LIMIT {$offset}, {$amountItems};";
+	}
+
+	public function getItemsAmount(OrderStatus $status, string $searchQuery): int
+	{
+		$preparedStatement = $this->dbConnection->prepare($this->getItemsAmountQuery());
+		$preparedStatement->execute([$status, "%$searchQuery%"]);
+
+		return $preparedStatement->fetch()['orders_count'];
+	}
+
+	private function getItemsAmountQuery(): string
+	{
+		return "
+			SELECT count(ID) AS orders_count FROM up_order 
+			WHERE STATUS = ? and CUSTOMER_NAME like ?";
 	}
 
 	public function addOrder(Order $order): void
@@ -64,17 +75,6 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	{
 		return [$order->getCustomerName(), $order->getPhone(), $order->getEmail(), $order->getComment(),
 				$order->getStatus(), $order->getDateCreate(), $order->getDateUpdate()];
-	}
-
-	private function prepareOrderAssociated(Order $order): array
-	{
-		return ['CUSTOMER_NAME' => $order->getCustomerName(),
-				'PHONE' => $order->getPhone(),
-				'EMAIL' => $order->getEmail(),
-				'COMMENT' => $order->getComment(),
-				'STATUS' => $order->getStatus(),
-				'DATE_CREATE' => $order->getDateCreate(),
-				'DATE_UPDATE' => $order->getDateUpdate()];
 	}
 
 	public function addOrderItems(int $orderId, array $items): void

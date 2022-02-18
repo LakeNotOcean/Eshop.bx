@@ -63,7 +63,16 @@ $itemImages = ['/img/2_big.webp', '/img/2-1_big.webp', '/img/2-2_big.webp'];
 		<div class="item-main-container">
 
 			<div class="item-main-header">
-				<div class="item-main-short-desc"><?= htmlspecialchars($item->getShortDescription()) ?></div>
+				<div class="item-main-short-desc">
+					<div class="item-main-tags">
+						<?php foreach ($item->getTags() as $tag): ?>
+							<div class="item-main-tag"><?= $tag->getName() ?></div>
+						<?php endforeach; ?>
+					</div>
+					<div class="item-main-short-desc-text">
+						<?= htmlspecialchars($item->getShortDescription()) ?>
+					</div>
+				</div>
 				<div class="item-buy card-outline">
 					<div class="item-buy-header">
 						<div class="buy-price">
