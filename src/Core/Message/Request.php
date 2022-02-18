@@ -11,7 +11,7 @@ class Request
 	private $post = [];
 	private $cookies = [];
 	private $files = [];
-	private $session = [];
+	//private $session = [];
 	private $method = '';
 	private $headers = [];
 	private $requestUrl = '';
@@ -28,7 +28,7 @@ class Request
 		$request->post = $_POST;
 		$request->cookies = $_COOKIE;
 		$request->files = $_FILES;
-		$request->session = $_SESSION;
+		//$request->session = $_SESSION;
 		$request->method = $_SERVER['REQUEST_METHOD'];
 		$request->requestUrl = $_SERVER['REQUEST_URI'];
 		$headersLines = getallheaders(); //apache only
@@ -111,7 +111,7 @@ class Request
 	 */
 	public function getSessionParametersByName(string $key)
 	{
-		return $this->getRequestParameters($key, $this->session, 'Not found such parameters in session: ' . $key);
+		return $this->getRequestParameters($key, $_SESSION, 'Not found such parameters in session: ' . $key);
 	}
 
 	public function containsQuery(string $key): bool
@@ -136,7 +136,7 @@ class Request
 
 	public function containsSession(string $key): bool
 	{
-		return array_key_exists($key, $this->session);
+		return array_key_exists($key, $_SESSION);
 	}
 
 	/**
@@ -181,7 +181,7 @@ class Request
 	 */
 	public function getSession(): array
 	{
-		return $this->session;
+		return $_SESSION;
 	}
 
 	/**
