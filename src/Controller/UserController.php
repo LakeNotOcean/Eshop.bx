@@ -84,6 +84,8 @@ class UserController
 
 	public function loginUser(Request $request): Response
 	{
+		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
+
 		$login = $request->getPostParametersByName('login');
 		$password = $request->getPostParametersByName('password');
 
@@ -94,8 +96,10 @@ class UserController
 		{
 			return (new Response())->withStatus(409)->withBodyHTML($this->templateProcessor->render(
 				'login.php', ['error' => $errorString],
-				'layout/main.php', []
-			));
+				'layout/main.php', [
+					'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
+					'isAdmin' => $isAdmin
+			]));
 		}
 
 		try
