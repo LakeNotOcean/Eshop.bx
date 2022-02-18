@@ -429,4 +429,9 @@
 		canvas.width = canvas.height/1.5;
 		ctx.scale(canvas.height/oldHeight, canvas.width/oldWidth);
 	});
+	window.addEventListener("keydown", function(e) {
+		if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+			e.preventDefault();
+		}
+	}, false);
 </script>
