@@ -77,9 +77,7 @@ class URLAccessMiddleware extends AbstractMiddleware
 	 */
 	private function handleUrlWithoutNextParam(Request $request, array $params)
 	{
-		$router = Router::getInstance();
-
-		$urlName = $router->getRouteName($request->getRequestUrl(), $request->getMethod());
+		$urlName = $request->getRouteName();
 		if (!array_key_exists($urlName, static::accessConfig))
 		{
 			return call_user_func($this->getResponse, $request, ...$params);
@@ -110,7 +108,7 @@ class URLAccessMiddleware extends AbstractMiddleware
 	private function handleUrlWithNextParam(Request $request, array $params)
 	{
 		$router = Router::getInstance();
-		$urlName = $router->getRouteName($request->getRequestUrl(), $request->getMethod());
+		$urlName = $request->getRouteName();
 		if ($urlName !== 'login-user-page' && $urlName !== 'login-user')
 		{
 			return Redirect::createResponseByURLName('home');
