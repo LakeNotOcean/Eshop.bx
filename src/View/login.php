@@ -28,6 +28,7 @@
 				<span class="label-error" data-source="password">Пароль должен состоять из не менее чем 5 символов латинского алфавита и цифр</span>
 			</div>
 		</div>
+		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 		<input type="submit" id="submit" value="Войти" class="btn btn-normal">
 	</form>
 </div>
