@@ -175,6 +175,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 							</div>
 							<input name="item-price" class="price" type="number" value="<?= htmlspecialchars($item->getPrice()) ?>">₽
 							<input name="item-id" value="<?= $item->getId() ?>" type="hidden">
+								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 							<?php else: ?>
 							<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
 							<?php endif;?>

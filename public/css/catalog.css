@@ -1,3 +1,7 @@
+@import 'lib/card.css';
+@import 'lib/btn.css';
+@import 'lib/input.css';
+
 .container {
 	display: flex;
 	flex-direction: column;
@@ -153,6 +157,7 @@ rating
 	font-size: 18px;
 	font-weight: bold;
 	color: #333333;
+	white-space: nowrap;
 }
 
 /*==========================

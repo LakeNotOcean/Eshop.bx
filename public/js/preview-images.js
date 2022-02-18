@@ -32,7 +32,8 @@ let previewOther = document.getElementById('other-images-preview');
 let oldImages = previewOther.querySelectorAll('.old-img');
 oldImages.forEach((oldImage) => {
 	oldImage.nextElementSibling.addEventListener('click', async () =>{
-		deleteImageById(oldImage.name);
+		let csrf = document.querySelector('[name=csrf_token]')
+		deleteImageById(oldImage.name, csrf);
 		oldImage.parentNode.remove();
 	});
 });

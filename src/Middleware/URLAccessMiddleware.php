@@ -114,7 +114,6 @@ class URLAccessMiddleware extends AbstractMiddleware
 			return Redirect::createResponseByURLName('home');
 		}
 
-
 		if ($urlName === 'login-user-page')
 		{
 			return call_user_func($this->getResponse, $request, ...$params);

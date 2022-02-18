@@ -17,8 +17,10 @@ async function loadAllCategory(){
 	return r.json();
 }
 
-async function deleteImageById(id){
-	return fetch('/admin/deleteImage/' + id, {method: 'POST'});
+async function deleteImageById(id, csrf){
+	let data = new FormData();
+	data.append('csrf_token', csrf);
+	return fetch('/admin/deleteImage/' + id, {method: 'POST', body: data});
 }
 
 async function getCategory()

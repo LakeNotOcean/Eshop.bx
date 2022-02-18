@@ -18,6 +18,7 @@ use Up\Core\Migration\MigrationManager;
 use Up\Core\Router\Error\RoutingException;
 use Up\Core\Router\Router;
 use Up\Core\Settings\Settings;
+use Up\Lib\Redirect;
 use Up\Service\UserService\UserService;
 
 class Application
@@ -58,12 +59,7 @@ class Application
 		catch (RoutingException $e)
 		{
 			//TODO FIX 404 CALL
-			(new Response())->withBodyHTML((new TemplateProcessor())->render(
-				'404.php', [], 'layout/main.php', [
-					'isAuthenticated' => false,
-					'isAdmin' => false
-				])
-			)->flush();
+			Redirect::createResponseByURLName('404')->flush();
 
 			//todo вызов отдельного контроллера ошибок
 			$logger->log('info', $e);

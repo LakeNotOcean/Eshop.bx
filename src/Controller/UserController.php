@@ -64,7 +64,7 @@ class UserController
 		}
 		catch (Exception $e)
 		{
-			$page = $this->templateProcessor->render('user.php', [], 'layout/main.php', [
+			$page = $this->templateProcessor->render('register.php', [], 'layout/main.php', [
 				'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
 				'isAdmin' => $isAdmin
 			]);
@@ -73,13 +73,8 @@ class UserController
 
 			return $response->withBodyHTML($page);
 		}
-		$response = new Response();
-		$page = $this->templateProcessor->render('user.php', [], 'layout/main.php', [
-			'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
-			'isAdmin' => $isAdmin
-		]);
 
-		return $response->withBodyHTML($page);
+		return Redirect::createResponseByURLName('home');
 	}
 
 	public function loginUser(Request $request): Response

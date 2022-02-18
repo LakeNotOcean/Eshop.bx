@@ -29,6 +29,7 @@ use Up\Entity\SpecificationCategory;
 			<input type="number" id="spec-order" name="spec-order" placeholder="Введите порядок отображения спецификации" value="0">
 		</label>
 		<input type="submit" value="Сохранить спецификацию в базу данных" class="btn-normal">
+		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 	</form>
 	<?php
 	if ($isNewSpecAdded): ?>

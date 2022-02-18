@@ -8,6 +8,7 @@
 	<form enctype="multipart/form-data" class="form-add">
 		<div class="main-fields-and-images">
 			<div class="main-fields">
+				<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 				<?php
 				if (isset($item)): ?>
 					<input type="hidden" name="item-id" value="<?= $item->getId() ?> ">
@@ -67,7 +68,7 @@
 					<div id="main-image-preview" class="preview">
 						<?php if (isset($item) && $item->getMainImage() !== null): ?>
 						<div class="image-container">
-							<img src="<?= '/' . $item->getMainImage()->getPath('medium') ?>" alt="main-image" class="image-img" name="<?=$item->getMainImage()->getId()?>">
+							<img src="<?= '/' . $item->getMainImage()->getPath('medium', 'jpeg') ?>" alt="main-image" class="image-img" name="<?=$item->getMainImage()->getId()?>">
 							<div class="image-remove-btn"></div>
 						</div>
 						<?php else: ?>
@@ -90,7 +91,7 @@
 						<?php foreach ($item->getImages() as $image): ?>
 							<?php if (!$image->isMain()): ?>
 									<div class="image-container">
-										<img src="<?= '/' . $image->getPath('medium') ?>" alt="other-image" class="image-img old-img" name="<?=$image->getId()?>">
+										<img src="<?= '/' . $image->getPath('medium', 'jpeg') ?>" alt="other-image" class="image-img old-img" name="<?=$image->getId()?>">
 										<div class="image-remove-btn"></div>
 									</div>
 							<?php endif; ?>

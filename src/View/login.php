@@ -34,3 +34,6 @@ use Up\Core\Router\URLResolver;
 		<input type="submit" id="submit" value="Войти" class="btn btn-normal">
 	</form>
 </div>
+
+<script src="/js/user/help-user.js" type="module"></script>
+<script src="/js/user/authorize-user.js" type="module"></script>

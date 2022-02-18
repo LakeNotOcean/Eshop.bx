@@ -15,6 +15,7 @@
 			<input type="number" id="category-order" name="category-order" placeholder="Введите порядок отображения" value="0">
 		</label>
 		<input type="submit" value="Сохранить категорию в базу данных" class="btn-normal">
+		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 	</form>
 	<div id="popup" class="popup <?= !$isNewCategoryAdded ? 'hidden' : ''?>">Добавлена новая категория</div>
 </div>

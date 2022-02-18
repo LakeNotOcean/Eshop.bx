@@ -25,7 +25,11 @@ if ($user->getRole()->getName() != UserEnum::Guest())
 		<?php
 		foreach ($items as $item): ?>
 			<div class="order-item">
-				<img class="item-image" src="<?='/' . $item->getMainImage()->getPath('big') ?>" alt="item-main-image">
+				<picture>
+					<source srcset="<?='/' . $item->getMainImage()->getPath('medium', 'webp') ?>" type="image/webp">
+					<img class="item-image" src="<?='/' . $item->getMainImage()->getPath('big', 'jpeg') ?>" alt="item-main-image">
+				</picture>
+
 				<div class="item-info">
 					<div class="item-title"><?= $item->getTitle() ?></div>
 					<div class="item-price"><?= $item->getPrice() ?> ₽</div>
