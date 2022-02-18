@@ -96,7 +96,7 @@ class UserService implements UserServiceInterface
 
 	public function isAuthenticated()
 	{
-		return $this->getUserInfo()->getRole()->getName() !== UserEnum::Guest;
+		return $this->getUserInfo()->getRole()->getName()->getValue() !== UserEnum::Guest;
 	}
 
 	public function getUsersInfo(): array
@@ -112,7 +112,7 @@ class UserService implements UserServiceInterface
 	public function hasPermission(UserEnum $role)
 	{
 		$userRole = $this->getUserInfo()->getRole()->getName();
-		return in_array($role->getValue(), static::userPermission[$userRole], true);
+		return in_array($role->getValue(), static::userPermission[$userRole->getValue()], true);
 	}
 
 	private function getUsersList(): array
@@ -122,7 +122,7 @@ class UserService implements UserServiceInterface
 
 	private function sessionDestroy(): void
 	{
-		session_start();
+		// session_start();
 		session_unset();
 		session_destroy();
 		session_write_close();

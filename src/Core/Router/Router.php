@@ -3,6 +3,8 @@
 namespace Up\Core\Router;
 
 
+use Up\Lib\URLHelper;
+
 class Router
 {
 	private static $instance;
@@ -103,7 +105,7 @@ class Router
 	 */
 	public function route(string $method, string $path): array
 	{
-		$path = $this->removeIfExistGetParametersFromPath($path);
+		$path = URLHelper::removeIfExistGetParametersFromPath($path);
 		foreach ($this->routes as $route)
 		{
 			$matches = [];
@@ -121,13 +123,13 @@ class Router
 	/**
 	 * @throws Error\RoutingException
 	 */
-	public function getRouteName(string $url)
+	public function getRouteName(string $url, string $method = 'GET')
 	{
-		$path = $this->removeIfExistGetParametersFromPath($url);
+		$path = URLHelper::removeIfExistGetParametersFromPath($url);
 		foreach ($this->routes as $route)
 		{
 			$matches = [];
-			if (preg_match($route['urlRegex'], $path, $matches))
+			if ($route['method'] === $method && preg_match($route['urlRegex'], $path, $matches))
 			{
 				return $route['name'];
 			}
@@ -148,15 +150,5 @@ class Router
 		}
 
 		return '(?<' . $variableName . '>' . $this->typeToRegex[$type] . ')';
-	}
-
-	private function removeIfExistGetParametersFromPath(string $path): string
-	{
-		if (($queryParamsIndex = strpos($path, '?')))
-		{
-			$path = mb_substr($path, 0, $queryParamsIndex);
-		}
-
-		return $path;
 	}
 }

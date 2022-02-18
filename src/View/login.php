@@ -1,6 +1,7 @@
 <?php
 /** @var string $state */
-
+/** @var array $errors */
+/** @var string $next */
 ?>
 
 <!--<link rel="stylesheet" href="./css/login.css">-->
@@ -8,7 +9,7 @@
 
 <div class="container">
 	<div class="sign-in-title">Авторизация</div>
-	<div class="register-fields">
+	<form class="register-fields" method="post" action="<?= \Up\Core\Router\URLResolver::resolve('login-user') ?><?= $next ?>">
 		<label for="login" class="field">
 			<div class="label-input">
 				<span class="label-title">Логин</span>
@@ -27,10 +28,6 @@
 				</div>
 			</div>
 		</label>
-		<input type="submit" id="submit" value="Войти" class="btn btn-save">
-	</div>
+		<input type="submit" value="Войти" class="btn btn-save">
+	</form>
 </div>
-
-<script src="js/user/help-user.js" type="module"></script>
-<script src="/js/user/authorize-user.js" type="module	"></script>
-

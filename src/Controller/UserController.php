@@ -21,6 +21,7 @@ class UserController
 {
 	protected $templateProcessor;
 	protected $userServiceImpl;
+	public const nextUrlQueryKeyword = 'next';
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
@@ -82,7 +83,10 @@ class UserController
 
 		if ($errorString !== '')
 		{
-			throw new Error($errorString);
+			return (new Response())->withStatus(409)->withBodyHTML($this->templateProcessor->render(
+				'login.php', ['error' => $errorString],
+				'layout/main.php', []
+			));
 		}
 
 		try
@@ -91,25 +95,31 @@ class UserController
 		}
 		catch (UserServiceException $e)
 		{
-			$page = $this->templateProcessor->render('login.php', [], 'layout/main.php', []);
-			$response = new Response();
-			$response = $response->withStatus(409);
-
-			return $response->withBodyHTML($page);
+			return (new Response())->withStatus(409)->withBodyHTML($this->templateProcessor->render(
+				'login.php', ['error' => $e->getMessage()],
+				'layout/main.php', []
+			));
 		}
 
-		$response = new Response();
-		$page = $this->templateProcessor->render('login.php', [], 'layout/main.php', []);
-
-		return $response->withBodyHTML($page);
+		return Redirect::createResponseByURLName('home');
 	}
 
 	public function loginUserPage(Request $request)
 	{
-		$page = $this->templateProcessor->render('login.php', ['state' => 'process'], 'layout/main.php', []);
-		$respons = new Response();
+		$nextUrlParam = '';
+		if ($request->containsQuery(static::nextUrlQueryKeyword))
+		{
+			$nextUrlParam = $request->getQueriesByName(static::nextUrlQueryKeyword);
+		}
 
-		return $respons->withBodyHTML($page);
+		if (!empty($nextUrlParam))
+		{
+			$nextUrlParam = '?' . static::nextUrlQueryKeyword . '=' . $nextUrlParam;
+		}
+
+		$page = $this->templateProcessor->render('login.php', ['state' => 'process', 'next' => $nextUrlParam], 'layout/main.php', []);
+
+		return (new Response())->withBodyHTML($page);
 	}
 
 	public function registerUserPage(Request $request)
@@ -126,6 +136,6 @@ class UserController
 	public function logout(Request $request)
 	{
 		$this->userServiceImpl->removeUserFromSession();
-		return Redirect::createResponse('home');
+		return Redirect::createResponseByURLName('home');
 	}
 }

@@ -164,4 +164,12 @@ class Response
 			header("{$header->getName()}: {$header->getValuesLine()}");
 		}
 	}
+
+	/**
+	 * @return int
+	 */
+	public function getStatusCode(): int
+	{
+		return $this->statusCode;
+	}
 }

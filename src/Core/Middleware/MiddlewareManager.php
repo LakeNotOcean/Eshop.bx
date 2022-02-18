@@ -19,7 +19,7 @@ class MiddlewareManager
 	}
 
 	/**
-	 * @param array<MiddlewareInterface> $middlewaresClassName
+	 * @param array<string> $middlewaresClassName
 	 *
 	 * @return void
 	 */

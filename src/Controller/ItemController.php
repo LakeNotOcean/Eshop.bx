@@ -17,7 +17,7 @@ use Up\Lib\Paginator\Paginator;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\TagService\TagServiceInterface;
-
+use Up\Service\UserService\UserServiceInterface;
 
 class ItemController
 {
@@ -25,6 +25,7 @@ class ItemController
 	protected $itemService;
 	protected $imageService;
 	protected $tagService;
+	protected $userService;
 	protected $itemsInPage = 10;
 
 	/**
@@ -32,18 +33,21 @@ class ItemController
 	 * @param \Up\Service\ItemService\ItemService $itemService
 	 * @param \Up\Service\ImageService\ImageService $imageService
 	 * @param \Up\Service\TagService\TagService $tagService
+	 * @param \Up\Service\UserService\UserService $userService
 	 */
 	public function __construct(
 		TemplateProcessorInterface $templateProcessor,
 		ItemServiceInterface       $itemService,
 		ImageServiceInterface      $imageService,
-		TagServiceInterface        $tagService
+		TagServiceInterface        $tagService,
+		UserServiceInterface $userService
 	)
 	{
 		$this->templateProcessor = $templateProcessor;
 		$this->itemService = $itemService;
 		$this->imageService = $imageService;
 		$this->tagService = $tagService;
+		$this->userService = $userService;
 	}
 
 	/**
@@ -52,7 +56,7 @@ class ItemController
 	public function getItems(Request $request): Response
 	{
 
-		$isAdmin = true;
+		$isAdmin = false;
 
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
 		$layout = $isAdmin ? 'layout/admin-main.php' : 'layout/main.php';
@@ -66,7 +70,9 @@ class ItemController
 			'itemsAmount' => $itemsAmount,
 			'pagesAmount' => $pagesAmount,
 			'isAdmin' => $isAdmin
-		],                                        $layout, []);
+		],                                        $layout, [
+			'isAuthenticated' => $this->userService->isAuthenticated()
+		]);
 
 		return (new Response())->withBodyHTML($pages);
 	}

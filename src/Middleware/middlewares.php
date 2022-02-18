@@ -3,8 +3,7 @@
 use Up\Core\Middleware\MiddlewareManager;
 use Up\Middleware\DebugMiddleware;
 use Up\Middleware\Redirect404Middleware;
-use Up\Middleware\URLAccessMiddleware\URLAccessMiddleware;
-
+use Up\Middleware\URLAccessMiddleware;
 
 $middlewareManager = MiddlewareManager::getInstance();
 

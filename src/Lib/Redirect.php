@@ -3,7 +3,7 @@
 namespace Up\Lib;
 
 use Up\Core\Message\Response;
-use Up\Core\Router\Router;
+use Up\Core\Router\Error\ResolveException;
 use Up\Core\Router\URLResolver;
 
 class Redirect
@@ -13,12 +13,22 @@ class Redirect
 	 * @param array $urlParameter Тут передаются get параметры
 	 *
 	 * @return Response
-	 * @throws \Up\Core\Router\Error\ResolveException
+	 * @throws ResolveException
 	 */
-	public static function createResponse(string $urlName, array $urlParameter = []): Response
+	public static function createResponseByURLName(string $urlName, array $urlParameter = []): Response
+	{
+		return static::createResponseByURL(URLResolver::resolve($urlName), $urlParameter);
+	}
+
+	/**
+	 * @param string $url
+	 * @param array $urlParameter
+	 *
+	 * @return Response
+	 */
+	public static function createResponseByURL(string $url, array $urlParameter = []): Response
 	{
 		$response = new Response();
-		$url =  URLResolver::resolve($urlName);
 
 		if (empty($urlParameter))
 		{
@@ -34,4 +44,5 @@ class Redirect
 
 		return $response->withAddedHeader('Location', $url);
 	}
+
 }

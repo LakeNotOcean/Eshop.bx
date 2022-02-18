@@ -1,5 +1,6 @@
 <?php
 
+use Up\Controller\CoreController;
 use Up\Controller\ImageController;
 use Up\Controller\ItemController;
 use Up\Controller\OrderController;
@@ -9,7 +10,8 @@ use \Up\Controller\CategoryController;
 
 $router = Up\Core\Router\Router::getInstance();
 
-
+// Core
+$router->get('/404', [CoreController::class, 'get404'], '404');
 
 //User
 $router->get('/', [ItemController::class, 'getItems'], 'home');
