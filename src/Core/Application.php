@@ -18,7 +18,7 @@ use Up\Core\Migration\MigrationManager;
 use Up\Core\Router\Error\RoutingException;
 use Up\Core\Router\Router;
 use Up\Core\Settings\Settings;
-
+use Up\Service\UserService\UserService;
 
 class Application
 {

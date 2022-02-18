@@ -123,6 +123,7 @@ class Router
 	/**
 	 * @throws Error\RoutingException
 	 */
+	//TODO: Убрать в методе getRoute второй параметр и поставить ограничения в роутер
 	public function getRouteName(string $url, string $method = 'GET')
 	{
 		$path = URLHelper::removeIfExistGetParametersFromPath($url);

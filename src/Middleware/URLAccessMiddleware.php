@@ -78,7 +78,8 @@ class URLAccessMiddleware extends AbstractMiddleware
 	private function handleUrlWithoutNextParam(Request $request, array $params)
 	{
 		$router = Router::getInstance();
-		$urlName = $router->getRouteName($request->getRequestUrl());
+
+		$urlName = $router->getRouteName($request->getRequestUrl(), $request->getMethod());
 		if (!array_key_exists($urlName, static::accessConfig))
 		{
 			return call_user_func($this->getResponse, $request, ...$params);
