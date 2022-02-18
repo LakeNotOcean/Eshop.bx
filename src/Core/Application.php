@@ -12,6 +12,7 @@ use Up\Core\Database\DefaultDatabase;
 use Up\Core\DI\DIContainer;
 use Up\Core\Logger\Logger;
 use Up\Core\Message\Request;
+use Up\Core\Message\Response;
 use Up\Core\Middleware\MiddlewareManager;
 use Up\Core\Migration\MigrationManager;
 use Up\Core\Router\Error\RoutingException;
@@ -55,6 +56,14 @@ class Application
 		}
 		catch (RoutingException $e)
 		{
+			//TODO FIX 404 CALL
+			(new Response())->withBodyHTML((new TemplateProcessor())->render(
+				'404.php', [], 'layout/main.php', [
+					'isAuthenticated' => false,
+					'isAdmin' => false
+				])
+			)->flush();
+
 			//todo вызов отдельного контроллера ошибок
 			$logger->log('info', $e);
 

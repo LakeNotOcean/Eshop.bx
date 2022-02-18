@@ -3,30 +3,29 @@
 
 ?>
 
-<!--<link rel="stylesheet" href="./css/login.css">-->
 <link rel="stylesheet" href="/css/login.css">
 
 <div class="container">
 	<div class="sign-in-title">Авторизация</div>
 	<div class="register-fields">
-		<label for="login" class="field">
-			<div class="label-input">
-				<span class="label-title">Логин</span>
-				<div class="input-error">
+		<div class="label-input">
+			<div class="label-title">Логин</div>
+			<div class="input-error">
+				<label for="login" class="field">
 					<input type="text" class="input" id="login" name="login" placeholder="Логин">
-					<span class="label-error" data-source="login">Логин должен состоять из не менее чем 5 символов латинского алфавита и цифр</span>
-				</div>
+				</label>
+				<span class="label-error" data-source="login">Логин должен состоять из не менее чем 5 символов латинского алфавита и цифр</span>
 			</div>
-		</label>
-		<label for="login" class="field">
-			<div class="label-input">
-				<span class="label-title">Пароль</span>
-				<div class="input-error">
+		</div>
+		<div class="label-input">
+			<div class="label-title">Пароль</div>
+			<div class="input-error">
+				<label for="password" class="field">
 					<input type="password" class="input" id="password" name="password" placeholder="Пароль">
-					<span class="label-error" data-source="password">Пароль должен состоять из не менее чем 5 символов латинского алфавита и цифр</span>
-				</div>
+				</label>
+				<span class="label-error" data-source="password">Пароль должен состоять из не менее чем 5 символов латинского алфавита и цифр</span>
 			</div>
-		</label>
+		</div>
 		<input type="submit" id="submit" value="Войти" class="btn btn-normal">
 	</div>
 </div>
