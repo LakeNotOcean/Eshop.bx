@@ -82,6 +82,7 @@ class ItemController
 		}
 		$categories = $this->itemService->getItemsCategories();
 		$tags = $this->itemService->getItemsTags();
+		$price = $this->itemService->getItemsMinMaxPrice();
 
 
 
@@ -95,6 +96,7 @@ class ItemController
 			'query' => $query,
 			'categories' => $categories,
 			'tags' => $tags,
+			'price'=> $price,
 		],                                        $layout, ['query' => $query]);
 
 		return (new Response())->withBodyHTML($pages);

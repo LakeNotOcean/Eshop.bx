@@ -61,6 +61,24 @@ class ItemDAOmysql implements ItemDAOInterface
 		return $items;
 	}
 
+	public function getItemsMinMaxPrice()
+	{
+		$dbQuery = $this->getItemsMinMaxPriceQuery();
+		$result = $this->DBConnection->query($dbQuery);
+		$minPrice = 0;
+		$maxPrice = 900000;
+		foreach ($result as $prices)
+		{
+			$minPrice = $prices['MINPRICE'];
+			$maxPrice = $prices['MAXPRICE'];
+		}
+		$price = [
+			'minPrice' => $minPrice,
+			'maxPrice' => $maxPrice,
+			];
+		return $price;
+	}
+
 	public function getItemsByFilters(int $offset, int $amountItems,string $query,string $price,array $tags,array $specs): array
 	{
 		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$query,$price,$tags,$specs);
@@ -482,6 +500,16 @@ class ItemDAOmysql implements ItemDAOInterface
 		return $image;
 	}
 
+	private function getItemsMinMaxPriceQuery() :string
+	{
+		$query = "SELECT MIN(PRICE) AS MINPRICE,
+		MAX(PRICE) AS MAXPRICE
+		FROM up_item";
+		return $query;
+	}
+
+
+
 	private function getItemsByFiltersQuery($offset, $amountItems,string $searchQuery,string $price,array $tags,array $specs):string
 	{
 
@@ -703,4 +731,6 @@ INNER JOIN (select ID as ITEM_ID,
 		WHERE ACTIVE = 1";
 	return $query;
 }
+
+
 }

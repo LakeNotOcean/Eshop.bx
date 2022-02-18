@@ -44,6 +44,11 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItemsByFilters($limitOffset['offset'], $limitOffset['amountItems'],$query, $price, $tags,$specs);
 	}
 
+	public function getItemsMinMaxPrice(): array
+	{
+		return $this->itemDAO->getItemsMinMaxPrice();
+	}
+
 	public function getItemById(int $id): ItemDetail
 	{
 		//$itemCategories = $this->specificationDAO->getItemCategoriesByItem($item);

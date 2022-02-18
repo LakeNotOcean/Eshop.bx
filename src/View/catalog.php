@@ -2,12 +2,12 @@
 /** @var array<UP\Entity\Item> $items */
 /** @var array<Up\Entity\SpecificationCategory> $categories */
 /** @var array<Up\Entity\ItemsTag> $tags */
+/** @var array $price */
 /** @var int $result_count */
 /** @var int $currentPage */
 /** @var int $itemsAmount */
 /** @var int $pagesAmount */
 /** @var string $query */
-
 /** @var bool $isAdmin */
 $pref = '_big';
 
@@ -16,8 +16,6 @@ use Up\Entity\Item;
 
 
 $isAdmin = false;
-$maxPrice = 90000;
-$minPrice = 100;
 ?>
 
 <link rel="stylesheet" href="/css/catalog.css">
@@ -44,7 +42,7 @@ $minPrice = 100;
 								<div class="price-category-body-text">
 									Мин. цена
 								</div>
-								<input type=text id="min-price" name="min-price" placeholder="<?=$minPrice?>" class="price-category-body-int">
+								<input type=text id="min-price" name="min-price" placeholder="<?=$price['minPrice']?>" class="price-category-body-int price-category-body-int-min">
 							</div>
 							<div class="price-category-body-center">
 								-
@@ -54,7 +52,7 @@ $minPrice = 100;
 									Макс. цена
 								</div>
 
-									<input type=text id="max-price" name="maxp-rice" placeholder="<?=$maxPrice?>" class="price-category-body-int">
+									<input type=text id="max-price" name="maxp-rice" placeholder="<?=$price['maxPrice']?>" class="price-category-body-int price-category-body-int-max">
 
 							</div>
 

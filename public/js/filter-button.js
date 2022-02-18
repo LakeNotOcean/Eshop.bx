@@ -12,22 +12,23 @@
 	if (checkbox.checked)
 	{
 		let checkboxPosition = checkbox.getBoundingClientRect();
-		let left = 360;
+		let left = checkboxPosition.left + 280;
+		if (checkbox.classList.contains("category_tag_checkbox"))
+		{
+			left = 360
+		}
 		let top = checkboxPosition.top - 20;
 
 		button.style.cssText = 'left:' + left + 'px; top: ' + top + 'px;' + 'display: block;';
 
+		let scrollElement = document.querySelector(".filter-category")
+		scrollElement.addEventListener('scroll', () => {
+			button.style.display = "none";
+
+		});
+
 		document.addEventListener('scroll', () => {
-			if (window.pageYOffset > 0)
-			{
-				top = checkboxPosition.top - 60
-				button.style.cssText = 'left:' + left + 'px; top: ' + top + 'px;' + 'display: block;';
-			}
-			else
-			{
-				top = checkboxPosition.top - 20
-				button.style.cssText = 'left:' + left + 'px; top: ' + top + 'px;' + 'display: block;';
-			}
+			button.style.display = "none";
 
 		});
 
