@@ -1,10 +1,16 @@
 <?php
 /** @var string $content */
+/** @var string $query */
 
 /** @var bool $isAdmin */
 /** @var bool $isAuthenticated */
 
 use Up\Core\Router\URLResolver;
+
+if (!isset($query))
+{
+	$query = '';
+}
 
 ?>
 

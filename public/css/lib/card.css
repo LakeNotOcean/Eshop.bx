@@ -5,7 +5,6 @@
 	transition: .3s;
 
 	overflow: auto;
-	max-height: 500px;
 }
 
 .card-hover:hover {
