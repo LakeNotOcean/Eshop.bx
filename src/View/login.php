@@ -2,14 +2,16 @@
 /** @var string $state */
 /** @var array $errors */
 /** @var string $next */
+
+use Up\Core\Router\URLResolver;
+
 ?>
 
-<!--<link rel="stylesheet" href="./css/login.css">-->
 <link rel="stylesheet" href="/css/login.css">
 
 <div class="container">
 	<div class="sign-in-title">Авторизация</div>
-	<form class="register-fields" method="post" action="<?= \Up\Core\Router\URLResolver::resolve('login-user') ?><?= $next ?>">
+	<form class="register-fields" method="post" action="<?= URLResolver::resolve('login-user') ?><?= $next ?>">
 		<div class="label-input">
 			<div class="label-title">Логин</div>
 			<div class="input-error">
