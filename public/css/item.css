@@ -137,6 +137,7 @@ item-main-container
 .item-main-container {
 	flex: 1;
 	flex-direction: column;
+	margin-bottom: 70px
 }
 
 /*==========================
@@ -359,4 +360,64 @@ item-reviews
 	align-items: center;
 	line-height: 1.5;
 	text-align: justify;
+}
+
+
+
+/*==========================
+item-reviews
+==========================*/
+
+
+
+
+.similar-item-section{
+	display: flex;
+	flex-direction: column;
+}
+
+.similar-item-cards-section{
+	display: flex;
+	flex-direction: row;
+}
+
+
+
+.similar-item-card {
+	display: flex;
+	max-width: 48%;
+	margin: 1%;
+
+}
+
+
+.similar-item-image{
+	object-fit: contain;
+	height: 130px;
+	width: 130px;
+	margin: 10px;
+}
+
+
+.similar-item-body-section{
+	display: flex;
+	flex-direction: column;
+}
+
+.similar-item-body-title
+{
+	flex: 1;
+	font-size: 20px;
+	font-weight: 700;
+	margin-top: 10px;
+}
+
+.similar-item-body-price {
+	display: flex;
+	justify-content: flex-end;
+	margin: 5%;
+}
+
+.similar-item-inactive{
+	display: none;
 }

@@ -1,6 +1,7 @@
 <?php
 /** @var \Up\Entity\ItemDetail $item */
-
+/** @var array<UP\Entity\Item> $similarItems */
+/** @var int $count */
 //$itemImages = ['/img/2_big.webp', '/img/2-1_big.webp', '/img/2-2_big.webp'];
 ?>
 
@@ -168,9 +169,34 @@
 					</div>
 				</div>
 			</div>
+			<div class="similar-item-section">
+				<div class="item-section-title">
+					Похожие товары
+				</div>
+				<div class="similar-item-cards-section">
+					<?
+					foreach ($similarItems as $similarItem){
+						$count+=1?>
+						<div class="similar-item-card card-outline <?= $count<3 ? '' : 'similar-item-inactive'?>">
+							<div class="similar-item-image-section">
+								<picture>
+									<source srcset="<?='/' . $similarItem->getMainImage()->getPath('small', 'webp') ?>" type="image/webp">
+									<img class="similar-item-image" src="<?= '/' . $similarItem->getMainImage()->getPath('small', 'jpeg') ?>" alt="Item Image">
+								</picture>
+							</div>
+							<div class="similar-item-body-section">
+								<div class="similar-item-body-title"><?= htmlspecialchars($similarItem->getTitle()) ?></div>
+								<div class="similar-item-body-price"><?= htmlspecialchars($similarItem->getPrice()) ?> ₽</div>
+							</div>
+						</div>
+					<?}?>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
+
+
 
 <script src="/js/scroll.js"></script>
 <script src="/js/fix-node.js"></script>

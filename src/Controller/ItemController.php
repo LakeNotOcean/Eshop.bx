@@ -114,11 +114,13 @@ class ItemController
 		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
 
 		$item = $this->itemService->getItemById($id);
+		$itemsSimilar = $this->itemService->getItemsSimilarById($id,5);
 		$pages = $this->templateProcessor->render('item.php', [
-			'item' => $item
+			'item' => $item,
+			'similarItems' => $itemsSimilar,
 		], 'layout/main.php', [
 			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAdmin' => $isAdmin,
 		]);
 
 		return (new Response())->withBodyHTML($pages);
