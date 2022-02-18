@@ -9,7 +9,7 @@ $firstName = "";
 $secondName = "";
 $phone = "";
 $email = "";
-if ($user->getRole()->getName() == UserEnum::User())
+if ($user->getRole()->getName() != UserEnum::Guest())
 {
 	$firstName = $user->getFirstName();
 	$secondName = $user->getSecondName();
