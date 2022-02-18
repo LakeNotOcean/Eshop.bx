@@ -71,7 +71,7 @@
 				</div>
 			</div>
 		</label>
-		<input type="submit" id="submit" value="Зарегестрироваться" class="btn btn-save">
+		<input type="submit" id="submit" value="Зарегистрироваться" class="btn btn-save">
 	</div>
 
 </div>
