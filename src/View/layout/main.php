@@ -51,6 +51,7 @@ use Up\Core\Router\URLResolver;
 						<a class="menu-item" href="/admin/addSpecification">Добавить спецификацию</a>
 						<a class="menu-item" href="/admin/deleteCategory">Удалить категорию</a>
 						<a class="menu-item" href="/admin/chooseCategory">Удалить спецификацию</a>
+						<a class="menu-item" href="/admin/">Админский каталог</a>
 					</div>
 				</div>
 			</div>
