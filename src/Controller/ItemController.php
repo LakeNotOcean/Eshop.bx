@@ -2,10 +2,12 @@
 
 namespace Up\Controller;
 
+use Up\Core\Database\DefaultDatabase;
 use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
+use Up\DAO\ImageDAO\ImageDAOmysql;
 use Up\Entity\EntityArray;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
@@ -54,6 +56,16 @@ class ItemController
 	 */
 	public function getItems(Request $request): Response
 	{
+		for ($id = 1; $id <= 30; $id++)
+		{
+			$iamge = $this->imageService->test(
+				[
+					'name' => "{$id}_big.webp", 'type' => 'image/webp', 'tmp_name' => "img/{$id}_big.webp", 'is_main' => true
+				]
+			);
+			(new ImageDAOmysql(DefaultDatabase::getInstance()))->save($iamge, $id);
+		}
+
 		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
 		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
 

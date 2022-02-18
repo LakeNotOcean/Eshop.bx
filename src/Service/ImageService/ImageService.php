@@ -96,12 +96,11 @@ class ImageService implements ImageServiceInterface
 
 		foreach ($sizedImagePaths as $path)
 		{
-			$availableMime  = array_keys($this::validMimeTypeToSaveImageFunction);
-			$missingMimes = array_diff($availableMime, [mime_content_type($path)]);
+			$availableMimes  = array_keys($this::validMimeTypeToSaveImageFunction);
 
-			foreach ($missingMimes as $missingMime)
+			foreach ($availableMimes as $availableMime)
 			{
-				$this->createImageWithAnotherExtension($path, MimeMapper::getExtensionByMime($missingMime), $missingMime);
+				$this->createImageWithExtension($path, MimeMapper::getExtensionByMime($availableMime), $availableMime);
 			}
 		}
 
@@ -111,7 +110,9 @@ class ImageService implements ImageServiceInterface
 
 		foreach ($sizedImagePaths as $sizeName => $path)
 		{
-			$itemImage->setPath($sizeName, $path);
+			$pathInfo = pathInfo($path);
+			$imagePathWithoutExtension = $pathInfo['dirname'] . '/' . $pathInfo['filename'];
+			$itemImage->setPath($sizeName, $imagePathWithoutExtension);
 		}
 
 		return $itemImage;
@@ -282,14 +283,17 @@ class ImageService implements ImageServiceInterface
 		static::validMimeTypeToSaveImageFunction[$mimeType]($image, $filePath);
 	}
 
-	public function createImageWithAnotherExtension(string $imagePath, string $anotherExtension, string $resultFileMime): string
+	public function createImageWithExtension(string $imagePath, string $anotherExtension, string $resultFileMime): string
 	{
 		$createImageFunc = static::validMimeTypeToCreateImageFunction[
 			mime_content_type($imagePath)
 		];
 		$image = $createImageFunc($imagePath);
 
-		$resultPath = $imagePath . '.' . $anotherExtension;
+		$pathInfo = pathinfo($imagePath);
+		$imagePathWithoutExtension = $pathInfo['dirname'] . '/' . $pathInfo['filename'];
+
+		$resultPath = $imagePathWithoutExtension . '.' . $anotherExtension;
 		static::validMimeTypeToSaveImageFunction[
 		$resultFileMime
 			]($image, $resultPath);

@@ -33,7 +33,7 @@ class DebugMiddleware extends AbstractMiddleware
 			}
 			catch (Throwable $throwable)
 			{
-				return (new Response())->withBodyHTML(
+				return (new Response())->withStatus(418)->withBodyHTML(
 					$this->templateProcessor->render('debug.php', [
 						'request' => $this->getRequestArray($request),
 						'exceptions' => $this->getExceptionTrace($throwable),
