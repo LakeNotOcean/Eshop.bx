@@ -1,5 +1,6 @@
 @import "lib/btn.css";
 @import "lib/input.css";
+@import "lib/popup.css";
 
 .form-container {
 	flex: 1;
@@ -14,27 +15,6 @@
 	flex-direction: column;
 	background: #F6F6F6;
 	padding: 20px 50px;
-}
-
-.popup {
-	position: fixed;
-	height: 40px;
-	line-height: 40px;
-	left: 50%;
-	bottom: 30px;
-	transform-origin: center;
-	transform: translateX(-50%);
-	padding: 0 20px;
-	border-radius: 1in;
-	color: #ffffff;
-	background: #515151;
-	text-align: center;
-	font-weight: 500;
-	transition: .1s;
-}
-
-.hidden {
-	opacity: 0;
 }
 
 /*==========================

@@ -23,7 +23,6 @@ use Up\Core\Router\URLResolver;
 	<meta name="msapplication-TileColor" content="#da532c">
 	<meta name="theme-color" content="#ffffff">
 	<link rel="stylesheet" href="/css/main.css">
-	<link rel="stylesheet" href="/css/admin-main.css">
 </head>
 <body>
 
@@ -39,30 +38,34 @@ use Up\Core\Router\URLResolver;
 			<div></div>
 		</div>
 	</form>
-	<div class="nav-bar">
-		<div class="nav-item">
-			<div class="nav-item-label">Товары</div>
-			<div class="menu-container">
-				<div class="menu">
-					<a class="menu-item" href="/admin/chooseItemType">Добавить товар</a>
-					<a class="menu-item" href="/admin/addItemType">Добавить тип товара</a>
-					<a class="menu-item" href="/admin/addCategory">Добавить категорию</a>
-					<a class="menu-item" href="/admin/addSpecification">Добавить спецификацию</a>
-					<a class="menu-item" href="/admin/deleteCategory">Удалить категорию</a>
-					<a class="menu-item" href="/admin/chooseCategory">Удалить спецификацию</a>
+
+	<?php if ($isAdmin): ?>
+		<div class="nav-bar">
+			<div class="nav-item">
+				<div class="nav-item-label">Товары</div>
+				<div class="menu-container">
+					<div class="menu">
+						<a class="menu-item" href="/admin/chooseItemType">Добавить товар</a>
+						<a class="menu-item" href="/admin/addItemType">Добавить тип товара</a>
+						<a class="menu-item" href="/admin/addCategory">Добавить категорию</a>
+						<a class="menu-item" href="/admin/addSpecification">Добавить спецификацию</a>
+						<a class="menu-item" href="/admin/deleteCategory">Удалить категорию</a>
+						<a class="menu-item" href="/admin/chooseCategory">Удалить спецификацию</a>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="nav-item">
-			<div class="nav-item-label">Заказы</div>
-			<div class="menu-container">
-				<div class="menu">
-					<a class="menu-item" href="/admin/getOrders">Список заказов</a>
+			<div class="nav-item">
+				<div class="nav-item-label">Заказы</div>
+				<div class="menu-container">
+					<div class="menu">
+						<a class="menu-item" href="/admin/getOrders">Список заказов</a>
+					</div>
 				</div>
 			</div>
+			<script src="/js/admin-menu.js"></script>
 		</div>
-		<script src="/js/admin-menu.js"></script>
-	</div>
+	<?php endif;?>
+
 	<?php if ($isAuthenticated): ?>
 		<a href="<?= URLResolver::resolve('logout-user') ?>">
 			<div class="btn btn-normal sign-in">Выйти</div>
@@ -78,10 +81,16 @@ use Up\Core\Router\URLResolver;
 </nav>
 
 <main>
-	<?= $content ?>
-	<div class="footer">
-		2022, EShop Inc. · <a href="/">Главная страница</a> · <a href="/">Помощь</a> · <a href="/">Поддержка</a>
+	<div class="center">
+		<?= $content ?>
 	</div>
+
+	<?php
+	if (!$isAdmin): ?>
+		<div class="footer">
+			© 2022, EShop Inc. · <a href="/">Главная страница</a> · <a href="/">Помощь</a> · <a href="/">Поддержка</a>
+		</div>
+	<?php endif;?>
 </main>
 
 </body>

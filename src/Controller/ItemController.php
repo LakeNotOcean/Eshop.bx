@@ -54,8 +54,8 @@ class ItemController
 	 */
 	public function getItems(Request $request): Response
 	{
-
-		$isAdmin = false;
+		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
+		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
 
 		$currentPage = 1;
 		if ($request->containsQuery('page'))
@@ -77,8 +77,8 @@ class ItemController
 			'pagesAmount' => $pagesAmount,
 			'isAdmin' => $isAdmin
 		], 'layout/main.php', [
-			'isAuthenticated' => $request->getUser()->getRole()->getName() != UserEnum::Guest(),
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $isAuthenticated,
+			'isAdmin' => $request->getUser()->getRole()->getName() == UserEnum::Admin()
 		]);
 
 		return (new Response())->withBodyHTML($pages);
@@ -86,8 +86,16 @@ class ItemController
 
 	public function getItem(Request $request, $id): Response
 	{
+		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
+		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
+
 		$item = $this->itemService->getItemById($id);
-		$pages = $this->templateProcessor->render('item.php', ['item' => $item], 'layout/main.php', []);
+		$pages = $this->templateProcessor->render('item.php', [
+			'item' => $item
+		], 'layout/main.php', [
+			'isAuthenticated' => $isAuthenticated,
+			'isAdmin' => $isAdmin
+		]);
 
 		return (new Response())->withBodyHTML($pages);
 	}
@@ -97,27 +105,31 @@ class ItemController
 	 */
 	public function addItem(Request $request, int $id = 0): Response
 	{
-		if($id === 0)
-		{
-			$page = $this->templateProcessor->render('add-item.php', [], 'layout/admin-main.php', []);
-		}
-		else
-		{
-			$item = $this->itemService->getItemById($id);
-			$page = $this->templateProcessor->render('add-item.php', ['item' => $item], 'layout/admin-main.php', []);
-		}
+		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
+		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
 
-		$response = new Response();
+		$page = $this->templateProcessor->render('add-item.php', [
+			'item' => $id === 0 ? null : $this->itemService->getItemById($id)
+		], 'layout/main.php', [
+			'isAuthenticated' => $isAuthenticated,
+			'isAdmin' => $isAdmin
+		]);
 
-		return $response->withBodyHTML($page);
+		return (new Response())->withBodyHTML($page);
 	}
 
 	public function updateItemPage(Request $request, int $id): Response
 	{
+		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
+		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
+
 		$item = $this->itemService->getItemById($id);
 		$page = $this->templateProcessor->render('add-item.php', [
 			'item' => $item
-		], 'layout/admin-main.php', []);
+		], 'layout/main.php', [
+			'isAuthenticated' => $isAuthenticated,
+			'isAdmin' => $isAdmin
+		]);
 
 		$response = new Response();
 
@@ -210,4 +222,5 @@ class ItemController
 			$item->setId($request->getPostParametersByName('item-id'));
 		}
 	}
+
 }
