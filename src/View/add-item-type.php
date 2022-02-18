@@ -14,7 +14,7 @@
 			<div class="specifications-title">Характеристики</div>
 			<div class="btn btn-add add-category">Добавить категорию</div>
 		</div>
-
+		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 		<input type="submit" value="Сохранить тип товара в базу данных" class="btn-normal">
 	</form>
 	<?php
