@@ -75,10 +75,10 @@ class ItemController
 			'currentPage' => $currentPage,
 			'itemsAmount' => $itemsAmount,
 			'pagesAmount' => $pagesAmount,
-			'isAdmin' => $isAdmin
+			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false
 		], 'layout/main.php', [
 			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $request->getUser()->getRole()->getName() == UserEnum::Admin()
+			'isAdmin' => $isAdmin
 		]);
 
 		return (new Response())->withBodyHTML($pages);

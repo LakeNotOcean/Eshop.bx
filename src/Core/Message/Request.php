@@ -15,6 +15,7 @@ class Request
 	private $method = '';
 	private $headers = [];
 	private $requestUrl = '';
+	private $routeName = '';
 
 	private $user;
 
@@ -198,6 +199,22 @@ class Request
 	public function setUser(User $user): void
 	{
 		$this->user = $user;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getRouteName(): string
+	{
+		return $this->routeName;
+	}
+
+	/**
+	 * @param string $routeName
+	 */
+	public function setRouteName(string $routeName): void
+	{
+		$this->routeName = $routeName;
 	}
 
 }
