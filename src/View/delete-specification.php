@@ -21,7 +21,7 @@ use Up\Entity\Specification;
 				endforeach; ?>
 			</select>
 		</label>
-		<input type="submit" value="Удалить выбранную спецификацию" class="btn-save">
+		<input type="submit" value="Удалить выбранную спецификацию" class="btn btn-delete">
 		<div>Внимание! Удаление спецификации приведет к ее удалению со всех товаров!</div>
 	</form>
 	<?php
