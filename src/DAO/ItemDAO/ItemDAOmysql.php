@@ -145,7 +145,6 @@ class ItemDAOmysql implements ItemDAOInterface
 
 	public function getItemDetailById(int $id): ItemDetail
 	{
-		// TODO: поменять не забудь под новый запрос
 		$result = $this->DBConnection->query($this->getItemDetailByIdQuery($id));
 		$item = new ItemDetail();
 		while ($row = $result->fetch())
@@ -396,15 +395,15 @@ class ItemDAOmysql implements ItemDAOInterface
 					   FULL_DESC as FULL_DESC,
 					   ACTIVE as ACTIVE,ITEM_TYPE_ID as ITEM_TYPE_ID, uit.NAME as TYPE_NAME,
 					   uis.SPEC_TYPE_ID as SPEC_TYPE_ID, uis.VALUE as VALUE, ust.NAME as ust_NAME, ust.DISPLAY_ORDER as ust_DISPLAY_ORDER, usc.ID as usc_ID,
-						usc.NAME as usc_NAME, usc.DISPLAY_ORDER as usc_DISPLAY_ORDER, u.ID as u_ID, u.IS_MAIN as IS_MAIN, u.PATH as PATH
+						usc.NAME as usc_NAME, usc.DISPLAY_ORDER as usc_DISPLAY_ORDER, u.ID as u_ID, u.IS_MAIN as IS_MAIN, u.PATH as ORIGINAL_PATH, uiws.PATH as SIZE_PATH, uiws.SIZE as SIZE
 				FROM up_item ui inner join up_item_type uit on ui.ITEM_TYPE_ID = uit.ID AND ui.ID={$id}
                 LEFT JOIN up_item_tag ut on ut.ITEM_ID = ui.ID
                 LEFT JOIN up_tag on up_tag.ID=ut.TAG_ID
                 INNER JOIN up_item_spec uis on ui.ID = uis.ITEM_ID
                 INNER JOIN up_spec_type ust on uis.SPEC_TYPE_ID = ust.ID
                 INNER JOIN up_spec_category usc on ust.SPEC_CATEGORY_ID = usc.ID
-                INNER JOIN up_image u on ui.ID = u.ITEM_ID
-				ORDER BY ust_DISPLAY_ORDER, usc_DISPLAY_ORDER;";
+                INNER JOIN up_original_image u on ui.ID = u.ITEM_ID
+				INNER JOIN up_image_with_size uiws on u.ID = uiws.ORIGINAL_IMAGE_ID;";
 	}
 
 	private function getDeleteWhereAndWhereInQuery(int $id, array $ids, array $table): string
