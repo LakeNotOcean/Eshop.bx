@@ -36,16 +36,15 @@ const inputFields = [
 	},
 ];
 
-async function checkReg()
+async function checkReg(e)
 {
 	let isSuccess = checkInputs(inputFields);
 	isSuccess = checkPasswords(isSuccess);
 	console.log(isSuccess);
-	if (isSuccess)
+	if (!isSuccess)
 	{
-		await makePostQuery(inputFields, '/register', 'Регистрация успешна', 'Пользователь с такими логином, телефоном или адресом почты уже существует');
+		e.preventDefault()
 	}
-
 }
 
 function checkPasswords(isSuccess = false)
@@ -75,9 +74,6 @@ function repeatPassword(firstPassword, secondPassword)
 	return firstPassword === secondPassword;
 }
 
-document.getElementById('submit').addEventListener('click', () => {
-	checkReg().then();
+document.getElementById('submit').addEventListener('click', (e) => {
+	checkReg(e).then();
 },false);
-
-
-

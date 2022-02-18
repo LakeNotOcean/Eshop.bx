@@ -12,16 +12,15 @@ const inputFields = [
 ];
 
 
-async function checkReg()
+async function checkReg(e)
 {
 	let isSuccess = checkInputs(inputFields);
-	if (isSuccess)
+	if (!isSuccess)
 	{
-		await makePostQuery(inputFields, '/login', 'Вы успешны авторизированы', 'Неверное имя пользователя и/или пароль');
+		e.preventDefault()
 	}
-
 }
 
-document.getElementById('submit').addEventListener('click', () => {
-	checkReg().then();
+document.getElementById('submit').addEventListener('click', (e) => {
+	checkReg(e).then();
 },false);

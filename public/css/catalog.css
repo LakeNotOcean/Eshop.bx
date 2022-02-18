@@ -1,4 +1,6 @@
 @import 'lib/card.css';
+@import 'lib/btn.css';
+@import 'lib/input.css';
 
 .container {
 	display: flex;
