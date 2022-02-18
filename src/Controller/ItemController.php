@@ -20,6 +20,7 @@ use Up\Entity\User\UserRole;
 use Up\Lib\Paginator\Paginator;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
+use Up\Service\TagService\TagService;
 use Up\Service\TagService\TagServiceInterface;
 use Up\Service\UserService\UserServiceInterface;
 
@@ -29,7 +30,6 @@ class ItemController
 	protected $itemService;
 	protected $imageService;
 	protected $tagService;
-
 	protected $itemsInPage = 10;
 
 	/**
@@ -59,24 +59,48 @@ class ItemController
 		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
 		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
 
-		$currentPage = 1;
-		if ($request->containsQuery('page'))
-		{
-			$queryPage = (int)$request->getQueriesByName('page');
-			if ($queryPage > 0)
-			{
-				$currentPage = $queryPage;
-			}
-		}
 
-		$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
-		$itemsAmount = $this->itemService->getItemsAmount();
+
+		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
+		$currentPage = $currentPage > 0 ? $currentPage : 1;
+		$layout = $isAdmin ? 'layout/admin-main.php' : 'layout/main.php';
+		if ($request->containsQuery('price') || $request->containsQuery('tag') || $request->containsQuery('spec'))
+		{
+			$query = $request->containsQuery('query') ? $request->getQueriesByName('query') : '';
+			$price = $request->containsQuery('price') ? $request->getQueriesByName('price') : '';
+			$tags = $request->containsQuery('tag') ? $request->getQueriesByName('tag') : [];
+			$specs = $request->containsQuery('spec') ? $request->getQueriesByName('spec') : [];
+			$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query,$price,$tags,$specs);
+			$itemsAmount = $this->itemService->getItemsAmountByFilters($query,$price,$tags,$specs);
+		}
+		elseif ($request->containsQuery('query'))
+		{
+			$query = $request->getQueriesByName('query');
+			$items = $this->itemService->getItemsByQuery(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query);
+			$itemsAmount = $this->itemService->getItemsAmount($query);
+		}
+		else
+		{
+			$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
+			$itemsAmount = $this->itemService->getItemsAmount();
+			$query = '';
+		}
+		$categories = $this->itemService->getItemsCategories();
+		$tags = $this->itemService->getItemsTags();
+		$price = $this->itemService->getItemsMinMaxPrice();
+
+
+
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
 		$pages = $this->templateProcessor->render('catalog.php', [
 			'items' => $items,
 			'currentPage' => $currentPage,
 			'itemsAmount' => $itemsAmount,
 			'pagesAmount' => $pagesAmount,
+			'query' => $query,
+			'categories' => $categories,
+			'tags' => $tags,
+			'price'=> $price,
 			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false
 		], 'layout/main.php', [
 			'isAuthenticated' => $isAuthenticated,
@@ -86,7 +110,7 @@ class ItemController
 		return (new Response())->withBodyHTML($pages);
 	}
 
-	public function getItem(Request $request, $id): Response
+	public function getItem(Request $request, int $id): Response
 	{
 		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
 		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();

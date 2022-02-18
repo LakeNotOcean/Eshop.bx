@@ -62,6 +62,24 @@ class TagDAOmysql implements TagDAOInterface
 		return $tags;
 	}
 
+	public function getAllTags(): EntityArray
+	{
+		$tags = new EntityArray();
+		$result = $this->DBConnection->prepare($this->getAllTagsQuery());
+		$result->execute();
+		while ($row = $result->fetch())
+		{
+			$tags->addEntity(new ItemsTag($row['ID'], $row['TITLE']));
+		}
+
+		return $tags;
+	}
+
+	private function getAllTagsQuery():string
+	{
+		return "SELECT * FROM up_tag";
+	}
+
 	private function getInsertQuery(array $names)
 	{
 		$names = array_map(function($name) {

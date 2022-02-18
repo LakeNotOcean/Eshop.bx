@@ -1,11 +1,13 @@
 <?php
-/** @var array<Item> $items */
-
+/** @var array<UP\Entity\Item> $items */
+/** @var array<Up\Entity\SpecificationCategory> $categories */
+/** @var array<Up\Entity\ItemsTag> $tags */
+/** @var array $price */
 /** @var int $result_count */
 /** @var int $currentPage */
 /** @var int $itemsAmount */
 /** @var int $pagesAmount */
-
+/** @var string $query */
 /** @var bool $isAdmin */
 $pref = '_big';
 
@@ -18,17 +20,115 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 
 <link rel="stylesheet" href="/css/catalog.css">
 <div class="container">
-	<div class="search_result_count">Видеокарты: найдено <?= $itemsAmount ?> штук</div>
+	<div class="search_result_count">
+		<?php if ($query === ''): ?>
+		Видеокарты: найдено <?= $itemsAmount ?> товаров
+		<?php else: ?>
+		Результаты поиска по запросу "<?= $query ?>": найдено <?= $itemsAmount ?> товаров
+		<?php endif; ?>
+
+	</div>
 	<div class="filters-item-list-row">
 		<div class="filters-column">
 			<div class="filters card">
-				Фильтры
+				<form id="filter-form" action="\"  method="get" >
 				<div class="filter-category">
-					<div class="price-category"></div>
+					<div class="price-category">
+								<div class="filter-category-title filter-category-active">
+									Цена
+								</div>
+						<div class="price-category-bodies">
+							<div class="price-category-body">
+								<div class="price-category-body-text">
+									Мин. цена
+								</div>
+								<input type=text id="min-price" name="min-price" placeholder="<?=$price['minPrice']?>" class="price-category-body-int price-category-body-int-min">
+							</div>
+							<div class="price-category-body-center">
+								-
+							</div>
+							<div class="price-category-body">
+								<div class="price-category-body-text">
+									Макс. цена
+								</div>
+
+									<input type=text id="max-price" name="maxp-rice" placeholder="<?=$price['maxPrice']?>" class="price-category-body-int price-category-body-int-max">
+
+							</div>
+
+						</div>
+					</div>
+					<div class="filter-category-specification">
+						<?
+						foreach ($categories as $category) : ?>
+							<ul>
+								<li>
+									<a class="filter-category-active" href="#"><?=htmlspecialchars($category->getName())?></a>
+									<input type="checkbox" class="filter-category-sub-specification" id=<?=$category->getId()?>  />
+									<label class="filter-category-label" for=<?=$category->getId()?>  ></label>
+									<ul style="display:none">
+										<li>
+											<div class = filter-category-specification-line></div>
+												<? $specList = $category->getSpecificationList();
+												$specList = $specList->getEntitiesArray();
+												foreach ($specList as $spec) : ?>
+													<div>
+														<?= htmlspecialchars($spec->getName()) ?>
+													</div>
+													<?foreach ($spec->getValue() as $value=>$count) : ?>
+														<div class="filter-category-specification-group">
+															<div>
+																<label>
+																<input type="checkbox" form="filter-form" class="category_spec_checkbox category_checkbox" name="<?= $spec->getId() ?>" value="<?=$value?>">
+																	<?=htmlspecialchars($value)?> </label>
+															</div>
+															<div class="filter-category-count">
+																(<?=$count?>)
+															</div>
+														</div>
+											<?php
+											endforeach; ?>
+												<?php
+												endforeach; ?>
+										</li>
+									</ul>
+								</li>
+							</ul>
+
+						<?php
+						endforeach; ?>
+					</div>
+					<div class="tag-category">
+						<div class="filter-category-title">
+							Теги
+						</div>
+						<div class="tag-category-body">
+							<?foreach ($tags as $tag) : ?>
+								<div class="switch">
+									<input type="checkbox" class="category_tag_checkbox category_checkbox" value="<?=$tag->getID()?>" form="filter-form">
+									<label><?=$tag->getName()?></label>
+								</div>
+							<?php
+							endforeach; ?>
+						</div>
+
+
+
+					</div>
+					<input type="button" class="filter-button filter-button-checkbox redirect-button" id="button_on_checkbox"  style="display:none" value="Принять">
+					<input type="button" class="filter-button redirect-button" value="Отфильтровать">
+					<input type="button" class="filter-button reset-button" value="Сбросить">
+				</form>
 				</div>
 			</div>
 		</div>
 		<div class="item-list">
+
+			<?php if ($itemsAmount === 0): ?>
+			<div class="item-no-results">
+				По вашему запросу не найдено ни одного товара! Попробуйте изменить условия поиска
+			</div>
+			<?php endif; ?>
 
 			<?php
 			foreach ($items as $item) : ?>
@@ -86,17 +186,20 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 			endforeach; ?>
 
 			<div class="navigation">
-				<a href="<?= $pageHref?>?page=<?= $currentPage - 1 ?>" class="navigation-page navigation-item
-				<?= $currentPage === 1 ? 'navigation-blocked' : '' ?>"> < </a>
-				<a href="<?= $pageHref?>?page=1" class="navigation-page navigation-item
-				<?= $currentPage === 1 ? 'navigation-active' : '' ?>">1</a>
+				<!--				<div class="navigation-dots navigation-item">...</div>-->
+				<?//= http_build_query(array_merge(['page' => $currentPage - 1], $_GET)) ?>
+				<div id="<?=$currentPage - 1?>" class="navigation-page navigation-item redirect-button
+				<?= $currentPage === 1 ? 'navigation-blocked' : '' ?>"> < </div>
+				<div id="1" class="navigation-page navigation-item redirect-button
+				<?= $currentPage === 1 ? 'navigation-active' : '' ?>">1</div>
 
 				<?php if ($pagesAmount > 7 && $currentPage >= 1 + 4): ?>
 					<div class="navigation-dots navigation-item">···</div>
 				<?php endif;?>
 
-				<?php
-				$startPage = 2;
+
+
+				<?php $startPage = 2;
 				$endPage = 5;
 				if ($currentPage >= 5)
 				{
@@ -114,25 +217,36 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 					$endPage = $pagesAmount - 1;
 				}
 				for ($i = $startPage; $i <= $endPage; $i++): ?>
-					<a href="<?= $pageHref?>?page=<?= $i ?>" class="navigation-page navigation-item
-					<?= $currentPage === $i ? 'navigation-active' : '' ?>"> <?= $i ?> </a>
+					<div id="<?= $i ?>" class="navigation-page navigation-item redirect-button
+					<?= $currentPage === $i ? 'navigation-active' : '' ?>"> <?= $i ?> </div>
 				<?php endfor;?>
 
 				<?php if ($pagesAmount > 7 && $currentPage <= $pagesAmount - 4): ?>
 					<div class="navigation-dots navigation-item">···</div>
 				<?php endif;?>
+				<?php if ($pagesAmount > 1): ?>
+				<div id="<?=$pagesAmount?>" class="navigation-page navigation-item redirect-button
+				<?= $currentPage === $pagesAmount ? 'navigation-active' : '' ?>"><?= $pagesAmount?></div>
+				<?php endif;?>
 
-				<a href="<?= $pageHref?>?page=<?= $pagesAmount?>" class="navigation-page navigation-item
-				<?= $currentPage === $pagesAmount ? 'navigation-active' : '' ?>"><?= $pagesAmount?></a>
-				<a href="<?= $pageHref?>?page=<?= $currentPage + 1 ?>" class="navigation-page navigation-item
-				<?= $currentPage === $pagesAmount ? 'navigation-blocked' : '' ?>"> > </a>
+				<div id="<?=$currentPage + 1?>" class="navigation-page navigation-item redirect-button
+				<?= $currentPage >= $pagesAmount ? 'navigation-blocked' : '' ?>"> > </div>
 			</div>
 		</div>
 	</div>
 </div>
 
+<script src="/js/filter-reset.js"></script>
 <script src="/js/fix-node.js"></script>
 <script src="/js/fixed-filters.js"></script>
+<script src="/js/filter-button.js"></script>
+<script src="/js/get-search-query.js"></script>
+<script src="/js/filter-get-query.js"></script>
+<script src="/js/queryPush.js"></script>
+<script src="/js/filter-set-query.js"></script>
+
+
+
 <?php if ($isAdmin): ?>
 <script src="/js/delete-item.js"></script>
 <?php endif;?>

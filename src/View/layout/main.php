@@ -32,12 +32,12 @@ use Up\Core\Router\URLResolver;
 			<use xlink:href="/img/sprites.svg#logo"></use>
 		</svg>
 	</a>
-	<form action="/" method="get" enctype="multipart/form-data" class="search">
-		<input type="text" id="query" name="query" class="search-field" placeholder="Поиск по сайту">
+	<div class="search">
+		<input type="text" id="query" name="query" class="search-field" placeholder="Поиск по сайту" value="<?= $query ?>">
 		<div class="search-icon">
 			<div></div>
 		</div>
-	</form>
+	</div>
 
 	<?php if ($isAdmin): ?>
 		<div class="nav-bar">
