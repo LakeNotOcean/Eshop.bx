@@ -120,6 +120,9 @@ class UserController
 
 	public function loginUserPage(Request $request)
 	{
+		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
+		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
+
 		$nextUrlParam = '';
 		if ($request->containsQuery(static::nextUrlQueryKeyword))
 		{
@@ -131,7 +134,12 @@ class UserController
 			$nextUrlParam = '?' . static::nextUrlQueryKeyword . '=' . $nextUrlParam;
 		}
 
-		$page = $this->templateProcessor->render('login.php', ['state' => 'process', 'next' => $nextUrlParam], 'layout/main.php', []);
+		$page = $this->templateProcessor->render('login.php', [
+			'state' => 'process', 'next' => $nextUrlParam
+		], 'layout/main.php', [
+			'isAuthenticated' => $isAuthenticated,
+			'isAdmin' => $isAdmin
+		]);
 
 		return (new Response())->withBodyHTML($page);
 	}
