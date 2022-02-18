@@ -17,7 +17,7 @@ use Up\Entity\SpecificationCategory;
 			endforeach; ?>
 		</select>
 	</label>
-	<a href="" class="btn-save">Выбрать категорию</a>
+	<a class="btn btn-normal">Выбрать категорию</a>
 </div>
 
 <script src="/js/choose-category-delete-script.js"></script>
