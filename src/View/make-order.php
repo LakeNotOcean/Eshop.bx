@@ -68,6 +68,7 @@ if ($user->getRole()->getName() != UserEnum::Guest())
 		<label for="comment">
 			<textarea name="comment" id="comment" rows="10" class="order-comment" placeholder="Комментарий к заказу"></textarea>
 		</label>
+		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 		<input type="submit" value="Подтвердить" class="btn-confirm">
 	</form>
 </div>
