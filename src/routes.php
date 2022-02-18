@@ -27,7 +27,7 @@ $router->get('/logout', [UserController::class, 'logout'], 'logout-user');
 //Admin
 $router->get('/admin/addItem', [ItemController::class, 'addItem'], 'add-item');
 $router->get('/admin/updateItem',[ItemController::class, 'updateItemPage'],'update-item-page');
-$router->post('/admin/addItem', [ItemController::class, 'createNewItem'], 'home');
+$router->post('/admin/addItem', [ItemController::class, 'createNewItem'], 'add-item-db');
 $router->get('/admin/chooseItemType', [CategoryController::class, 'chooseItemType'], 'choose-item-type');
 $router->get('/admin/addItemType', [CategoryController::class, 'addItemType'], 'add-item-type');
 $router->post('/admin/addItemType', [CategoryController::class, 'addItemTypeAndSaveToDB'], 'add-item-type-db');

@@ -26,24 +26,42 @@ class URLAccessMiddleware extends AbstractMiddleware
 	 */
 	private const accessConfig = [
 		'add-item' => UserEnum::Moderator,
-		'make-order' => UserEnum::User,
+		'update-item-page' => UserEnum::Moderator,
+		'choose-item-type' => UserEnum::Moderator,
+		'add-item-db' => UserEnum::Moderator,
+		'add-item-type' => UserEnum::Moderator,
+		'add-item-type-db' => UserEnum::Moderator,
+		'add-category' => UserEnum::Moderator,
+		'add-category-db' => UserEnum::Moderator,
+		'add-specification' => UserEnum::Moderator,
+		'add-specification-db' => UserEnum::Moderator,
+		'home-admin' => UserEnum::Moderator,
+		'delete-category-page' => UserEnum::Moderator,
+		'delete-category-post' => UserEnum::Moderator,
+		'choose-category' => UserEnum::Moderator,
+		'delete-specification-page' => UserEnum::Moderator,
+		'delete-specification' => UserEnum::Moderator,
+		'edit-item-page' => UserEnum::Moderator,
+		'deactivate-item' => UserEnum::Moderator,
+		'fast-item-update' => UserEnum::Moderator,
+		'delete-image' => UserEnum::Moderator,
+		'edit-category-page' => UserEnum::Moderator,
+		'orders-admin' => UserEnum::Moderator,
 	];
 	private $userService;
-	private $templateProcessor;
 
 	/**
 	 * @param \Up\Service\UserService\UserService $userService
-	 * @param \Up\Core\TemplateProcessor $templateProcessor
 	 */
-	public function __construct(UserServiceInterface $userService, TemplateProcessorInterface $templateProcessor)
+	public function __construct(UserServiceInterface $userService)
 	{
 		$this->userService = $userService;
-		$this->templateProcessor = $templateProcessor;
 	}
 
 	/**
 	 * @throws ResolveException
 	 * @throws RoutingException
+	 * @throws NoSuchQueryParameterException
 	 */
 	public function __invoke(Request $request, ...$params): Response
 	{
@@ -83,6 +101,11 @@ class URLAccessMiddleware extends AbstractMiddleware
 		return Redirect::createResponseByURLName('404');
 	}
 
+	/**
+	 * @throws NoSuchQueryParameterException
+	 * @throws ResolveException
+	 * @throws RoutingException
+	 */
 	private function handleUrlWithNextParam(Request $request, array $params)
 	{
 		$router = Router::getInstance();
