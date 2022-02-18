@@ -7,7 +7,7 @@ use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\Middleware\AbstractMiddleware;
 use Up\Core\TemplateProcessorInterface;
-
+use Up\Lib\Redirect;
 
 class Redirect404Middleware extends AbstractMiddleware
 {
@@ -29,9 +29,7 @@ class Redirect404Middleware extends AbstractMiddleware
 		}
 		catch (Throwable $throwable)
 		{
-			return (new Response())->withBodyHTML(
-				$this->templateProcessor->render('404.php', [], 'layout/main.php', [])
-			);
+			return Redirect::createResponseByURL('404');
 		}
 	}
 }
