@@ -1,7 +1,6 @@
 <?php
 /** @var \Up\Entity\ItemDetail $item */
 /** @var array<UP\Entity\Item> $similarItems */
-/** @var int $count */
 //$itemImages = ['/img/2_big.webp', '/img/2-1_big.webp', '/img/2-2_big.webp'];
 ?>
 
@@ -170,14 +169,16 @@
 				</div>
 			</div>
 			<div class="similar-item-section">
-				<div class="item-section-title">
+				<div class="similar-item-title">
 					Похожие товары
 				</div>
 				<div class="similar-item-cards-section">
+					<div class="similar-item-cards-arrow similar-item-cards-left-arrow ">
+					<
+					</div>
 					<?
-					foreach ($similarItems as $similarItem){
-						$count+=1?>
-						<div class="similar-item-card card-outline <?= $count<3 ? '' : 'similar-item-inactive'?>">
+					foreach (array_values($similarItems) as $index=>$similarItem){?>
+						<a href="/item/<?=$similarItem->getId()?>" id="<?=$index?>" class="similar-item-card similar-item-<?=$index?> card-outline <?= $index<2 ? 'similar-item-active' : ''?>">
 							<div class="similar-item-image-section">
 								<picture>
 									<source srcset="<?='/' . $similarItem->getMainImage()->getPath('small', 'webp') ?>" type="image/webp">
@@ -188,8 +189,11 @@
 								<div class="similar-item-body-title"><?= htmlspecialchars($similarItem->getTitle()) ?></div>
 								<div class="similar-item-body-price"><?= htmlspecialchars($similarItem->getPrice()) ?> ₽</div>
 							</div>
-						</div>
+						</a>
 					<?}?>
+					<div class="similar-item-cards-arrow similar-item-cards-right-arrow">
+						>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -202,3 +206,4 @@
 <script src="/js/fix-node.js"></script>
 <script src="/js/fixed-scroll-menu.js"></script>
 <script src="/js/open-images.js"></script>
+<script src="/js/scroll-similar-items.js"></script>
