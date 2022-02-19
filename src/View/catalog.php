@@ -55,29 +55,27 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 						<div class="filter-title"><?=htmlspecialchars($category->getName())?></div>
 						<input type="checkbox" class="expand-category" id="<?=$category->getId()?>"/>
 						<label class="filter-category-label" for=<?=$category->getId()?>></label>
-						<div style="display:none" class="filter-specs-block">
-							<div class = filter-category-specification-line></div>
-							<?php $specList = $category->getSpecificationList();
-							$specList = $specList->getEntitiesArray();
-							foreach ($specList as $spec) : ?>
+						<div class="btn-back btn-expand"></div>
+						<div class="filter-specs-block">
+							<?php foreach ($category->getSpecificationList()->getEntitiesArray() as $spec) : ?>
+							<div class="spec-filter-section">
 								<div><?= htmlspecialchars($spec->getName()) ?></div>
-								<?php foreach ($spec->getValue() as $value=>$count) : ?>
-									<div class="filter-category-specification-group">
-										<input type="checkbox" form="filter-form" class="category_spec_checkbox category_checkbox" name="<?= $spec->getId() ?>" value="<?=$value?>">
-										<?=htmlspecialchars($value)?>
-										<div class="filter-category-count">(<?=$count?>)</div>
-									</div>
-								<?php endforeach;?>
+								<div class="spec-values-group">
+									<?php foreach ($spec->getValue() as $value => $count) : ?>
+									<label for="<?= $spec->getId()?>" class="spec-value">
+										<input type="checkbox" form="filter-form" class="category_spec_checkbox category_checkbox" name="<?= $spec->getId()?>" value="<?=$value?>">
+										<?=htmlspecialchars($value)?> (<?=$count?>)
+									</label>
+									<?php endforeach;?>
+								</div>
+							</div>
 							<?php endforeach;?>
 						</div>
 					</div>
 					<?php endforeach;?>
-
 				</div>
 				<div class="tag-category">
-					<div class="filter-title">
-						Теги
-					</div>
+					<div class="filter-title">Теги</div>
 					<div class="tag-category-body">
 						<?foreach ($tags as $tag) : ?>
 							<div class="switch">

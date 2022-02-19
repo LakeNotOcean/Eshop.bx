@@ -194,11 +194,10 @@ filters main
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 	padding: 15px;
 
-	--filters-height: calc(100vh - var(--nav-height) - 100px);
+	--filters-height: calc(100vh - var(--nav-height) - 140px);
 	max-height: var(--filters-height);
 	overflow: auto;
 }
-
 
 .filters::-webkit-scrollbar {
 	display: none;
@@ -282,68 +281,61 @@ filters specification category
 	line-height: 30px;
 }
 
-.filter-category-specification-group {
-	display: flex;
-	flex-direction: row;
-	align-content: center;
-	justify-content: flex-start;
-	align-items: center;
-}
-
-.filter-category-count{
-	margin-left: 5px;
-}
-
-.filter-category-specification-line {
-	margin-top: 10px;
-	border-top:1px solid;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.expand-category, .filter-category-label {
-	top: 0;
-	right: 0;
-	position: absolute;
-	cursor: pointer;
-}
-
-.expand-category.plus,
-.filter-category-label:before,
-.expand-category.minus,
-.expand-category:checked + .filter-category-label:before {
-	content: '+';
-	font-size: 26px;
-	color: #1266B1;
-	font-weight: bold;
-	padding-left: 260px;
-}
-
-.expand-category.minus, .expand-category:checked + .filter-category-label:before {
-	content: '-';
-}
-
-.filter-specs-block {
+.expand-category {
 	display: none;
 }
 
+.filter-category-label {
+	position: absolute;
+	height: 1.5rem;
+	width: 100%;
+	top: 0;
+	cursor: pointer;
+}
+
+.filter-specs-block {
+	overflow: hidden;
+	height: 0;
+}
+
 .expand-category:checked ~ .filter-specs-block {
-	display: block !important;
+	height: 100%;
 }
 
-.filter-specs input[type=checkbox].expand-category {
-	display:none;
+/*==========================
+btn-expand
+==========================*/
+
+.btn-expand {
+	position: absolute;
+	top: 0;
+	right: 0;
+	transform: rotateZ(0deg);
+	transition: .2s;
 }
 
-.filter-specs-block a:before {
-	content: '+';
-	font-size: 20px;
-	padding-right: 6px;
-	color: #666;
-	font-weight: bold;
+.expand-category:checked ~ .btn-expand {
+	transform: rotateZ(180deg);
 }
 
-.filter-specs-block a:hover:before {
-	color: #000;
+.spec-filter-section {
+	padding: 5px 0;
+	border-bottom: 1px solid #ebebeb;
+}
+
+.spec-filter-section:first-child {
+	border-top: 1px solid #ebebeb;
+}
+
+.spec-values-group {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.spec-value {
+	display: flex;
+	align-items: center;
+	margin-right: 5px;
 }
 
 /*==========================
