@@ -208,14 +208,13 @@ filters main
 filters price category
 ==========================*/
 
-.price-category {
+.filter-price {
 	display: flex;
 	flex-direction: column;
 	width: 270px;
 }
 
 .filter-title {
-	margin: 10px 0 15px;
 	font-size: 16px;
 	font-weight: 600;
 }
@@ -224,6 +223,7 @@ filters price category
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
+	margin-top: 10px;
 }
 
 .price-box {
@@ -252,6 +252,8 @@ filters price category
 }
 
 .price-input input {
+	margin: 5px 0;
+	padding: 0 0 0 5px;
 	width: 0;
 	border: 0;
 	height: 15px;
@@ -268,22 +270,19 @@ filters price category
 filters specification category
 ==========================*/
 
-.filter-category-specification {
+.filter-specs {
 	margin-top: 15px;
 	display: flex;
 	flex-direction: column;
 	width: 270px;
 }
-.filter-category-specification ul {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-.filter-category-specification ul li {
+
+.filter-category {
 	position: relative;
 	margin: 0;
 	line-height: 30px;
 }
+
 .filter-category-specification-group{
 	display: flex;
 	flex-direction: row;
@@ -291,6 +290,7 @@ filters specification category
 	justify-content: flex-start;
 	align-items: center;
 }
+
 .filter-category-count{
 	margin-left: 5px;
 }
@@ -301,16 +301,16 @@ filters specification category
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.filter-category-specification .filter-category-sub-specification, .filter-category-label {
+.filter-specs .filter-category-sub-specification, .filter-category-label {
 	top: 0;
 	right: 0;
 	position: absolute;
 	cursor: pointer;
 }
 
-.filter-category-specification .filter-category-sub-specification.plus,
+.filter-specs .filter-category-sub-specification.plus,
 .filter-category-label:before,
-.filter-category-specification .filter-category-sub-specification.minus,
+.filter-specs .filter-category-sub-specification.minus,
 .filter-category-sub-specification:checked + .filter-category-label:before {
 	content: '+';
 	font-size: 26px;
@@ -319,51 +319,27 @@ filters specification category
 	padding-left: 260px;
 }
 
-.filter-category-specification .filter-category-sub-specification.minus, .filter-category-sub-specification:checked + .filter-category-label:before {
+.filter-specs .filter-category-sub-specification.minus, .filter-category-sub-specification:checked + .filter-category-label:before {
 	content: '-';
 }
 
-.filter-category-specification a {
-	color: red;
-	font-size: 16px;
-	text-decoration:none;
-}
-
-.filter-category-specification ul li li a {
-	color: #666;
-	font-size: 15px;
-	font-weight:normal;
-	text-decoration:none;
-
-}
-
-.filter-category-specification a.filter-category-active {
-	color: #000000;
-	text-transform: none;
-}
-
-.filter-category-specification a:hover {
-	text-decoration: none;
-	color: red !important;
-}
-
-.filter-category-specification > ul > li ul {
+.filter-category ul {
 	display: none;
 }
 
-.filter-category-specification > ul > li a.filter-category-active + span + ul {
+.filter-category a.filter-category-active + span + ul {
 	display: block !important;
 }
 
-.filter-category-specification > ul > li .filter-category-sub-specification:checked ~ ul {
+.filter-category .filter-category-sub-specification:checked ~ ul {
 	display: block !important;
 }
 
-.filter-category-specification input[type=checkbox].filter-category-sub-specification {
+.filter-specs input[type=checkbox].filter-category-sub-specification {
 	display:none;
 }
 
-.filter-category-specification ul li li a:before {
+.filter-category li a:before {
 	content: '+';
 	font-size: 20px;
 	padding-right: 6px;
@@ -371,7 +347,7 @@ filters specification category
 	font-weight: bold;
 }
 
-.filter-category-specification > ul li li a:hover:before {
+.filter-category li a:hover:before {
 	color: #000;
 }
 

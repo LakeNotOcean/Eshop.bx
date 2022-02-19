@@ -29,11 +29,11 @@ function getFilterQuery()
 	}
 	else
 	{
-		let minPrice = 0;
-		let maxPrice = 0;
+		let minPrice;
+		let maxPrice;
 		if (minPriceInput.value==='')
 		{
-			minPrice= minPriceInput.placeholder;
+			minPrice = minPriceInput.placeholder;
 		}
 		else
 		{
@@ -41,7 +41,6 @@ function getFilterQuery()
 		}
 		if (maxPriceInput.value==='')
 		{
-
 			maxPrice = maxPriceInput.placeholder;
 		}
 		else

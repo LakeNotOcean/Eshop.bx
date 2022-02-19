@@ -31,13 +31,13 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 	<div class="filters-item-list-row">
 		<div class="filters-column">
 			<form action="/" id="filter-form" method="get" class="filters card">
-				<div class="price-category">
+				<div class="filter-price">
 					<div class="filter-title">Цена</div>
 					<div class="price-range">
 						<div class="price-box">
 							<label for="min-price" class="price-label">мин. цена</label>
 							<div class="price-input">
-								₽<input type=text id="min-price" name="min-price" placeholder="<?= $price['minPrice']?>"
+								₽<input type=text id="min-price" name="min-price" placeholder="от <?= $price['minPrice']?>"
 									   class="input">
 							</div>
 						</div>
@@ -45,51 +45,41 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 						<div class="price-box">
 							<label for="max-price" class="price-label">макс. цена</label>
 							<div class="price-input">
-								₽<input type=text id="max-price" name="max-price" placeholder="<?= $price['maxPrice']?>"
+								₽<input type=text id="max-price" name="max-price" placeholder="до <?= $price['maxPrice']?>"
 									   class="input">
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="filter-category-specification">
-					<?php
-					foreach ($categories as $category) : ?>
-						<ul>
+				<div class="filter-specs">
+					<?php foreach ($categories as $category) : ?>
+					<div class="filter-category">
+						<div class="filter-title"><?=htmlspecialchars($category->getName())?></div>
+						<input type="checkbox" class="filter-category-sub-specification" id=<?=$category->getId()?>  />
+						<label class="filter-category-label" for=<?=$category->getId()?>  ></label>
+						<ul style="display:none">
 							<li>
-								<a class="filter-category-active"><?=htmlspecialchars($category->getName())?></a>
-								<input type="checkbox" class="filter-category-sub-specification" id=<?=$category->getId()?>  />
-								<label class="filter-category-label" for=<?=$category->getId()?>  ></label>
-								<ul style="display:none">
-									<li>
-										<div class = filter-category-specification-line></div>
-											<?php $specList = $category->getSpecificationList();
-											$specList = $specList->getEntitiesArray();
-											foreach ($specList as $spec) : ?>
-												<div>
-													<?= htmlspecialchars($spec->getName()) ?>
-												</div>
-												<?php foreach ($spec->getValue() as $value=>$count) : ?>
-													<div class="filter-category-specification-group">
-														<div>
-															<label>
-															<input type="checkbox" form="filter-form" class="category_spec_checkbox category_checkbox" name="<?= $spec->getId() ?>" value="<?=$value?>">
-																<?=htmlspecialchars($value)?> </label>
-														</div>
-														<div class="filter-category-count">
-															(<?=$count?>)
-														</div>
-													</div>
-										<?php
-										endforeach; ?>
-											<?php
-											endforeach; ?>
-									</li>
-								</ul>
+								<div class = filter-category-specification-line></div>
+								<?php $specList = $category->getSpecificationList();
+								$specList = $specList->getEntitiesArray();
+								foreach ($specList as $spec) : ?>
+									<div><?= htmlspecialchars($spec->getName()) ?></div>
+									<?php foreach ($spec->getValue() as $value=>$count) : ?>
+										<div class="filter-category-specification-group">
+											<div>
+												<label>
+													<input type="checkbox" form="filter-form" class="category_spec_checkbox category_checkbox" name="<?= $spec->getId() ?>" value="<?=$value?>">
+													<?=htmlspecialchars($value)?> </label>
+											</div>
+											<div class="filter-category-count">(<?=$count?>)</div>
+										</div>
+									<?php endforeach;?>
+								<?php endforeach;?>
 							</li>
 						</ul>
+					</div>
+					<?php endforeach;?>
 
-					<?php
-					endforeach; ?>
 				</div>
 				<div class="tag-category">
 					<div class="filter-title">
