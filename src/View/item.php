@@ -172,13 +172,14 @@
 				<div class="similar-item-title">
 					Похожие товары
 				</div>
-				<div class="similar-item-cards-section">
+				<div class="similar-item-main-section">
 					<div class="similar-item-cards-arrow similar-item-cards-left-arrow ">
 					<
 					</div>
+					<div class="similar-item-cards-section">
 					<?
 					foreach (array_values($similarItems) as $index=>$similarItem){?>
-						<a href="/item/<?=$similarItem->getId()?>" id="<?=$index?>" class="similar-item-card similar-item-<?=$index?> card-outline <?= $index<2 ? 'similar-item-active' : ''?>">
+						<a href="/item/<?=$similarItem->getId()?>" id="<?=$index?>" class="similar-item-card similar-item-<?=$index?> card-outline <?= $index<2 ? 'similar-item-active' : 'similar-item-active'?>">
 							<div class="similar-item-image-section">
 								<picture>
 									<source srcset="<?='/' . $similarItem->getMainImage()->getPath('small', 'webp') ?>" type="image/webp">
@@ -191,6 +192,7 @@
 							</div>
 						</a>
 					<?}?>
+					</div>
 					<div class="similar-item-cards-arrow similar-item-cards-right-arrow">
 						>
 					</div>

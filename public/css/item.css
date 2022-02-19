@@ -77,6 +77,7 @@ item-main-sidebar
 
 .item-main-sidebar {
 	width: 300px;
+	min-width: 300px;
 	margin-right: 50px;
 }
 
@@ -380,22 +381,31 @@ item-reviews
 	font-size: 18px;
 	font-weight: 700;
 }
+.similar-item-main-section{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
 
 .similar-item-cards-section{
 	display: flex;
+	overflow: hidden;
+	max-width: 1000px;
 	flex-direction: row;
 }
 
 .similar-item-cards-arrow{
 	align-self: center;
-	margin-top: 3%;
+	margin-top: 30px;
 	cursor: default;
 }
 
 .similar-item-card {
 	display: none;
-	max-width: 48%;
-	margin: 4% 1% 1% 1%;
+	width: 480px;
+	min-width: 480px;
+	height: 150px;
+	margin: 40px 10px 10px 10px;
 
 }
 
