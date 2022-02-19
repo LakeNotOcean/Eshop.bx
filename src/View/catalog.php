@@ -62,7 +62,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 								<div><?= htmlspecialchars($spec->getName()) ?></div>
 								<div class="spec-values-group">
 									<?php foreach ($spec->getValue() as $value => $count) : ?>
-									<label for="<?= $spec->getId()?>" class="spec-value">
+									<label class="spec-value">
 										<input type="checkbox" form="filter-form" class="category_spec_checkbox category_checkbox" name="<?= $spec->getId()?>" value="<?=$value?>">
 										<?=htmlspecialchars($value)?> (<?=$count?>)
 									</label>
