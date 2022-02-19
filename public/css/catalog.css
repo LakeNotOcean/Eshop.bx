@@ -215,8 +215,7 @@ filters price category
 }
 
 .filter-title {
-	font-size: 16px;
-	font-weight: 600;
+	font-weight: 500;
 }
 
 .price-range {
@@ -271,7 +270,7 @@ filters specification category
 ==========================*/
 
 .filter-specs {
-	margin-top: 15px;
+	margin-top: 10px;
 	display: flex;
 	flex-direction: column;
 	width: 270px;
@@ -283,7 +282,7 @@ filters specification category
 	line-height: 30px;
 }
 
-.filter-category-specification-group{
+.filter-category-specification-group {
 	display: flex;
 	flex-direction: row;
 	align-content: center;
@@ -301,17 +300,17 @@ filters specification category
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.filter-specs .filter-category-sub-specification, .filter-category-label {
+.expand-category, .filter-category-label {
 	top: 0;
 	right: 0;
 	position: absolute;
 	cursor: pointer;
 }
 
-.filter-specs .filter-category-sub-specification.plus,
+.expand-category.plus,
 .filter-category-label:before,
-.filter-specs .filter-category-sub-specification.minus,
-.filter-category-sub-specification:checked + .filter-category-label:before {
+.expand-category.minus,
+.expand-category:checked + .filter-category-label:before {
 	content: '+';
 	font-size: 26px;
 	color: #1266B1;
@@ -319,27 +318,23 @@ filters specification category
 	padding-left: 260px;
 }
 
-.filter-specs .filter-category-sub-specification.minus, .filter-category-sub-specification:checked + .filter-category-label:before {
+.expand-category.minus, .expand-category:checked + .filter-category-label:before {
 	content: '-';
 }
 
-.filter-category ul {
+.filter-specs-block {
 	display: none;
 }
 
-.filter-category a.filter-category-active + span + ul {
+.expand-category:checked ~ .filter-specs-block {
 	display: block !important;
 }
 
-.filter-category .filter-category-sub-specification:checked ~ ul {
-	display: block !important;
-}
-
-.filter-specs input[type=checkbox].filter-category-sub-specification {
+.filter-specs input[type=checkbox].expand-category {
 	display:none;
 }
 
-.filter-category li a:before {
+.filter-specs-block a:before {
 	content: '+';
 	font-size: 20px;
 	padding-right: 6px;
@@ -347,7 +342,7 @@ filters specification category
 	font-weight: bold;
 }
 
-.filter-category li a:hover:before {
+.filter-specs-block a:hover:before {
 	color: #000;
 }
 

@@ -37,16 +37,14 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 						<div class="price-box">
 							<label for="min-price" class="price-label">мин. цена</label>
 							<div class="price-input">
-								₽<input type=text id="min-price" name="min-price" placeholder="от <?= $price['minPrice']?>"
-									   class="input">
+								₽<input type=text id="min-price" name="min-price" placeholder="от <?= $price['minPrice']?>" class="input">
 							</div>
 						</div>
 						<div class="range-dash"></div>
 						<div class="price-box">
 							<label for="max-price" class="price-label">макс. цена</label>
 							<div class="price-input">
-								₽<input type=text id="max-price" name="max-price" placeholder="до <?= $price['maxPrice']?>"
-									   class="input">
+								₽<input type=text id="max-price" name="max-price" placeholder="до <?= $price['maxPrice']?>" class="input">
 							</div>
 						</div>
 					</div>
@@ -55,28 +53,23 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 					<?php foreach ($categories as $category) : ?>
 					<div class="filter-category">
 						<div class="filter-title"><?=htmlspecialchars($category->getName())?></div>
-						<input type="checkbox" class="filter-category-sub-specification" id=<?=$category->getId()?>  />
-						<label class="filter-category-label" for=<?=$category->getId()?>  ></label>
-						<ul style="display:none">
-							<li>
-								<div class = filter-category-specification-line></div>
-								<?php $specList = $category->getSpecificationList();
-								$specList = $specList->getEntitiesArray();
-								foreach ($specList as $spec) : ?>
-									<div><?= htmlspecialchars($spec->getName()) ?></div>
-									<?php foreach ($spec->getValue() as $value=>$count) : ?>
-										<div class="filter-category-specification-group">
-											<div>
-												<label>
-													<input type="checkbox" form="filter-form" class="category_spec_checkbox category_checkbox" name="<?= $spec->getId() ?>" value="<?=$value?>">
-													<?=htmlspecialchars($value)?> </label>
-											</div>
-											<div class="filter-category-count">(<?=$count?>)</div>
-										</div>
-									<?php endforeach;?>
+						<input type="checkbox" class="expand-category" id="<?=$category->getId()?>"/>
+						<label class="filter-category-label" for=<?=$category->getId()?>></label>
+						<div style="display:none" class="filter-specs-block">
+							<div class = filter-category-specification-line></div>
+							<?php $specList = $category->getSpecificationList();
+							$specList = $specList->getEntitiesArray();
+							foreach ($specList as $spec) : ?>
+								<div><?= htmlspecialchars($spec->getName()) ?></div>
+								<?php foreach ($spec->getValue() as $value=>$count) : ?>
+									<div class="filter-category-specification-group">
+										<input type="checkbox" form="filter-form" class="category_spec_checkbox category_checkbox" name="<?= $spec->getId() ?>" value="<?=$value?>">
+										<?=htmlspecialchars($value)?>
+										<div class="filter-category-count">(<?=$count?>)</div>
+									</div>
 								<?php endforeach;?>
-							</li>
-						</ul>
+							<?php endforeach;?>
+						</div>
 					</div>
 					<?php endforeach;?>
 
