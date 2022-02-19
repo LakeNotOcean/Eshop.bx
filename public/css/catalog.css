@@ -3,7 +3,6 @@
 @import "lib/btn.css";
 @import "lib/input.css";
 
-
 .container {
 	flex: 1;
 	display: flex;
@@ -225,25 +224,40 @@ filters price category
 .price-range {
 	display: flex;
 	justify-content: space-around;
+	align-items: center;
 }
 
 .price-box {
 	flex: 1;
+	padding: 0 6px;
 	border-radius: 10px;
-	box-shadow: 2px 3px 4px 4px rgba(0, 0, 0, 0.2);
+	border: 2px solid #D9D9D9;
 }
 
-.price-box-min {
-	margin-right: 10px;
+.range-dash {
+	width: 15px;
+	height: 3px;
+	margin: 5px;
+	background: #C4C4C4;
 }
 
-.price-box-max {
-	margin-left: 10px;
+/*.price-box-min {*/
+/*	margin-right: 10px;*/
+/*}*/
+
+/*.price-box-max {*/
+/*	margin-left: 10px;*/
+/*}*/
+
+.price-label {
+	font-size: 11px;
+	color: #aaaaaa;
 }
 
 .price-input {
 	position: relative;
 	display: flex;
+	align-items: center;
 }
 
 .price-input input {

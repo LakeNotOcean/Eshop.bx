@@ -34,18 +34,18 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 				<div class="price-category">
 					<div class="filter-title">Цена</div>
 					<div class="price-range">
-						<div class="price-box price-box-min">
-							<label for="min-price" class="price-label">Мин. цена</label>
+						<div class="price-box">
+							<label for="min-price" class="price-label">мин. цена</label>
 							<div class="price-input">
-								<input type=text id="min-price" name="min-price" placeholder="<?= $price['minPrice']?>"
+								₽<input type=text id="min-price" name="min-price" placeholder="<?= $price['minPrice']?>"
 									   class="price-category-body-int price-category-body-int-min">
 							</div>
 						</div>
-						<div class="dash"></div>
-						<div class="price-box price-box-max">
-							<label for="max-price" class="price-label">Макс. цена</label>
+						<div class="range-dash"></div>
+						<div class="price-box">
+							<label for="max-price" class="price-label">макс. цена</label>
 							<div class="price-input">
-								<input type=text id="max-price" name="max-price" placeholder="<?= $price['maxPrice']?>"
+								₽<input type=text id="max-price" name="max-price" placeholder="<?= $price['maxPrice']?>"
 									   class="price-category-body-int price-category-body-int-max">
 							</div>
 						</div>
