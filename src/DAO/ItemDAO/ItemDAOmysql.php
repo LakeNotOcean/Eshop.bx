@@ -104,7 +104,22 @@ class ItemDAOmysql implements ItemDAOInterface
 
 	public function getItemsByFilters(int $offset, int $amountItems,string $query,string $price,array $tags,array $specs): array
 	{
-		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$query,$price,$tags,$specs);
+		$newSpecs = [];
+		foreach ($specs as $spec=>$value)
+		{
+			$param = explode('=',$value);
+			$spec = $param[0];
+			$value = $param[1];
+			if (!array_key_exists($spec,$newSpecs))
+			{
+				$newSpecs[$spec][]=$value;
+			}
+			else
+			{
+				$newSpecs[$spec][]=$value;
+			}
+		}
+		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$query,$price,$tags,$newSpecs);
 		$result = $this->DBConnection->query($dbQuery);
 		$items = [];
 		while ($row = $result->fetch())
@@ -323,7 +338,22 @@ class ItemDAOmysql implements ItemDAOInterface
 
 	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs)
 	{
-		$query = $this->getItemsAmountByFiltersQuery($query,$price,$tags,$specs);
+		$newSpecs = [];
+		foreach ($specs as $spec=>$value)
+		{
+			$param = explode('=',$value);
+			$spec = $param[0];
+			$value = $param[1];
+			if (!array_key_exists($spec,$newSpecs))
+			{
+				$newSpecs[$spec][]=$value;
+			}
+			else
+			{
+				$newSpecs[$spec][]=$value;
+			}
+		}
+		$query = $this->getItemsAmountByFiltersQuery($query,$price,$tags,$newSpecs);
 		$result = $this->DBConnection->query($query);
 		return $result->fetch()['num_items'];
 	}
@@ -549,7 +579,7 @@ class ItemDAOmysql implements ItemDAOInterface
 	}
 
 
-	private function getItemsByFiltersQuery($offset, $amountItems,string $searchQuery,string $price,array $tags,array $specs):string
+	private function getItemsByFiltersQuery($offset, $amountItems,string $searchQuery,string $price,array $tags,array $newSpecs):string
 	{
 		$query = "SELECT ui.ID as ui_ID,
 					   TITLE as TITLE,
@@ -595,7 +625,7 @@ WHERE COUNT = ";
 			$query .= count($tags);
 			$query .= ") as uig on uig.ITEM_ID = ID";
 		}
-		if (!empty($specs))
+		if (!empty($newSpecs))
 		{
 			$query .= "
 INNER JOIN (select
@@ -607,15 +637,20 @@ FROM
  FROM up_item_spec
  WHERE ";
 			$where = [];
-			foreach ($specs as $spec=>$value)
+			foreach ($newSpecs as $spec=>$values)
 			{
-				$spec = explode('=',$value);
-				$where[]="(SPEC_TYPE_ID = " . $spec[0]. " AND VALUE = ". "'" . $spec[1] . "')";
+				$inParam ='';
+				foreach ($values as $value)
+				{
+					$inParam .= "'".$value."',";
+				}
+				$inParam = substr($inParam,0,-1);
+				$where[]="(SPEC_TYPE_ID = " . $spec. " AND VALUE IN (".$inParam."))";
 			}
 			$query .= implode(' OR ', $where);
 			$query .= " GROUP BY ITEM_ID) as ls
 WHERE COUNT =";
-			$query .= count($specs);
+			$query .= count($newSpecs);
 			$query .= ") as uis on uis.ITEM_ID = ID";
 		}
 		if (!($price === ""))
@@ -698,7 +733,7 @@ INNER JOIN (select ID as ITEM_ID,
 
 
 
-private function getItemsAmountByFiltersQuery(string $searchQuery,string $price,array $tags,array $specs):string
+private function getItemsAmountByFiltersQuery(string $searchQuery,string $price,array $tags,array $newSpecs):string
 {
 
 	$query = "
@@ -729,7 +764,7 @@ WHERE COUNT = ";
 		$query .= count($tags);
 		$query .= ") as uig on uig.ITEM_ID = ID";
 	}
-	if (!empty($specs))
+	if (!empty($newSpecs))
 	{
 		$query .= "
 INNER JOIN (select
@@ -741,15 +776,20 @@ FROM
  FROM up_item_spec
  WHERE ";
 		$where = [];
-		foreach ($specs as $spec=>$value)
+		foreach ($newSpecs as $spec=>$values)
 		{
-			$spec = explode('=',$value);
-			$where[]="(SPEC_TYPE_ID = " . $spec[0]. " AND VALUE = ". "'" . $spec[1] . "')";
+			$inParam ='';
+			foreach ($values as $value)
+			{
+				$inParam .= "'".$value."',";
+			}
+			$inParam = substr($inParam,0,-1);
+			$where[]="(SPEC_TYPE_ID = " . $spec. " AND VALUE IN (".$inParam."))";
 		}
 		$query .= implode(' OR ', $where);
 		$query .= " GROUP BY ITEM_ID) as ls
 WHERE COUNT =";
-		$query .= count($specs);
+		$query .= count($newSpecs);
 		$query .= ") as uis on uis.ITEM_ID = ID";
 	}
 	if (!($price === ""))
