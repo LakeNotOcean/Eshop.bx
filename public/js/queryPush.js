@@ -22,7 +22,7 @@ for (let filterButton of filterButtons)
 		let finalQuery = filterQuery + searchQuery + pageQuery;
 		finalQuery = prepareQuery(finalQuery)
 		localStorage.setItem('query', finalQuery);
-		location = finalQuery;
+		window.location = finalQuery;
 	});
 }
 
@@ -39,7 +39,7 @@ searchButton.addEventListener("keydown",(e)=>{
 		finalQuery = prepareQuery(finalQuery)
 
 		localStorage.setItem('query',finalQuery)
-		location = finalQuery;
+		window.location = finalQuery;
 	}
 })
 

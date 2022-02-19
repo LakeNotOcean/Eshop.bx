@@ -1,4 +1,8 @@
 @import "lib/pagination.css";
+@import "lib/card.css";
+@import "lib/btn.css";
+@import "lib/input.css";
+
 
 .container {
 	flex: 1;
@@ -186,31 +190,19 @@ filters main
 }
 
 .filters {
-	width: 300px;
+	width: 270px;
 	background: #FFFFFF;
 	border-radius: 10px;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+	padding: 15px;
 
 	--filters-height: calc(100vh - var(--nav-height) - 100px);
-	max-height: var(--filters-height);
-}
-
-.filter-category {
-	display: flex;
-	width: 270px;
-	background: #FFFFFF;
-	margin-left: 22px;
-	margin-right: 23px;
-	flex-direction: column;
-	flex-wrap: nowrap;
-	justify-content: flex-start;
-	align-items: center;
-
 	max-height: var(--filters-height);
 	overflow: auto;
 }
 
-.filter-category::-webkit-scrollbar {
+
+.filters::-webkit-scrollbar {
 	display: none;
 }
 
@@ -224,30 +216,42 @@ filters price category
 	width: 270px;
 }
 
-.filter-category-title{
-	margin-bottom: 15px;
-	margin-top: 18px;
+.filter-title {
+	margin: 10px 0 15px;
+	font-size: 16px;
+	font-weight: 600;
 }
 
-.price-category-bodies {
+.price-range {
 	display: flex;
 	justify-content: space-around;
 }
 
-.price-category-body{
-	width: 110px;
-	height: 40px;
+.price-box {
+	flex: 1;
 	border-radius: 10px;
 	box-shadow: 2px 3px 4px 4px rgba(0, 0, 0, 0.2);
 }
 
-.price-category-body input
-{
-	outline: 0;
-	outline-offset: 0;
+.price-box-min {
+	margin-right: 10px;
+}
+
+.price-box-max {
+	margin-left: 10px;
+}
+
+.price-input {
+	position: relative;
+	display: flex;
+}
+
+.price-input input {
+	width: 0;
 	border: 0;
+	height: 15px;
+	line-height: 15px;
 	border-radius: 10px;
-	font-family: 'Open Sans', sans-serif;
 }
 
 .price-category-body-int{
@@ -261,7 +265,6 @@ filters specification category
 
 .filter-category-specification {
 	margin-top: 15px;
-	font-family: 'Open Sans', sans-serif;
 	display: flex;
 	flex-direction: column;
 	width: 270px;
@@ -331,7 +334,6 @@ filters specification category
 
 .filter-category-specification a.filter-category-active {
 	color: #000000;
-	font-family: 'Open Sans', sans-serif;
 	text-transform: none;
 }
 
@@ -406,10 +408,6 @@ filters tag category
 	background: linear-gradient(#be9030, #d08607);
 }
 
-.filter-button-checkbox {
-	position: absolute;
-}
-
 /*==========================
 filter-buttons
 ==========================*/
@@ -420,9 +418,14 @@ filter-buttons
 	display: flex;
 	justify-content: space-between;
 	padding: 10px;
-	margin: 10px;
 }
 
 .filter-button {
 	margin: 0;
+}
+
+.filter-button-checkbox {
+	display: none;
+	position: absolute;
+	left: 360px;
 }

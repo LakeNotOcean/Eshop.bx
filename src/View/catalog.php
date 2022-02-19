@@ -30,94 +30,86 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 
 	<div class="filters-item-list-row">
 		<div class="filters-column">
-			<div class="filters card">
-				<form id="filter-form" action="/"  method="get" >
-				<div class="filter-category">
-					<div class="price-category">
-								<div class="filter-category-title filter-category-active">
-									Цена
-								</div>
-						<div class="price-category-bodies">
-							<div class="price-category-body">
-								<div class="price-category-body-text">
-									Мин. цена
-								</div>
-								<input type=text id="min-price" name="min-price" placeholder="<?= $price['minPrice']?>" class="price-category-body-int price-category-body-int-min">
+			<form action="/" id="filter-form" method="get" class="filters card">
+				<div class="price-category">
+					<div class="filter-title">Цена</div>
+					<div class="price-range">
+						<div class="price-box price-box-min">
+							<label for="min-price" class="price-label">Мин. цена</label>
+							<div class="price-input">
+								<input type=text id="min-price" name="min-price" placeholder="<?= $price['minPrice']?>"
+									   class="price-category-body-int price-category-body-int-min">
 							</div>
-							<div class="price-category-body-center">
-								-
-							</div>
-							<div class="price-category-body">
-								<div class="price-category-body-text">
-									Макс. цена
-								</div>
-									<input type=text id="max-price" name="maxp-rice" placeholder="<?= $price['maxPrice']?>" class="price-category-body-int price-category-body-int-max">
+						</div>
+						<div class="dash"></div>
+						<div class="price-box price-box-max">
+							<label for="max-price" class="price-label">Макс. цена</label>
+							<div class="price-input">
+								<input type=text id="max-price" name="max-price" placeholder="<?= $price['maxPrice']?>"
+									   class="price-category-body-int price-category-body-int-max">
 							</div>
 						</div>
 					</div>
-					<div class="filter-category-specification">
-						<?php
-						foreach ($categories as $category) : ?>
-							<ul>
-								<li>
-									<a class="filter-category-active"><?=htmlspecialchars($category->getName())?></a>
-									<input type="checkbox" class="filter-category-sub-specification" id=<?=$category->getId()?>  />
-									<label class="filter-category-label" for=<?=$category->getId()?>  ></label>
-									<ul style="display:none">
-										<li>
-											<div class = filter-category-specification-line></div>
-												<?php $specList = $category->getSpecificationList();
-												$specList = $specList->getEntitiesArray();
-												foreach ($specList as $spec) : ?>
-													<div>
-														<?= htmlspecialchars($spec->getName()) ?>
-													</div>
-													<?php foreach ($spec->getValue() as $value=>$count) : ?>
-														<div class="filter-category-specification-group">
-															<div>
-																<label>
-																<input type="checkbox" form="filter-form" class="category_spec_checkbox category_checkbox" name="<?= $spec->getId() ?>" value="<?=$value?>">
-																	<?=htmlspecialchars($value)?> </label>
-															</div>
-															<div class="filter-category-count">
-																(<?=$count?>)
-															</div>
+				</div>
+				<div class="filter-category-specification">
+					<?php
+					foreach ($categories as $category) : ?>
+						<ul>
+							<li>
+								<a class="filter-category-active"><?=htmlspecialchars($category->getName())?></a>
+								<input type="checkbox" class="filter-category-sub-specification" id=<?=$category->getId()?>  />
+								<label class="filter-category-label" for=<?=$category->getId()?>  ></label>
+								<ul style="display:none">
+									<li>
+										<div class = filter-category-specification-line></div>
+											<?php $specList = $category->getSpecificationList();
+											$specList = $specList->getEntitiesArray();
+											foreach ($specList as $spec) : ?>
+												<div>
+													<?= htmlspecialchars($spec->getName()) ?>
+												</div>
+												<?php foreach ($spec->getValue() as $value=>$count) : ?>
+													<div class="filter-category-specification-group">
+														<div>
+															<label>
+															<input type="checkbox" form="filter-form" class="category_spec_checkbox category_checkbox" name="<?= $spec->getId() ?>" value="<?=$value?>">
+																<?=htmlspecialchars($value)?> </label>
 														</div>
+														<div class="filter-category-count">
+															(<?=$count?>)
+														</div>
+													</div>
+										<?php
+										endforeach; ?>
 											<?php
 											endforeach; ?>
-												<?php
-												endforeach; ?>
-										</li>
-									</ul>
-								</li>
-							</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
 
+					<?php
+					endforeach; ?>
+				</div>
+				<div class="tag-category">
+					<div class="filter-title">
+						Теги
+					</div>
+					<div class="tag-category-body">
+						<?foreach ($tags as $tag) : ?>
+							<div class="switch">
+								<input type="checkbox" class="category_tag_checkbox category_checkbox" value="<?=$tag->getID()?>" form="filter-form">
+								<label><?=$tag->getName()?></label>
+							</div>
 						<?php
 						endforeach; ?>
 					</div>
-					<div class="tag-category">
-						<div class="filter-category-title">
-							Теги
-						</div>
-						<div class="tag-category-body">
-							<?foreach ($tags as $tag) : ?>
-								<div class="switch">
-									<input type="checkbox" class="category_tag_checkbox category_checkbox" value="<?=$tag->getID()?>" form="filter-form">
-									<label><?=$tag->getName()?></label>
-								</div>
-							<?php
-							endforeach; ?>
-						</div>
-					</div>
-					<input type="button" class="filter-button filter-button-checkbox redirect-button" id="button_on_checkbox"  style="display:none" value="Принять">
-
-					<div class="filter-buttons">
-						<div class="btn btn-normal filter-button redirect-button">Отфильтровать</div>
-						<div class="btn btn-normal filter-button reset-button">Сбросить</div>
-					</div>
-				</form>
 				</div>
-			</div>
+				<div class="filter-buttons">
+					<div class="btn btn-normal filter-button redirect-button">Отфильтровать</div>
+					<div class="btn btn-normal filter-button reset-button">Сбросить</div>
+				</div>
+			</form>
 		</div>
 		<div class="item-list">
 
@@ -237,15 +229,12 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 <script src="/js/fix-node.js"></script>
 <script src="/js/fixed-filters.js"></script>
 
-<script src="/js/filter-button.js"></script>
+<!--<script src="/js/filter-button.js"></script>-->
 <script src="/js/filter-reset.js"></script>
-
 <script src="/js/get-search-query.js"></script>
 <script src="/js/filter-get-query.js"></script>
 <script src="/js/queryPush.js"></script>
 <script src="/js/filter-set-query.js"></script>
-
-
 
 <?php if ($isAdmin): ?>
 <script src="/js/delete-item.js"></script>
