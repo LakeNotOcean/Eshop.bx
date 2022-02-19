@@ -11,7 +11,7 @@
 	font-weight: 600;
 }
 
-input:not([type=checkbox]), select, textarea {
+.input, select, textarea {
 	appearance:none;
 	flex: 1;
 	display: block;

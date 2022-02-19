@@ -38,7 +38,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 							<label for="min-price" class="price-label">мин. цена</label>
 							<div class="price-input">
 								₽<input type=text id="min-price" name="min-price" placeholder="<?= $price['minPrice']?>"
-									   class="price-category-body-int price-category-body-int-min">
+									   class="input">
 							</div>
 						</div>
 						<div class="range-dash"></div>
@@ -46,7 +46,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 							<label for="max-price" class="price-label">макс. цена</label>
 							<div class="price-input">
 								₽<input type=text id="max-price" name="max-price" placeholder="<?= $price['maxPrice']?>"
-									   class="price-category-body-int price-category-body-int-max">
+									   class="input">
 							</div>
 						</div>
 					</div>
@@ -131,7 +131,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 						<div class="item-other-to-top">
 							<div class="item-other-header">
 								<?php if ($isAdmin): ?>
-								<input name="item-title" value="<?= htmlspecialchars($item->getTitle()) ?>">
+								<input name="item-title" value="<?= htmlspecialchars($item->getTitle()) ?>" class="input">
 								<?php else: ?>
 								<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
 								<?php endif;?>
@@ -156,14 +156,14 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 								<div class="review-count">(<?= random_int(5, 50) ?> отзывов)</div>
 							</div>
 							<?php if ($isAdmin): ?>
-							<input name="item-sort_order" class="display-order" type="number" value="<?= $item->getSortOrder() ?>">
+							<input name="item-sort_order" class="input display-order" type="number" value="<?= $item->getSortOrder() ?>">
 							<div class="admin-btn-container">
 								<a class="btn btn-normal" href="<?=URLResolver::resolve('edit-item-page', ['id' => $item->getId()])?>">Редактировать</a>
-								<input type="submit" class="btn btn-normal" value="Сохранить">
+								<input type="submit" style="display: none">
 								<a class="btn btn-delete">Удалить</a>
 							</div>
-							<input name="item-price" class="price" type="number" value="<?= htmlspecialchars($item->getPrice()) ?>">₽
-							<input name="item-id" value="<?= $item->getId() ?>" type="hidden">
+							<input name="item-price" class="input price" type="number" value="<?= htmlspecialchars($item->getPrice()) ?>">₽
+							<input name="item-id" value="<?= $item->getId() ?>" type="hidden" class="input">
 								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 							<?php else: ?>
 							<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>

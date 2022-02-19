@@ -1,6 +1,5 @@
 @import "lib/pagination.css";
 @import "lib/card.css";
-@import "lib/btn.css";
 @import "lib/input.css";
 
 .container {
@@ -240,14 +239,6 @@ filters price category
 	margin: 5px;
 	background: #C4C4C4;
 }
-
-/*.price-box-min {*/
-/*	margin-right: 10px;*/
-/*}*/
-
-/*.price-box-max {*/
-/*	margin-left: 10px;*/
-/*}*/
 
 .price-label {
 	font-size: 11px;

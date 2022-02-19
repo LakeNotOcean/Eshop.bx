@@ -18,25 +18,25 @@
 				<label for="item-title" class="field">
 					<span class="label-title">Название товара</span>
 					<input type="text" id="item-title" name="item-title" placeholder="Ввести название товара"
-						   value="<?= isset($item) ? $item->getTitle() : '' ?>">
+						   value="<?= isset($item) ? $item->getTitle() : '' ?>" class="input">
 				</label>
 
 				<label for="item-price" class="field">
 					<span class="label-title">Стоимость товара</span>
 					<input type="number" id="item-price" name="item-price" placeholder="Ввести стоимость товара"
-						   value="<?= isset($item) ? $item->getPrice() : '' ?>">
+						   value="<?= isset($item) ? $item->getPrice() : '' ?>" class="input">
 				</label>
 
 				<label for="item-short-description" class="field">
 					<span class="label-title">Краткое описание</span>
 					<input type="text" id="item-short-description" name="item-short-description" placeholder="Ввести краткое описание товара"
-						   value="<?= isset($item) ? $item->getShortDescription() : '' ?>">
+						   value="<?= isset($item) ? $item->getShortDescription() : '' ?>" class="input">
 				</label>
 
 				<label for="item-full-description" class="field">
 					<span class="label-title">Описание</span>
 					<input type="text" id="item-full-description" name="item-full-description" placeholder="Ввести полное описание товара"
-						   value="<?= isset($item) ? $item->getFullDescription() : '' ?>">
+						   value="<?= isset($item) ? $item->getFullDescription() : '' ?>" class="input">
 				</label>
 
 				<label for="item-tags" class="field">
@@ -47,13 +47,13 @@
 							array_map(function(\Up\Entity\ItemsTag $tag) {
 								return $tag->getName();
 							}, $item->getTags())
-						) : '' ?>">
+						) : '' ?>" class="input">
 				</label>
 
 				<label for="item-sort_order" class="field">
 					<span class="label-title">Порядок сортировки</span>
 					<input type="number" id="item-sort_order" name="item-sort_order" placeholder="Ввести порядок сортировки"
-						   value="<?= isset($item) ? $item->getSortOrder() : '' ?>">
+						   value="<?= isset($item) ? $item->getSortOrder() : '' ?>" class="input">
 				</label>
 			</div>
 
@@ -109,7 +109,7 @@
 			<div class="btn btn-add add-category">Добавить категорию</div>
 		</div>
 
-		<input type="submit" value="Сохранить товар в базу данных" class="btn btn-normal">
+		<input type="submit" value="Сохранить товар в базу данных" class="btn btn-normal input">
 	</form>
 </div>
 <script src="/js/preview-images.js"></script>

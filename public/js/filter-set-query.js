@@ -1,5 +1,5 @@
 let filterCheckboxes = document.getElementsByClassName('category_checkbox');
-let priceInputs = document.getElementsByClassName('price-category-body-int');
+let priceInputs = document.querySelectorAll('.price-input input');
 let paramsQuery = (new URL(document.location)).searchParams;
 let currentLocation= decodeURI(location.search.toString());
 let searchField = document.getElementsByClassName('search-field');
@@ -22,12 +22,12 @@ for (let priceInput of priceInputs)
 		let price = paramsQuery.get('price')
 		price = price.split('-')
 		let minPrice = price[0];
-		if (priceInput.classList.contains('price-category-body-int-min'))
+		if (priceInput.id === "min-price")
 		{
 			priceInput.value = minPrice;
 		}
 		let maxPrice = price[1];
-		if (priceInput.classList.contains('price-category-body-int-max'))
+		if (priceInput.id === "max-price")
 		{
 			priceInput.value = maxPrice;
 		}
