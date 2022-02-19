@@ -342,28 +342,31 @@ btn-expand
 filters tag category
 ==========================*/
 
-.switch {
+.filter-tags {
+	margin-top: 10px;
+}
+
+.tag-list {
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: 10px;
+}
+
+.tag {
 	height: 20px;
 	position: relative;
 	margin: 5px;
-
-	display: inline-block;
 }
 
-.switch label {
+.tag label {
 	display: block;
-	width: 100%;
-	height: 100%;
 	position: relative;
-	background: #eaeaea;
-	border-radius: 10%;
-	box-shadow:
-		0 3px 5px rgba(0,0,0,0.25),
-		inset 0 1px 0 rgba(255,255,255,0.3),
-		inset 0 -5px 5px rgba(100,100,100,0.1),
-		inset 0 5px 5px rgba(255,255,255,0.3);
+	border: 2px solid #D9D9D9;
+	border-radius: 1in;
+	padding: 5px;
 }
-.switch input {
+
+.tag input {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -372,8 +375,11 @@ filters tag category
 	cursor: pointer;
 }
 
-.switch input:checked ~ label { /* Button */
-	background: linear-gradient(#be9030, #d08607);
+.tag input:checked ~ label {
+	font-weight: 500;
+	color: #ffffff;
+	background: #444444;
+	border-color: #444444;
 }
 
 /*==========================

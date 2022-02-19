@@ -74,16 +74,15 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 					</div>
 					<?php endforeach;?>
 				</div>
-				<div class="tag-category">
+				<div class="filter-tags">
 					<div class="filter-title">Теги</div>
-					<div class="tag-category-body">
-						<?foreach ($tags as $tag) : ?>
-							<div class="switch">
-								<input type="checkbox" class="category_tag_checkbox category_checkbox" value="<?=$tag->getID()?>" form="filter-form">
-								<label><?=$tag->getName()?></label>
-							</div>
-						<?php
-						endforeach; ?>
+					<div class="tag-list">
+						<?php foreach ($tags as $tag):?>
+						<div class="tag">
+							<input type="checkbox" class="category_tag_checkbox category_checkbox" value="<?=$tag->getID()?>" form="filter-form">
+							<label><?=$tag->getName()?></label>
+						</div>
+						<?php endforeach; ?>
 					</div>
 				</div>
 				<div class="filter-buttons">
