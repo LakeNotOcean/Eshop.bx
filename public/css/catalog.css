@@ -327,11 +327,6 @@ btn-expand
 	border-top: 1px solid #ebebeb;
 }
 
-.spec-values-group {
-	display: flex;
-	flex-wrap: wrap;
-}
-
 .spec-value {
 	display: flex;
 	align-items: center;
