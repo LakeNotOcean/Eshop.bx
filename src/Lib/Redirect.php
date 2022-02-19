@@ -28,7 +28,7 @@ class Redirect
 	 */
 	public static function createResponseByURL(string $url, array $urlParameter = []): Response
 	{
-		$response = new Response();
+		$response = (new Response())->withStatus(301);
 
 		if (empty($urlParameter))
 		{
