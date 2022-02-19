@@ -19,7 +19,7 @@ class SpecificationDAOqueries
 		FROM up_spec_template ust
 		INNER JOIN up_spec_type u on ust.SPEC_TYPE_ID = u.ID
 		INNER JOIN up_spec_category usc on u.SPEC_CATEGORY_ID = usc.ID
-		INNER JOIN up_item_spec uis on u.ID = uis.SPEC_TYPE_ID
+		INNER JOIN `up_item-spec` uis on u.ID = uis.SPEC_TYPE_ID
 WHERE ITEM_TYPE_ID={$itemTypeId}
 GROUP BY CAT_ID,SPEC_VALUE,SPEC_ID";
 	}
@@ -51,7 +51,7 @@ GROUP BY CAT_ID,SPEC_VALUE,SPEC_ID";
             ust.NAME as SPEC_NAME,
             ust.DISPLAY_ORDER as SPEC_ORDER,
 			uis.VALUE as SPEC_VALUE
-		FROM up_item_spec uis
+		FROM `up_item-spec` uis
 		INNER JOIN up_spec_type ust on uis.SPEC_TYPE_ID = ust.ID
 		INNER JOIN up_spec_category usc on ust.SPEC_CATEGORY_ID = usc.ID
 		WHERE uis.ITEM_ID={$itemId}";
