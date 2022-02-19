@@ -23,6 +23,7 @@
 	color: black;
 	margin: 0 10px;
 	transition: .3s;
+	cursor: pointer;
 }
 
 .navigation-blocked {

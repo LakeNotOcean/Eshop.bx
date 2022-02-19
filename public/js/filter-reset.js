@@ -1,13 +1,14 @@
-let resetButton = document.querySelector('.reset-button');
+let filters = document.querySelector('.filters');
+let resetButton = filters.querySelector('.reset-button');
 resetButton.addEventListener('click', (e)=>{
-	let filterCheckboxes = document.querySelectorAll('.category_checkbox')
-	let priceInputs = document.getElementsByClassName('price-category-body-int');
-	for (let filterCheckbox of filterCheckboxes)
+	let checkboxInputs = filters.querySelectorAll('input[type=checkbox]')
+	let textInputs = filters.querySelectorAll('input[type=text]')
+	for (let checkboxInput of checkboxInputs)
 	{
-		filterCheckbox.checked = false
+		checkboxInput.checked = false
 	}
-	for (let priceInput of priceInputs)
+	for (let textInput of textInputs)
 	{
-		priceInput.value = ''
+		textInput.value = ''
 	}
 })

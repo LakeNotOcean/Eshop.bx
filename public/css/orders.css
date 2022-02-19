@@ -42,38 +42,6 @@ search
 }
 
 /*==========================
-search-icon
-==========================*/
-
-.search-icon {
-	display: flex;
-	height: 35px;
-	width: 70px;
-	justify-content: center;
-	align-items: center;
-}
-
-.search-icon div {
-	position: relative;
-	width: 15px;
-	height: 15px;
-	border-radius: 50%;
-	border: 3px solid #AFAFAF;
-	transform: rotateZ(-135deg);
-}
-
-.search-icon div::after {
-	position: absolute;
-	content: '';
-	left: -13px;
-	top: 6px;
-	width: 12px;
-	height: 3px;
-	background: #AFAFAF;
-	border-radius: 50px;
-}
-
-/*==========================
 order-list
 ==========================*/
 

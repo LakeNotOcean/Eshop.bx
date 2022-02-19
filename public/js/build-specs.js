@@ -41,6 +41,7 @@ async function createSpec(btn, specId = null, value = null)
 	//specNameInput.addEventListener('change', event => changeSpecValueInput(event.target));
 
 	let specValueInput = document.createElement('input');
+	specValueInput.className = 'input';
 	specValueInput.placeholder = 'Ввести значение спецификации';
 
 	let category = btn.parentNode;

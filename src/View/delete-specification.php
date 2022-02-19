@@ -21,7 +21,7 @@ use Up\Entity\Specification;
 				endforeach; ?>
 			</select>
 		</label>
-		<input type="submit" value="Удалить выбранную спецификацию" class="btn btn-delete">
+		<input type="submit" value="Удалить выбранную спецификацию" class="btn btn-delete input">
 		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 		<div>Внимание! Удаление спецификации приведет к ее удалению со всех товаров!</div>
 	</form>

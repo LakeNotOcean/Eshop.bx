@@ -8,14 +8,14 @@
 	<form action="/admin/addItemType" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="item-type" class="field">
 			<span class="label-title">Тип товара</span>
-			<input type="text" id="item-type" name="item-type" placeholder="Введите название типа товара">
+			<input type="text" id="item-type" name="item-type" placeholder="Введите название типа товара" class="input">
 		</label>
 		<div class="specifications">
 			<div class="specifications-title">Характеристики</div>
 			<div class="btn btn-add add-category">Добавить категорию</div>
 		</div>
 		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
-		<input type="submit" value="Сохранить тип товара в базу данных" class="btn-normal">
+		<input type="submit" value="Сохранить тип товара в базу данных" class="btn-normal input">
 	</form>
 	<?php
 	if ($isNewItemTypeAdded): ?>
@@ -23,6 +23,7 @@
 	<?php
 	endif; ?>
 </div>
+
 <script src="/js/popup-disappear.js"></script>
 <script src="/js/eshop-api.js"></script>
 <script src="/js/build-item-type.js"></script>

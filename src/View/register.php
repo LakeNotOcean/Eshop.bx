@@ -72,7 +72,7 @@ use Up\Core\Router\URLResolver; ?>
 			</div>
 		</div>
 		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
-		<input type="submit" id="submit" value="Зарегестрироваться" class="btn btn-normal">
+		<input type="submit" id="submit" value="Зарегестрироваться" class="btn btn-normal input">
 	</form>
 </div>
 

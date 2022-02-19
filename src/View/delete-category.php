@@ -20,7 +20,7 @@ use Up\Entity\SpecificationCategory;
 				endforeach; ?>
 			</select>
 		</label>
-		<input type="submit" value="Удалить выбранную категорию" class="btn btn-delete">
+		<input type="submit" value="Удалить выбранную категорию" class="btn btn-delete input">
 		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 		<div>Внимание! Удаление категории приведет к ее удалению со всех товаров!</div>
 	</form>
