@@ -20,12 +20,10 @@ class ImageService implements ImageServiceInterface
 	private const filenameHashFunc = 'md5';
 	private const validMimeTypeToCreateImageFunction = [
 		'image/jpeg' => 'imagecreatefromjpeg',
-		'image/png' => 'imagecreatefrompng',
 		'image/webp' => 'imagecreatefromwebp',
 	];
 	private const validMimeTypeToSaveImageFunction = [
 		'image/jpeg' => 'imagejpeg',
-		'image/png' => 'imagepng',
 		'image/webp' => 'imagewebp',
 	];
 	protected $imageDirPath;
