@@ -176,10 +176,11 @@
 					<div class="similar-item-cards-arrow similar-item-cards-left-arrow ">
 					<
 					</div>
+					<div class="slider-wrapper">
 					<div class="similar-item-cards-section">
 					<?
 					foreach (array_values($similarItems) as $index=>$similarItem){?>
-						<a href="/item/<?=$similarItem->getId()?>" id="<?=$index?>" class="similar-item-card similar-item-<?=$index?> card-outline <?= $index<2 ? 'similar-item-active' : 'similar-item-active'?>">
+						<a href="/item/<?=$similarItem->getId()?>" id="<?=$index?>" class="similar-item-card similar-item-<?=$index?> card-outline">
 							<div class="similar-item-image-section">
 								<picture>
 									<source srcset="<?='/' . $similarItem->getMainImage()->getPath('small', 'webp') ?>" type="image/webp">
@@ -187,11 +188,12 @@
 								</picture>
 							</div>
 							<div class="similar-item-body-section">
-								<div class="similar-item-body-title"><?= htmlspecialchars($similarItem->getTitle()) ?></div>
+								<div class="similar-item-body-title">ssss</div>
 								<div class="similar-item-body-price"><?= htmlspecialchars($similarItem->getPrice()) ?> ₽</div>
 							</div>
 						</a>
 					<?}?>
+					</div>
 					</div>
 					<div class="similar-item-cards-arrow similar-item-cards-right-arrow">
 						>
@@ -201,7 +203,6 @@
 		</div>
 	</div>
 </div>
-
 
 
 <script src="/js/scroll.js"></script>

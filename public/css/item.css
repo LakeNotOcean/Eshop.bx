@@ -136,7 +136,7 @@ item-main-container
 ==========================*/
 
 .item-main-container {
-	flex: 1;
+	flex: 1 0 ;
 	flex-direction: column;
 	margin-bottom: 70px
 }
@@ -372,6 +372,12 @@ item-reviews
 
 
 
+/*==========================
+similar-item
+==========================*/
+
+
+
 .similar-item-section{
 	display: flex;
 	flex-direction: column;
@@ -388,23 +394,26 @@ item-reviews
 }
 
 .similar-item-cards-section{
+	position: relative;
 	display: flex;
+	transition: 0.5s;
+}
+
+
+.slider-wrapper {
 	overflow: hidden;
-	max-width: 1000px;
-	flex-direction: row;
 }
 
 .similar-item-cards-arrow {
+	user-select: none;
 	align-self: center;
-	margin-top: 30px;
 	cursor: default;
 }
 .similar-item-card {
-	display: none;
-	width: 480px;
-	min-width: 480px;
+	display: flex;
+	flex: 1 0 48%;
 	height: 150px;
-	margin: 40px 10px 10px 10px;
+	margin: 0 10px 0 10px;
 
 }
 
@@ -418,6 +427,7 @@ item-reviews
 
 
 .similar-item-body-section{
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 }
@@ -435,7 +445,6 @@ item-reviews
 	justify-content: flex-end;
 	margin: 5%;
 }
-
-.similar-item-active{
-	display: flex;
-}
+/*==========================
+similar-item
+==========================*/
