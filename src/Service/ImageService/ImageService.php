@@ -140,8 +140,12 @@ class ImageService implements ImageServiceInterface
 			{
 				throw new OSError("Can't copy file from {$originalFilePath} to {$sizedImagePath}");
 			}
+			[$width, $height] = getimagesize($sizedImagePath);
 
-			$this->resizeImage($sizedImagePath, $sizeValue, $originalFilenameMime);
+			if ($width > $sizeValue || $height > $sizeValue)
+			{
+				$this->resizeImage($sizedImagePath, $sizeValue, $originalFilenameMime);
+			}
 			$sizedImagePaths[$sizeName] = $sizedImagePath;
 		}
 
