@@ -126,9 +126,6 @@ class OrderController
 
 	public function changeOrderStatus(Request $request): Response
 	{
-		(new Logger())->log('notice',
-					 'here',
-					 ['domain' => Settings::getInstance()->getSettings('domainName'), 'url' => $_SERVER['REQUEST_URI']]);
 		$orderId = $request->getPostParametersByName('order-id');
 		$orderNewStatus = $request->getPostParametersByName('order-status');
 

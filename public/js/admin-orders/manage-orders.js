@@ -11,7 +11,7 @@ for (let orderStatus of orderStatuses)
 		postBody.append('order-status', status);
 
 		let orderList = document.querySelector('.order-list');
-		let token = document.querySelector('input');
+		let token = orderList.querySelector('input');
 		postBody.append(token.name, token.value);
 
 		fetch('/admin/getOrders', {

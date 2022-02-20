@@ -72,10 +72,10 @@
 					<div class="order-label">Статус заказа:</div>
 					<div class="order-status-filter">
 						<select id="statusSelect<?= $order->getId()?>" class="order-status">
-							<option value="IN_PROCESSING">В обработке</option>
-							<option value="DELIVERY">Ожидает доставки</option>
-							<option value="DONE">Завершён</option>
-							<option value="CANCELLED">Отменён</option>
+							<option value="IN_PROCESSING" <?= $order->getStatus()->getValue() === 'IN_PROCESSING' ? 'selected' : ''?>>В обработке</option>
+							<option value="DELIVERY" <?= $order->getStatus()->getValue() === 'DELIVERY' ? 'selected' : ''?>>Ожидает доставки</option>
+							<option value="DONE" <?= $order->getStatus()->getValue() === 'DONE' ? 'selected' : ''?>>Завершён</option>
+							<option value="CANCELLED" <?= $order->getStatus()->getValue() === 'CANCELLED' ? 'selected' : ''?>>Отменён</option>
 						</select>
 					</div>
 					<div class="btn btn-delete">Удалить</div>

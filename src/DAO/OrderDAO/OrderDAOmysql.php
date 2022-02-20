@@ -42,7 +42,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	private function getOrdersQuery(int $offset, int $amountItems): string
 	{
 		return "SELECT * FROM up_order 
-				WHERE STATUS = ? and CUSTOMER_NAME like ?
+				WHERE STATUS = ? and CUSTOMER_NAME like ? 
 				ORDER BY DATE_UPDATE
 				LIMIT {$offset}, {$amountItems};";
 	}
@@ -94,7 +94,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	{
 		$query = "UPDATE up_order SET STATUS = ? WHERE ID = $orderId;";
 		$preparedStatement = $this->dbConnection->prepare($query);
-		$preparedStatement->execute($orderNewStatus);
+		$preparedStatement->execute([$orderNewStatus]);
 	}
 
 	private function prepareOrderItems(int $orderId, array $items): array
