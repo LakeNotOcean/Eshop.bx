@@ -86,8 +86,6 @@ class ItemController
 		$tags = $this->itemService->getItemsTags();
 		$price = $this->itemService->getItemsMinMaxPrice();
 
-
-
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
 		$pages = $this->templateProcessor->render('catalog.php', [
 			'items' => $items,

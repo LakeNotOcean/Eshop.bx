@@ -54,8 +54,9 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 					<div class="filter-category">
 						<div class="filter-title"><?=htmlspecialchars($category->getName())?></div>
 						<input type="checkbox" class="expand-category" id="<?=$category->getId()?>"/>
-						<label class="filter-category-label" for=<?=$category->getId()?>></label>
-						<div class="btn-back btn-expand"></div>
+						<label class="filter-category-label" for=<?=$category->getId()?>>
+							<span class="btn-back btn-expand"></span>
+						</label>
 						<div class="filter-specs-block">
 							<?php foreach ($category->getSpecificationList()->getEntitiesArray() as $spec) : ?>
 							<div class="spec-filter-section">
@@ -94,8 +95,8 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 		<div class="item-list">
 
 			<?php if ($itemsAmount === 0): ?>
-			<div class="item-no-results">
-				По вашему запросу не найдено ни одного товара! Попробуйте изменить условия поиска
+			<div class="message-no-results">
+				По вашему запросу не найдено ни одного товара. Попробуйте изменить условия поиска.
 			</div>
 			<?php endif; ?>
 
