@@ -773,7 +773,7 @@ FROM
 (select
 	 ITEM_ID as ITEM_ID,
 	 COUNT(VALUE) as COUNT
- FROM up_item_spec
+ FROM `up_item-spec`
  WHERE ";
 		$where = [];
 		foreach ($newSpecs as $spec=>$values)

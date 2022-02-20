@@ -2,27 +2,21 @@
 
 namespace Up\Controller;
 
-use Up\Core\Database\DefaultDatabase;
 use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
-use Up\DAO\ImageDAO\ImageDAOmysql;
-use Up\Entity\EntityArray;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
-use Up\Entity\ItemsImage;
 use Up\Entity\ItemType;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 use Up\Entity\User\UserEnum;
-use Up\Entity\User\UserRole;
 use Up\Lib\Paginator\Paginator;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
-use Up\Service\TagService\TagService;
 use Up\Service\TagService\TagServiceInterface;
-use Up\Service\UserService\UserServiceInterface;
+
 
 class ItemController
 {
