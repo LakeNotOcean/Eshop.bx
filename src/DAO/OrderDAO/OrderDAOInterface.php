@@ -15,4 +15,6 @@ interface OrderDAOInterface
 	public function addOrder(Order $order): void;
 
 	public function addOrderItems(int $orderId, array $items): void;
+
+	public function updateOrderStatus(int $orderId, string $orderNewStatus): void;
 }

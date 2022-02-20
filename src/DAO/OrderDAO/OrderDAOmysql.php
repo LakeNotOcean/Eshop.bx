@@ -90,6 +90,13 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		}
 	}
 
+	public function updateOrderStatus(int $orderId, string $orderNewStatus): void
+	{
+		$query = "UPDATE up_order SET STATUS = ? WHERE ID = $orderId;";
+		$preparedStatement = $this->dbConnection->prepare($query);
+		$preparedStatement->execute($orderNewStatus);
+	}
+
 	private function prepareOrderItems(int $orderId, array $items): array
 	{
 		$itemsCount = [];
