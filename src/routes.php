@@ -52,7 +52,8 @@ $router->get('/admin/editCategory', [CategoryController::class, 'editCategoriesP
 
 $router->get('/admin/', [ItemController::class, 'getItems'], 'home-admin');
 $router->get('/admin/getOrders', [OrderController::class, 'getOrders'], 'orders-admin');
-$router->post('/admin/getOrders', [OrderController::class, 'changeOrderStatus'], 'order-change-status');
+$router->post('/admin/changeOrderStatus', [OrderController::class, 'changeOrderStatus'], 'order-change-status');
+$router->post('/admin/deleteOrder', [OrderController::class, 'deleteOrder'], 'order-delete');
 
 //API
 $router->get('/api/v1/category/detail', [CategoryController::class, 'getCategoriesWithSpecsJSON'], 'category-detail');

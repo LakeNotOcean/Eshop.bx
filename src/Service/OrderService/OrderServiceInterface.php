@@ -17,4 +17,6 @@ interface OrderServiceInterface
 
 	public function updateOrderStatus(int $orderId, string $orderNewStatus): void;
 
+	public function deleteOrder(int $orderId): void;
+
 }

@@ -97,6 +97,12 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		$preparedStatement->execute([$orderNewStatus]);
 	}
 
+	public function deleteOrder(int $orderId): void
+	{
+		$query = "DELETE FROM up_order WHERE ID = $orderId;";
+		$this->dbConnection->query($query);
+	}
+
 	private function prepareOrderItems(int $orderId, array $items): array
 	{
 		$itemsCount = [];

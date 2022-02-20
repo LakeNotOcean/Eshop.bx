@@ -78,7 +78,7 @@
 							<option value="CANCELLED" <?= $order->getStatus()->getValue() === 'CANCELLED' ? 'selected' : ''?>>Отменён</option>
 						</select>
 					</div>
-					<div class="btn btn-delete">Удалить</div>
+					<div id="btnDelete<?= $order->getId()?>" class="btn btn-delete">Удалить</div>
 				</div>
 			</div>
 		<?php endforeach;?>
