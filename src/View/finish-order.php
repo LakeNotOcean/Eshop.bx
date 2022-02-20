@@ -23,4 +23,7 @@ use Up\Entity\Item;
 			$i++;
 		endforeach; ?>
 	</div>
+
+	<a href="/" class="btn btn-normal">Вернуться на главную</a>
+
 </div>
