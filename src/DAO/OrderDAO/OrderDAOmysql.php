@@ -66,7 +66,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	{
 		$preparedStatement = $this->getInsertPrepareStatement(
 			'up_order',
-			['CUSTOMER_NAME', 'PHONE', 'EMAIL', 'COMMENT', 'STATUS', 'DATE_CREATE', 'DATE_UPDATE']
+			['CUSTOMER_NAME', 'PHONE', 'EMAIL', 'COMMENT', 'STATUS', 'DATE_CREATE', 'DATE_UPDATE', 'USER_ID']
 		);
 		$preparedStatement->execute($this->prepareOrder($order));
 	}
@@ -74,7 +74,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	private function prepareOrder(Order $order): array
 	{
 		return [$order->getCustomerName(), $order->getPhone(), $order->getEmail(), $order->getComment(),
-				$order->getStatus(), $order->getDateCreate(), $order->getDateUpdate()];
+				$order->getStatus(), $order->getDateCreate(), $order->getDateUpdate(), $order->getUser()->getId()];
 	}
 
 	public function addOrderItems(int $orderId, array $items): void

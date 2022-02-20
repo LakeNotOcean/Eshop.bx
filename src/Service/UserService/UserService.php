@@ -66,7 +66,7 @@ class UserService implements UserServiceInterface
 		$this->startSessionIfNotExists();
 		if (!isset($_SESSION[self::UserSessionKey]))
 		{
-			$_SESSION[self::UserSessionKey] = new User('', new UserRole());
+			$_SESSION[self::UserSessionKey] = new User(0,'', new UserRole());
 		}
 
 		return $_SESSION[self::UserSessionKey];
