@@ -233,7 +233,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 
 	public function addSpecificationsToItemById(int $itemId, array $specificationsList): void
 	{
-		$query = "INSERT INTO up_item_spec (ITEM_ID, SPEC_TYPE_ID,VALUE) VALUES (?,?,?);";
+		$query = "INSERT INTO `up_item-spec` (ITEM_ID, SPEC_TYPE_ID,VALUE) VALUES (?,?,?);";
 		$prepair = $this->DBConnection->prepare($query);
 		$data = $this->prepareSpecList($itemId, $specificationsList);
 		foreach ($data as $row)
@@ -317,7 +317,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
             ust.NAME as SPEC_NAME,
             ust.DISPLAY_ORDER as SPEC_ORDER,
 			uis.VALUE as SPEC_VALUE
-		FROM up_item_spec uis
+		FROM `up_item-spec` uis
 		INNER JOIN up_spec_type ust on uis.SPEC_TYPE_ID = ust.ID
 		INNER JOIN up_spec_category usc on ust.SPEC_CATEGORY_ID = usc.ID
 		WHERE uis.ITEM_ID={$itemId}";

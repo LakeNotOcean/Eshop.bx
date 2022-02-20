@@ -80,7 +80,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	public function addOrderItems(int $orderId, array $items): void
 	{
 		$preparedStatement = $this->getInsertPrepareStatement(
-			'up_order_item',
+			'`up_order-item`',
 			['ORDER_ID', 'ITEM_ID', 'COUNT']
 		);
 		$data = $this->prepareOrderItems($orderId, $items);
