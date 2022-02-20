@@ -394,12 +394,11 @@ item-reviews
 	flex-direction: row;
 }
 
-.similar-item-cards-arrow{
+.similar-item-cards-arrow {
 	align-self: center;
 	margin-top: 30px;
 	cursor: default;
 }
-
 .similar-item-card {
 	display: none;
 	width: 480px;
