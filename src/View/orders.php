@@ -29,6 +29,7 @@
 		</form>
 	</div>
 	<div class="order-list">
+		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 		<?php foreach ($orders as $order):?>
 			<div class="order card">
 				<div class="order-line">
@@ -66,6 +67,18 @@
 				<div class="order-line">
 					<div class="order-label">Комментарий покупателя:</div>
 					<div class="order-value"><?= $order->getComment()?></div>
+				</div>
+				<div class="order-line">
+					<div class="order-label">Статус заказа:</div>
+					<div class="order-status-filter">
+						<select id="statusSelect<?= $order->getId()?>" class="order-status">
+							<option value="IN_PROCESSING" <?= $order->getStatus()->getValue() === 'IN_PROCESSING' ? 'selected' : ''?>>В обработке</option>
+							<option value="DELIVERY" <?= $order->getStatus()->getValue() === 'DELIVERY' ? 'selected' : ''?>>Ожидает доставки</option>
+							<option value="DONE" <?= $order->getStatus()->getValue() === 'DONE' ? 'selected' : ''?>>Завершён</option>
+							<option value="CANCELLED" <?= $order->getStatus()->getValue() === 'CANCELLED' ? 'selected' : ''?>>Отменён</option>
+						</select>
+					</div>
+					<div class="btn btn-delete">Удалить</div>
 				</div>
 			</div>
 		<?php endforeach;?>
@@ -119,3 +132,4 @@
 </div>
 
 <script src="/js/change-status.js"></script>
+<script src="/js/admin-orders/manage-orders.js"></script>

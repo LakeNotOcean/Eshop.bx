@@ -3,9 +3,11 @@
 namespace Up\Controller;
 
 use DateTime;
+use Up\Core\Logger\Logger;
 use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
+use Up\Core\Settings\Settings;
 use Up\Core\TemplateProcessorInterface;
 use Up\Entity\Order\Order;
 use Up\Entity\Order\OrderStatus;
@@ -120,6 +122,16 @@ class OrderController
 		]);
 
 		return (new Response())->withBodyHTML($page);
+	}
+
+	public function changeOrderStatus(Request $request): Response
+	{
+		$orderId = $request->getPostParametersByName('order-id');
+		$orderNewStatus = $request->getPostParametersByName('order-status');
+
+		$this->orderService->updateOrderStatus($orderId, $orderNewStatus);
+
+		return (new Response())->withBodyHTML('');
 	}
 
 	private function calculateTotalCost(array $items): int

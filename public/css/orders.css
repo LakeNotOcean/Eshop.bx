@@ -1,6 +1,7 @@
 @import "lib/card.css";
 @import "lib/input.css";
 @import "lib/pagination.css";
+@import "lib/popup.css";
 
 .container {
 	flex: 1;
