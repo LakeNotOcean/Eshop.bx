@@ -36,9 +36,11 @@ use Up\Core\Router\URLResolver;
 						<a href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>" class="item-title">
 							<?= htmlspecialchars($item->getTitle()) ?>
 						</a>
-						<svg class="add-to-favorites">
-							<use xlink:href="/img/sprites.svg#heart"></use>
-						</svg>
+						<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
+							<svg class="add-to-favorites">
+								<use xlink:href="/img/sprites.svg#heart"></use>
+							</svg>
+						</div>
 					</div>
 					<div class="item-short-description">
 						<?=htmlspecialchars($item->getShortDescription())?>
