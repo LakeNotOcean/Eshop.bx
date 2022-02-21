@@ -51,8 +51,6 @@ class UserController
 		$errorString .= Validator::validate($firstName, DataTypes::names());
 		$errorString .= Validator::validate($secondName, DataTypes::names());
 
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		if ($errorString !== '')
 		{
 			throw new Error($errorString);
@@ -65,8 +63,9 @@ class UserController
 		catch (Exception $e)
 		{
 			$page = $this->templateProcessor->render('register.php', [], 'layout/main.php', [
-				'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
-				'isAdmin' => $isAdmin
+				'isAuthenticated' => $request->isAuthenticated(),
+				'isAdmin' => $request->isAdmin(),
+				'userName' => $request->getUser()->getName()
 			]);
 			$response = new Response();
 			$response = $response->withStatus(409);
@@ -79,8 +78,6 @@ class UserController
 
 	public function loginUser(Request $request): Response
 	{
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$login = $request->getPostParametersByName('login');
 		$password = $request->getPostParametersByName('password');
 
@@ -92,8 +89,9 @@ class UserController
 			return (new Response())->withStatus(409)->withBodyHTML($this->templateProcessor->render(
 				'login.php', ['error' => $errorString],
 				'layout/main.php', [
-					'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
-					'isAdmin' => $isAdmin
+					'isAuthenticated' => $request->isAuthenticated(),
+					'isAdmin' => $request->isAdmin(),
+					'userName' => $request->getUser()->getName()
 			]));
 		}
 
@@ -103,10 +101,10 @@ class UserController
 		}
 		catch (UserServiceException $e)
 		{
-			$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
 			$page = $this->templateProcessor->render('login.php', [], 'layout/main.php', [
-				'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
-				'isAdmin' => $isAdmin
+				'isAuthenticated' => $request->isAuthenticated(),
+				'isAdmin' => $request->isAdmin(),
+				'userName' => $request->getUser()->getName()
 			]);
 			$response = new Response();
 			$response = $response->withStatus(409);
@@ -117,11 +115,8 @@ class UserController
 		return Redirect::createResponseByURLName('home');
 	}
 
-	public function loginUserPage(Request $request)
+	public function loginUserPage(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$nextUrlParam = '';
 		if ($request->containsQuery(static::nextUrlQueryKeyword))
 		{
@@ -136,25 +131,38 @@ class UserController
 		$page = $this->templateProcessor->render('login.php', [
 			'state' => 'process', 'next' => $nextUrlParam
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
 	}
 
-	public function registerUserPage(Request $request)
+	public function registerUserPage(Request $request): Response
 	{
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
 		$page = $this->templateProcessor->render('register.php', [
 			'state' => 'process'
 		], 'layout/main.php', [
-			'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
-		$response = new Response();
 
-		return $response->withBodyHTML($page);
+		return (new Response())->withBodyHTML($page);
+	}
+
+	public function getProfilePage(Request $request): Response
+	{
+		$page = $this->templateProcessor->render('user-profile.php', [
+			'user' => $request->getUser()
+		], 'layout/main.php', [
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
+		]);
+
+		return (new Response())->withBodyHTML($page);
 	}
 
 	/**

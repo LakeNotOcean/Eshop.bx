@@ -21,4 +21,4 @@
 	<div id="popup" class="popup <?= !$isNewCategoryAdded ? 'hidden' : ''?>">Добавлена новая категория</div>
 </div>
 
-<script src="/js/popup-disappear.js"></script>
+<script src="/js/lib/popup-disappear.js"></script>

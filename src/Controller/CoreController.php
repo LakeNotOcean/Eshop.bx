@@ -21,13 +21,11 @@ class CoreController
 
 	public function get404(Request $request)
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		return (new Response())->withBodyHTML(
 			$this->templateProcessor->render('404.php', [], 'layout/main.php', [
-				'isAuthenticated' => $isAuthenticated,
-				'isAdmin' => $isAdmin
+				'isAuthenticated' => $request->isAuthenticated(),
+				'isAdmin' => $request->isAdmin(),
+				'userName' => $request->getUser()->getName()
 			])
 		);
 	}

@@ -37,14 +37,14 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 						<div class="price-box">
 							<label for="min-price" class="price-label">мин. цена</label>
 							<div class="price-input">
-								₽<input type=text id="min-price" name="min-price" placeholder="от <?= $price['minPrice']?>" class="input">
+								₽<input type=text id="min-price" name="min-price" placeholder="<?= $price['minPrice']?>" class="input">
 							</div>
 						</div>
 						<div class="range-dash"></div>
 						<div class="price-box">
 							<label for="max-price" class="price-label">макс. цена</label>
 							<div class="price-input">
-								₽<input type=text id="max-price" name="max-price" placeholder="до <?= $price['maxPrice']?>" class="input">
+								₽<input type=text id="max-price" name="max-price" placeholder="<?= $price['maxPrice']?>" class="input">
 							</div>
 						</div>
 					</div>
@@ -208,20 +208,18 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 		</div>
 	</div>
 </div>
-
-<script src="/js/fix-node.js"></script>
+<script src="/js/showPopup.js"></script>
+<script src="/js/lib/fix-node.js"></script>
 <script src="/js/fixed-filters.js"></script>
 
-<!--<script src="/js/filter-button.js"></script>-->
-<script src="/js/showPopup.js"
-<script src="/js/filter-reset.js"></script>
-<script src="/js/get-search-query.js"></script>
-<script src="/js/filter-get-query.js"></script>
-<script src="/js/queryPush.js"></script>
-<script src="/js/filter-set-query.js"></script>
+<!--<script src="/js/catalog-filters/filter-button.js"></script>-->
+<script src="/js/catalog-filters/filter-reset.js"></script>
+<script src="/js/catalog-filters/get-search-query.js"></script>
+<script src="/js/catalog-filters/filter-get-query.js"></script>
+<script src="/js/catalog-filters/queryPush.js"></script>
+<script src="/js/catalog-filters/filter-set-query.js"></script>
 <script src="/js/popup-disappear.js"></script>
-
 <?php if ($isAdmin): ?>
-<script src="/js/delete-item.js"></script>
-<script src="/js/fast-update-item.js"></script>
+	<script src="/js/delete-item.js"></script>
+	<script src="/js/fast-update-item.js"></script>
 <?php endif;?>

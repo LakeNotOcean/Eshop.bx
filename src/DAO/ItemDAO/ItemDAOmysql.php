@@ -395,11 +395,14 @@ class ItemDAOmysql implements ItemDAOInterface
                         SORT_ORDER as SORT_ORDER,
                         SHORT_DESC as SHORT_DESC,
                         ACTIVE as ACTIVE,
-                        u.ID IMAGE_ID,
-                        u.PATH IMAGE_PATH,
-                        u.IS_MAIN IMAGE_IS_MAIN
+                        uoi.ID IMAGE_ID,
+                        uoi.PATH IMAGE_PATH,
+                        uoi.IS_MAIN IMAGE_IS_MAIN,
+                        uiws.PATH as IMAGE_WITH_SIZE_PATH,
+					    uiws.SIZE as IMAGE_WITH_SIZE_SIZE
 				FROM up_item ui
-				INNER JOIN up_image u on ui.ID = u.ITEM_ID AND u.IS_MAIN = 1
+				INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
+						 INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
 				WHERE ACTIVE = 1 AND PRICE > ? AND PRICE < ?
 				ORDER BY ui.SORT_ORDER";
 		return $result;
@@ -423,7 +426,7 @@ class ItemDAOmysql implements ItemDAOInterface
 					   SORT_ORDER as SORT_ORDER,
 					   SHORT_DESC as SHORT_DESC,
 					   FULL_DESC as FULL_DESC,
-					   ACTIVE as ACTIVE,ITEM_TYPE_ID as ITEM_TYPE_ID, uit.NAME as TYPE_NAME,
+					   ACTIVE as ACTIVE, ui.ITEM_TYPE_ID as ITEM_TYPE_ID, uit.NAME as TYPE_NAME,
 					   uis.SPEC_TYPE_ID as SPEC_TYPE_ID, uis.VALUE as VALUE, ust.NAME as ust_NAME, ust.DISPLAY_ORDER as ust_DISPLAY_ORDER, usc.ID as usc_ID,
 						usc.NAME as usc_NAME, usc.DISPLAY_ORDER as usc_DISPLAY_ORDER, u.ID as u_ID, u.IS_MAIN as IS_MAIN, u.PATH as ORIGINAL_PATH, uiws.PATH as SIZE_PATH, uiws.SIZE as SIZE
 				FROM up_item ui inner join up_item_type uit on ui.ITEM_TYPE_ID = uit.ID AND ui.ID={$id}
