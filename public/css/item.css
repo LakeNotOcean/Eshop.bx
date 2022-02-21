@@ -12,6 +12,7 @@ main {
 }
 
 .container {
+	box-sizing: border-box;
 	flex: 1;
 	display: flex;
 	flex-direction: column;
@@ -369,20 +370,9 @@ item-reviews
 	width: 80%;
 }
 
-
-
-/*==========================
-item-reviews
-==========================*/
-
-
-
-
 /*==========================
 similar-item
 ==========================*/
-
-
 
 .similar-item-section{
 	display: flex;
@@ -393,10 +383,12 @@ similar-item
 	font-size: 18px;
 	font-weight: 700;
 }
-.similar-item-main-section{
+
+.similar-item-main-section {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	margin-top: 20px;
 }
 
 .slider-wrapper {
@@ -405,29 +397,22 @@ similar-item
 	overflow: hidden;
 }
 
-.similar-item-cards-section{
-
+.similar-item-cards-section {
 	position: relative;
 	display: flex;
 	transition: 0.5s;
 }
 
-
-
-
-.similar-item-cards-arrow {
-	user-select: none;
-	align-self: center;
-	cursor: default;
+.similar-item-cards-right-arrow {
+	transform: rotateZ(-90deg);
 }
+
 .similar-item-card {
 	display: flex;
 	flex: 1 0 calc(50% - 20px);
 	height: 150px;
-	margin: 0 10px 0 10px;
-
+	margin: 10px;
 }
-
 
 .similar-item-image{
 	object-fit: contain;
@@ -435,7 +420,6 @@ similar-item
 	width: 130px;
 	margin: 10px;
 }
-
 
 .similar-item-body-section{
 	flex: 1;
@@ -456,6 +440,3 @@ similar-item
 	justify-content: flex-end;
 	margin: 5%;
 }
-/*==========================
-similar-item
-==========================*/

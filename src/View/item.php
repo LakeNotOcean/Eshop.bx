@@ -69,6 +69,7 @@
 				<a class="scroll-menu-item" title="specs">Характеристики</a>
 				<a class="scroll-menu-item" title="description">Описание</a>
 				<a class="scroll-menu-item" title="reviews">Отзывы</a>
+				<a class="scroll-menu-item" title="similar">Похожие товары</a>
 			</div>
 		</div>
 
@@ -168,18 +169,17 @@
 				</div>
 			</div>
 			<div class="similar-item-section">
+				<a class="anchor" id="similar"></a>
 				<div class="similar-item-title">
 					Похожие товары
 				</div>
 				<div class="similar-item-main-section">
-					<div class="similar-item-cards-arrow similar-item-cards-left-arrow ">
-					<
-					</div>
+					<div class="btn-back similar-item-cards-left-arrow"></div>
 					<div class="slider-wrapper">
 					<div class="similar-item-cards-section">
-					<?
+					<?php
 					foreach (array_values($similarItems) as $index=>$similarItem){?>
-						<a href="/item/<?=$similarItem->getId()?>" id="<?=$index?>" class="similar-item-card similar-item-<?=$index?> card-outline">
+						<a href="/item/<?=$similarItem->getId()?>" class="similar-item-card card-outline">
 							<div class="similar-item-image-section">
 								<picture>
 									<source srcset="<?='/' . $similarItem->getMainImage()->getPath('small', 'webp') ?>" type="image/webp">
@@ -191,12 +191,10 @@
 								<div class="similar-item-body-price"><?= htmlspecialchars($similarItem->getPrice()) ?> ₽</div>
 							</div>
 						</a>
-					<?}?>
+					<?php }?>
 					</div>
 					</div>
-					<div class="similar-item-cards-arrow similar-item-cards-right-arrow">
-						>
-					</div>
+					<div class="btn-back similar-item-cards-right-arrow"></div>
 				</div>
 			</div>
 		</div>
