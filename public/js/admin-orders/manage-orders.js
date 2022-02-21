@@ -36,8 +36,7 @@ for (let btnDelete of deleteButtons)
 		let postBody = new FormData();
 		postBody.append('order-id', id);
 
-		let orderList = document.querySelector('.order-list');
-		let token = orderList.querySelector('input');
+		let token = document.querySelector('.token');
 		postBody.append(token.name, token.value);
 
 		fetch('/admin/deleteOrder', {
@@ -52,17 +51,4 @@ for (let btnDelete of deleteButtons)
 			}
 		});
 	})
-}
-
-function popup(text) {
-	let popup = document.createElement('div');
-	popup.textContent = text;
-	popup.classList.add('popup');
-	document.querySelector('body').append(popup);
-	setTimeout(() => {
-		popup.classList.add('hidden');
-	}, 2000);
-	setTimeout(() => {
-		popup.remove();
-	}, 2100);
 }

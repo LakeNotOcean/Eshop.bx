@@ -27,7 +27,7 @@ class CSRF
 		}
 		$fieldName = static::TOKEN_FIELD_NAME;
 		$token = static::getToken();
-		return "<input name=\"{$fieldName}\" type=\"hidden\" value=\"{$token}\" >";
+		return "<input name=\"{$fieldName}\" type=\"hidden\" value=\"{$token}\" class=\"token\">";
 	}
 
 	public static function getToken()
