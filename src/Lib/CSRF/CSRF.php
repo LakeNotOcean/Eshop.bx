@@ -6,17 +6,17 @@ use Up\Core\Error\ValidationException;
 
 class CSRF
 {
-	private const tokenSessionKey = 'CSRF';
-	public const tokenFieldName = 'csrf_token';
+	private const TOKEN_SESSION_KEY = 'CSRF';
+	public const TOKEN_FIELD_NAME = 'csrf_token';
 
 	public static function generateToken()
 	{
-		$_SESSION[static::tokenSessionKey] = static::generateTokenString();
+		$_SESSION[static::TOKEN_SESSION_KEY] = static::generateTokenString();
 	}
 
 	public static function tokenExist(): bool
 	{
-		return isset($_SESSION[static::tokenSessionKey]);
+		return isset($_SESSION[static::TOKEN_SESSION_KEY]);
 	}
 
 	public static function getFormField()
@@ -25,14 +25,14 @@ class CSRF
 		{
 			static::generateToken();
 		}
-		$fieldName = static::tokenFieldName;
+		$fieldName = static::TOKEN_FIELD_NAME;
 		$token = static::getToken();
 		return "<input name=\"{$fieldName}\" type=\"hidden\" value=\"{$token}\" >";
 	}
 
 	public static function getToken()
 	{
-		return $_SESSION[static::tokenSessionKey];
+		return $_SESSION[static::TOKEN_SESSION_KEY];
 	}
 
 	/**
@@ -40,7 +40,7 @@ class CSRF
 	 */
 	public static function validateToken(string $token): bool
 	{
-		if (!isset($_SESSION[static::tokenSessionKey]))
+		if (!isset($_SESSION[static::TOKEN_SESSION_KEY]))
 		{
 			throw new ValidationException('CSRF token ');
 		}
@@ -52,7 +52,7 @@ class CSRF
 	{
 		if (static::tokenExist())
 		{
-			unset($_SESSION[static::tokenSessionKey]);
+			unset($_SESSION[static::TOKEN_SESSION_KEY]);
 		}
 	}
 
