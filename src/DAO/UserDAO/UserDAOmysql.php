@@ -3,6 +3,7 @@
 namespace Up\DAO\UserDAO;
 
 use Up\Core\Database\DefaultDatabase;
+use Up\Core\Password;
 use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
 use Up\Entity\User\UserRole;
@@ -34,7 +35,7 @@ class UserDAOmysql implements UserDAOInterface
 			$resultList[$row['USER_LOGIN']] = $row['USER_PASSWORD'];
 		}
 
-		return array_key_exists($login, $resultList) && password_verify($password, $resultList[$login]);
+		return array_key_exists($login, $resultList) && Password::verifyPassword($password, $resultList[$login]);
 	}
 
 	public function getUserByLogin(string $login): User
@@ -46,7 +47,7 @@ class UserDAOmysql implements UserDAOInterface
 
 	public function addUser(User $user, string $password): void
 	{
-		$password = password_hash($password, PASSWORD_BCRYPT);
+		$password = PassWord::hashPassword($password);
 
 		$preparedQuery = $this->DBConnection->prepare(
 			'INSERT INTO up_user (LOGIN, EMAIL, PHONE, PASSWORD, ROLE_ID,FIRST_NAME,SECOND_NAME)
@@ -142,5 +143,13 @@ class UserDAOmysql implements UserDAOInterface
 		$preparedStatement = $this->DBConnection->prepare($query);
 		$preparedStatement->execute(
 			[$user->getFirstName(), $user->getSecondName(), $user->getPhone(), $user->getEmail()]);
+	}
+
+	public function updatePassword(User $user, string $newPassword)
+	{
+		$newPasswordHash = Password::hashPassword($newPassword);
+
+		$query = "UPDATE up_user SET PASSWORD = '{$newPasswordHash}' WHERE ID = {$user->getId()}";
+		$this->DBConnection->query($query);
 	}
 }

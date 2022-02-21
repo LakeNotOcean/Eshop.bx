@@ -209,4 +209,61 @@ class UserController
 		return (new Response())->withBodyHTML('');
 	}
 
+	public function changePasswordPage(Request $request)
+	{
+		return (new Response())->withBodyHTML($this->templateProcessor->render(
+			'change-password.php', [], 'layout/main.php', [
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()]
+		));
+	}
+
+	public function changePassword(Request $request)
+	{
+		if (!(
+			$request->containsPost('oldPassword') ||
+			$request->containsPost('newPassword1') ||
+			$request->containsPost('newPassword2')
+		))
+		{
+			return Redirect::createResponseByURLName('change-password');
+		}
+		$oldPassword = $request->getPostParametersByName('oldPassword');
+		$newPassword1 = $request->getPostParametersByName('newPassword1');
+		$newPassword2 = $request->getPostParametersByName('newPassword2');
+
+		$validationErrors = [];
+		if (!$this->userService->isValidPassword($oldPassword, $request->getUser()))
+		{
+			$validationErrors[] = 'Неверно введенный изменяемый пароль';
+		}
+
+		if (!($newPassword1 === $newPassword2))
+		{
+			$validationErrors[] = 'Новые пароли не совпадают';
+		}
+		$passwordValidationError = Validator::validate($newPassword1, DataTypes::password());
+
+		if (!empty($passwordValidationError))
+		{
+			$validationErrors[] = 'Проблемы нового пароля: ' . $passwordValidationError;
+		}
+
+		if (!empty($validationErrors))
+		{
+			return (new Response())->withBodyHTML($this->templateProcessor->render(
+				'change-password.php', [
+					'errors' => $validationErrors
+			], 'layout/main.php', [
+										 'isAuthenticated' => $request->isAuthenticated(),
+										 'isAdmin' => $request->isAdmin(),
+										 'userName' => $request->getUser()->getName()]
+			));
+		}
+
+		$this->userService->updatePassword($newPassword1, $request->getUser());
+
+		return Redirect::createResponseByURLName('home');
+	}
 }
