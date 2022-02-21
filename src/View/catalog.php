@@ -121,7 +121,9 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 								</svg>
 							</div>
 							<?php if ($isAdmin): ?>
-							<textarea name="item-short-description"><?=htmlspecialchars($item->getShortDescription())?></textarea>
+								<div class="textarea-container">
+									<textarea name="item-short-description" class="item-short-description-textarea"><?=htmlspecialchars($item->getShortDescription())?></textarea>
+								</div>
 							<?php else: ?>
 							<div class="item-short-description">
 								<?=htmlspecialchars($item->getShortDescription())?>
