@@ -73,11 +73,11 @@ document.querySelector('.form-add').addEventListener('submit', (e) => {
 			item.append('item-type', (new URLSearchParams(document.location.search)).get('item-type'));
 		}
 		let mainImgInput = document.querySelector('[name=main-image]');
-		if(mainImgInput.files.length === 0)
+		if(mainImgInput.files.length === 0 && document.querySelector('[alt=main-image]').name === '')
 			throw new Error('Главная картинка не прикреплена');
 		item.append('main-image', mainImgInput.files[0]);
 		let otherImgInput = document.querySelector('[name=other-images]');
-		if(otherImgInput.files.length === 0)
+		if(otherImgInput.files.length === 0 && document.querySelectorAll('[alt=other-image]').length === 0)
 			throw new Error('Нужна хотя бы одна дополнительная картинка');
 		for (let file of otherImgInput.files)
 		{
