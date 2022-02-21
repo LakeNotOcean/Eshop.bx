@@ -52,7 +52,7 @@
 					</picture>
 				</div>
 				<div class="images-other">
-					<?php foreach ($item->getImages() as $image): ?>
+					<?php foreach (array_slice($item->getImages(), 0, 4) as $image): ?>
 						<?php if (!$image->isMain()): ?>
 						<picture>
 							<source srcset="<?='/' . $image->getPath('small', 'webp') ?>" type="image/webp">
@@ -143,7 +143,7 @@
 					</div>
 					<div class="item-review">
 						<div class="item-review-photo">
-							<img src="/img/<?= $item->getId() ?>.png" alt="person">
+							<img src="/img/person.jpg" alt="person">
 						</div>
 						<div class="item-review-data">
 							<div class="item-review-name">Юлия</div>
@@ -156,15 +156,14 @@
 
 					<div class="item-review">
 						<div class="item-review-photo">
-							<img src="/img/<?= $item->getId() ?>.png" alt="person">
+							<img src="/img/person.jpg" alt="person">
 						</div>
 						<div class="item-review-data">
-							<div class="item-review-name">Юлия</div>
-							<div class="item-review-date">11 января 2022 г.</div>
+							<div class="item-review-name">Ахмед</div>
+							<div class="item-review-date">15 января 2022 г.</div>
 						</div>
 						<div class="item-review-text">
-							Супер качество сборки и легкость смены батареи!работает даже на пузе или волосатой моей ноге!очень скользкие пластинки на подошве-не надо звать трактор!оптика не светит!!!-так что не смотрите на линзу!!!-скорей всего батарейки хватит года на два по этой причине.
-						</div>
+							Вах такой дешовый карта, успеть бы еще купить, заверните две. Яичница жарит, кищмищ сушит. Мамой клянусь тетрис почти не тормозит</div>
 					</div>
 				</div>
 			</div>
