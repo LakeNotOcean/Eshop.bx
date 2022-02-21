@@ -8,6 +8,7 @@
 	background: #fff;
 	font-weight: 500;
 	cursor: pointer;
+	user-select: none;
 }
 
 .btn:hover {
@@ -50,6 +51,7 @@
 	color: #107F84;
 	font-weight: 500;
 	cursor: pointer;
+	user-select: none;
 }
 
 .btn-change:hover {
