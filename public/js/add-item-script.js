@@ -27,18 +27,7 @@ function resetForm(form) {
 	createItemTemplate();
 }
 
-function popup(text) {
-	let popup = document.createElement('div');
-	popup.textContent = text;
-	popup.classList.add('popup');
-	document.querySelector('.form-container').append(popup);
-	setTimeout(() => {
-		popup.classList.add('hidden');
-	}, 2000);
-	setTimeout(() => {
-		popup.remove();
-	}, 2100);
-}
+
 
 function sendPost(item) {
 	return fetch('/admin/addItem', {
@@ -74,11 +63,15 @@ document.querySelector('.form-add').addEventListener('submit', (e) => {
 		item.append('other-images[]', file);
 	}
 	sendPost(item).then((r) => {
-		if(r.ok) {
-			popup('Товар добавлен');
-			resetForm(e.target);
+		if(r.redirected) {
+			//location.reload();
+			setTimeout(() => {
+				location.href = r.url;
+			}, 500);
+			showPopup('Товар добавлен');
+			//resetForm(e.target);
 		} else {
-			popup('Товар не удалось добавить.')
+			showPopup('Товар не удалось добавить.')
 		}
 	});
 });

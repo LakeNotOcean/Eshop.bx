@@ -103,7 +103,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 			<?php
 			foreach ($items as $item) : ?>
 
-				<<?= $isAdmin ? 'form enctype="multipart/form-data" action="' . URLResolver::resolve('fast-item-update') . '" method="post"' : "a href=\"" . URLResolver::resolve('item-detail', ['id' => $item->getId()]) . "\"" ?> class="item card card-hover">
+				<<?= $isAdmin ? 'form enctype="multipart/form-data" action="' . URLResolver::resolve('fast-item-update') . '" name="fast-update" method="post"' : "a href=\"" . URLResolver::resolve('item-detail', ['id' => $item->getId()]) . "\"" ?> class="item card card-hover">
 					<picture>
 						<source srcset="<?='/' . $item->getMainImage()->getPath('medium', 'webp') ?>" type="image/webp">
 						<img class="item-image" src="<?= '/' . $item->getMainImage()->getPath('medium', 'jpeg') ?>" alt="Item Image">
@@ -213,12 +213,15 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 <script src="/js/fixed-filters.js"></script>
 
 <!--<script src="/js/filter-button.js"></script>-->
+<script src="/js/showPopup.js"
 <script src="/js/filter-reset.js"></script>
 <script src="/js/get-search-query.js"></script>
 <script src="/js/filter-get-query.js"></script>
 <script src="/js/queryPush.js"></script>
 <script src="/js/filter-set-query.js"></script>
+<script src="/js/popup-disappear.js"></script>
 
 <?php if ($isAdmin): ?>
 <script src="/js/delete-item.js"></script>
+<script src="/js/fast-update-item.js"></script>
 <?php endif;?>

@@ -112,7 +112,7 @@
 		<input type="submit" value="Сохранить товар в базу данных" class="btn btn-normal input">
 	</form>
 </div>
-
+<script src="/js/showPopup.js"></script>
 <script src="/js/preview-images.js"></script>
 <script src="/js/eshop-api.js"></script>
 <script src="/js/build-specs.js"></script>

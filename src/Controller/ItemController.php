@@ -13,6 +13,7 @@ use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 use Up\Entity\User\UserEnum;
 use Up\Lib\Paginator\Paginator;
+use Up\Lib\Redirect;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\TagService\TagServiceInterface;
@@ -201,7 +202,7 @@ class ItemController
 			$this->imageService->addImages($imagesInfo, $itemId);
 		}
 
-		return (new Response())->withBodyHTML('');
+		return Redirect::createResponseByURLName('edit-item', [], ['id' => $itemId]);
 	}
 
 	public function deactivateItem(Request $request, int $id): Response

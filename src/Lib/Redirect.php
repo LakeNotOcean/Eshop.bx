@@ -10,14 +10,15 @@ class Redirect
 {
 	/**
 	 * @param string $urlName
-	 * @param array $urlParameter Тут передаются get параметры
+	 * @param array $queryStringParam Тут передаются get параметры
+	 * @param array $urlParam Тут передаются параметры для шаблона пути
 	 *
 	 * @return Response
 	 * @throws ResolveException
 	 */
-	public static function createResponseByURLName(string $urlName, array $urlParameter = []): Response
+	public static function createResponseByURLName(string $urlName, array $queryStringParam = [], array $urlParam = []): Response
 	{
-		return static::createResponseByURL(URLResolver::resolve($urlName), $urlParameter);
+		return static::createResponseByURL(URLResolver::resolve($urlName, $urlParam), $queryStringParam);
 	}
 
 	/**
