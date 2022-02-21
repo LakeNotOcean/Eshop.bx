@@ -174,7 +174,6 @@ class ImageDAOmysql extends AbstractDAO implements ImageDAOInterface
 		try
 		{
 			$this->dbConnection->beginTransaction();
-			//$this->deleteImagesByItemId($itemId);
 			$insertOriginal = $this->getInsertPrepareStatement(
 				'up_original_image',
 				['PATH', 'ITEM_ID', 'IS_MAIN'],

@@ -480,7 +480,6 @@ class ItemDAOmysql implements ItemDAOInterface
 	}
 
 	/**
-	 * @param int $id
 	 * @param array<ItemsImage> $images
 	 *
 	 * @return string

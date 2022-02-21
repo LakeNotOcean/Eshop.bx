@@ -31,7 +31,7 @@ if ($user->getRole()->getName() != UserEnum::Guest())
 				</picture>
 
 				<div class="item-info">
-					<div class="item-title"><?= $item->getTitle() ?></div>
+					<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
 					<div class="item-price"><?= $item->getPrice() ?> ₽</div>
 				</div>
 			</div>

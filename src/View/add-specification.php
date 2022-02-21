@@ -15,7 +15,7 @@ use Up\Entity\SpecificationCategory;
 			<select id="category-id" name="category-id" class="input-category">
 				<?php
 				foreach ($categories as $category): ?>
-					<option value="<?= $category->getId() ?>"><?= $category->getName() ?></option>
+					<option value="<?= $category->getId() ?>"><?= htmlspecialchars($category->getName()) ?></option>
 				<?php
 				endforeach; ?>
 			</select>

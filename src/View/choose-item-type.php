@@ -14,7 +14,7 @@ use Up\Entity\ItemType;
 			<select id="type-data" id="item-type" name="item-type">
 				<?php
 				foreach ($itemTypes as $itemType): ?>
-					<option value="<?= $itemType->getId() ?>"><?= $itemType->getName() ?></option>
+					<option value="<?= $itemType->getId() ?>"><?= htmlspecialchars($itemType->getName()) ?></option>
 				<?php
 				endforeach; ?>
 			</select>

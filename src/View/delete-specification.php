@@ -16,7 +16,7 @@ use Up\Entity\Specification;
 			<select id="specification-id" name="specification-id" class="input-spec-name">
 				<?php
 				foreach ($specifications as $specification): ?>
-					<option value="<?= $specification->getId() ?>"><?= $specification->getName() ?></option>
+					<option value="<?= $specification->getId() ?>"><?= htmlspecialchars($specification->getName()) ?></option>
 				<?php
 				endforeach; ?>
 			</select>

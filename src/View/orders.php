@@ -34,15 +34,15 @@
 			<div class="order card">
 				<div class="order-line">
 					<div class="order-label">Имя покупателя:</div>
-					<div class="order-value"><?= $order->getCustomerName()?></div>
+					<div class="order-value"><?= htmlspecialchars($order->getCustomerName()) ?></div>
 				</div>
 				<div class="order-line">
 					<div class="order-label">Телефон покупателя:</div>
-					<div class="order-value"><?= $order->getPhone()?></div>
+					<div class="order-value"><?= htmlspecialchars($order->getPhone()) ?></div>
 				</div>
 				<div class="order-line">
 					<div class="order-label">Почта покупателя:</div>
-					<div class="order-value"><?= $order->getEmail()?></div>
+					<div class="order-value"><?= htmlspecialchars($order->getEmail())?></div>
 				</div>
 				<div class="order-items">
 					<div class="order-line">
@@ -53,7 +53,7 @@
 					foreach ($order->getItems() as $item):?>
 						<div class="order-item">
 							<div class="item-number"><?= $i ?>.</div>
-							<div class="item-title"><?= $item->getTitle() ?></div>
+							<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
 							<div class="item-price"><?= $item->getPrice() ?> ₽</div>
 						</div>
 						<?php
@@ -66,7 +66,7 @@
 				</div>
 				<div class="order-line">
 					<div class="order-label">Комментарий покупателя:</div>
-					<div class="order-value"><?= $order->getComment()?></div>
+					<div class="order-value"><?= htmlspecialchars($order->getComment())?></div>
 				</div>
 				<div class="order-line">
 					<div class="order-label">Статус заказа:</div>
