@@ -233,7 +233,7 @@ class ItemDAOmysql implements ItemDAOInterface
 		{
 			$this->DBConnection->query(
 				$this->getDeleteWhereAndWhereInQuery($item->getId(), array_keys($oldTags), [
-					'table_name' => 'up_item-tag',
+					'table_name' => '`up_item-tag`',
 					'item_id_name' => 'ITEM_ID',
 					'other_id_name' => 'TAG_ID',
 				])
@@ -243,7 +243,7 @@ class ItemDAOmysql implements ItemDAOInterface
 		{
 			$this->DBConnection->query(
 				$this->getDeleteWhereAndWhereInQuery($item->getId(), array_keys($oldSpecs), [
-					'table_name' => 'up_item-spec',
+					'table_name' => '`up_item-spec`',
 					'item_id_name' => 'ITEM_ID',
 					'other_id_name' => 'SPEC_TYPE_ID',
 				])
