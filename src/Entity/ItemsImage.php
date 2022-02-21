@@ -19,13 +19,18 @@ class ItemsImage extends Entity
 
 	/**
 	 * @param string $size
-	 * @param string|null $extension
+	 * @param string $extension
 	 *
 	 * @return string
 	 */
 	public function getPath(string $size, string $extension): string
 	{
 		return $this->paths[$size] . '.' . $extension;
+	}
+
+	public function getPathWithoutExtension(string $size)
+	{
+		return $this->paths[$size];
 	}
 
 	/**
@@ -37,12 +42,15 @@ class ItemsImage extends Entity
 	}
 
 	/**
-	 * @param string $path
 	 * @param string $size
+	 * @param string $path
+	 *
+	 * @return ItemsImage
 	 */
-	public function setPath(string $size, string $path): void
+	public function setPath(string $size, string $path): ItemsImage
 	{
 		$this->paths[$size] = $path;
+		return $this;
 	}
 
 	public function hasSize(string $size): bool
@@ -68,10 +76,13 @@ class ItemsImage extends Entity
 
 	/**
 	 * @param bool $isMain
+	 *
+	 * @return ItemsImage
 	 */
-	public function setIsMain(bool $isMain): void
+	public function setIsMain(bool $isMain): ItemsImage
 	{
 		$this->isMain = $isMain;
+		return $this;
 	}
 
 	/**
@@ -84,9 +95,12 @@ class ItemsImage extends Entity
 
 	/**
 	 * @param string $originalImagePath
+	 *
+	 * @return ItemsImage
 	 */
-	public function setOriginalImagePath(string $originalImagePath): void
+	public function setOriginalImagePath(string $originalImagePath): ItemsImage
 	{
 		$this->originalImagePath = $originalImagePath;
+		return $this;
 	}
 }

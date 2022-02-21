@@ -17,6 +17,7 @@ class CSRFMiddleware extends AbstractMiddleware
 
 	/**
 	 * @throws CSRFException
+	 * @throws NoSuchQueryParameterException
 	 */
 	public function __invoke(Request $request, ...$params): Response
 	{
