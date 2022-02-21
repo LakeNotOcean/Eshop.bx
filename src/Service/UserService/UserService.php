@@ -78,6 +78,11 @@ class UserService implements UserServiceInterface
 		$this->addUserToSession($user);
 	}
 
+	public function updateUser(User $user): void
+	{
+		$this->userDAO->updateUser($user);
+	}
+
 	/**
 	 * @throws Exception
 	 */

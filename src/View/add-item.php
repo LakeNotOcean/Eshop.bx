@@ -113,6 +113,7 @@
 	</form>
 </div>
 
+<script src="/js/lib/popup.js"></script>
 <script src="/js/add-item/preview-images.js"></script>
 <script src="/js/eshop-api.js"></script>
 <script src="/js/add-item/build-specs.js"></script>

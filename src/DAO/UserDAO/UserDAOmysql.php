@@ -124,4 +124,13 @@ class UserDAOmysql implements UserDAOInterface
 		$queryResult->execute();
 	}
 
+	public function updateUser(User $user): void
+	{
+		$query = "
+			UPDATE up_user SET FIRST_NAME = ? , SECOND_NAME = ? , PHONE = ? , EMAIL = ? 
+			WHERE ID = {$user->getId()}";
+		$preparedStatement = $this->DBConnection->prepare($query);
+		$preparedStatement->execute([$user->getFirstName(), $user->getSecondName(), $user->getPhone(), $user->getEmail()]);
+	}
+
 }

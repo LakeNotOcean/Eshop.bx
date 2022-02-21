@@ -19,4 +19,7 @@ interface UserServiceInterface
 	public function registerUser(User $user, string $password): void;
 
 	public function removeUserFromSession(): void;
+
+	public function updateUser(User $user): void;
+
 }

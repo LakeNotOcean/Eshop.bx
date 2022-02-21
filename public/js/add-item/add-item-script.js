@@ -27,19 +27,6 @@ function resetForm(form) {
 	createItemTemplate();
 }
 
-function popup(text) {
-	let popup = document.createElement('div');
-	popup.textContent = text;
-	popup.classList.add('popup');
-	document.querySelector('.form-container').append(popup);
-	setTimeout(() => {
-		popup.classList.add('hidden');
-	}, 2000);
-	setTimeout(() => {
-		popup.remove();
-	}, 2100);
-}
-
 function sendPost(item) {
 	return fetch('/admin/addItem', {
 		method: 'post',
