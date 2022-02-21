@@ -3,6 +3,8 @@
 	display: flex;
 	flex-direction: column;
 	background: #F6F6F6;
+	max-width: 1500px;
+	min-height: calc(100vh - var(--nav-height));
 }
 
 .search_result_count {

@@ -188,7 +188,7 @@
 								</picture>
 							</div>
 							<div class="similar-item-body-section">
-								<div class="similar-item-body-title">ssss</div>
+								<div class="similar-item-body-title"><?=htmlspecialchars($similarItem->getTitle())?></div>
 								<div class="similar-item-body-price"><?= htmlspecialchars($similarItem->getPrice()) ?> ₽</div>
 							</div>
 						</a>
