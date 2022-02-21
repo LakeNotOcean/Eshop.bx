@@ -32,15 +32,13 @@ class CategoryController
 
 	public function chooseItemType(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$itemTypes = $this->specificationsService->getItemTypes();
 		$page = $this->templateProcessor->render('choose-item-type.php', [
 			'itemTypes' => $itemTypes
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		$response = new Response();
@@ -59,7 +57,8 @@ class CategoryController
 			'isNewItemTypeAdded' => false
 		], 'layout/main.php', [
 			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAdmin' => $isAdmin,
+			'userName' => $request->getUser()->getName()
 		]);
 
 		$response = new Response();
@@ -73,9 +72,6 @@ class CategoryController
 	 */
 	public function addItemTypeAndSaveToDB(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$itemTypeName = $request->getPostParametersByName('item-type');
 		$templateSpecs = $request->getPostParametersByName('template-specs');
 		$this->specificationsService->addItemType($itemTypeName, $templateSpecs);
@@ -85,8 +81,9 @@ class CategoryController
 			'categories' => $categories,
 			'isNewItemTypeAdded' => true
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -94,14 +91,12 @@ class CategoryController
 
 	public function addCategory(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$page = $this->templateProcessor->render('add-category.php', [
 			'isNewCategoryAdded' => false
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -112,9 +107,6 @@ class CategoryController
 	 */
 	public function addCategoryAndSaveToDB(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$category = $request->getPostParametersByName('category');
 		$categoryOrder = $request->getPostParametersByName('category-order');
 		$newCategory = new SpecificationCategory(0, $category, $categoryOrder);
@@ -122,8 +114,9 @@ class CategoryController
 		$page = $this->templateProcessor->render('add-category.php', [
 			'isNewCategoryAdded' => true
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -131,16 +124,14 @@ class CategoryController
 
 	public function addSpecification(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$categories = $this->specificationsService->getCategories();
 		$page = $this->templateProcessor->render('add-specification.php', [
 			'categories' => $categories,
 			'isNewSpecAdded' => false
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -151,9 +142,6 @@ class CategoryController
 	 */
 	public function addSpecificationAndSaveToDB(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$categoryId = $request->getPostParametersByName('category-id');
 		$specName = $request->getPostParametersByName('spec-name');
 		$specOrder = $request->getPostParametersByName('spec-order');
@@ -165,8 +153,9 @@ class CategoryController
 			'categories' => $categories,
 			'isNewSpecAdded' => true
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -205,16 +194,14 @@ class CategoryController
 
 	public function deleteCategoryPage(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$categories = $this->specificationsService->getCategories();
 		$page = $this->templateProcessor->render('delete-category.php', [
 			'categories' => $categories,
 			'isCategoryDeleted' => false
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -225,9 +212,6 @@ class CategoryController
 	 */
 	public function deleteCategory(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$id = $request->getPostParametersByName('category-id');
 		$this->specificationsService->deleteCategoryById($id);
 		$categories = $this->specificationsService->getCategories();
@@ -235,8 +219,9 @@ class CategoryController
 			'categories' => $categories,
 			'isCategoryDeleted' => true
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -244,15 +229,13 @@ class CategoryController
 
 	public function chooseCategoryToSpecDelete(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$categories = $this->specificationsService->getCategories();
 		$page = $this->templateProcessor->render('choose-category-specs-delete.php', [
 			'categories' => $categories
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -260,17 +243,15 @@ class CategoryController
 
 	public function deleteSpecPage(Request $request, int $id): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$specifications = $this->specificationsService->getSpecificationByCategoryId($id);
 		$page = $this->templateProcessor->render('delete-specification.php', [
 			'specifications' => $specifications,
 			'categoryId' => $id,
 			'isSpecificationDeleted' => false
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -278,9 +259,6 @@ class CategoryController
 
 	public function deleteSpec(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$specId = $request->getPostParametersByName('specification-id');
 		$categoryId = $request->getPostParametersByName('category-id');
 		$this->specificationsService->deleteSpecificationById($specId);
@@ -290,8 +268,9 @@ class CategoryController
 			'categoryId' => $categoryId,
 			'isSpecificationDeleted' => true
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);

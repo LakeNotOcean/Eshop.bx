@@ -24,6 +24,8 @@ $router->post('/register', [UserController::class, 'registerUser'], 'register-us
 $router->post('/login', [UserController::class, 'loginUser'], 'login-user');
 $router->get('/logout', [UserController::class, 'logout'], 'logout-user');
 
+$router->get('/profile', [UserController::class, 'getProfilePage'], 'user-profile');
+
 //Admin
 $router->get('/admin/addItem', [ItemController::class, 'addItem'], 'add-item');
 $router->get('/admin/updateItem',[ItemController::class, 'updateItemPage'],'update-item-page');

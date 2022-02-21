@@ -20,4 +20,4 @@ use Up\Entity\SpecificationCategory;
 	<a class="btn btn-normal input">Выбрать категорию</a>
 </div>
 
-<script src="/js/choose-category-delete-script.js"></script>
+<script src="/js/add-item/choose-category-delete-script.js"></script>

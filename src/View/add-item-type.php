@@ -24,6 +24,6 @@
 	endif; ?>
 </div>
 
-<script src="/js/popup-disappear.js"></script>
+<script src="/js/lib/popup-disappear.js"></script>
 <script src="/js/eshop-api.js"></script>
-<script src="/js/build-item-type.js"></script>
+<script src="/js/add-item/build-item-type.js"></script>

@@ -113,7 +113,7 @@
 	</form>
 </div>
 
-<script src="/js/preview-images.js"></script>
+<script src="/js/add-item/preview-images.js"></script>
 <script src="/js/eshop-api.js"></script>
-<script src="/js/build-specs.js"></script>
-<script src="/js/add-item-script.js"></script>
+<script src="/js/add-item/build-specs.js"></script>
+<script src="/js/add-item/add-item-script.js"></script>

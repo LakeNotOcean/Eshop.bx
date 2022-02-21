@@ -172,7 +172,7 @@
 	</div>
 </div>
 
-<script src="/js/scroll.js"></script>
-<script src="/js/fix-node.js"></script>
-<script src="/js/fixed-scroll-menu.js"></script>
-<script src="/js/open-images.js"></script>
+<script src="/js/lib/scroll.js"></script>
+<script src="/js/lib/fix-node.js"></script>
+<script src="/js/item/fixed-scroll-menu.js"></script>
+<script src="/js/item/open-images.js"></script>

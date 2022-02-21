@@ -29,8 +29,8 @@ class User extends Entity
 		$this->role = $role;
 		$this->email = $email;
 		$this->phone = $phone;
-		$this->firstName=$firstName;
-		$this->secondName=$secondName;
+		$this->firstName = $firstName;
+		$this->secondName = $secondName;
 	}
 
 	/**
@@ -111,6 +111,14 @@ class User extends Entity
 	public function getPhone(): string
 	{
 		return $this->phone;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName(): string
+	{
+		return "$this->firstName $this->secondName";
 	}
 
 }
