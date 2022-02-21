@@ -46,6 +46,16 @@
 	border-color: #009AFF;
 }
 
+.btn-change {
+	color: #107F84;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.btn-change:hover {
+	text-decoration: underline;
+}
+
 /*==========================
 btn-back
 ==========================*/

@@ -97,7 +97,7 @@ search-icon
 }
 
 .sign-in {
-	margin: 0 10px !important;
+	margin: 10px 10px 0 !important;
 }
 
 /*==========================
@@ -134,6 +134,11 @@ menu
 	position: absolute;
 	left: 0;
 	top: var(--nav-height);
+}
+
+.profile {
+	right: 0;
+	left: auto;
 }
 
 .menu {

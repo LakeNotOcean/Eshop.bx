@@ -1,0 +1,45 @@
+@import "lib/btn.css";
+
+.center {
+	background: #ffffff;
+}
+
+.container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	max-width: 1000px;
+	min-height: calc(100vh - var(--nav-height));
+	padding: 30px 50px;
+}
+
+.main-title {
+	font-size: 22px;
+	font-weight: 600;
+	margin-bottom: 30px;
+}
+
+/*==========================
+user-info
+==========================*/
+
+.user-info {
+	display: flex;
+	flex-direction: column;
+	padding: 15px 0;
+	border-bottom: 1px solid #ebebeb;
+}
+
+.user-info-header {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 5px;
+}
+
+.user-info-name {
+	font-size: 17px;
+}
+
+.user-info-value {
+	color: #797979;
+}

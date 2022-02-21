@@ -94,9 +94,6 @@ class OrderController
 
 	public function getOrders(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
 		$status = $request->containsQuery('status') ? OrderStatus::from($request->getQueriesByName('status'))
 			: OrderStatus::IN_PROCESSING();
@@ -114,8 +111,9 @@ class OrderController
 			'pagesAmount' => $pagesAmount,
 			'query' => $query,
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);

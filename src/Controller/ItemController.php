@@ -50,8 +50,8 @@ class ItemController
 	 */
 	public function getItems(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
+		$isAuthenticated = $request->isAuthenticated();
+		$isAdmin = $request->isAdmin();
 
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
 		$currentPage = $currentPage > 0 ? $currentPage : 1;
@@ -94,7 +94,8 @@ class ItemController
 		], 'layout/main.php', [
 			'isAuthenticated' => $isAuthenticated,
 			'isAdmin' => $isAdmin,
-			'query' => $query
+			'query' => $query,
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($pages);
@@ -102,15 +103,13 @@ class ItemController
 
 	public function getItem(Request $request, int $id): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$item = $this->itemService->getItemById($id);
 		$pages = $this->templateProcessor->render('item.php', [
 			'item' => $item
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($pages);
@@ -121,14 +120,12 @@ class ItemController
 	 */
 	public function addItem(Request $request, int $id = 0): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$page = $this->templateProcessor->render('add-item.php', [
 			'item' => $id === 0 ? null : $this->itemService->getItemById($id)
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -136,15 +133,13 @@ class ItemController
 
 	public function updateItemPage(Request $request, int $id): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$item = $this->itemService->getItemById($id);
 		$page = $this->templateProcessor->render('add-item.php', [
 			'item' => $item
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		$response = new Response();

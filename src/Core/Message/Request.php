@@ -4,6 +4,7 @@ namespace Up\Core\Message;
 
 
 use Up\Entity\User\User;
+use Up\Entity\User\UserEnum;
 
 class Request
 {
@@ -215,6 +216,22 @@ class Request
 	public function setRouteName(string $routeName): void
 	{
 		$this->routeName = $routeName;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isAdmin(): bool
+	{
+		return $this->getUser()->getRole()->getName() == UserEnum::Admin();
+	}
+	
+	/**
+	 * @return bool
+	 */
+	public function isAuthenticated(): bool
+	{
+		return $this->getUser()->getRole()->getName() != UserEnum::Guest();
 	}
 
 }

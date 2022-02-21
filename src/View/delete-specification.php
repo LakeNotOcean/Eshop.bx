@@ -32,4 +32,4 @@ use Up\Entity\Specification;
 	endif; ?>
 </div>
 
-<script src="/js/popup-disappear.js"></script>
+<script src="/js/lib/popup-disappear.js"></script>

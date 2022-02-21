@@ -209,15 +209,15 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 	</div>
 </div>
 
-<script src="/js/fix-node.js"></script>
+<script src="/js/lib/fix-node.js"></script>
 <script src="/js/fixed-filters.js"></script>
 
-<!--<script src="/js/filter-button.js"></script>-->
-<script src="/js/filter-reset.js"></script>
-<script src="/js/get-search-query.js"></script>
-<script src="/js/filter-get-query.js"></script>
-<script src="/js/queryPush.js"></script>
-<script src="/js/filter-set-query.js"></script>
+<!--<script src="/js/catalog-filters/filter-button.js"></script>-->
+<script src="/js/catalog-filters/filter-reset.js"></script>
+<script src="/js/catalog-filters/get-search-query.js"></script>
+<script src="/js/catalog-filters/filter-get-query.js"></script>
+<script src="/js/catalog-filters/queryPush.js"></script>
+<script src="/js/catalog-filters/filter-set-query.js"></script>
 
 <?php if ($isAdmin): ?>
 <script src="/js/delete-item.js"></script>

@@ -78,4 +78,4 @@ use Up\Core\Router\URLResolver; ?>
 
 <script src="/js/user/help-user.js" type="module"></script>
 <script src="/js/user/registrate-user.js" type="module"></script>
-<script src="/js/phone-input.js"></script>
+<script src="/js/lib/phone-input.js"></script>
