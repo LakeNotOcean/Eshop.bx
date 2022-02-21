@@ -4,6 +4,7 @@ namespace Up\DAO\ItemDAO;
 
 use PDOStatement;
 use Up\Core\Database\DefaultDatabase;
+use Up\DAO\AbstractDAO;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\ItemsImage;
@@ -157,7 +158,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 	public function getItemsMinMaxPriceByItemType(int $typeId): array
 	{
 		$dbQuery = $this->getItemsMinMaxPriceByItemTypeQuery($typeId);
-		$result = $this->DBConnection->query($dbQuery);
+		$result = $this->dbConnection->query($dbQuery);
 		$minPrice = 0;
 		$maxPrice = 900000;
 		foreach ($result as $prices)
@@ -188,7 +189,8 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		string $query,
 		string $price,
 		array $tags,
-		array $specs
+		array $specs,
+		int $typeId
 	): array
 	{
 		$newSpecs = [];
@@ -206,7 +208,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				$newSpecs[$spec][] = $value;
 			}
 		}
-		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems, $query, $price, $tags, $newSpecs);
+		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems, $query, $price, $tags, $newSpecs,$typeId);
 		$result = $this->dbConnection->query($dbQuery);
 		$items = [];
 		while ($row = $result->fetch())
@@ -562,26 +564,7 @@ LIMIT "
 ";
 	}
 
-	private function getItemsByPriceQuery(): string
-	{
-		$result = "SELECT ui.ID as ui_ID,
-                        TITLE as TITLE,
-                        PRICE as PRICE,
-                        SORT_ORDER as SORT_ORDER,
-                        SHORT_DESC as SHORT_DESC,
-                        ACTIVE as ACTIVE,
-                        uoi.ID IMAGE_ID,
-                        uoi.PATH IMAGE_PATH,
-                        uoi.IS_MAIN IMAGE_IS_MAIN,
-                        uiws.PATH as IMAGE_WITH_SIZE_PATH,
-					    uiws.SIZE as IMAGE_WITH_SIZE_SIZE
-				FROM up_item ui
-				INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
-						 INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
-				WHERE ACTIVE = 1 AND PRICE > ? AND PRICE < ?
-				ORDER BY ui.SORT_ORDER";
-		return $result;
-	}
+
 
 
 	private function getItemsByOrderIdQuery(int $orderId): string
