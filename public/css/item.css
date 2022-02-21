@@ -399,6 +399,7 @@ similar-item
 }
 
 .similar-item-cards-section{
+	overflow: hidden;
 	position: relative;
 	display: flex;
 	transition: 0.5s;
@@ -407,8 +408,6 @@ similar-item
 
 .slider-wrapper {
 	width: 100%;
-	overflow: hidden;
-	scroll-behavior: smooth;
 }
 
 .similar-item-cards-arrow {
