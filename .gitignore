@@ -1,2 +1,4 @@
 .idea
 */Log/*.txt
+/src/Core/Test.php
+.gitignore
