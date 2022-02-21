@@ -176,7 +176,7 @@
 					<div class="similar-item-cards-arrow similar-item-cards-left-arrow ">
 					<
 					</div>
-
+					<div class="slider-wrapper">
 					<div class="similar-item-cards-section">
 					<?
 					foreach (array_values($similarItems) as $index=>$similarItem){?>
@@ -194,7 +194,7 @@
 						</a>
 					<?}?>
 					</div>
-
+					</div>
 					<div class="similar-item-cards-arrow similar-item-cards-right-arrow">
 						>
 					</div>

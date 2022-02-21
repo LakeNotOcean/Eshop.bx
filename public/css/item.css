@@ -398,17 +398,21 @@ similar-item
 	align-items: center;
 }
 
-.similar-item-cards-section{
+.slider-wrapper {
+	width: 100%;
+	scroll-behavior: smooth;
 	overflow: hidden;
+}
+
+.similar-item-cards-section{
+
 	position: relative;
 	display: flex;
 	transition: 0.5s;
 }
 
 
-.slider-wrapper {
-	width: 100%;
-}
+
 
 .similar-item-cards-arrow {
 	user-select: none;
