@@ -68,10 +68,10 @@ document.querySelector('.form-add').addEventListener('submit', (e) => {
 			setTimeout(() => {
 				location.href = r.url;
 			}, 500);
-			showPopup('Товар добавлен');
+			popup('Товар добавлен');
 			//resetForm(e.target);
 		} else {
-			showPopup('Товар не удалось добавить.')
+			popup('Товар не удалось добавить.')
 		}
 	});
 });

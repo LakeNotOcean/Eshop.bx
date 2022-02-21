@@ -208,7 +208,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 		</div>
 	</div>
 </div>
-<script src="/js/lib/showPopup.js"></script>
+<script src="/js/lib/popup.js"></script>
 <script src="/js/lib/fix-node.js"></script>
 <script src="/js/fixed-filters.js"></script>
 
