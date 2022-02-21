@@ -19,9 +19,9 @@ for (let orderStatus of orderStatuses)
 			body: postBody
 		}).then((r) => {
 			if (r.ok) {
-				popup('Статус заказа обновлён');
+				showPopup('Статус заказа обновлён');
 			} else {
-				popup('Статус заказа не удалось обновить')
+				showPopup('Статус заказа не удалось обновить')
 			}
 		});
 	})
@@ -44,10 +44,10 @@ for (let btnDelete of deleteButtons)
 			body: postBody
 		}).then((r) => {
 			if (r.ok) {
-				popup('Заказ удалён');
+				showPopup('Заказ удалён');
 				btnDelete.parentNode.parentNode.remove();
 			} else {
-				popup('Не удалось удалить заказ')
+				showPopup('Не удалось удалить заказ')
 			}
 		});
 	})

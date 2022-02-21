@@ -27,6 +27,8 @@ $router->get('/logout', [UserController::class, 'logout'], 'logout-user');
 $router->get('/profile', [UserController::class, 'getProfilePage'], 'user-profile');
 $router->post('/updateUser', [UserController::class, 'updateUser'], 'update-user');
 
+$router->get('/favorites', [ItemController::class, 'getFavoriteItems'], 'user-favorites');
+
 //Admin
 $router->get('/admin/addItem', [ItemController::class, 'addItem'], 'add-item');
 $router->get('/admin/updateItem',[ItemController::class, 'updateItemPage'],'update-item');

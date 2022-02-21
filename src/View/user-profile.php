@@ -4,6 +4,8 @@
 
 ?>
 
+<script src="/js/user/user-menu.js"></script>
+
 <link rel="stylesheet" href="/css/user-profile.css">
 
 <div class="container">
@@ -56,6 +58,6 @@
 	</div>
 </div>
 
-<script src="/js/lib/popup.js"></script>
+<script src="/js/lib/showPopup.js"></script>
 <script src="/js/user/edit-profile.js"></script>
 <script src="/js/lib/phone-input.js"></script>

@@ -131,6 +131,6 @@
 	</div>
 </div>
 
-<script src="/js/lib/popup.js"></script>
+<script src="/js/lib/showPopup.js"></script>
 <script src="/js/admin-orders/change-status.js"></script>
 <script src="/js/admin-orders/manage-orders.js"></script>

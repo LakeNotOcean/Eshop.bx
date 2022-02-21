@@ -28,10 +28,19 @@ class ItemService implements ItemServiceInterface
 		$this->tagDAO = $tagDAO;
 	}
 
-
 	public function getItems(array $limitOffset): array
 	{
 		return $this->itemDAO->getItems($limitOffset['offset'], $limitOffset['amountItems']);
+	}
+
+	public function getFavoriteItems(int $userId, array $limitOffset): array
+	{
+		return $this->itemDAO->getFavoriteItems($userId, $limitOffset['offset'], $limitOffset['amountItems']);
+	}
+
+	public function getFavoriteItemsAmount(int $userId): int
+	{
+		return $this->itemDAO->getFavoriteItemsAmount($userId);
 	}
 
 	public function getItemsByQuery(array $limitOffset, string $searchQuery): array
@@ -51,9 +60,6 @@ class ItemService implements ItemServiceInterface
 
 	public function getItemById(int $id): ItemDetail
 	{
-		//$itemCategories = $this->specificationDAO->getItemCategoriesByItem($item);
-		//$this->specificationsSort($itemCategories);
-		//$item->setSpecificationCategoryList($itemCategories);
 		return $this->itemDAO->getItemDetailById($id);
 	}
 
@@ -62,22 +68,20 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getSimilarItemById($id, $similarAmount);
 	}
 
-
 	public function getItemsAmount(string $query = ''): int
 	{
 		return $this->itemDAO->getItemsAmount($query);
 	}
 
-	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs):int
+	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs): int
 	{
 		return $this->itemDAO->getItemsAmountByFilters($query,$price,$tags,$specs);
 	}
 
 	public function getItemsTags(): array
 	{
-		$entityArray = $this->tagDAO->getAllTags();
-		$tags = $entityArray->getEntitiesArray();
-		return $tags;
+		$tags = $this->tagDAO->getAllTags();
+		return $tags->getEntitiesArray();
 	}
 
 	public function getItemsCategories(int $typeID = 1): array
@@ -99,4 +103,5 @@ class ItemService implements ItemServiceInterface
 	{
 		return $this->itemDAO->updateCommonInfo($item);
 	}
+
 }

@@ -102,11 +102,34 @@ class ItemController
 		return (new Response())->withBodyHTML($pages);
 	}
 
+	public function getFavoriteItems(Request $request): Response
+	{
+		$userId = $request->getUser()->getId();
+		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
+		$currentPage = $currentPage > 0 ? $currentPage : 1;
+		$favoriteItems = $this->itemService->getFavoriteItems($userId, Paginator::getLimitOffset($currentPage, $this->itemsInPage));
+
+		$itemsAmount = $this->itemService->getFavoriteItemsAmount($userId);
+		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
+
+		$page = $this->templateProcessor->render('favorites.php', [
+			'favoriteItems' => $favoriteItems,
+			'currentPage' => $currentPage,
+			'pagesAmount' => $pagesAmount
+		], 'layout/main.php', [
+			 'isAuthenticated' => $request->isAuthenticated(),
+			 'isAdmin' => $request->isAdmin(),
+			 'userName' => $request->getUser()->getName()
+		 ]);
+
+		return (new Response())->withBodyHTML($page);
+	}
+
 	public function getItem(Request $request, int $id): Response
 	{
 		$item = $this->itemService->getItemById($id);
 		$itemsSimilar = $this->itemService->getItemsSimilarById($id,5);
-		$pages = $this->templateProcessor->render('item.php', [
+		$page = $this->templateProcessor->render('item.php', [
 			'item' => $item,
 			'similarItems' => $itemsSimilar,
 		], 'layout/main.php', [
@@ -115,7 +138,7 @@ class ItemController
 			'userName' => $request->getUser()->getName()
 		]);
 
-		return (new Response())->withBodyHTML($pages);
+		return (new Response())->withBodyHTML($page);
 	}
 
 	/**
