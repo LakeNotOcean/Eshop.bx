@@ -57,6 +57,12 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItemDetailById($id);
 	}
 
+	public function getItemsSimilarById(int $id,int $similarAmount): array
+	{
+		return $this->itemDAO->getSimilarItemById($id, $similarAmount);
+	}
+
+
 	public function getItemsAmount(string $query = ''): int
 	{
 		return $this->itemDAO->getItemsAmount($query);

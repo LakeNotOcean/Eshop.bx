@@ -84,7 +84,35 @@ class ItemDAOmysql implements ItemDAOInterface
 		return $items;
 	}
 
-	public function getItemsMinMaxPrice()
+	public function getSimilarItemById(int $id,int $similarAmount): array
+	{
+		$dbQuery = $this->getSimilarItemByIdQuery($id,$similarAmount);
+		$result = $this->DBConnection->prepare($dbQuery);
+		$result->execute();
+		$items = [];
+		while ($row = $result->fetch())
+		{
+			$itemId = (int)$row['ui_ID'];
+			if (!array_key_exists($itemId, $items))
+			{
+				$item = new Item();
+				$this->mapItemCommonInfo($item, $row);
+				$image = new ItemsImage();
+				$this->mapItemsImageInfo($image, $row);
+				$item->setMainImage($image);
+				$items[$itemId] = $item;
+			}
+			else
+			{
+				$this->mapItemsImageInfo($items[$itemId]->getMainImage(), $row);
+			}
+		}
+
+		return $items;
+	}
+
+
+	public function getItemsMinMaxPrice(): array
 	{
 		$dbQuery = $this->getItemsMinMaxPriceQuery();
 		$result = $this->DBConnection->query($dbQuery);
@@ -359,7 +387,18 @@ class ItemDAOmysql implements ItemDAOInterface
 	}
 
 
-
+	private function getSimilarItemByIdQuery(int $itemID, int $similarAmount):string
+	{
+		$getIDquery = "Select ID, count(*) as COUNT from (SELECT
+	                                   ITEM_ID as ID,
+	                                   TAG_ID
+                                   FROM `up_item-tag`
+                                   WHERE ITEM_ID != ".$itemID." AND TAG_ID in (SELECT TAG_ID FROM `up_item-tag` WHERE ITEM_ID = ".$itemID.")) as IITI group by ID
+ORDER BY COUNT DESC
+LIMIT ".$similarAmount." ";
+		$query = $this->getQueryGetItemsById($getIDquery);
+		return $query;
+	}
 
 	private function getItemsQuery(int $offset, int $amountItems,$searchQuery = ''): string
 	{
@@ -691,7 +730,31 @@ INNER JOIN (select ID as ITEM_ID,
 
 
 
+private function getQueryGetItemsById(string $queryId): string
+{
+	$query = "SELECT ui.ID as ui_ID,
+					   TITLE as TITLE,
+					   PRICE as PRICE,
+					   SORT_ORDER as SORT_ORDER,
+					   SHORT_DESC as SHORT_DESC,
+					   ACTIVE as ACTIVE,
+					   uoi.ID as ORIGINAL_IMAGE_ID,
+					   uoi.PATH as ORIGINAL_IMAGE_PATH,
+					   uoi.IS_MAIN as ORIGINAL_IMAGE_IS_MAIN,
+					   uiws.PATH as IMAGE_WITH_SIZE_PATH,
+					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE
+				FROM up_item ui
+						 INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
+						 INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
+				WHERE ui.ID IN (
+	select uiI.ID from (";
 
+		$query .= $queryId;
+		$query .= ") as uiI
+				)
+				ORDER BY ui.SORT_ORDER desc, ui.ID;";
+		return $query;
+}
 
 
 

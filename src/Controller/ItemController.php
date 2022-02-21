@@ -17,7 +17,7 @@ use Up\Lib\Redirect;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\TagService\TagServiceInterface;
-
+use Up\Service\UserService\UserServiceInterface;
 
 class ItemController
 {
@@ -105,8 +105,10 @@ class ItemController
 	public function getItem(Request $request, int $id): Response
 	{
 		$item = $this->itemService->getItemById($id);
+		$itemsSimilar = $this->itemService->getItemsSimilarById($id,5);
 		$pages = $this->templateProcessor->render('item.php', [
-			'item' => $item
+			'item' => $item,
+			'similarItems' => $itemsSimilar,
 		], 'layout/main.php', [
 			'isAuthenticated' => $request->isAuthenticated(),
 			'isAdmin' => $request->isAdmin(),
