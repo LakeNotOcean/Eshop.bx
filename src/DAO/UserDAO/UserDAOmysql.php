@@ -132,5 +132,4 @@ class UserDAOmysql implements UserDAOInterface
 		$preparedStatement = $this->DBConnection->prepare($query);
 		$preparedStatement->execute([$user->getFirstName(), $user->getSecondName(), $user->getPhone(), $user->getEmail()]);
 	}
-
 }
