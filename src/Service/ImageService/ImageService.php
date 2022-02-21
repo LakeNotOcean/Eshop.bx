@@ -20,15 +20,14 @@ class ImageService implements ImageServiceInterface
 	private const filenameHashFunc = 'md5';
 	private const validMimeTypeToCreateImageFunction = [
 		'image/jpeg' => 'imagecreatefromjpeg',
-		'image/png' => 'imagecreatefrompng',
 		'image/webp' => 'imagecreatefromwebp',
 	];
 	private const validMimeTypeToSaveImageFunction = [
 		'image/jpeg' => 'imagejpeg',
-		'image/png' => 'imagepng',
 		'image/webp' => 'imagewebp',
 	];
 	protected $imageDirPath;
+	protected $availableExtensions;
 	protected const OriginalImagesDir = 'original/';
 
 	/**
@@ -48,6 +47,10 @@ class ImageService implements ImageServiceInterface
 		$this->imageDefaultSizes['small'] = $settings->getSettings('smallImageSize');
 		$this->imageDefaultSizes['medium'] = $settings->getSettings('mediumImageSize');
 		$this->imageDefaultSizes['big'] = $settings->getSettings('bigImageSize');
+		$this->availableExtensions = array_map(static function($mime)
+		{
+			return MimeMapper::getExtensionByMime($mime);
+		}, array_keys($this::validMimeTypeToSaveImageFunction));
 	}
 
 	/**
@@ -142,8 +145,12 @@ class ImageService implements ImageServiceInterface
 			{
 				throw new OSError("Can't copy file from {$originalFilePath} to {$sizedImagePath}");
 			}
+			[$width, $height] = getimagesize($sizedImagePath);
 
-			$this->resizeImage($sizedImagePath, $sizeValue, $originalFilenameMime);
+			if ($width > $sizeValue || $height > $sizeValue)
+			{
+				$this->resizeImage($sizedImagePath, $sizeValue, $originalFilenameMime);
+			}
 			$sizedImagePaths[$sizeName] = $sizedImagePath;
 		}
 
@@ -227,7 +234,8 @@ class ImageService implements ImageServiceInterface
 
 	public function deleteImageById(int $imageId): void
 	{
-		// TODO: Сначала нужно получить из бд картинки по id, удалить их из файловой системы, а затем удалить из бд
+		$image = $this->imageDAO->getImageById($imageId);
+		$this->deleteImageFromFileSystem($image);
 		$this->imageDAO->deleteById($imageId);
 	}
 
@@ -299,5 +307,15 @@ class ImageService implements ImageServiceInterface
 			]($image, $resultPath);
 
 		return $resultPath;
+	}
+
+	private function deleteImageFromFileSystem(ItemsImage $image)
+	{
+		unlink($image->getOriginalImagePath());
+		foreach ($image->getPathArray() as $sizedPath)
+		{
+			foreach ($this->availableExtensions as $availableExtension)
+			unlink($this->generateFilename($sizedPath, $availableExtension));
+		}
 	}
 }

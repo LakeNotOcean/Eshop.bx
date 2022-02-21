@@ -3,8 +3,8 @@
 namespace Up\Core\Logger;
 
 use Exception;
+use Up\Core\Error\DirectoryNotExist;
 use Up\Core\Logger\Error\InvalidArgumentException;
-
 
 /**
  * В месте, где необходимо залогировать происшествие требуется создать объект логгер,
@@ -18,58 +18,41 @@ use Up\Core\Logger\Error\InvalidArgumentException;
  * Третий - контекст, это массив, который включает в себе ключ параметра в сообщении и его значение,
  * для примера выше (['userName' => $userName], ['url' => 'eshop' . $url]).
  */
-class Logger implements LoggerInterface
+abstract class AbstractLogger implements LoggerInterface
 {
-	protected const ORIGINAL_PATH = '../src/Log/';
-	protected $PATH;
-	protected $file;
-
-	protected static $level = [
-		'emergency',
-		'alert',
-		'critical',
-		'error',
-		'warning',
-		'notice',
-		'info',
-		'debug',
-	];
+	protected const LOGGING_PATH = SOURCE_DIR . 'Log/';
+	protected static $instance;
+	protected $baseLogDir;
+	protected $name;
 
 	/**
-	 * @param string $PATH
+	 * @param string $name
+	 * @param string $baseLogDir
+	 *
+	 * @throws DirectoryNotExist
 	 */
-	public function __construct(string $PATH = self::ORIGINAL_PATH)
+	protected function __construct(string $name, string $baseLogDir)
 	{
-		if (is_dir($PATH))
+		if (!is_dir($baseLogDir))
 		{
-			$this->PATH = $PATH;
+			throw new DirectoryNotExist("Directory '{$baseLogDir}' does not exist");
 		}
-		else
-		{
-			$this->PATH = self::ORIGINAL_PATH;
-		}
+
+		$this->baseLogDir = $baseLogDir;
+		$this->name = $name;
 	}
 
-	public function log(string $loglevel, $message, array $context = []): void
+	/**
+	 * @throws DirectoryNotExist
+	 */
+	public static function getLogger(string $name, string $baseLogDir = self::LOGGING_PATH)
 	{
-
-		if (!in_array($loglevel, self::$level))
+		if (is_null(static::$instance))
 		{
-			throw new InvalidArgumentException();
+			static::$instance = new static($name, $baseLogDir);
 		}
 
-		$this->open($loglevel);
-		call_user_func([$this, $loglevel], $message, $context);
-	}
-
-	private function open($fileName): void
-	{
-		if (!is_dir($this->PATH))
-		{
-			mkdir($this->PATH);
-		}
-		$filePATH = $this->PATH . $fileName . '.txt';
-		$this->file = fopen($filePATH, 'a+');
+		return static::$instance;
 	}
 
 	private function interpolate($message, array $context = []): string
@@ -112,15 +95,14 @@ class Logger implements LoggerInterface
 		return $record;
 	}
 
-	private function createMessage($message, array $context, bool $isTrace = false): string
+	protected function createMessage($message, array $context, bool $isTrace = false): string
 	{
-		$dataTime = '[' . date('D M d H:i:s Y', time()) . '] ';
 		$body = '';
 		if (($message instanceof Exception) && $isTrace)
 		{
 			$body = $message;
 		}
-		elseif ($message instanceof Exception && $isTrace === false)
+		elseif ($message instanceof Exception && !$isTrace)
 		{
 			$body = $message->getMessage();
 		}
@@ -134,58 +116,11 @@ class Logger implements LoggerInterface
 			$trace = $this->trace();
 			$body .= ' ' . $trace;
 		}
-		elseif (is_string($message) && $isTrace === false)
+		elseif (is_string($message) && !$isTrace)
 		{
 			$body = $this->interpolate($message, $context);
 		}
 
-		return $dataTime . ' ' . $body . PHP_EOL;
+		return $body;
 	}
-
-	public function emergency($message, array $context = [])
-	{
-
-		$finalMessage = $this->createMessage($message, $context, 1);
-		fwrite($this->file, $finalMessage);
-		LoggerMonitor::warn();
-	}
-
-	public function alert($message, array $context = [])
-	{
-
-	}
-
-	public function critical($message, array $context = [])
-	{
-
-	}
-
-	public function error($message, array $context = [])
-	{
-
-	}
-
-	public function warning($message, array $context = [])
-	{
-		$finalMessage = $this->createMessage($message, $context, 1);
-		fwrite($this->file, $finalMessage);
-	}
-
-	public function notice($message, array $context = [])
-	{
-		$finalMessage = $this->createMessage($message, $context, 0);
-		fwrite($this->file, $finalMessage);
-	}
-
-	public function info($message, array $context = [])
-	{
-		$finalMessage = $this->createMessage($message, $context, 1);
-		fwrite($this->file, $finalMessage);
-	}
-
-	public function debug($message, array $context = [])
-	{
-
-	}
-
 }

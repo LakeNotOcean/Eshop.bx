@@ -52,10 +52,11 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 				<div class="filter-specs">
 					<?php foreach ($categories as $category) : ?>
 					<div class="filter-category">
-						<div class="filter-title"><?=htmlspecialchars($category->getName())?></div>
+						<div class="filter-title"><?= htmlspecialchars($category->getName()) ?></div>
 						<input type="checkbox" class="expand-category" id="<?=$category->getId()?>"/>
-						<label class="filter-category-label" for=<?=$category->getId()?>></label>
-						<div class="btn-back btn-expand"></div>
+						<label class="filter-category-label" for=<?=$category->getId()?>>
+							<span class="btn-back btn-expand"></span>
+						</label>
 						<div class="filter-specs-block">
 							<?php foreach ($category->getSpecificationList()->getEntitiesArray() as $spec) : ?>
 							<div class="spec-filter-section">
@@ -63,8 +64,8 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 								<div class="spec-values-group">
 									<?php foreach ($spec->getValue() as $value => $count) : ?>
 									<label class="spec-value">
-										<input type="checkbox" form="filter-form" class="category_spec_checkbox category_checkbox" name="<?= $spec->getId()?>" value="<?=$value?>">
-										<?=htmlspecialchars($value)?> (<?=$count?>)
+										<input type="checkbox" form="filter-form" class="category_spec_checkbox category_checkbox" name="<?= $spec->getId()?>" value="<?= $value ?>">
+										<?= htmlspecialchars($value) ?> (<?=$count?>)
 									</label>
 									<?php endforeach;?>
 								</div>
@@ -79,8 +80,8 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 					<div class="tag-list">
 						<?php foreach ($tags as $tag):?>
 						<div class="tag">
-							<input type="checkbox" class="category_tag_checkbox category_checkbox" value="<?=$tag->getID()?>" form="filter-form">
-							<label><?=$tag->getName()?></label>
+							<input type="checkbox" class="category_tag_checkbox category_checkbox" value="<?= $tag->getID() ?>" form="filter-form">
+							<label><?= htmlspecialchars($tag->getName()) ?></label>
 						</div>
 						<?php endforeach; ?>
 					</div>
@@ -94,8 +95,8 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 		<div class="item-list">
 
 			<?php if ($itemsAmount === 0): ?>
-			<div class="item-no-results">
-				По вашему запросу не найдено ни одного товара! Попробуйте изменить условия поиска
+			<div class="message-no-results">
+				По вашему запросу не найдено ни одного товара. Попробуйте изменить условия поиска.
 			</div>
 			<?php endif; ?>
 

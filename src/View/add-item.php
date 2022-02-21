@@ -18,7 +18,7 @@
 				<label for="item-title" class="field">
 					<span class="label-title">Название товара</span>
 					<input type="text" id="item-title" name="item-title" placeholder="Ввести название товара"
-						   value="<?= isset($item) ? $item->getTitle() : '' ?>" class="input">
+						   value="<?= isset($item) ? htmlspecialchars($item->getTitle()) : '' ?>" class="input">
 				</label>
 
 				<label for="item-price" class="field">
@@ -30,13 +30,13 @@
 				<label for="item-short-description" class="field">
 					<span class="label-title">Краткое описание</span>
 					<input type="text" id="item-short-description" name="item-short-description" placeholder="Ввести краткое описание товара"
-						   value="<?= isset($item) ? $item->getShortDescription() : '' ?>" class="input">
+						   value="<?= isset($item) ? htmlspecialchars($item->getShortDescription()) : '' ?>" class="input">
 				</label>
 
 				<label for="item-full-description" class="field">
 					<span class="label-title">Описание</span>
 					<input type="text" id="item-full-description" name="item-full-description" placeholder="Ввести полное описание товара"
-						   value="<?= isset($item) ? $item->getFullDescription() : '' ?>" class="input">
+						   value="<?= isset($item) ? htmlspecialchars($item->getFullDescription()) : '' ?>" class="input">
 				</label>
 
 				<label for="item-tags" class="field">
@@ -112,6 +112,7 @@
 		<input type="submit" value="Сохранить товар в базу данных" class="btn btn-normal input">
 	</form>
 </div>
+
 <script src="/js/preview-images.js"></script>
 <script src="/js/eshop-api.js"></script>
 <script src="/js/build-specs.js"></script>

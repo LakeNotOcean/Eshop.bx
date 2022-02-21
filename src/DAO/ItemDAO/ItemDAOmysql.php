@@ -233,7 +233,7 @@ class ItemDAOmysql implements ItemDAOInterface
 		{
 			$this->DBConnection->query(
 				$this->getDeleteWhereAndWhereInQuery($item->getId(), array_keys($oldTags), [
-					'table_name' => 'up_item-tag',
+					'table_name' => '`up_item-tag`',
 					'item_id_name' => 'ITEM_ID',
 					'other_id_name' => 'TAG_ID',
 				])
@@ -243,7 +243,7 @@ class ItemDAOmysql implements ItemDAOInterface
 		{
 			$this->DBConnection->query(
 				$this->getDeleteWhereAndWhereInQuery($item->getId(), array_keys($oldSpecs), [
-					'table_name' => 'up_item-spec',
+					'table_name' => '`up_item-spec`',
 					'item_id_name' => 'ITEM_ID',
 					'other_id_name' => 'SPEC_TYPE_ID',
 				])
@@ -480,7 +480,6 @@ class ItemDAOmysql implements ItemDAOInterface
 	}
 
 	/**
-	 * @param int $id
 	 * @param array<ItemsImage> $images
 	 *
 	 * @return string
@@ -773,7 +772,7 @@ FROM
 (select
 	 ITEM_ID as ITEM_ID,
 	 COUNT(VALUE) as COUNT
- FROM up_item_spec
+ FROM `up_item-spec`
  WHERE ";
 		$where = [];
 		foreach ($newSpecs as $spec=>$values)

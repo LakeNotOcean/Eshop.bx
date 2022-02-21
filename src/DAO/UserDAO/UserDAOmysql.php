@@ -7,6 +7,7 @@ use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
 use Up\Entity\User\UserRole;
 
+
 class UserDAOmysql implements UserDAOInterface
 {
 	private $DBConnection;
@@ -34,7 +35,6 @@ class UserDAOmysql implements UserDAOInterface
 		}
 
 		return array_key_exists($login, $resultList) && password_verify($password, $resultList[$login]);
-
 	}
 
 	public function getUserByLogin(string $login): User
@@ -74,6 +74,7 @@ class UserDAOmysql implements UserDAOInterface
 	private function getUsersList(string $login = ''): array
 	{
 		$query = "SELECT
+            uu.ID as USER_ID,
 			uu.LOGIN as USER_LOGIN,
             uu.PASSWORD as USER_PASSWORD,
             uu.PHONE as USER_PHONE,
@@ -106,6 +107,7 @@ class UserDAOmysql implements UserDAOInterface
 	private function createUserByRow($row): User
 	{
 		return new User(
+			$row['USER_ID'],
 			$row['USER_LOGIN'],
 			new UserRole(new UserEnum($row['ROLE_NAME'])),
 			$row['USER_EMAIL'],
@@ -121,4 +123,5 @@ class UserDAOmysql implements UserDAOInterface
 		$queryResult = $this->DBConnection->prepare($query);
 		$queryResult->execute();
 	}
+
 }

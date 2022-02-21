@@ -2,8 +2,10 @@
 
 namespace Up\Entity\User;
 
+use Up\Entity\Entity;
 
-class User
+
+class User extends Entity
 {
 	protected $login;
 	protected $email;
@@ -13,6 +15,7 @@ class User
 	protected $firstName;
 
 	public function __construct(
+		int $id,
 		string   $login,
 		UserRole $role,
 		string   $email = '',
@@ -21,6 +24,7 @@ class User
 		string   $secondName = ''
 	)
 	{
+		$this->id = $id;
 		$this->login = $login;
 		$this->role = $role;
 		$this->email = $email;
@@ -108,4 +112,5 @@ class User
 	{
 		return $this->phone;
 	}
+
 }

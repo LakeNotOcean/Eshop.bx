@@ -46,4 +46,14 @@ class OrderService implements OrderServiceInterface
 		$this->orderDAO->addOrderItems($orderId, $order->getItems());
 	}
 
+	public function updateOrderStatus(int $orderId, string $orderNewStatus): void
+	{
+		$this->orderDAO->updateOrderStatus($orderId, $orderNewStatus);
+	}
+
+	public function deleteOrder(int $orderId): void
+	{
+		$this->orderDAO->deleteOrder($orderId);
+	}
+
 }

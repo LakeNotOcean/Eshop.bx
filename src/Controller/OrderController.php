@@ -2,7 +2,6 @@
 
 namespace Up\Controller;
 
-use DateTime;
 use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
@@ -120,6 +119,25 @@ class OrderController
 		]);
 
 		return (new Response())->withBodyHTML($page);
+	}
+
+	public function changeOrderStatus(Request $request): Response
+	{
+		$orderId = $request->getPostParametersByName('order-id');
+		$orderNewStatus = $request->getPostParametersByName('order-status');
+
+		$this->orderService->updateOrderStatus($orderId, $orderNewStatus);
+
+		return (new Response())->withBodyHTML('');
+	}
+
+	public function deleteOrder(Request $request): Response
+	{
+		$orderId = $request->getPostParametersByName('order-id');
+
+		$this->orderService->deleteOrder($orderId);
+
+		return (new Response())->withBodyHTML('');
 	}
 
 	private function calculateTotalCost(array $items): int

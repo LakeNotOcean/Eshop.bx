@@ -1,9 +1,8 @@
 <?php
 
-namespace Up\Core\Logger\Error;
+namespace Up\Core\Error;
 
 use Exception;
-
 
 class DirectoryNotExist extends Exception
 {

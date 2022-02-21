@@ -30,7 +30,7 @@ class UserService implements UserServiceInterface
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws UserServiceException
 	 */
 	public function authorizeUserByLogin(string $login, string $password): void
 	{
@@ -43,7 +43,7 @@ class UserService implements UserServiceInterface
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws UserServiceException
 	 */
 	public function giveUserModeratorRights(string $login)
 	{
@@ -53,7 +53,7 @@ class UserService implements UserServiceInterface
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws UserServiceException
 	 */
 	public function removeUserModeratorRights(string $login)
 	{
@@ -66,7 +66,7 @@ class UserService implements UserServiceInterface
 		$this->startSessionIfNotExists();
 		if (!isset($_SESSION[self::UserSessionKey]))
 		{
-			$_SESSION[self::UserSessionKey] = new User('', new UserRole());
+			$_SESSION[self::UserSessionKey] = new User(0,'', new UserRole());
 		}
 
 		return $_SESSION[self::UserSessionKey];
@@ -79,13 +79,13 @@ class UserService implements UserServiceInterface
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws UserServiceException
 	 */
 	public function checkIsAdmin(): void
 	{
 		if ($this->getUserInfo()->getRole()->getName() != UserEnum::Admin())
 		{
-			throw new Exception('You are not authorized to perform the operation ');
+			throw new UserServiceException('You are not authorized to perform the operation ');
 		}
 	}
 

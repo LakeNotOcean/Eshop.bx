@@ -17,5 +17,4 @@ interface UserDAOInterface
 	public function removeUserModeratorRoleByLogin(string $login): void;
 
 	public function getUsersInfo(): array;
-
 }

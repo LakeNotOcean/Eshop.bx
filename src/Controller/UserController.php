@@ -57,7 +57,7 @@ class UserController
 		{
 			throw new Error($errorString);
 		}
-		$user = new User($login, new UserRole(UserEnum::User()), $email, $phone, $firstName, $secondName);
+		$user = new User(0, $login, new UserRole(UserEnum::User()), $email, $phone, $firstName, $secondName);
 		try
 		{
 			$this->userServiceImpl->registerUser($user, $password);

@@ -18,8 +18,8 @@ $router->get('/', [ItemController::class, 'getItems'], 'home');
 $router->get('/item/{positiveInt:id}', [ItemController::class, 'getItem'], 'item-detail');
 $router->get('/makeOrder/{positiveInt:id}', [OrderController::class, 'makeOrder'], 'make-order');
 $router->post('/finishOrder', [OrderController::class, 'finishOrder'], 'finish-order');
-$router->get('/register', [UserController::class, 'registerUserPage'], 'register-user-page');
-$router->get('/login', [UserController::class, 'loginUserPage'], 'login-user-page');
+$router->get('/register', [UserController::class, 'registerUserPage'], 'register-user');
+$router->get('/login', [UserController::class, 'loginUserPage'], 'login-user');
 $router->post('/register', [UserController::class, 'registerUser'], 'register-user');
 $router->post('/login', [UserController::class, 'loginUser'], 'login-user');
 $router->get('/logout', [UserController::class, 'logout'], 'logout-user');
@@ -52,7 +52,8 @@ $router->get('/admin/editCategory', [CategoryController::class, 'editCategoriesP
 
 $router->get('/admin/', [ItemController::class, 'getItems'], 'home-admin');
 $router->get('/admin/getOrders', [OrderController::class, 'getOrders'], 'orders-admin');
-
+$router->post('/admin/changeOrderStatus', [OrderController::class, 'changeOrderStatus'], 'order-change-status');
+$router->post('/admin/deleteOrder', [OrderController::class, 'deleteOrder'], 'order-delete');
 
 //API
 $router->get('/api/v1/category/detail', [CategoryController::class, 'getCategoriesWithSpecsJSON'], 'category-detail');

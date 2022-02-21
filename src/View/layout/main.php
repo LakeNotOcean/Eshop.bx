@@ -78,7 +78,7 @@ if (!isset($query))
 			<div class="btn btn-normal sign-in">Выйти</div>
 		</a>
 	<?php else: ?>
-		<a href="<?= URLResolver::resolve('login-user-page') ?>">
+		<a href="<?= URLResolver::resolve('login-user') ?>">
 			<div class="btn btn-normal sign-in">Войти</div>
 		</a>
 		<a href="<?= URLResolver::resolve('register-user') ?>">
