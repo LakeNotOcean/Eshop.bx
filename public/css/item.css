@@ -414,29 +414,29 @@ similar-item
 	margin: 10px;
 }
 
-.similar-item-image{
+.similar-item-image {
 	object-fit: contain;
 	height: 130px;
 	width: 130px;
 	margin: 10px;
 }
 
-.similar-item-body-section{
+.similar-item-body-section {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 }
 
-.similar-item-body-title
-{
+.similar-item-body-title {
 	flex: 1;
-	font-size: 20px;
-	font-weight: 700;
-	margin-top: 10px;
+	font-size: 18px;
+	font-weight: 600;
+	margin: 20px 10px;
 }
 
 .similar-item-body-price {
 	display: flex;
 	justify-content: flex-end;
-	margin: 5%;
+	margin: 0 20px 20px 20px;
+	font-size: 18px;
 }
