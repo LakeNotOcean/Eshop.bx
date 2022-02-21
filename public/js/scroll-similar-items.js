@@ -9,7 +9,7 @@ rightSimilarItemScroll.addEventListener('click', (e) => {
 	console.log(similarItemWidth * (similarItems.length + 2))
 	if (scrollablePlace.scrollLeft <= similarItemWidth * (similarItems.length - 2))
 	{
-		scrollablePlace.scroll(scrollablePlace.scrollLeft + similarItemWidth + 20,0)
+		scrollablePlace.scroll(scrollablePlace.scrollLeft + similarItemWidth + 25,0)
 	}
 
 })
@@ -17,7 +17,7 @@ rightSimilarItemScroll.addEventListener('click', (e) => {
 
 leftSimilarItemScroll.addEventListener('click', (e) => {
 
-		scrollablePlace.scroll(scrollablePlace.scrollLeft - similarItemWidth - 20,0)
+		scrollablePlace.scroll(scrollablePlace.scrollLeft - similarItemWidth - 25,0)
 
 
 })

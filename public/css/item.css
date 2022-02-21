@@ -388,20 +388,10 @@ similar-item
 	font-weight: 700;
 }
 .similar-item-main-section{
+	margin-top: 20px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-}
-
-.similar-item-cards-section{
-	position: relative;
-	display: flex;
-	transition: 0.5s;
-}
-
-
-.slider-wrapper {
-	overflow: hidden;
 }
 
 .similar-item-cards-arrow {
@@ -409,6 +399,15 @@ similar-item
 	align-self: center;
 	cursor: default;
 }
+
+.similar-item-cards-section{
+	overflow: hidden;
+	position: relative;
+	display: flex;
+	width: calc(100%);
+}
+
+
 .similar-item-card {
 	display: flex;
 	flex: 1 0 48%;
