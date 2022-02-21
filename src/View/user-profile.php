@@ -54,6 +54,7 @@
 			<div class="btn btn-normal btn-save">Сохранить</div>
 		</div>
 	</div>
+	<a class="btn btn-normal" href="<?= \Up\Core\Router\URLResolver::resolve('change-password') ?>">Сменить пароль</a>
 </div>
 
 <script src="/js/lib/popup.js"></script>

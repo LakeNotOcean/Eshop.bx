@@ -147,4 +147,14 @@ class UserService implements UserServiceInterface
 			session_start();
 		}
 	}
+
+	public function isValidPassword(string $password, User $user): bool
+	{
+		return $this->userDAO->authenticateUser($user->getLogin(), $password);
+	}
+
+	public function updatePassword(string $newPassword, User $user)
+	{
+		$this->userDAO->updatePassword($user, $newPassword);
+	}
 }
