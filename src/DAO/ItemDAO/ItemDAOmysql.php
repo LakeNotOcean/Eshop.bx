@@ -389,7 +389,7 @@ class ItemDAOmysql implements ItemDAOInterface
 
 	private function getSimilarItemByIdQuery(int $itemID, int $similarAmount):string
 	{
-		$getIDquery = "Select ID, count(*) as COUNT from (SELECT
+		$getIDquery = "Select ID, count(1) as COUNT from (SELECT
 	                                   ITEM_ID as ID,
 	                                   TAG_ID
                                    FROM `up_item-tag`
