@@ -37,7 +37,7 @@ class CSRFMiddleware extends AbstractMiddleware
 
 		try
 		{
-			CSRF::validateToken($request->getPostParametersByName(CSRF::tokenFieldName));
+			CSRF::validateToken($request->getPostParametersByName(CSRF::TOKEN_FIELD_NAME));
 		}
 		catch (ValidationException $e)
 		{
