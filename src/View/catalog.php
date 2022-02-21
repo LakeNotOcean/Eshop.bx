@@ -121,7 +121,9 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 								</svg>
 							</div>
 							<?php if ($isAdmin): ?>
-							<textarea name="item-short-description"><?=htmlspecialchars($item->getShortDescription())?></textarea>
+								<div class="textarea-container">
+									<textarea name="item-short-description" class="item-short-description-textarea"><?=htmlspecialchars($item->getShortDescription())?></textarea>
+								</div>
 							<?php else: ?>
 							<div class="item-short-description">
 								<?=htmlspecialchars($item->getShortDescription())?>
@@ -139,7 +141,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 							<?php if ($isAdmin): ?>
 							<input name="item-sort_order" class="input display-order" type="number" value="<?= $item->getSortOrder() ?>">
 							<div class="admin-btn-container">
-								<a class="btn btn-normal" href="<?=URLResolver::resolve('edit-item-page', ['id' => $item->getId()])?>">Редактировать</a>
+								<a class="btn btn-normal" href="<?=URLResolver::resolve('edit-item', ['id' => $item->getId()])?>">Редактировать</a>
 								<input type="submit" style="display: none">
 								<a class="btn btn-delete">Удалить</a>
 							</div>

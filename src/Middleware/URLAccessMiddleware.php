@@ -26,7 +26,7 @@ class URLAccessMiddleware extends AbstractMiddleware
 	 */
 	private const accessConfig = [
 		'add-item' => UserEnum::Moderator,
-		'update-item-page' => UserEnum::Moderator,
+		'update-item' => UserEnum::Moderator,
 		'choose-item-type' => UserEnum::Moderator,
 		'add-item-db' => UserEnum::Moderator,
 		'add-item-type' => UserEnum::Moderator,
@@ -36,16 +36,14 @@ class URLAccessMiddleware extends AbstractMiddleware
 		'add-specification' => UserEnum::Moderator,
 		'add-specification-db' => UserEnum::Moderator,
 		'home-admin' => UserEnum::Moderator,
-		'delete-category-page' => UserEnum::Moderator,
-		'delete-category-post' => UserEnum::Moderator,
+		'delete-category' => UserEnum::Moderator,
 		'choose-category' => UserEnum::Moderator,
-		'delete-specification-page' => UserEnum::Moderator,
 		'delete-specification' => UserEnum::Moderator,
-		'edit-item-page' => UserEnum::Moderator,
+		'edit-item' => UserEnum::Moderator,
 		'deactivate-item' => UserEnum::Moderator,
 		'fast-item-update' => UserEnum::Moderator,
 		'delete-image' => UserEnum::Moderator,
-		'edit-category-page' => UserEnum::Moderator,
+		'edit-category' => UserEnum::Moderator,
 		'orders-admin' => UserEnum::Moderator,
 	];
 	private $userService;

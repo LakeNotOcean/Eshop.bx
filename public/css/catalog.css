@@ -93,6 +93,19 @@ item-other-header
 }
 
 /*==========================
+textarea-container
+==========================*/
+
+.textarea-container {
+	display: flex;
+}
+
+.item-short-description-textarea {
+	min-height: 70px;
+	resize: none;
+}
+
+/*==========================
 item-other-footer
 ==========================*/
 
