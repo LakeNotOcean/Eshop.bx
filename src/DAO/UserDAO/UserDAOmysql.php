@@ -7,7 +7,6 @@ use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
 use Up\Entity\User\UserRole;
 
-
 class UserDAOmysql implements UserDAOInterface
 {
 	private $DBConnection;
@@ -22,14 +21,15 @@ class UserDAOmysql implements UserDAOInterface
 
 	public function authenticateUser(string $login, string $password): bool
 	{
-		$query = "SELECT
+		$query = $this->DBConnection->prepare(
+			'SELECT
 			up_user.LOGIN as USER_LOGIN,
             up_user.PASSWORD as USER_PASSWORD
-		FROM up_user WHERE LOGIN='{$login}';";
-		$queryResult = $this->DBConnection->prepare($query);
-		$queryResult->execute();
+		FROM up_user WHERE LOGIN=:login;'
+		);
+		$query->execute(['login' => $login]);
 		$resultList = [];
-		while ($row = $queryResult->fetch())
+		while ($row = $query->fetch())
 		{
 			$resultList[$row['USER_LOGIN']] = $row['USER_PASSWORD'];
 		}
@@ -48,12 +48,21 @@ class UserDAOmysql implements UserDAOInterface
 	{
 		$password = password_hash($password, PASSWORD_BCRYPT);
 
-		$query = "INSERT INTO up_user (LOGIN, EMAIL, PHONE, PASSWORD, ROLE_ID,FIRST_NAME,SECOND_NAME) 
-			VALUES ('{$user->getLogin()}','{$user->getEmail()}','{$user->getPhone()}','$password',2,'{$user->getFirstName()}','{$user->getSecondName()}')";
+		$preparedQuery = $this->DBConnection->prepare(
+			'INSERT INTO up_user (LOGIN, EMAIL, PHONE, PASSWORD, ROLE_ID,FIRST_NAME,SECOND_NAME)
+			VALUES (:login,:email,:phone,:password,2,:firstName,:secondName)'
+		);
 
-
-		$queryResult = $this->DBConnection->prepare($query);
-		$queryResult->execute();
+		$preparedQuery->execute(
+			[
+				'login' => $user->getLogin(),
+				'email' => $user->getEmail(),
+				'phone' => $user->getPhone(),
+				'password' => $password,
+				'firstName' => $user->getFirstName(),
+				'secondName' => $user->getSecondName(),
+			]
+		);
 	}
 
 	public function giveUserModeratorRoleByLogin(string $login): void
@@ -80,19 +89,21 @@ class UserDAOmysql implements UserDAOInterface
             uu.PHONE as USER_PHONE,
             uu.EMAIL as USER_EMAIL,
             ur.ID as ROLE_ID,
-            ur.NAME as ROLE_NAME,   
+            ur.NAME as ROLE_NAME,
             uu.FIRST_NAME as USER_FIRST_NAME,
             uu.SECOND_NAME as USER_SECOND_NAME
 		FROM up_user uu
 		LEFT JOIN up_role ur on ur.ID = uu.ROLE_ID";
+		$values=[];
 		if ($login !== '')
 		{
-			$query = $query . " WHERE uu.LOGIN='{$login}'";
+			$query = $query . " WHERE uu.LOGIN=:login";
+			$values['login']=$login;
 		}
-		$queryResult = $this->DBConnection->prepare($query);
-		$queryResult->execute();
+		$query = $this->DBConnection->prepare($query);
+		$query->execute($values);
 		$resultList = [];
-		while ($row = $queryResult->fetch())
+		while ($row = $query->fetch())
 		{
 			$resultList[$row['USER_LOGIN']] = $this->createUserByRow($row);
 		}
@@ -119,17 +130,17 @@ class UserDAOmysql implements UserDAOInterface
 
 	private function changeRole(string $login, int $roleId): void
 	{
-		$query = "UPDATE up_user SET ROLE_ID={$roleId} WHERE LOGIN={$login}";
-		$queryResult = $this->DBConnection->prepare($query);
-		$queryResult->execute();
+		$query = $this->DBConnection->prepare("UPDATE up_user SET ROLE_ID=:roleId WHERE LOGIN=:login");
+		$query->execute(['login'=>$login,'roleId'=>$roleId]);
 	}
 
 	public function updateUser(User $user): void
 	{
 		$query = "
-			UPDATE up_user SET FIRST_NAME = ? , SECOND_NAME = ? , PHONE = ? , EMAIL = ? 
+			UPDATE up_user SET FIRST_NAME = ? , SECOND_NAME = ? , PHONE = ? , EMAIL = ?
 			WHERE ID = {$user->getId()}";
 		$preparedStatement = $this->DBConnection->prepare($query);
-		$preparedStatement->execute([$user->getFirstName(), $user->getSecondName(), $user->getPhone(), $user->getEmail()]);
+		$preparedStatement->execute(
+			[$user->getFirstName(), $user->getSecondName(), $user->getPhone(), $user->getEmail()]);
 	}
 }
