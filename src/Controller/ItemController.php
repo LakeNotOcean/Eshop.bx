@@ -54,32 +54,73 @@ class ItemController
 		$isAuthenticated = $request->isAuthenticated();
 		$isAdmin = $request->isAdmin();
 
+		$queryTypeId = 1;
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
 		$currentPage = $currentPage > 0 ? $currentPage : 1;
+		//Если пришел запрос с фильтров
 		if ($request->containsQuery('price') || $request->containsQuery('tag') || $request->containsQuery('spec'))
 		{
+
 			$query = $request->containsQuery('query') ? $request->getQueriesByName('query') : '';
-			$price = $request->containsQuery('price') ? $request->getQueriesByName('price') : '';
-			$tags = $request->containsQuery('tag') ? $request->getQueriesByName('tag') : [];
-			$specs = $request->containsQuery('spec') ? $request->getQueriesByName('spec') : [];
-			$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query,$price,$tags,$specs);
-			$itemsAmount = $this->itemService->getItemsAmountByFilters($query,$price,$tags,$specs);
+			$typeId = $this->itemService->getTypeIdByQuery($query);
+			//Если запрос с поиском и поиск прошел по нескольким типам
+			if ($query !== "" && count($typeId) > 1)
+			{
+				$queryTags = [];
+				$querySpecs = [];
+				$typeId[0] = 0;
+				$categories = [];
+				$tags = [];
+				$price = $this->itemService->getItemsMinMaxPrice();
+			}
+			//Если запрос с поиском и посик только внутри одной категории
+			else
+			{
+			$queryTags = $request->containsQuery('tag') ? $request->getQueriesByName('tag') : [];
+			$querySpecs = $request->containsQuery('spec') ? $request->getQueriesByName('spec') : [];
+			$categories = $this->itemService->getItemsCategoriesByItemType($typeId[0]);
+			$tags = $this->tagService->getTagsByItemType($typeId[0]);
+			$price = $this->itemService->getItemsMinMaxPriceByItemType($typeId[0]);
+			}
+			$queryPrice = $request->containsQuery('price') ? $request->getQueriesByName('price') : '';
+			$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query,$queryPrice,$queryTags,$querySpecs,$typeId[0]);
+			$itemsAmount = $this->itemService->getItemsAmountByFilters($query,$queryPrice,$queryTags,$querySpecs,);
 		}
+		//Если пришел запрос только с поиском
 		elseif ($request->containsQuery('query'))
 		{
 			$query = $request->getQueriesByName('query');
 			$items = $this->itemService->getItemsByQuery(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query);
 			$itemsAmount = $this->itemService->getItemsAmount($query);
+			$typeId = $this->itemService->getTypeIdByQuery($query);
+			//Если поиск задел несколько категорий
+			if (count($typeId) > 1)
+			{
+				$price = $this->itemService->getItemsMinMaxPrice();
+				$categories = [];
+				$tags = [];
+
+			}
+			else
+				//Если поиск задел одну категорию
+			{
+				$categories = $this->itemService->getItemsCategoriesByItemType($typeId[0]);
+				$tags = $this->tagService->getTagsByItemType($typeId[0]);
+				$price = $this->itemService->getItemsMinMaxPriceByItemType($typeId[0]);
+			}
+
 		}
 		else
+			//Если поиск без запросов (просто переход по станице)
 		{
-			$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
+			$items = $this->itemService->getItemsByTypeID(Paginator::getLimitOffset($currentPage, $this->itemsInPage),$queryTypeId);
 			$itemsAmount = $this->itemService->getItemsAmount();
 			$query = '';
+			$categories = $this->itemService->getItemsCategoriesByItemType($queryTypeId);
+			$tags = $this->tagService->getTagsByItemType($queryTypeId);
+			$price = $this->itemService->getItemsMinMaxPriceByItemType($queryTypeId);
 		}
-		$categories = $this->itemService->getItemsCategories();
-		$tags = $this->itemService->getItemsTags();
-		$price = $this->itemService->getItemsMinMaxPrice();
+
 
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
 		$pages = $this->templateProcessor->render('catalog.php', [
