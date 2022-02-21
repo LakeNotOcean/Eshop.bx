@@ -206,7 +206,7 @@ item-main-buy
 }
 
 .buy-price-measure {
-	margin-left: 5px;
+	margin: 0 10px 0 5px;
 }
 
 /*==========================
@@ -252,6 +252,7 @@ item-reviews
 	align-items: center;
 	text-decoration: none;
 	color: #fff;
+	user-select: none;
 }
 
 /*==========================

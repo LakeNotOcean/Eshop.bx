@@ -156,6 +156,7 @@ menu
 	line-height: 40px;
 	text-decoration: none;
 	color: inherit;
+	user-select: none;
 }
 
 .menu-item:hover {

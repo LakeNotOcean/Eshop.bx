@@ -103,60 +103,71 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 			<?php
 			foreach ($items as $item) : ?>
 
-				<<?= $isAdmin ? 'form enctype="multipart/form-data" action="' . URLResolver::resolve('fast-item-update') . '" name="fast-update" method="post"' : "a href=\"" . URLResolver::resolve('item-detail', ['id' => $item->getId()]) . "\"" ?> class="item card card-hover">
+				<?php if ($isAdmin):?>
+				<form enctype="multipart/form-data" action="/admin/fastUpdateItem" name="fast-update" method="post" class="item card card-hover">
+				<?php else:?>
+				<div class="item card card-hover">
+				<?php endif;?>
+				<a href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>">
 					<picture>
 						<source srcset="<?='/' . $item->getMainImage()->getPath('medium', 'webp') ?>" type="image/webp">
 						<img class="item-image" src="<?= '/' . $item->getMainImage()->getPath('medium', 'jpeg') ?>" alt="Item Image">
 					</picture>
-					<div class="item-other">
-						<div class="item-other-to-top">
-							<div class="item-other-header">
-								<?php if ($isAdmin): ?>
-								<input name="item-title" value="<?= htmlspecialchars($item->getTitle()) ?>" class="input">
-								<?php else: ?>
-								<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
-								<?php endif;?>
-								<svg class="add-to-favorites">
-									<use xlink:href="/img/sprites.svg#heart"></use>
-								</svg>
-							</div>
+				</a>
+				<div class="item-other">
+					<div class="item-other-to-top">
+						<div class="item-other-header">
 							<?php if ($isAdmin): ?>
-								<div class="textarea-container">
-									<textarea name="item-short-description" class="item-short-description-textarea"><?=htmlspecialchars($item->getShortDescription())?></textarea>
-								</div>
+							<input name="item-title" value="<?= htmlspecialchars($item->getTitle()) ?>" class="input">
 							<?php else: ?>
-							<div class="item-short-description">
-								<?=htmlspecialchars($item->getShortDescription())?>
-							</div>
+							<a href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>" class="item-title">
+								<?= htmlspecialchars($item->getTitle()) ?>
+							</a>
 							<?php endif;?>
+							<svg class="add-to-favorites">
+								<use xlink:href="/img/sprites.svg#heart"></use>
+							</svg>
 						</div>
-						<div class="item-other-footer">
-							<div class="rating">
-								<svg class="star-icon">
-									<use xlink:href="./img/sprites.svg#star"></use>
-								</svg>
-								<div class="rating-value"><?= (float)random_int(40, 50) / 10 ?></div>
-								<div class="review-count">(<?= random_int(5, 50) ?> отзывов)</div>
+						<?php if ($isAdmin): ?>
+							<div class="textarea-container">
+								<textarea name="item-short-description" class="item-short-description-textarea"><?=htmlspecialchars($item->getShortDescription())?></textarea>
 							</div>
-							<?php if ($isAdmin): ?>
-							<input name="item-sort_order" class="input display-order" type="number" value="<?= $item->getSortOrder() ?>">
-							<div class="admin-btn-container">
-								<a class="btn btn-normal" href="<?=URLResolver::resolve('edit-item', ['id' => $item->getId()])?>">Редактировать</a>
-								<input type="submit" style="display: none">
-								<a class="btn btn-delete">Удалить</a>
-							</div>
-							<input name="item-price" class="input price" type="number" value="<?= htmlspecialchars($item->getPrice()) ?>">₽
-							<input name="item-id" value="<?= $item->getId() ?>" type="hidden" class="input">
-								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
-							<?php else: ?>
-							<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
-							<?php endif;?>
+						<?php else: ?>
+						<div class="item-short-description">
+							<?=htmlspecialchars($item->getShortDescription())?>
 						</div>
+						<?php endif;?>
 					</div>
-				</<?= $isAdmin ? 'form' : 'a' ?>>
+					<div class="item-other-footer">
+						<div class="rating">
+							<svg class="star-icon">
+								<use xlink:href="./img/sprites.svg#star"></use>
+							</svg>
+							<div class="rating-value"><?= (float)random_int(40, 50) / 10 ?></div>
+							<div class="review-count">(<?= random_int(5, 50) ?> отзывов)</div>
+						</div>
+						<?php if ($isAdmin): ?>
+						<input name="item-sort_order" class="input display-order" type="number" value="<?= $item->getSortOrder() ?>">
+						<div class="admin-btn-container">
+							<a class="btn btn-normal" href="<?=URLResolver::resolve('edit-item', ['id' => $item->getId()])?>">Редактировать</a>
+							<input type="submit" style="display: none">
+							<a class="btn btn-delete">Удалить</a>
+						</div>
+						<input name="item-price" class="input price" type="number" value="<?= htmlspecialchars($item->getPrice()) ?>">₽
+						<input name="item-id" value="<?= $item->getId() ?>" type="hidden" class="input">
+							<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+						<?php else: ?>
+						<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
+						<?php endif;?>
+					</div>
+				</div>
+				<?php if (!$isAdmin):?>
+				</div>
+				<?php else:?>
+				</form>
+				<?php endif;?>
 
-			<?php
-			endforeach; ?>
+			<?php endforeach; ?>
 
 			<div class="navigation">
 				<!--				<div class="navigation-dots navigation-item">...</div>-->
