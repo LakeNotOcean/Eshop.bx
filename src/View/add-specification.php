@@ -15,20 +15,21 @@ use Up\Entity\SpecificationCategory;
 			<select id="category-id" name="category-id" class="input-category">
 				<?php
 				foreach ($categories as $category): ?>
-					<option value="<?= $category->getId() ?>"><?= $category->getName() ?></option>
+					<option value="<?= $category->getId() ?>"><?= htmlspecialchars($category->getName()) ?></option>
 				<?php
 				endforeach; ?>
 			</select>
 		</label>
 		<label for="spec-name" class="field">
 			<span class="label-title">Спецификация</span>
-			<input type="text" id="spec-name" name="spec-name" placeholder="Введите название спецификации">
+			<input type="text" id="spec-name" name="spec-name" placeholder="Введите название спецификации" class="input">
 		</label>
 		<label for="spec-order" class="field">
 			<span class="label-title">Порядок отображения</span>
-			<input type="number" id="spec-order" name="spec-order" placeholder="Введите порядок отображения спецификации" value="0">
+			<input type="number" id="spec-order" name="spec-order" placeholder="Введите порядок отображения спецификации" value="0"
+				   class="input">
 		</label>
-		<input type="submit" value="Сохранить спецификацию в базу данных" class="btn-normal">
+		<input type="submit" value="Сохранить спецификацию в базу данных" class="btn btn-normal input">
 		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 	</form>
 	<?php
@@ -38,4 +39,4 @@ use Up\Entity\SpecificationCategory;
 	endif; ?>
 </div>
 
-<script src="/js/popup-disappear.js"></script>
+<script src="/js/lib/popup-disappear.js"></script>

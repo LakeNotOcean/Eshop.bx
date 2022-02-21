@@ -32,11 +32,20 @@
 		}
 		?>
 			<div class="method-name"><?= $methodName?></div>
-			<?php foreach ($method as $key => $value):?>
+			<?php foreach ($method as $key => $value):
+			if (is_object($value))
+			{
+				echo "\"$key\" => ";
+				var_dump($value);
+			}
+			else
+			{?>
 				<div class="method-parameter">
 					<?= "\"$key\" => $value"?>
 				</div>
-			<?php endforeach;?>
+			<?php
+			}
+			endforeach;?>
 		<?php endforeach;?>
 	</div>
 </div>

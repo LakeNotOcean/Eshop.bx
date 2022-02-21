@@ -2,6 +2,7 @@
 /** @var string $content */
 /** @var string $query */
 
+/** @var string $userName */
 /** @var bool $isAdmin */
 /** @var bool $isAuthenticated */
 
@@ -51,13 +52,13 @@ if (!isset($query))
 				<div class="nav-item-label">Товары</div>
 				<div class="menu-container">
 					<div class="menu">
-						<a class="menu-item" href="/admin/chooseItemType">Добавить товар</a>
+						<a class="menu-item" href="/admin/">Админский каталог</a>
+						<a class="menu-item" href="/admin/chooseItemType" id="/admin/addItem/">Добавить товар</a>
 						<a class="menu-item" href="/admin/addItemType">Добавить тип товара</a>
 						<a class="menu-item" href="/admin/addCategory">Добавить категорию</a>
 						<a class="menu-item" href="/admin/addSpecification">Добавить спецификацию</a>
 						<a class="menu-item" href="/admin/deleteCategory">Удалить категорию</a>
-						<a class="menu-item" href="/admin/chooseCategory">Удалить спецификацию</a>
-						<a class="menu-item" href="/admin/">Админский каталог</a>
+						<a class="menu-item" href="/admin/chooseCategory" id="/admin/deleteSpec/">Удалить спецификацию</a>
 					</div>
 				</div>
 			</div>
@@ -74,11 +75,22 @@ if (!isset($query))
 	<?php endif;?>
 
 	<?php if ($isAuthenticated): ?>
-		<a href="<?= URLResolver::resolve('logout-user') ?>">
-			<div class="btn btn-normal sign-in">Выйти</div>
-		</a>
+		<div class="nav-item">
+			<div class="nav-item-label"><?= $userName?></div>
+			<div class="menu-container profile">
+				<div class="menu">
+					<a class="menu-item" href="<?= URLResolver::resolve('user-profile') ?>">
+						Личный кабинет
+					</a>
+					<a href="<?= URLResolver::resolve('logout-user') ?>">
+						<div class="btn btn-normal sign-in">Выйти</div>
+					</a>
+				</div>
+			</div>
+		</div>
+
 	<?php else: ?>
-		<a href="<?= URLResolver::resolve('login-user-page') ?>">
+		<a href="<?= URLResolver::resolve('login-user') ?>">
 			<div class="btn btn-normal sign-in">Войти</div>
 		</a>
 		<a href="<?= URLResolver::resolve('register-user') ?>">

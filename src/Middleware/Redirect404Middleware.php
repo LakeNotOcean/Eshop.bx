@@ -3,22 +3,22 @@
 namespace Up\Middleware;
 
 use Throwable;
+use Up\Core\Logger\LoggerInterface;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\Middleware\AbstractMiddleware;
-use Up\Core\TemplateProcessorInterface;
 use Up\Lib\Redirect;
 
 class Redirect404Middleware extends AbstractMiddleware
 {
-	private $templateProcessor;
+	private $logger;
 
 	/**
-	 * @param \Up\Core\TemplateProcessor $templateProcessor
+	 * @param \Up\Core\Logger\Application\ApplicationLogger $logger
 	 */
-	public function __construct(TemplateProcessorInterface $templateProcessor)
+	public function __construct(LoggerInterface $logger)
 	{
-		$this->templateProcessor = $templateProcessor;
+		$this->logger = $logger;
 	}
 
 	public function __invoke(Request $request, ...$params): Response
@@ -29,6 +29,13 @@ class Redirect404Middleware extends AbstractMiddleware
 		}
 		catch (Throwable $throwable)
 		{
+			$this->logger->error($throwable, [
+				'method' => $request->getMethod(),
+				'url' => $request->getRequestUrl(),
+				'cookie' => $request->getCookies(),
+				'session' => $request->getSession(),
+			]);
+
 			return Redirect::createResponseByURL('404');
 		}
 	}

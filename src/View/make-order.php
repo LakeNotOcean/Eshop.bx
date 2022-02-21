@@ -31,7 +31,7 @@ if ($user->getRole()->getName() != UserEnum::Guest())
 				</picture>
 
 				<div class="item-info">
-					<div class="item-title"><?= $item->getTitle() ?></div>
+					<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
 					<div class="item-price"><?= $item->getPrice() ?> ₽</div>
 				</div>
 			</div>
@@ -73,4 +73,4 @@ if ($user->getRole()->getName() != UserEnum::Guest())
 	</form>
 </div>
 
-<script src="/js/phone-input.js"></script>
+<script src="/js/lib/phone-input.js"></script>

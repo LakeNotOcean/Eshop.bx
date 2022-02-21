@@ -16,12 +16,12 @@ use Up\Entity\Specification;
 			<select id="specification-id" name="specification-id" class="input-spec-name">
 				<?php
 				foreach ($specifications as $specification): ?>
-					<option value="<?= $specification->getId() ?>"><?= $specification->getName() ?></option>
+					<option value="<?= $specification->getId() ?>"><?= htmlspecialchars($specification->getName()) ?></option>
 				<?php
 				endforeach; ?>
 			</select>
 		</label>
-		<input type="submit" value="Удалить выбранную спецификацию" class="btn btn-delete">
+		<input type="submit" value="Удалить выбранную спецификацию" class="btn btn-delete input">
 		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 		<div>Внимание! Удаление спецификации приведет к ее удалению со всех товаров!</div>
 	</form>
@@ -32,4 +32,4 @@ use Up\Entity\Specification;
 	endif; ?>
 </div>
 
-<script src="/js/popup-disappear.js"></script>
+<script src="/js/lib/popup-disappear.js"></script>

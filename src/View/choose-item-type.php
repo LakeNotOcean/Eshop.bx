@@ -14,12 +14,12 @@ use Up\Entity\ItemType;
 			<select id="type-data" id="item-type" name="item-type">
 				<?php
 				foreach ($itemTypes as $itemType): ?>
-					<option value="<?= $itemType->getId() ?>"><?= $itemType->getName() ?></option>
+					<option value="<?= $itemType->getId() ?>"><?= htmlspecialchars($itemType->getName()) ?></option>
 				<?php
 				endforeach; ?>
 			</select>
 			<a href="/admin/addItemType" class="btn-add-type">Добавить тип</a>
 		</label>
-		<input type="submit" value="Далее" class="btn btn-normal">
+		<input type="submit" value="Далее" class="btn btn-normal input">
 	</form>
 </div>

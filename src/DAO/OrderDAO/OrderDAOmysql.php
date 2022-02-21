@@ -42,7 +42,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	private function getOrdersQuery(int $offset, int $amountItems): string
 	{
 		return "SELECT * FROM up_order 
-				WHERE STATUS = ? and CUSTOMER_NAME like ?
+				WHERE STATUS = ? and CUSTOMER_NAME like ? 
 				ORDER BY DATE_UPDATE
 				LIMIT {$offset}, {$amountItems};";
 	}
@@ -66,7 +66,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	{
 		$preparedStatement = $this->getInsertPrepareStatement(
 			'up_order',
-			['CUSTOMER_NAME', 'PHONE', 'EMAIL', 'COMMENT', 'STATUS', 'DATE_CREATE', 'DATE_UPDATE']
+			['CUSTOMER_NAME', 'PHONE', 'EMAIL', 'COMMENT', 'STATUS', 'DATE_CREATE', 'DATE_UPDATE', 'USER_ID']
 		);
 		$preparedStatement->execute($this->prepareOrder($order));
 	}
@@ -74,13 +74,13 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	private function prepareOrder(Order $order): array
 	{
 		return [$order->getCustomerName(), $order->getPhone(), $order->getEmail(), $order->getComment(),
-				$order->getStatus(), $order->getDateCreate(), $order->getDateUpdate()];
+				$order->getStatus(), $order->getDateCreate(), $order->getDateUpdate(), $order->getUser()->getId()];
 	}
 
 	public function addOrderItems(int $orderId, array $items): void
 	{
 		$preparedStatement = $this->getInsertPrepareStatement(
-			'up_order_item',
+			'`up_order-item`',
 			['ORDER_ID', 'ITEM_ID', 'COUNT']
 		);
 		$data = $this->prepareOrderItems($orderId, $items);
@@ -88,6 +88,19 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		{
 			$preparedStatement->execute($row);
 		}
+	}
+
+	public function updateOrderStatus(int $orderId, string $orderNewStatus): void
+	{
+		$query = "UPDATE up_order SET STATUS = ? WHERE ID = $orderId;";
+		$preparedStatement = $this->dbConnection->prepare($query);
+		$preparedStatement->execute([$orderNewStatus]);
+	}
+
+	public function deleteOrder(int $orderId): void
+	{
+		$query = "DELETE FROM up_order WHERE ID = $orderId;";
+		$this->dbConnection->query($query);
 	}
 
 	private function prepareOrderItems(int $orderId, array $items): array

@@ -23,6 +23,8 @@ async function deleteImageById(id, csrf){
 	return fetch('/admin/deleteImage/' + id, {method: 'POST', body: data});
 }
 
+
+
 async function getCategory()
 {
 	if (Object.keys(allCategory).length !== 0)

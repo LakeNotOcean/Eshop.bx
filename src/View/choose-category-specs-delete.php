@@ -12,12 +12,12 @@ use Up\Entity\SpecificationCategory;
 		<select id="category-id" name="category-id" class="input-category">
 			<?php
 			foreach ($categories as $category): ?>
-				<option value="<?= $category->getId() ?>"><?= $category->getName() ?></option>
+				<option value="<?= $category->getId() ?>"><?= htmlspecialchars($category->getName()) ?></option>
 			<?php
 			endforeach; ?>
 		</select>
 	</label>
-	<a class="btn btn-normal">Выбрать категорию</a>
+	<a class="btn btn-normal input">Выбрать категорию</a>
 </div>
 
-<script src="/js/choose-category-delete-script.js"></script>
+<script src="/js/add-item/choose-category-delete-script.js"></script>

@@ -16,11 +16,14 @@ use Up\Entity\Item;
 		foreach ($items as $item):?>
 			<div class="order-item">
 				<div class="item-number"><?= $i ?>.</div>
-				<div class="item-title"><?= $item->getTitle() ?></div>
+				<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
 				<div class="item-price"><?= $item->getPrice() ?> ₽</div>
 			</div>
 			<?php
 			$i++;
 		endforeach; ?>
 	</div>
+
+	<a href="/" class="btn btn-normal">Вернуться на главную</a>
+
 </div>

@@ -2,7 +2,6 @@
 
 namespace Up\Controller;
 
-use DateTime;
 use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
@@ -95,9 +94,6 @@ class OrderController
 
 	public function getOrders(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
 		$status = $request->containsQuery('status') ? OrderStatus::from($request->getQueriesByName('status'))
 			: OrderStatus::IN_PROCESSING();
@@ -115,11 +111,31 @@ class OrderController
 			'pagesAmount' => $pagesAmount,
 			'query' => $query,
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
+	}
+
+	public function changeOrderStatus(Request $request): Response
+	{
+		$orderId = $request->getPostParametersByName('order-id');
+		$orderNewStatus = $request->getPostParametersByName('order-status');
+
+		$this->orderService->updateOrderStatus($orderId, $orderNewStatus);
+
+		return (new Response())->withBodyHTML('');
+	}
+
+	public function deleteOrder(Request $request): Response
+	{
+		$orderId = $request->getPostParametersByName('order-id');
+
+		$this->orderService->deleteOrder($orderId);
+
+		return (new Response())->withBodyHTML('');
 	}
 
 	private function calculateTotalCost(array $items): int

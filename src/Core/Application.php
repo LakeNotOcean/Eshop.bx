@@ -10,16 +10,14 @@ use RuntimeException;
 use Throwable;
 use Up\Core\Database\DefaultDatabase;
 use Up\Core\DI\DIContainer;
-use Up\Core\Logger\Logger;
+use Up\Core\Logger\Application\ApplicationLogger;
 use Up\Core\Message\Request;
-use Up\Core\Message\Response;
 use Up\Core\Middleware\MiddlewareManager;
 use Up\Core\Migration\MigrationManager;
 use Up\Core\Router\Error\RoutingException;
 use Up\Core\Router\Router;
 use Up\Core\Settings\Settings;
 use Up\Lib\Redirect;
-use Up\Service\UserService\UserService;
 
 class Application
 {
@@ -29,8 +27,10 @@ class Application
 	 */
 	public static function run(): bool
 	{
-		$logger = new Logger();
+		$logger = ApplicationLogger::getLogger();
 		$settings = Settings::getInstance();
+		$request = Request::createFromGlobals();
+
 		//Прописывание маршрутов
 		/** @var Router $router */
 		include '../src/routes.php';
@@ -47,7 +47,7 @@ class Application
 			}
 			catch (MigrationException $e)
 			{
-				$logger->log('info', $e);
+				$logger->info($e);
 			}
 		}
 		############################################################
@@ -58,17 +58,16 @@ class Application
 		}
 		catch (RoutingException $e)
 		{
-			//TODO FIX 404 CALL
 			Redirect::createResponseByURLName('404')->flush();
 
 			//todo вызов отдельного контроллера ошибок
-			$logger->log('info', $e);
+			$logger->info($e, ['url' => $request->getRequestUrl(), 'method' => $request->getMethod(), 'cookie' => $request->getCookies()]);
 
 			return false;
 		}
 
 		$params = $method['params'];
-		$params['request'] = Request::createFromGlobals();
+		$params['request'] = $request;
 
 
 		$container = DIContainer::getInstance();
@@ -80,7 +79,7 @@ class Application
 		catch (ReflectionException $e)
 		{
 			//todo вызов отдельного контроллера ошибок
-			$logger->log('info', $e);
+			$logger->info($e);
 
 			return false;
 		}
@@ -100,20 +99,10 @@ class Application
 
 		$middlewareManager = MiddlewareManager::getInstance();
 		$middlewareManager->loadMiddlewares();
-		try
-		{
-			$response = $middlewareManager->invokeWithMiddleware([$controller, $method['callback'][1]], ...$args);
-		}
-		catch (Throwable $e)
-		{
-			$logger->log('info', $e);
-
-			return false;
-		}
-
+		$response = $middlewareManager->invokeWithMiddleware([$controller, $method['callback'][1]], ...$args);
 		$response->flush();
-		$logger->log('notice',
-					 'Посещение страницы {domain}{url}',
+		$logger->notice(
+					 'Посещение страницы',
 					 ['domain' => $settings->getSettings('domainName'), 'url' => $_SERVER['REQUEST_URI']]);
 
 		return true;

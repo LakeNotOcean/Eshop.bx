@@ -8,6 +8,7 @@
 	background: #fff;
 	font-weight: 500;
 	cursor: pointer;
+	user-select: none;
 }
 
 .btn:hover {
@@ -44,6 +45,17 @@
 .btn-add:hover {
 	background: #009AFF;
 	border-color: #009AFF;
+}
+
+.btn-change {
+	color: #107F84;
+	font-weight: 500;
+	cursor: pointer;
+	user-select: none;
+}
+
+.btn-change:hover {
+	text-decoration: underline;
 }
 
 /*==========================

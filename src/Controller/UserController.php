@@ -21,17 +21,17 @@ use Up\Service\UserService\UserServiceInterface;
 class UserController
 {
 	protected $templateProcessor;
-	protected $userServiceImpl;
+	protected $userService;
 	public const nextUrlQueryKeyword = 'next';
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
-	 * @param \Up\Service\UserService\UserService $userServiceImpl
+	 * @param \Up\Service\UserService\UserService $userService
 	 */
-	public function __construct(TemplateProcessorInterface $templateProcessor, UserServiceInterface $userServiceImpl)
+	public function __construct(TemplateProcessorInterface $templateProcessor, UserServiceInterface $userService)
 	{
 		$this->templateProcessor = $templateProcessor;
-		$this->userServiceImpl = $userServiceImpl;
+		$this->userService = $userService;
 	}
 
 	public function registerUser(Request $request): Response
@@ -51,22 +51,21 @@ class UserController
 		$errorString .= Validator::validate($firstName, DataTypes::names());
 		$errorString .= Validator::validate($secondName, DataTypes::names());
 
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		if ($errorString !== '')
 		{
 			throw new Error($errorString);
 		}
-		$user = new User($login, new UserRole(UserEnum::User()), $email, $phone, $firstName, $secondName);
+		$user = new User(0, $login, new UserRole(UserEnum::User()), $email, $phone, $firstName, $secondName);
 		try
 		{
-			$this->userServiceImpl->registerUser($user, $password);
+			$this->userService->registerUser($user, $password);
 		}
 		catch (Exception $e)
 		{
 			$page = $this->templateProcessor->render('register.php', [], 'layout/main.php', [
-				'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
-				'isAdmin' => $isAdmin
+				'isAuthenticated' => $request->isAuthenticated(),
+				'isAdmin' => $request->isAdmin(),
+				'userName' => $request->getUser()->getName()
 			]);
 			$response = new Response();
 			$response = $response->withStatus(409);
@@ -79,8 +78,6 @@ class UserController
 
 	public function loginUser(Request $request): Response
 	{
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$login = $request->getPostParametersByName('login');
 		$password = $request->getPostParametersByName('password');
 
@@ -92,21 +89,22 @@ class UserController
 			return (new Response())->withStatus(409)->withBodyHTML($this->templateProcessor->render(
 				'login.php', ['error' => $errorString],
 				'layout/main.php', [
-					'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
-					'isAdmin' => $isAdmin
+					'isAuthenticated' => $request->isAuthenticated(),
+					'isAdmin' => $request->isAdmin(),
+					'userName' => $request->getUser()->getName()
 			]));
 		}
 
 		try
 		{
-			$this->userServiceImpl->authorizeUserByLogin($login, $password);
+			$this->userService->authorizeUserByLogin($login, $password);
 		}
 		catch (UserServiceException $e)
 		{
-			$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
 			$page = $this->templateProcessor->render('login.php', [], 'layout/main.php', [
-				'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
-				'isAdmin' => $isAdmin
+				'isAuthenticated' => $request->isAuthenticated(),
+				'isAdmin' => $request->isAdmin(),
+				'userName' => $request->getUser()->getName()
 			]);
 			$response = new Response();
 			$response = $response->withStatus(409);
@@ -117,11 +115,8 @@ class UserController
 		return Redirect::createResponseByURLName('home');
 	}
 
-	public function loginUserPage(Request $request)
+	public function loginUserPage(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$nextUrlParam = '';
 		if ($request->containsQuery(static::nextUrlQueryKeyword))
 		{
@@ -136,25 +131,38 @@ class UserController
 		$page = $this->templateProcessor->render('login.php', [
 			'state' => 'process', 'next' => $nextUrlParam
 		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
 	}
 
-	public function registerUserPage(Request $request)
+	public function registerUserPage(Request $request): Response
 	{
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
 		$page = $this->templateProcessor->render('register.php', [
 			'state' => 'process'
 		], 'layout/main.php', [
-			'isAuthenticated' => $this->userServiceImpl->isAuthenticated(),
-			'isAdmin' => $isAdmin
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
 		]);
-		$response = new Response();
 
-		return $response->withBodyHTML($page);
+		return (new Response())->withBodyHTML($page);
+	}
+
+	public function getProfilePage(Request $request): Response
+	{
+		$page = $this->templateProcessor->render('user-profile.php', [
+			'user' => $request->getUser()
+		], 'layout/main.php', [
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
+		]);
+
+		return (new Response())->withBodyHTML($page);
 	}
 
 	/**
@@ -162,8 +170,43 @@ class UserController
 	 */
 	public function logout(Request $request)
 	{
-		$this->userServiceImpl->removeUserFromSession();
+		$this->userService->removeUserFromSession();
 		return Redirect::createResponseByURLName('home');
+	}
+
+	public function updateUser(Request $request): Response
+	{
+		$firstName = $request->getUser()->getFirstName();
+		$secondName = $request->getUser()->getSecondName();
+		$phone = $request->getUser()->getPhone();
+		$email = $request->getUser()->getEmail();
+
+		if ($request->containsPost('user-first-name'))
+		{
+			$firstName = $request->getPostParametersByName('user-first-name');
+		}
+		if ($request->containsPost('user-second-name'))
+		{
+			$secondName = $request->getPostParametersByName('user-second-name');
+		}
+		if ($request->containsPost('user-phone'))
+		{
+			$phone = $request->getPostParametersByName('user-phone');
+		}
+		if ($request->containsPost('user-email'))
+		{
+			$email = $request->getPostParametersByName('user-email');
+		}
+
+		$user = $request->getUser();
+		$user->setFirstName($firstName);
+		$user->setSecondName($secondName);
+		$user->setPhone($phone);
+		$user->setEmail($email);
+
+		$this->userService->updateUser($user);
+
+		return (new Response())->withBodyHTML('');
 	}
 
 }

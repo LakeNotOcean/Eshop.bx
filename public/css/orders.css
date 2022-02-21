@@ -1,6 +1,7 @@
 @import "lib/card.css";
 @import "lib/input.css";
 @import "lib/pagination.css";
+@import "lib/popup.css";
 
 .container {
 	flex: 1;
@@ -39,38 +40,6 @@ search
 	font-size: 15px;
 	font-family: 'Montserrat', sans-serif;
 	color: #333333;
-}
-
-/*==========================
-search-icon
-==========================*/
-
-.search-icon {
-	display: flex;
-	height: 35px;
-	width: 70px;
-	justify-content: center;
-	align-items: center;
-}
-
-.search-icon div {
-	position: relative;
-	width: 15px;
-	height: 15px;
-	border-radius: 50%;
-	border: 3px solid #AFAFAF;
-	transform: rotateZ(-135deg);
-}
-
-.search-icon div::after {
-	position: absolute;
-	content: '';
-	left: -13px;
-	top: 6px;
-	width: 12px;
-	height: 3px;
-	background: #AFAFAF;
-	border-radius: 50px;
 }
 
 /*==========================

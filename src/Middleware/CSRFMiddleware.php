@@ -17,6 +17,7 @@ class CSRFMiddleware extends AbstractMiddleware
 
 	/**
 	 * @throws CSRFException
+	 * @throws NoSuchQueryParameterException
 	 */
 	public function __invoke(Request $request, ...$params): Response
 	{
@@ -37,7 +38,7 @@ class CSRFMiddleware extends AbstractMiddleware
 
 		try
 		{
-			CSRF::validateToken($request->getPostParametersByName(CSRF::tokenFieldName));
+			CSRF::validateToken($request->getPostParametersByName(CSRF::TOKEN_FIELD_NAME));
 		}
 		catch (ValidationException $e)
 		{
