@@ -33,9 +33,19 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItems($limitOffset['offset'], $limitOffset['amountItems']);
 	}
 
-	public function getFavoriteItems(int $userId, array $limitOffset): array
+	public function getFavoriteItems(int $userId, array $limitOffset = ['offset' => -1, 'amountItems' => 0]): array
 	{
 		return $this->itemDAO->getFavoriteItems($userId, $limitOffset['offset'], $limitOffset['amountItems']);
+	}
+
+	public function mapFavorites(int $userId, array $items): array
+	{
+		$favoriteItems = $this->getFavoriteItems($userId);
+		$userItems = [];
+		foreach ($items as $item)
+		{
+			$userItem = $item;
+		}
 	}
 
 	public function getFavoriteItemsAmount(int $userId): int

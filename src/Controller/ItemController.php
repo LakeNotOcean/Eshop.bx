@@ -20,6 +20,7 @@ use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\TagService\TagServiceInterface;
 use Up\Service\UserService\UserServiceInterface;
 
+
 class ItemController
 {
 	protected $templateProcessor;
@@ -83,9 +84,11 @@ class ItemController
 		$tags = $this->itemService->getItemsTags();
 		$price = $this->itemService->getItemsMinMaxPrice();
 
+		$userId = $request->getUser()->getId();
+
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
 		$pages = $this->templateProcessor->render('catalog.php', [
-			'items' => $items,
+			'items' => $this->itemService->mapFavorites($userId, $items),
 			'currentPage' => $currentPage,
 			'itemsAmount' => $itemsAmount,
 			'pagesAmount' => $pagesAmount,

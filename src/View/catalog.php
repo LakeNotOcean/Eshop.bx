@@ -129,13 +129,13 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 								<a href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>" class="item-title">
 									<?= htmlspecialchars($item->getTitle()) ?>
 								</a>
-								<?php endif;?>
 								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 								<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
 									<svg class="add-to-favorites">
 										<use xlink:href="/img/sprites.svg#heart"></use>
 									</svg>
 								</div>
+								<?php endif;?>
 							</div>
 							<?php if ($isAdmin): ?>
 								<div class="textarea-container">

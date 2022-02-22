@@ -505,7 +505,7 @@ LIMIT "
 			select ufi.ID from (
 				SELECT FAVORITE_ITEM_ID as ID FROM `up_user-favorite_item`
 				WHERE USER_ID = $userId
-				LIMIT $offset, $amountItems) as ufi)
+				" . ($offset >= 0 ? "LIMIT $offset, $amountItems" : "") . ") as ufi)
 		ORDER BY ui.SORT_ORDER desc, ui.ID;";
 	}
 
