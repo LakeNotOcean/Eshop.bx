@@ -131,10 +131,6 @@ class ItemService implements ItemServiceInterface
 		return $this->typeDAO->getTypeIdByQuery($query);
 	}
 
-	public function getItemsByPrice(array $price):array
-	{
-		return $this->itemDAO->getItemsByPrice($price);
-	}
 
 	public function getItemById(int $id): ItemDetail
 	{
