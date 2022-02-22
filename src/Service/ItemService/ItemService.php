@@ -55,9 +55,9 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItemsByFilters($limitOffset['offset'], $limitOffset['amountItems'],$query, $price, $tags,$specs,$typeId);
 	}
 
-	public function getItemsMinMaxPriceByItemType(int $typeID): array
+	public function getItemsMinMaxPriceByItemTypes(array $typeIds): array
 	{
-		return $this->itemDAO->getItemsMinMaxPriceByItemType($typeID);
+		return $this->itemDAO->getItemsMinMaxPriceByItemTypes($typeIds);
 	}
 
 	public function getItemsMinMaxPrice():array
@@ -99,16 +99,16 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItemsAmountByTypeId($typeId,$query);
 	}
 
-	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs):int
+	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs, int $typeId):int
 	{
-		return $this->itemDAO->getItemsAmountByFilters($query,$price,$tags,$specs);
+		return $this->itemDAO->getItemsAmountByFilters($query,$price,$tags,$specs,$typeId);
 	}
 
 
 
-	public function getItemsCategoriesByItemType(int $typeID = 1): array
+	public function getItemsCategoriesByItemType(array $typeIds): array
 	{
-		return $this->specificationDAO->getCategoriesWithValueByItemTypeId($typeID);
+		return $this->specificationDAO->getCategoriesWithValueByItemTypeId($typeIds);
 	}
 
 

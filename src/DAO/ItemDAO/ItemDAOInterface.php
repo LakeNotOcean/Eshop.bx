@@ -19,7 +19,7 @@ interface ItemDAOInterface
 
 	public function getItemsMinMaxPrice(): array;
 
-	public function getItemsMinMaxPriceByItemType(int $typeId): array;
+	public function getItemsMinMaxPriceByItemTypes(array $typeIds): array;
 
 	public function getItemsByFilters(int $offset, int $amountItems,string $query,string $price,array $tags,array $specs, int $typeId): array;
 
@@ -33,7 +33,7 @@ interface ItemDAOInterface
 
 	public function getItemsAmountByTypeId(int $typeId,string $searchQuery = ''): int;
 
-	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs);
+	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs,int $typeId);
 
 	public function deactivateItem(int $id): void;
 

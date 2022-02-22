@@ -76,6 +76,25 @@ class Request
 		);
 	}
 
+	public function getQueriesOrDefaultList(array $keys): array
+		{
+			$finalQuery = [];
+			foreach ($keys as $key => $default)
+			{
+				if ($this->containsQuery($key))
+				{
+					$finalQuery[$key] = $this->getQueriesByName($key);
+				}
+				else
+				{
+					$finalQuery[$key] = $default;
+				}
+			}
+			return $finalQuery;
+		}
+
+
+
 	/**
 	 * @throws Error\NoSuchQueryParameterException
 	 */
@@ -225,7 +244,7 @@ class Request
 	{
 		return $this->getUser()->getRole()->getName() == UserEnum::Admin();
 	}
-	
+
 	/**
 	 * @return bool
 	 */

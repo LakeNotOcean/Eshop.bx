@@ -26,8 +26,13 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 
 
 
-	public function getCategoriesWithValueByItemTypeId(int $itemTypeId): array
+	public function getCategoriesWithValueByItemTypeId(array $typeIds): array
 	{
+		if (count($typeIds) > 1)
+		{
+			return [];
+		}
+		$itemTypeId = (int) $typeIds[0];
 		$result = $this->DBConnection->query(SpecificationDAOqueries::getCategoriesWithValueByItemTypeIdQuery($itemTypeId));
 		$resultArray = [];
 		while ($row = $result->fetch())

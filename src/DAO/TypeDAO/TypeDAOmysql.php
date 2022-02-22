@@ -19,6 +19,10 @@ class TypeDAOmysql implements TypeDAOInterface
 
 	public function getTypeIdByQuery(string $searchQuery):array
 	{
+		if ($searchQuery === '')
+		{
+			return [0];
+		}
 		$query = TypeDAOqueries::getTypeIdBySearchQuery();
 		$preparedStatement = $this->DBConnection->prepare($query);
 		$preparedStatement->execute(["%$searchQuery%"]);
@@ -26,6 +30,10 @@ class TypeDAOmysql implements TypeDAOInterface
 		while ($row = $preparedStatement->fetch())
 		{
 			$types[]=$row["ID"];
+		}
+		if (empty($types))
+		{
+			$types = [0];
 		}
 		return $types;
 	}
