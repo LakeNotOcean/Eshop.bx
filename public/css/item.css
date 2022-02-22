@@ -411,8 +411,7 @@ similar-item
 }
 
 .similar-item-title {
-	font-size: 18px;
-	font-weight: 700;
+	font-weight: 600;
 }
 
 .similar-item-main-section {
@@ -434,15 +433,12 @@ similar-item
 	transition: 0.5s;
 }
 
-.similar-item-cards-right-arrow {
-	transform: rotateZ(-90deg);
-}
-
 .similar-item-card {
 	display: flex;
-	flex: 1 0 calc(50% - 20px);
+	flex: 1 0 calc(50% - 40px);
 	height: 150px;
 	margin: 10px;
+	padding: 10px;
 }
 
 .similar-item-image {
@@ -460,14 +456,14 @@ similar-item
 
 .similar-item-body-title {
 	flex: 1;
-	font-size: 18px;
 	font-weight: 600;
-	margin: 20px 10px;
 }
 
 .similar-item-body-price {
 	display: flex;
 	justify-content: flex-end;
-	margin: 0 20px 20px 20px;
-	font-size: 18px;
+}
+
+.similar-item-cards-right-arrow {
+	transform: rotateZ(-90deg);
 }
