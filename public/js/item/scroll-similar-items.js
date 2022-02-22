@@ -1,10 +1,10 @@
-let scrollablePlace = document.querySelector(".slider-wrapper")
-let similarItems = document.querySelectorAll(".similar-item-card")
-let scrollPage = 0
+let scrollablePlace = document.querySelector(".slider-wrapper");
+let similarItems = document.querySelectorAll(".similar-item-card");
+let scrollPage = 0;
 let leftSimilarItemScroll = document.querySelector(".similar-item-cards-left-arrow");
 let rightSimilarItemScroll = document.querySelector(".similar-item-cards-right-arrow");
 
-rightSimilarItemScroll.addEventListener('click', (e) => {
+rightSimilarItemScroll.addEventListener('click', () => {
 	const similarItemWidth = similarItems[0].offsetWidth;
 	if (scrollPage < (similarItems.length-2))
 	{
@@ -13,25 +13,16 @@ rightSimilarItemScroll.addEventListener('click', (e) => {
 	}
 })
 
-
-leftSimilarItemScroll.addEventListener('click', (e) => {
-	console.log(scrollPage)
+leftSimilarItemScroll.addEventListener('click', () => {
 	const similarItemWidth = similarItems[0].offsetWidth;
 	if (scrollPage > 0)
 	{
-		scrollPage -= 1
-		scrollablePlace.scroll((similarItemWidth + 20) * scrollPage,0)
+		scrollPage -= 1;
+		scrollablePlace.scroll((similarItemWidth + 20) * scrollPage,0);
 	}
-
 })
 
-window.addEventListener("resize", (e) => {
+window.addEventListener("resize", () => {
+	scrollPage = 0;
 	scrollablePlace.scroll(0,0)
 })
-
-
-
-
-
-
-

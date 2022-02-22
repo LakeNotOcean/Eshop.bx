@@ -59,7 +59,7 @@ class ItemController
 		$deactivate = $request->containsQuery('deactivate_include') && $isAdmin;
 		$query = $request->getQueriesOrDefaultList(['page'=> '1', 'query' => '', 'tag' => [], 'spec' => [], 'price' => '']);
 
-		$currentPage = $query['page'] > 0 ? $query['page'] : 1;
+		$currentPage = $query['page'] > 0 ? (int)$query['page'] : 1;
 
 		$typeIds = $this->itemService->getTypeIdByQuery($query['query']);
 
@@ -88,9 +88,6 @@ class ItemController
 			'currentPage' => $currentPage,
 			'pagesAmount' => $pagesAmount,
 		]);
-
-
-
 
 		$pages = $this->templateProcessor->render('catalog.php', [
 			'items' => $this->itemService->mapItemsToUserItems($userId, $items),

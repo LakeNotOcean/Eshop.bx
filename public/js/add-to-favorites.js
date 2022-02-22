@@ -39,7 +39,7 @@ function addToFavorites(itemId, icon)
 			icon.classList.remove('removedFromFavorites');
 			showPopup('Товар добавлен в избранное');
 		} else {
-			showPopup('Товар не удалось добавить в избранное');
+			showPopup('Войдите, чтобы сохранять понравившиеся товары');
 		}
 	});
 }
