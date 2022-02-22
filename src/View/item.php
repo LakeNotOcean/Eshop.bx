@@ -34,6 +34,7 @@
 	<a class="anchor" id="main"></a>
 	<div class="item-header">
 		<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
+		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 		<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
 			<svg class="add-to-favorites">
 				<use xlink:href="/img/sprites.svg#heart"></use>
