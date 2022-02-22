@@ -8,6 +8,7 @@ use Up\DAO\TagDAO\TagDAOInterface;
 use Up\Entity\EntityArray;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
+use Up\Entity\UserItem;
 
 
 class ItemService implements ItemServiceInterface
