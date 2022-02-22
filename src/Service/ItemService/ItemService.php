@@ -170,9 +170,9 @@ class ItemService implements ItemServiceInterface
 	}
 
 
-	public function getItemsCategoriesByItemType(int $typeId): array
+	public function getItemsCategoriesByItemType(int $queryTypeId): array
 	{
-		return $this->specificationDAO->getCategoriesWithValueByItemTypeId($typeId);
+		return $this->specificationDAO->getCategoriesWithValueByItemTypeId($queryTypeId);
 	}
 
 
