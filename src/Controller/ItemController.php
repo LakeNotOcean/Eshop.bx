@@ -248,13 +248,30 @@ class ItemController
 			$imagesInfo[] = ['name' => $otherImages['name'][$i], 'type' => $otherImages['type'][$i], 'tmp_name' => $otherImages['tmp_name'][$i], 'is_main' => false];
 		}
 
-		$itemId = $this->itemService->save($item)->getId();
+		$item = $this->itemService->save($item);
 		if(!empty($imagesInfo))
 		{
-			$this->imageService->addImages($imagesInfo, $itemId);
+			$this->imageService->addImages($imagesInfo, $item);
 		}
 
-		return Redirect::createResponseByURLName('edit-item', [], ['id' => $itemId]);
+		return Redirect::createResponseByURLName('edit-item', [], ['id' => $item->getId()]);
+	}
+
+	public function acceptDeletion(Request $request, int $id): Response
+	{
+		$item = $this->itemService->getItemById($id);
+		$page = $this->templateProcessor->render('accept-deletion-item.php', ['item' => $item], 'layout/main.php', [
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
+		]);
+		return (new Response())->withBodyHTML($page);
+	}
+
+	public function realDeleteItem(Request $request, int $id): Response
+	{
+		$this->itemService->realDeleteItem($id);
+		return Redirect::createResponseByURLName('home-admin');
 	}
 
 	public function deactivateItem(Request $request, int $id): Response

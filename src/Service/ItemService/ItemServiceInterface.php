@@ -43,4 +43,6 @@ interface ItemServiceInterface
 
 	public function updateCommonInfo(Item $item): Item;
 
+	public function realDeleteItem(int $id): void;
+
 }

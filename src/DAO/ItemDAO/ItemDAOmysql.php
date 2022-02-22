@@ -245,7 +245,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 
 		if (!empty($oldTags))
 		{
-			$this->DBConnection->query(
+			$this->dbConnection->query(
 				$this->getDeleteWhereAndWhereInQuery($item->getId(), array_keys($oldTags), [
 					'table_name' => '`up_item-tag`',
 					'item_id_name' => 'ITEM_ID',
@@ -387,6 +387,11 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 	public function activateItem(int $id): void
 	{
 		$this->dbConnection->query("UPDATE up_item SET ACTIVE = 1 WHERE ID={$id}");
+	}
+
+	public function deleteItem(int $id): void
+	{
+		$this->dbConnection->query("DELETE FROM up_item WHERE ID={$id}");
 	}
 
 	public function updateCommonInfo(Item $item): Item

@@ -53,6 +53,8 @@ $router->post('/admin/deleteSpecification', [CategoryController::class, 'deleteS
 $router->get('/admin/editItem/{positiveInt:id}', [ItemController::class, 'addItem'], 'edit-item');
 $router->post('/admin/deactivateItem/{positiveInt:id}', [ItemController::class, 'deactivateItem'], 'deactivate-item');
 $router->post('/admin/activateItem/{positiveInt:id}', [ItemController::class, 'activateItem'], 'activate-item');
+$router->get('/admin/acceptDeletionItem/{positiveInt:id}', [ItemController::class, 'acceptDeletion'], 'accept-deletion-item');
+$router->post('/admin/deleteItem/{positiveInt:id}', [ItemController::class, 'realDeleteItem'], 'delete-item');
 $router->post('/admin/fastUpdateItem', [ItemController::class, 'updateCommonInfo'], 'fast-item-update');
 $router->post('/admin/deleteImage/{positiveInt:id}', [ImageController::class, 'deleteImageById'], 'delete-image');
 
