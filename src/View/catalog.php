@@ -159,7 +159,7 @@ use Up\Entity\Item;
 									<a class="btn btn-normal" href="<?=URLResolver::resolve('edit-item', ['id' => $item->getId()])?>">Редактировать</a>
 									<input type="submit" style="display: none">
 									<?php if ($item->getIsActive()): ?>
-									<a class="btn btn-delete">Скрыть</a>
+									<a class="btn btn-deactivate">Скрыть</a>
 									<?php else: ?>
 									<a class="btn btn-return">Вернуть</a>
 									<?php endif; ?>

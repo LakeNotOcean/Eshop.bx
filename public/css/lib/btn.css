@@ -27,11 +27,11 @@
 	font-weight: 500;
 }
 
-.btn-delete {
+.btn-delete, .btn-deactivate {
 	color: #DF0310;
 }
 
-.btn-delete:hover {
+.btn-delete:hover, .btn-deactivate:hover {
 	background: #DF0310;
 	border-color: #DF0310;
 }

@@ -7,6 +7,7 @@ use http\Exception\RuntimeException;
 use Up\Core\Error\OSError;
 use Up\Core\Settings\Settings;
 use Up\DAO\ImageDAO\ImageDAOInterface;
+use Up\Entity\ItemDetail;
 use Up\Entity\ItemsImage;
 use Up\Lib\Mime\Error\MimeTypeException;
 use Up\Lib\Mime\MimeMapper;
@@ -59,15 +60,15 @@ class ImageService implements ImageServiceInterface
 	 * @return array<ItemsImage>
 	 * @throws MimeTypeException
 	 */
-	public function addImages(array $imagesParams, int $itemId): array
+	public function addImages(array $imagesParams, ItemDetail $item): array
 	{
 		$images = array_map(
-			function($imageParams) {
-				return $this->addImage($imageParams);
+			function($imageParams) use ($item) {
+				return $this->addImage($imageParams, $item);
 			},
 			$imagesParams,
 		);
-		return $this->imageDAO->saveAll($images, $itemId);
+		return $this->imageDAO->saveAll($images, $item->getId());
 	}
 
 	/**
@@ -79,7 +80,7 @@ class ImageService implements ImageServiceInterface
 	 * @return ItemsImage
 	 * @throws MimeTypeException
 	 */
-	public function addImage(array $imageParams): ItemsImage
+	public function addImage(array $imageParams, ItemDetail $item): ItemsImage
 	{
 		$mimeType = $imageParams['type'];
 		if (!$this->isValidImageMime($mimeType))
@@ -116,6 +117,13 @@ class ImageService implements ImageServiceInterface
 			$pathInfo = pathInfo($path);
 			$imagePathWithoutExtension = $pathInfo['dirname'] . '/' . $pathInfo['filename'];
 			$itemImage->setPath($sizeName, $imagePathWithoutExtension);
+		}
+
+		if($imageParams['is_main'] && $item->isSetMainImage())
+		{
+			$this->deleteImageFromFileSystem($item->getMainImage());
+			$this->imageDAO->deleteById($item->getMainImage()->getId());
+			$item->unsetMainImage();
 		}
 
 		return $itemImage;
@@ -237,6 +245,16 @@ class ImageService implements ImageServiceInterface
 		$image = $this->imageDAO->getImageById($imageId);
 		$this->deleteImageFromFileSystem($image);
 		$this->imageDAO->deleteById($imageId);
+	}
+
+	public function deleteImagesByItemId(int $itemId): void
+	{
+		$images = $this->imageDAO->getImagesByItemId($itemId);
+		foreach ($images as $image)
+		{
+			$this->deleteImageFromFileSystem($image);
+		}
+		$this->imageDAO->deleteImagesByItemId($itemId);
 	}
 
 	private function generateFilename(string $imageFilename, string $fileExtension): string

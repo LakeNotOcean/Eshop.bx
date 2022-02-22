@@ -124,13 +124,13 @@ class Router
 	 * @throws Error\RoutingException
 	 */
 	//TODO: Убрать в методе getRoute второй параметр и поставить ограничения в роутер
-	public function getRouteName(string $url, string $method = 'GET')
+	public function getRouteName(string $url)
 	{
 		$path = URLHelper::removeIfExistGetParametersFromPath($url);
 		foreach ($this->routes as $route)
 		{
 			$matches = [];
-			if ($route['method'] === $method && preg_match($route['urlRegex'], $path, $matches))
+			if (preg_match($route['urlRegex'], $path, $matches))
 			{
 				return $route['name'];
 			}

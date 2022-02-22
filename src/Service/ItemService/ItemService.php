@@ -10,6 +10,7 @@ use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\UserItem;
 
+
 class ItemService implements ItemServiceInterface
 {
 	protected $itemDAO;
@@ -142,6 +143,12 @@ class ItemService implements ItemServiceInterface
 	public function activateItem(int $id): void
 	{
 		$this->itemDAO->activateItem($id);
+	}
+
+	public function realDeleteItem(int $id): void
+	{
+		$this->imageService->deleteImagesByItemId($id);
+		$this->itemDAO->deleteItem($id);
 	}
 
 	public function updateCommonInfo(Item $item): Item

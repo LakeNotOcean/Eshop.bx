@@ -25,7 +25,6 @@ class ImageController
 
 	public function deleteImageById(Request $request, int $id): Response
 	{
-		$request;
 		$this->imageService->deleteImageById($id);
 		return (new Response())->withBodyJSON([]);
 	}

@@ -72,10 +72,11 @@ class UserService implements UserServiceInterface
 		return $_SESSION[self::UserSessionKey];
 	}
 
-	public function registerUser(user $user, string $password): void
+	public function registerUser(user $user, string $password): User
 	{
-		$this->userDAO->addUser($user, $password);
-		$this->addUserToSession($user);
+		$newUser = $this->userDAO->addUser($user, $password);
+		$this->addUserToSession($newUser);
+		return $newUser;
 	}
 
 	public function updateUser(User $user): void

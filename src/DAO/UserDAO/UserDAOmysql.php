@@ -45,25 +45,44 @@ class UserDAOmysql implements UserDAOInterface
 		return $userList[$login];
 	}
 
-	public function addUser(User $user, string $password): void
+	/**
+	 * @param User $user
+	 * @param string $password
+	 *
+	 * @return User
+	 */
+	public function addUser(User $user, string $password): User
 	{
 		$password = PassWord::hashPassword($password);
-
-		$preparedQuery = $this->DBConnection->prepare(
-			'INSERT INTO up_user (LOGIN, EMAIL, PHONE, PASSWORD, ROLE_ID,FIRST_NAME,SECOND_NAME)
+		try
+		{
+			$this->DBConnection->beginTransaction();
+			$preparedQuery = $this->DBConnection->prepare(
+				'INSERT INTO up_user (LOGIN, EMAIL, PHONE, PASSWORD, ROLE_ID,FIRST_NAME,SECOND_NAME)
 			VALUES (:login,:email,:phone,:password,2,:firstName,:secondName)'
-		);
+			);
 
-		$preparedQuery->execute(
-			[
-				'login' => $user->getLogin(),
-				'email' => $user->getEmail(),
-				'phone' => $user->getPhone(),
-				'password' => $password,
-				'firstName' => $user->getFirstName(),
-				'secondName' => $user->getSecondName(),
-			]
-		);
+			$preparedQuery->execute(
+				[
+					'login' => $user->getLogin(),
+					'email' => $user->getEmail(),
+					'phone' => $user->getPhone(),
+					'password' => $password,
+					'firstName' => $user->getFirstName(),
+					'secondName' => $user->getSecondName(),
+				]
+			);
+			$newUser = clone $user;
+			$newUser->setId($this->DBConnection->lastInsertId());
+			$this->DBConnection->commit();
+
+			return $newUser;
+		}
+		catch (\PDOException $pdoException)
+		{
+			$this->DBConnection->rollBack();
+			throw $pdoException;
+		}
 	}
 
 	public function giveUserModeratorRoleByLogin(string $login): void

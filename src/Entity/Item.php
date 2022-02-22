@@ -112,4 +112,9 @@ class Item extends Entity
 	{
 		return isset($this->mainImage);
 	}
+
+	public function unsetMainImage(): void
+	{
+		unset($this->mainImage);
+	}
 }

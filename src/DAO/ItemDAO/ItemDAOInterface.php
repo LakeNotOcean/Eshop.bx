@@ -31,4 +31,6 @@ interface ItemDAOInterface
 
 	public function updateCommonInfo(Item $item): Item;
 
+	public function deleteItem(int $id): void;
+
 }

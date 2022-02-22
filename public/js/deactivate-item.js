@@ -10,7 +10,7 @@ async function activateItem(id, csrf){
 	return fetch('/admin/activateItem/' + id, {method: 'POST', body: data});
 }
 
-let deleteBtns = document.querySelectorAll('.btn-delete');
+let deleteBtns = document.querySelectorAll('.btn-deactivate');
 let returnBtns = document.querySelectorAll('.btn-return');
 deleteBtns.forEach(el => {
 	el.addEventListener('click', (event) => {
