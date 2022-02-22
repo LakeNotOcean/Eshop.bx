@@ -1,3 +1,4 @@
 .idea
 */Log/*.txt
 */Log/*.json
+*/Log/backups
