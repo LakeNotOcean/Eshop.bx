@@ -172,10 +172,12 @@ class ItemController
 
 	public function getItem(Request $request, int $id): Response
 	{
+		$userId = $request->getUser()->getId();
 		$item = $this->itemService->getItemById($id);
 		$itemsSimilar = $this->itemService->getItemsSimilarById($id,5);
+
 		$page = $this->templateProcessor->render('item.php', [
-			'item' => $item,
+			'item' => $this->itemService->mapItemDetailToUserItem($userId, $item),
 			'similarItems' => $itemsSimilar,
 		], 'layout/main.php', [
 			'isAuthenticated' => $request->isAuthenticated(),

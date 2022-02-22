@@ -4,7 +4,7 @@ namespace Up\Service\ItemService;
 
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
-
+use Up\Entity\UserItem;
 
 interface ItemServiceInterface
 {
@@ -14,6 +14,8 @@ interface ItemServiceInterface
 	public function getFavoriteItems(int $userId, array $limitOffset): array;
 
 	public function mapItemsToUserItems(int $userId, array $items): array;
+
+	public function mapItemDetailToUserItem(int $userId, ItemDetail $itemDetail): UserItem;
 
 	public function mapItemDetailsToUserItems(int $userId, array $itemDetails): array;
 

@@ -69,6 +69,16 @@ class ItemService implements ItemServiceInterface
 		return $userItems;
 	}
 
+	public function mapItemDetailToUserItem(int $userId, ItemDetail $itemDetail): UserItem
+	{
+		$favoriteItems = $this->getFavoriteItems($userId);
+		$userItem = new UserItem();
+		$userItem->setItemDetail($itemDetail);
+		$isFavorite = array_key_exists($userItem->getId(), $favoriteItems);
+		$userItem->setIsFavorite($isFavorite);
+		return $userItem;
+	}
+
 	public function getFavoriteItemsAmount(int $userId): int
 	{
 		return $this->itemDAO->getFavoriteItemsAmount($userId);
