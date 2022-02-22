@@ -15,6 +15,10 @@ interface ItemServiceInterface
 
 	public function getFavoriteItemsAmount(int $userId): int;
 
+	public function addToFavorites(int $userId, int $favoriteItemId): void;
+
+	public function removeFromFavorites(int $userId, int $favoriteItemId): void;
+
 	public function getItemsByQuery(array $limitOffset, string $searchQuery): array;
 
 	public function getItemsByFilters(array $limitOffset, string $query = '', string $price = '', array $tags = [], array $specs = []): array;

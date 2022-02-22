@@ -201,7 +201,6 @@
 	</div>
 </div>
 
-
 <script src="/js/lib/scroll.js"></script>
 <script src="/js/lib/fix-node.js"></script>
 <script src="/js/item/fixed-scroll-menu.js"></script>
@@ -209,4 +208,5 @@
 <script src="/js/item/open-images.js"></script>
 <script src="/js/item/scroll-similar-items.js"></script>
 
+<script src="/js/lib/showPopup.js"></script>
 <script src="/js/add-to-favorites.js"></script>

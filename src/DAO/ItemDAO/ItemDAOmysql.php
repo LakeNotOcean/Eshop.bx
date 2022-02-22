@@ -47,9 +47,25 @@ class ItemDAOmysql implements ItemDAOInterface
 	public function getFavoriteItemsAmount(int $userId): int
 	{
 		$query = "SELECT COUNT(USER_ID) AS `favorites_count` FROM `up_user-favorite_item`
-			WHERE USER_ID = $userId GROUP BY USER_ID";
+			WHERE USER_ID = $userId GROUP BY USER_ID;";
 		$result = $this->DBConnection->query($query);
 		return $result->fetch()['favorites_count'] ?? 0;
+	}
+
+	public function addToFavorites(int $userId, int $favoriteItemId): void
+	{
+		$query = "
+			INSERT INTO `up_user-favorite_item` (USER_ID, FAVORITE_ITEM_ID) 
+			VALUES ($userId, $favoriteItemId);";
+		$this->DBConnection->query($query);
+	}
+
+	public function removeFromFavorites(int $userId, int $favoriteItemId): void
+	{
+		$query = "
+			DELETE FROM `up_user-favorite_item`
+			WHERE USER_ID = $userId AND FAVORITE_ITEM_ID $favoriteItemId;";
+		$this->DBConnection->query($query);
 	}
 
 	public function getItemsByQuery(int $offset, int $amountItems, string $searchQuery): array

@@ -10,8 +10,7 @@ for (let orderStatus of orderStatuses)
 		postBody.append('order-id', id);
 		postBody.append('order-status', status);
 
-		let orderList = document.querySelector('.order-list');
-		let token = orderList.querySelector('input');
+		let token = document.querySelector('.token');
 		postBody.append(token.name, token.value);
 
 		fetch('/admin/changeOrderStatus', {

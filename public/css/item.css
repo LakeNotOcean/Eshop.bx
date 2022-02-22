@@ -1,5 +1,6 @@
 @import "opened-images.css";
 @import "lib/card.css";
+@import "lib/popup.css";
 
 main {
 	background: white;
@@ -37,6 +38,10 @@ item-header
 	font-weight: 700;
 }
 
+/*==========================
+add-to-favorites
+==========================*/
+
 .btn-add-to-favorites {
 	display: flex;
 	margin-left: 15px;
@@ -64,6 +69,30 @@ item-header
 .btn-add-to-favorites:hover .add-to-favorites {
 	fill: red;
 	stroke: none;
+}
+
+.favoriteActive {
+	fill: red;
+	stroke: none;
+	animation: like .3s forwards;
+	transform-origin: center;
+}
+
+.removedFromFavorites {
+	fill: none !important;
+	stroke: #222222 !important;
+}
+
+@keyframes like {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(1);
+	}
 }
 
 /*==========================

@@ -125,6 +125,28 @@ class ItemController
 		return (new Response())->withBodyHTML($page);
 	}
 
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
+	public function addToFavorites(Request $request): Response
+	{
+		$userId = $request->getUser()->getId();
+		$favoriteItemId = $request->getPostParametersByName('favorite-item-id');
+		$this->itemService->addToFavorites($userId, $favoriteItemId);
+		return (new Response())->withBodyHTML('');
+	}
+
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
+	public function removeFromFavorites(Request $request): Response
+	{
+		$userId = $request->getUser()->getId();
+		$favoriteItemId = $request->getPostParametersByName('favorite-item-id');
+		$this->itemService->removeFromFavorites($userId, $favoriteItemId);
+		return (new Response())->withBodyHTML('');
+	}
+
 	public function getItem(Request $request, int $id): Response
 	{
 		$item = $this->itemService->getItemById($id);

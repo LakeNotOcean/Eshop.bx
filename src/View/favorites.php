@@ -61,3 +61,6 @@ use Up\Core\Router\URLResolver;
 		<?php endforeach;?>
 	</div>
 </div>
+
+<script src="/js/lib/showPopup.js"></script>
+<script src="/js/add-to-favorites.js"></script>

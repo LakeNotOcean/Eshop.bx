@@ -28,6 +28,8 @@ $router->get('/profile', [UserController::class, 'getProfilePage'], 'user-profil
 $router->post('/updateUser', [UserController::class, 'updateUser'], 'update-user');
 
 $router->get('/favorites', [ItemController::class, 'getFavoriteItems'], 'user-favorites');
+$router->post('/addToFavorites', [ItemController::class, 'addToFavorites'], 'add-to-favorites');
+$router->post('/removeFromFavorites', [ItemController::class, 'removeFromFavorites'], 'remove-from-favorites');
 
 //Admin
 $router->get('/admin/addItem', [ItemController::class, 'addItem'], 'add-item');

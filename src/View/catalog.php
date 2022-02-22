@@ -124,6 +124,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 								<?= htmlspecialchars($item->getTitle()) ?>
 							</a>
 							<?php endif;?>
+							<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 							<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
 								<svg class="add-to-favorites">
 									<use xlink:href="/img/sprites.svg#heart"></use>

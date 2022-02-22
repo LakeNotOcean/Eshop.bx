@@ -15,6 +15,10 @@ interface ItemDAOInterface
 
 	public function getFavoriteItemsAmount(int $userId): int;
 
+	public function addToFavorites(int $userId, int $favoriteItemId): void;
+
+	public function removeFromFavorites(int $userId, int $favoriteItemId): void;
+
 	public function getItemsByOrderId(int $orderId): array;
 
 	public function getItemDetailById(int $id): ItemDetail;

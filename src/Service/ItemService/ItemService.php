@@ -43,6 +43,16 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getFavoriteItemsAmount($userId);
 	}
 
+	public function addToFavorites(int $userId, int $favoriteItemId): void
+	{
+		$this->itemDAO->addToFavorites($userId, $favoriteItemId);
+	}
+
+	public function removeFromFavorites(int $userId, int $favoriteItemId): void
+	{
+		$this->itemDAO->removeFromFavorites($userId, $favoriteItemId);
+	}
+
 	public function getItemsByQuery(array $limitOffset, string $searchQuery): array
 	{
 		return $this->itemDAO->getItemsByQuery($limitOffset['offset'], $limitOffset['amountItems'], $searchQuery);
