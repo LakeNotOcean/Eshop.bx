@@ -84,7 +84,7 @@ class URLAccessMiddleware extends AbstractMiddleware
 		$userRoleName = $user->getRole()->getName()->getValue();
 		if ($userRoleName === UserEnum::Guest)
 		{
-			return Redirect::createResponseByURLName('login-user-page', [
+			return Redirect::createResponseByURLName('login-user', [
 				UserController::nextUrlQueryKeyword => URLHelper::removeIfExistGetParametersFromPath($request->getRequestUrl())
 			]);
 		}
@@ -107,12 +107,12 @@ class URLAccessMiddleware extends AbstractMiddleware
 	{
 		$router = Router::getInstance();
 		$urlName = $request->getRouteName();
-		if ($urlName !== 'login-user-page' && $urlName !== 'login-user')
+		if ($urlName !== 'login-user')
 		{
 			return Redirect::createResponseByURLName('home');
 		}
 
-		if ($urlName === 'login-user-page')
+		if ($request->getMethod() === 'GET')
 		{
 			return call_user_func($this->getResponse, $request, ...$params);
 		}
