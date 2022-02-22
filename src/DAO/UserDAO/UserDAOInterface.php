@@ -21,4 +21,5 @@ interface UserDAOInterface
 	public function getUsersInfo(): array;
 
 	public function updateUser(User $user): void;
+
 }

@@ -1,5 +1,5 @@
 <?php
-/** @var \Up\Entity\ItemDetail $item */
+/** @var \Up\Entity\UserItem $item */
 /** @var array<UP\Entity\Item> $similarItems */
 /** @var array<\Up\Entity\Review> $reviews */
 //$itemImages = ['/img/2_big.webp', '/img/2-1_big.webp', '/img/2-2_big.webp'];
@@ -39,7 +39,7 @@
 		<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
 		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 		<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
-			<svg class="add-to-favorites">
+			<svg class="add-to-favorites <?= $item->getIsFavorite() ? "favoriteActive" : ""?>">
 				<use xlink:href="/img/sprites.svg#heart"></use>
 			</svg>
 			<div class="add-to-favorites-label">В избранное</div>

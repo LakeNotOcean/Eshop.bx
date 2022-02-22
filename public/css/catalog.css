@@ -240,7 +240,6 @@ filters main
 }
 
 .filters-column {
-	display: flex;
 	width: 300px;
 	margin-right: 50px;
 }

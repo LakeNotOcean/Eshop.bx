@@ -67,6 +67,33 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		$this->dbConnection->query($query);
 	}
 
+
+	public function getItemsByTypeID(int $offset,int $amountItems, int $typeID): array
+	{
+		$dbQuery = $this->getItemsByTypeIDQuery($offset,$amountItems,$typeID);
+		$result = $this->dbConnection->prepare($dbQuery);
+		$result->execute();
+		$items = [];
+		while ($row = $result->fetch())
+		{$itemId = (int)$row['ui_ID'];
+			if (!array_key_exists($itemId, $items))
+			{
+				$item = new Item();
+				$this->mapItemCommonInfo($item, $row);
+				$image = new ItemsImage();
+				$this->mapItemsImageInfo($image, $row);
+				$item->setMainImage($image);
+				$items[$itemId] = $item;
+			}
+			else
+			{
+				$this->mapItemsImageInfo($items[$itemId]->getMainImage(), $row);
+			}
+		}
+
+		return $items;
+	}
+
 	public function getItemsByQuery(int $offset, int $amountItems, string $searchQuery): array
 	{
 		$dbQuery = $this->getItemsQuery($offset, $amountItems, $searchQuery);
@@ -125,6 +152,29 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		return $price;
 	}
 
+	public function getItemsMinMaxPriceByItemTypes(array $typeIds): array
+	{
+		$dbQuery = $this->getItemsMinMaxPriceByItemTypesQuery($typeIds);
+		$result = $this->dbConnection->query($dbQuery);
+		$minPrice = 0;
+		$maxPrice = 900000;
+		foreach ($result as $prices)
+		{
+			(int) $minPrice = $prices['MINPRICE'];
+			(int) $maxPrice = $prices['MAXPRICE'];
+		}
+		$price = [
+			'minPrice' => $minPrice,
+			'maxPrice' => $maxPrice,
+		];
+		return $price;
+	}
+
+
+
+
+
+
 	public function getItemsByFilters(
 		int $offset,
 		int $amountItems,
@@ -132,6 +182,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		string $price,
 		array $tags,
 		array $specs,
+		int $typeId,
 		bool $deactivate_include
 	): array
 	{
@@ -150,9 +201,57 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				$newSpecs[$spec][] = $value;
 			}
 		}
-		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$query,$price,$tags,$newSpecs, $deactivate_include);
-		$result = $this->dbConnection->query($dbQuery);
-		return $this->mapItems($result);
+		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$price,$typeId, $query,  $tags, $newSpecs,$deactivate_include);
+		$preparedQuery = $this->dbConnection->prepare($dbQuery);
+
+		$executeParam = [];
+
+		if (!empty($tags))
+		{
+			foreach ($tags as $tag)
+			{
+				$executeParam[] = $tag;
+			}
+		}
+
+		if (!empty($newSpecs))
+		{
+			foreach ($newSpecs as $spec => $values)
+			{
+				$executeParam[] = $spec;
+				foreach ($values as $value)
+				{
+					$executeParam[] = "$value";
+				}
+
+			}
+		}
+		if ($query !== "")
+		{
+			$executeParam[] = "%{$query}%";
+		}
+
+
+		$preparedQuery->execute($executeParam);
+		$items = [];
+		while ($row = $preparedQuery->fetch())
+		{
+			$itemId = (int)$row['ui_ID'];
+			if (!array_key_exists($itemId, $items))
+			{
+				$item = new Item();
+				$this->mapItemCommonInfo($item, $row);
+				$image = new ItemsImage();
+				$this->mapItemsImageInfo($image, $row);
+				$item->setMainImage($image);
+				$items[$itemId] = $item;
+			}
+			else
+			{
+				$this->mapItemsImageInfo($items[$itemId]->getMainImage(), $row);
+			}
+		}
+		return $items;
 	}
 
 	public function getItemsByOrderId(int $orderId): array
@@ -379,6 +478,20 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		return $result->fetch()['num_items'];
 	}
 
+	public function getItemsAmountByTypeId(int $typeId,string $searchQuery = ''): int
+	{
+		$query = "SELECT count(1) AS num_items FROM up_item WHERE ACTIVE = 1 AND ITEM_TYPE_ID = {$typeId}";
+		if ($searchQuery !== '')
+		{
+			$query .= " AND TITLE LIKE '%$searchQuery%' ";
+		}
+		$result = $this->dbConnection->query($query);
+
+		return $result->fetch()['num_items'];
+	}
+
+
+
 	public function deactivateItem(int $id): void
 	{
 		$this->dbConnection->query("UPDATE up_item SET ACTIVE = 0 WHERE ID={$id}");
@@ -421,7 +534,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				WHERE ID=?";
 	}
 
-	public function getItemsAmountByFilters(string $query, string $price, array $tags, array $specs, bool $deactivate_include = false)
+	public function getItemsAmountByFilters(string $query, string $price, array $tags, array $specs,int $typeId,bool $deactivate_include = false)
 	{
 		$newSpecs = [];
 		foreach ($specs as $spec => $value)
@@ -438,11 +551,50 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				$newSpecs[$spec][] = $value;
 			}
 		}
-		$query = $this->getItemsAmountByFiltersQuery($query, $price, $tags, $newSpecs, $deactivate_include);
-		$result = $this->dbConnection->query($query);
+		$dbQuery = $this->getItemsAmountByFiltersQuery($query, $price, $tags, $newSpecs,$typeId ,$deactivate_include);
+		$preparedQuery = $this->dbConnection->prepare($dbQuery);
 
-		return $result->fetch()['num_items'];
+		$executeParam = [];
+
+		if (!empty($tags))
+		{
+			foreach ($tags as $tag)
+			{
+				$executeParam[] = $tag;
+			}
+		}
+
+		if (!empty($newSpecs))
+		{
+			foreach ($newSpecs as $spec => $values)
+			{
+				$executeParam[] = $spec;
+				foreach ($values as $value)
+				{
+					$executeParam[] = "$value";
+				}
+
+			}
+		}
+		if ($query !== "")
+		{
+			$executeParam[] = "%{$query}%";
+		}
+		$preparedQuery->execute($executeParam);
+
+
+		return $preparedQuery->fetch()['num_items'];
 	}
+
+
+	private function getItemsByTypeIDQuery(int $offset, int $amountItems, int $typeID): string
+	{
+		$query = "SELECT ID AS ID FROM up_item WHERE ITEM_TYPE_ID = ".$typeID . " LIMIT {$offset}, {$amountItems}";
+		$query = $this->getQueryGetItemsById($query);
+		return $query;
+	}
+
+
 
 	private function getSimilarItemByIdQuery(int $itemID, int $similarAmount): string
 	{
@@ -626,7 +778,26 @@ LIMIT "
 		return $image;
 	}
 
-	private function getItemsMinMaxPriceQuery(): string
+	private function getItemsMinMaxPriceByItemTypesQuery(array $typeIds) :string
+	{
+		$query = "SELECT MIN(PRICE) AS MINPRICE,
+		MAX(PRICE) AS MAXPRICE
+		FROM up_item
+		 ";
+		if ($typeIds[0] === 0 || empty($typeIds))
+		{
+			return $query;
+		}
+		$where = [];
+		foreach ($typeIds as $typeId)
+		{
+			$where = [" ITEM_TYPE_ID = ".(int) $typeId." "];
+		}
+		$query .= " WHERE ".implode(' OR ', $where);
+		return $query;
+	}
+
+	private function getItemsMinMaxPriceQuery() :string
 	{
 		$query = "SELECT MIN(PRICE) AS MINPRICE,
 		MAX(PRICE) AS MAXPRICE
@@ -636,10 +807,11 @@ LIMIT "
 	}
 
 	private function getItemsByFiltersQuery(
-		$offset,
-		$amountItems,
-		string $searchQuery,
+		int $offset,
+		int $amountItems,
 		string $price,
+		int $typeId,
+		string $searchQuery,
 		array $tags,
 		array $newSpecs,
 		bool $deactivate_include
@@ -679,7 +851,7 @@ where ";
 			$where = [];
 			foreach ($tags as $tag)
 			{
-				$where[] = 'TAG_ID = ' . $tag;
+				$where[] = 'TAG_ID = ' . "?";
 			}
 			$query .= implode(' OR ', $where);
 			$query .= "
@@ -706,10 +878,9 @@ FROM
 				$inParam = '';
 				foreach ($values as $value)
 				{
-					$inParam .= "'" . $value . "',";
+					$inParam .= " ? ";
 				}
-				$inParam = substr($inParam, 0, -1);
-				$where[] = "(SPEC_TYPE_ID = " . $spec . " AND VALUE IN (" . $inParam . "))";
+				$where[] = "(SPEC_TYPE_ID = " . "?" . " AND VALUE IN (" . $inParam . "))";
 			}
 			$query .= implode(' OR ', $where);
 			$query .= " GROUP BY ITEM_ID) as ls
@@ -726,7 +897,7 @@ INNER JOIN (select ID as ITEM_ID,
             FROM up_item
             WHERE ";
 			$minMaxPrice = explode('-', $price);
-			$query .= 'PRICE > ' . $minMaxPrice[0] . ' AND PRICE < ' . $minMaxPrice[1];
+			$query .= 'PRICE >= ' . (int) $minMaxPrice[0] . ' AND PRICE <= ' . (int) $minMaxPrice[1];
 			$query .= ") as uip on uip.ITEM_ID = ID";
 		}
 		if (!($searchQuery === ""))
@@ -735,16 +906,18 @@ INNER JOIN (select ID as ITEM_ID,
 INNER JOIN (select ID as ITEM_ID,
                    TITLE as TITLE
             FROM up_item
-            WHERE TITLE LIKE '%";
-			$query .= $searchQuery;
-			$query .= "%') as uit on uit.ITEM_ID = ID";
+            WHERE TITLE LIKE ?) as uit on uit.ITEM_ID = ID";
 		}
+		$query .=" WHERE 1 ";
 		if(!$deactivate_include)
 		{
-			$query .= "\nWHERE ACTIVE = 1";
+			$query .= "\n AND ACTIVE = 1";
 		}
-		$query .= "
-		ORDER BY ui.SORT_ORDER, ID
+		if ($typeId !== 0)
+		{
+			$query .= " AND ITEM_TYPE_ID = {$typeId} ";
+		}
+		$query .= " ORDER BY ui.SORT_ORDER, ID
 		LIMIT {$offset}, {$amountItems}";
 		$query .= ") as uiI
 				)
@@ -781,13 +954,21 @@ INNER JOIN (select ID as ITEM_ID,
 		return $query;
 	}
 
+	private function getItemsByPriceQuery($minPrice, $maxPrice): string
+	{
+		$query = "SELECT ID FROM up_item WHERE PRICE > ".$minPrice." AND PRICE < ".$maxPrice." ";
+		$query = $this->getQueryGetItemsById($query);
+		return $query;
+	}
+
+
 	private function getItemsAmountByFiltersQuery(
 		string $searchQuery,
 		string $price,
-		array  $tags,
-		array  $newSpecs,
-		bool $deactivate_include
-	): string
+		array $tags,
+		array $newSpecs,
+		int $typeId,
+		bool $deactivate_include):string
 	{
 
 		$query = "
@@ -808,7 +989,7 @@ where ";
 			$where = [];
 			foreach ($tags as $tag)
 			{
-				$where[] = 'TAG_ID = ' . $tag;
+				$where[] = 'TAG_ID = ' . "?";
 			}
 			$query .= implode(' OR ', $where);
 			$query .= "
@@ -835,10 +1016,9 @@ FROM
 				$inParam = '';
 				foreach ($values as $value)
 				{
-					$inParam .= "'" . $value . "',";
+					$inParam .= " ? ";
 				}
-				$inParam = substr($inParam, 0, -1);
-				$where[] = "(SPEC_TYPE_ID = " . $spec . " AND VALUE IN (" . $inParam . "))";
+				$where[] = "(SPEC_TYPE_ID = " . "?" . " AND VALUE IN (" . $inParam . "))";
 			}
 			$query .= implode(' OR ', $where);
 			$query .= " GROUP BY ITEM_ID) as ls
@@ -855,7 +1035,7 @@ INNER JOIN (select ID as ITEM_ID,
             FROM up_item
             WHERE ";
 			$minMaxPrice = explode('-', $price);
-			$query .= 'PRICE > ' . $minMaxPrice[0] . ' AND PRICE < ' . $minMaxPrice[1];
+			$query .= 'PRICE >= ' . (int) $minMaxPrice[0] . ' AND PRICE <= ' . (int) $minMaxPrice[1];
 			$query .= ") as uip on uip.ITEM_ID = ID";
 		}
 		if (!($searchQuery === ""))
@@ -864,17 +1044,19 @@ INNER JOIN (select ID as ITEM_ID,
 INNER JOIN (select ID as ITEM_ID,
                    TITLE as TITLE
             FROM up_item
-            WHERE TITLE LIKE '%";
-			$query .= $searchQuery;
-			$query .= "%') as uit on uit.ITEM_ID = ID";
+            WHERE TITLE LIKE ?) as uit on uit.ITEM_ID = ID";
 		}
+		$query .="
+		WHERE 1 ";
 		if(!$deactivate_include)
 		{
 			$query .= "
-			WHERE ACTIVE = 1";
+			AND ACTIVE = 1";
 		}
-
-
+		if ($typeId !== 0)
+		{
+			$query .= " AND ITEM_TYPE_ID = {$typeId} ";
+		}
 		return $query;
 	}
 

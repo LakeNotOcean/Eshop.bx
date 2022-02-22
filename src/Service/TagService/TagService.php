@@ -32,4 +32,10 @@ class TagService implements TagServiceInterface
 
 		return $this->tagDAO->save($tags);
 	}
+
+	public function getTagsByItemType(array $typeIds): array
+	{
+		$tags = $this->tagDAO->getTagsByItemType($typeIds);
+		return $tags;
+	}
 }

@@ -62,37 +62,23 @@ class ItemController
 		$isAuthenticated = $request->isAuthenticated();
 		$isAdmin = $request->isAdmin();
 
-		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
-		$currentPage = $currentPage > 0 ? $currentPage : 1;
-		if ($request->containsQuery('price') || $request->containsQuery('tag') || $request->containsQuery('spec') || $request->containsQuery('deactivate_include'))
-		{
-			$query = $request->containsQuery('query') ? $request->getQueriesByName('query') : '';
-			$price = $request->containsQuery('price') ? $request->getQueriesByName('price') : '';
-			$tags = $request->containsQuery('tag') ? $request->getQueriesByName('tag') : [];
-			$specs = $request->containsQuery('spec') ? $request->getQueriesByName('spec') : [];
-			$deactivate = $request->containsQuery('deactivate_include') && $isAdmin;
-			$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query,$price,$tags,$specs, $deactivate);
-			$itemsAmount = $this->itemService->getItemsAmountByFilters($query,$price,$tags,$specs, $deactivate);
-		}
-		elseif ($request->containsQuery('query'))
-		{
-			$query = $request->getQueriesByName('query');
-			$items = $this->itemService->getItemsByQuery(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query);
-			$itemsAmount = $this->itemService->getItemsAmount($query);
-		}
-		else
-		{
-			$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
-			$itemsAmount = $this->itemService->getItemsAmount();
-			$query = '';
-		}
-		$categories = $this->itemService->getItemsCategories();
-		$tags = $this->itemService->getItemsTags();
-		$price = $this->itemService->getItemsMinMaxPrice();
+		$deactivate = $request->containsQuery('deactivate_include') && $isAdmin;
+		$query = $request->getQueriesOrDefaultList(['page'=> '1', 'query' => '', 'tag' => [], 'spec' => [], 'price' => '']);
+
+		$currentPage = $query['page'] > 0 ? $query['page'] : 1;
+
+		$typeIds = $this->itemService->getTypeIdByQuery($query['query']);
+		$queryTypeId = ($typeIds[0] === 0) ? 1 : 0; //1 - значение передаваетмая через ручки.
+
+		$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage),
+			$query['query'],$query['price'],$query['tag'],$query['spec'],$queryTypeId,$deactivate);
+
+		$price = $this->itemService->getItemsMinMaxPriceByItemTypes($typeIds);
+		$itemsAmount = $this->itemService->getItemsAmountByFilters($query['query'],$query['price'],$query['tag'],$query['spec'],$queryTypeId,$deactivate);
+		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
 
 		$userId = $request->getUser()->getId();
 
-		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
 		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
 			'currentPage' => $currentPage,
 			'pagesAmount' => $pagesAmount,
@@ -102,15 +88,15 @@ class ItemController
 			'items' => $this->itemService->mapItemsToUserItems($userId, $items),
 			'itemsAmount' => $itemsAmount,
 			'paginator' => $paginator,
-			'query' => $query,
-			'categories' => $categories,
-			'tags' => $tags,
+			'query' => $query['query'],
 			'price'=> $price,
+			'tags' => $this->tagService->getTagsByItemType($typeIds),
+			'categories' => $this->itemService->getItemsCategoriesByItemType($typeIds),
 			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false
 		], 'layout/main.php', [
 			'isAuthenticated' => $isAuthenticated,
 			'isAdmin' => $isAdmin,
-			'query' => $query,
+			'query' => $query['query'],
 			'userName' => $request->getUser()->getName()
 		]);
 
@@ -178,11 +164,12 @@ class ItemController
 
 	public function getItem(Request $request, int $id): Response
 	{
+		$userId = $request->getUser()->getId();
 		$item = $this->itemService->getItemById($id);
 		$itemsSimilar = $this->itemService->getItemsSimilarById($id,5);
 		$reviews = $this->reviewService->getReviewsByItemId(Paginator::getLimitOffset(1, 3), $id);
 		$page = $this->templateProcessor->render('item.php', [
-			'item' => $item,
+			'item' => $this->itemService->mapItemDetailToUserItem($userId, $item),
 			'similarItems' => $itemsSimilar,
 			'reviews' => $reviews
 		], 'layout/main.php', [
