@@ -143,7 +143,11 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 							<div class="admin-btn-container">
 								<a class="btn btn-normal" href="<?=URLResolver::resolve('edit-item', ['id' => $item->getId()])?>">Редактировать</a>
 								<input type="submit" style="display: none">
-								<a class="btn btn-delete">Удалить</a>
+								<?php if ($item->getIsActive()): ?>
+								<a class="btn btn-delete">Скрыть</a>
+								<?php else: ?>
+								<a class="btn btn-return">Вернуть</a>
+								<?php endif; ?>
 							</div>
 							<input name="item-price" class="input price" type="number" value="<?= htmlspecialchars($item->getPrice()) ?>">₽
 							<input name="item-id" value="<?= $item->getId() ?>" type="hidden" class="input">
@@ -153,6 +157,9 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 							<?php endif;?>
 						</div>
 					</div>
+					<?php if(!$item->getIsActive()): ?>
+					<div class="no-active"></div>
+					<?php endif; ?>
 				</<?= $isAdmin ? 'form' : 'a' ?>>
 
 			<?php
@@ -218,7 +225,6 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 <script src="/js/catalog-filters/filter-get-query.js"></script>
 <script src="/js/catalog-filters/queryPush.js"></script>
 <script src="/js/catalog-filters/filter-set-query.js"></script>
-<script src="/js/popup-disappear.js"></script>
 <?php if ($isAdmin): ?>
 	<script src="/js/delete-item.js"></script>
 	<script src="/js/fast-update-item.js"></script>
