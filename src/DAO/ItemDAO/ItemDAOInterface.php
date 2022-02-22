@@ -31,6 +31,8 @@ interface ItemDAOInterface
 
 	public function getItemsAmount(string $searchQuery = ''): int;
 
+	public function getItemsAmountByTypeId(int $typeId,string $searchQuery = ''): int;
+
 	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs);
 
 	public function deactivateItem(int $id): void;

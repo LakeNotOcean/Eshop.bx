@@ -453,6 +453,20 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		return $result->fetch()['num_items'];
 	}
 
+	public function getItemsAmountByTypeId(int $typeId,string $searchQuery = ''): int
+	{
+		$query = "SELECT count(1) AS num_items FROM up_item WHERE ACTIVE = 1 AND ITEM_TYPE_ID = {$typeId}";
+		if ($searchQuery !== '')
+		{
+			$query .= " AND TITLE LIKE '%$searchQuery%' ";
+		}
+		$result = $this->dbConnection->query($query);
+
+		return $result->fetch()['num_items'];
+	}
+
+
+
 	public function deactivateItem(int $id): void
 	{
 		$this->dbConnection->query("UPDATE up_item SET ACTIVE = 0 WHERE ID={$id}");

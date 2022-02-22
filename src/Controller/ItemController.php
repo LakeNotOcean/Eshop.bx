@@ -84,7 +84,7 @@ class ItemController
 			}
 			$queryPrice = $request->containsQuery('price') ? $request->getQueriesByName('price') : '';
 			$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query,$queryPrice,$queryTags,$querySpecs,$typeId[0]);
-			$itemsAmount = $this->itemService->getItemsAmountByFilters($query,$queryPrice,$queryTags,$querySpecs,);
+			$itemsAmount = $this->itemService->getItemsAmountByFilters($query,$queryPrice,$queryTags,$querySpecs,$typeId[0]);
 		}
 		//Если пришел запрос только с поиском
 		elseif ($request->containsQuery('query'))
@@ -114,7 +114,7 @@ class ItemController
 			//Если поиск без запросов (просто переход по станице)
 		{
 			$items = $this->itemService->getItemsByTypeID(Paginator::getLimitOffset($currentPage, $this->itemsInPage),$queryTypeId);
-			$itemsAmount = $this->itemService->getItemsAmount();
+			$itemsAmount = $this->itemService->getItemsAmountByItemType($queryTypeId);
 			$query = '';
 			$categories = $this->itemService->getItemsCategoriesByItemType($queryTypeId);
 			$tags = $this->tagService->getTagsByItemType($queryTypeId);
