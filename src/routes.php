@@ -4,6 +4,7 @@ use Up\Controller\CoreController;
 use Up\Controller\ImageController;
 use Up\Controller\ItemController;
 use Up\Controller\OrderController;
+use Up\Controller\ReviewController;
 use Up\Controller\UserController;
 use \Up\Controller\CategoryController;
 
@@ -25,6 +26,7 @@ $router->post('/login', [UserController::class, 'loginUser'], 'login-user');
 $router->get('/logout', [UserController::class, 'logout'], 'logout-user');
 $router->get('/passwordChange', [UserController::class, 'changePasswordPage'], 'change-password');
 $router->post('/passwordChange', [UserController::class, 'changePassword'], 'change-password');
+$router->post('/addReview', [ReviewController::class, 'saveReview'], 'add-review');
 
 $router->get('/profile', [UserController::class, 'getProfilePage'], 'user-profile');
 $router->post('/updateUser', [UserController::class, 'updateUser'], 'update-user');
@@ -73,3 +75,5 @@ $router->get('/api/v1/category/detail', [CategoryController::class, 'getCategori
 $router->get('/api/v1/categories', [CategoryController::class, 'getCategoriesJSON'], 'cat');
 $router->get('/api/v1/categoriesByType', [CategoryController::class, 'getCategoriesByItemTypeIdJSON'], 'categories-by-type');
 $router->get('/api/v1/categoriesByItem/{positiveInt:id}', [CategoryController::class, 'getCategoriesByItemIdJSON'], 'categories-by-item');
+
+$router->post('/test', [ReviewController::class, 'test'], 'test');

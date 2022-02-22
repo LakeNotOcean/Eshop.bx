@@ -285,6 +285,17 @@ item-reviews
 	user-select: none;
 }
 
+.review-send{
+	display: flex;
+	flex-direction: column;
+}
+
+.review-send-text{
+	resize: none;
+	min-height: 100px;
+	margin: 10px 0 10px 0;
+}
+
 /*==========================
 item-main-specs
 ==========================*/

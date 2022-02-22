@@ -1,11 +1,14 @@
 <?php
 /** @var \Up\Entity\ItemDetail $item */
 /** @var array<UP\Entity\Item> $similarItems */
+/** @var array<\Up\Entity\Review> $reviews */
 //$itemImages = ['/img/2_big.webp', '/img/2-1_big.webp', '/img/2-2_big.webp'];
 ?>
 
 <link rel="stylesheet" href="/css/item.css">
 <link rel="stylesheet" href="/lib/lightbox/css/lightbox.css">
+<link rel="stylesheet" href="/css/lib/fontawesome-all.css">
+<link rel="stylesheet" href="/css/rating.css">
 
 <div class="opened-images" style="display: none;">
 	<div class="open-images-container">
@@ -143,31 +146,55 @@
 							<div class="reviews-count">6 отзывов</div>
 						</div>
 					</div>
+					<?php foreach ($reviews as $review): ?>
 					<div class="item-review">
 						<div class="item-review-photo">
 							<img src="/img/person.jpg" alt="person">
 						</div>
 						<div class="item-review-data">
-							<div class="item-review-name">Юлия</div>
+							<div class="item-review-name"><?= $review->getUser()->getName() ?></div>
 							<div class="item-review-date">11 января 2022 г.</div>
 						</div>
 						<div class="item-review-text">
-							Супер качество сборки и легкость смены батареи!работает даже на пузе или волосатой моей ноге!очень скользкие пластинки на подошве-не надо звать трактор!оптика не светит!!!-так что не смотрите на линзу!!!-скорей всего батарейки хватит года на два по этой причине.
+							<?= $review->getComment() ?>
 						</div>
 					</div>
-
-					<div class="item-review">
-						<div class="item-review-photo">
-							<img src="/img/person.jpg" alt="person">
-						</div>
-						<div class="item-review-data">
-							<div class="item-review-name">Ахмед</div>
-							<div class="item-review-date">15 января 2022 г.</div>
-						</div>
-						<div class="item-review-text">
-							Вах такой дешовый карта, успеть бы еще купить, заверните две. Яичница жарит, кищмищ сушит. Мамой клянусь тетрис почти не тормозит</div>
-					</div>
+					<?php endforeach; ?>
 				</div>
+			</div>
+			<div class="review-send-section">
+				<form class="review-send" action="<?= \Up\Core\Router\URLResolver::resolve('add-review') ?>" method="post">
+					<div class="rating-container">
+						<div class="review_stars_wrap">
+							<div id="review_stars">
+								<input id="star-4" type="radio" name="rating" value="5"/>
+								<label title="Отлично" for="star-4">
+									<i class="fas fa-star"></i>
+								</label>
+								<input id="star-3" type="radio" name="rating" value="4"/>
+								<label title="Хорошо" for="star-3">
+									<i class="fas fa-star"></i>
+								</label>
+								<input id="star-2" type="radio" name="rating" checked="checked" value="3"/>
+								<label title="Нормально" for="star-2">
+									<i class="fas fa-star"></i>
+								</label>
+								<input id="star-1" type="radio" name="rating" value="2"/>
+								<label title="Плохо" for="star-1">
+									<i class="fas fa-star"></i>
+								</label>
+								<input id="star-0" type="radio" name="rating" value="1"/>
+								<label title="Ужасно" for="star-0">
+									<i class="fas fa-star"></i>
+								</label>
+							</div>
+						</div>
+					</div>
+					<textarea class="review-send-text" name="text_review" placeholder="Введите свой отзыв..."></textarea>
+					<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+					<input name="item_id" type="hidden" value="<?= $item->getId() ?>">
+					<div class="btn btn-add">Отправить отзыв</div>
+				</form>
 			</div>
 			<div class="similar-item-section">
 				<a class="anchor" id="similar"></a>
@@ -209,3 +236,5 @@
 
 <script src="/js/lib/showPopup.js"></script>
 <script src="/js/add-to-favorites.js"></script>
+
+<script src="/js/review/send-review.js"></script>

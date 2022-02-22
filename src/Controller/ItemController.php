@@ -17,6 +17,8 @@ use Up\Lib\Paginator\Paginator;
 use Up\Lib\Redirect;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
+use Up\Service\ReviewService\ReviewService;
+use Up\Service\ReviewService\ReviewServiceInterface;
 use Up\Service\TagService\TagServiceInterface;
 use Up\Service\UserService\UserServiceInterface;
 
@@ -27,6 +29,7 @@ class ItemController
 	protected $itemService;
 	protected $imageService;
 	protected $tagService;
+	protected $reviewService;
 	protected $itemsInPage = 10;
 
 	/**
@@ -34,18 +37,21 @@ class ItemController
 	 * @param \Up\Service\ItemService\ItemService $itemService
 	 * @param \Up\Service\ImageService\ImageService $imageService
 	 * @param \Up\Service\TagService\TagService $tagService
+	 * @param \Up\Service\ReviewService\ReviewService $reviewService
 	 */
 	public function __construct(
 		TemplateProcessorInterface $templateProcessor,
 		ItemServiceInterface       $itemService,
 		ImageServiceInterface      $imageService,
-		TagServiceInterface        $tagService
+		TagServiceInterface        $tagService,
+		ReviewServiceInterface     $reviewService
 	)
 	{
 		$this->templateProcessor = $templateProcessor;
 		$this->itemService = $itemService;
 		$this->imageService = $imageService;
 		$this->tagService = $tagService;
+		$this->reviewService = $reviewService;
 	}
 
 	/**
@@ -174,9 +180,11 @@ class ItemController
 	{
 		$item = $this->itemService->getItemById($id);
 		$itemsSimilar = $this->itemService->getItemsSimilarById($id,5);
+		$reviews = $this->reviewService->getReviewsByItemId(Paginator::getLimitOffset(1, 3), $id);
 		$page = $this->templateProcessor->render('item.php', [
 			'item' => $item,
 			'similarItems' => $itemsSimilar,
+			'reviews' => $reviews
 		], 'layout/main.php', [
 			'isAuthenticated' => $request->isAuthenticated(),
 			'isAdmin' => $request->isAdmin(),
