@@ -22,11 +22,13 @@ class ImageService implements ImageServiceInterface
 	private const validMimeTypeToCreateImageFunction = [
 		'image/jpeg' => 'imagecreatefromjpeg',
 		'image/webp' => 'imagecreatefromwebp',
+		'image/png' => 'imagecreatefrompng'
 	];
 	private const validMimeTypeToSaveImageFunction = [
 		'image/jpeg' => 'imagejpeg',
 		'image/webp' => 'imagewebp',
 	];
+	private const SIZED_IMAGE_FIRST_MIME = 'imagejpeg';
 	protected $imageDirPath;
 	protected $availableExtensions;
 	protected const OriginalImagesDir = 'original/';
@@ -76,6 +78,7 @@ class ImageService implements ImageServiceInterface
 	 * с измененными размерами
 	 *
 	 * @param array{name:string, type:string, tmp_name:string, is_main:bool} $imageParams
+	 * @param ItemDetail $item
 	 *
 	 * @return ItemsImage
 	 * @throws MimeTypeException
@@ -141,7 +144,7 @@ class ImageService implements ImageServiceInterface
 	 * @return array{small:string, medium:string, big:string}
 	 * @throws MimeTypeException
 	 */
-	private function createSizedImagesByOriginal(string $originalFilename, string $originalFilenameMime): array
+	private function createSizedImagesByOriginal(string $originalFilename): array
 	{
 		$originalFilePath = $this->getOriginalImagePathByFilename($originalFilename);
 		$sizedImagePaths = [];
@@ -157,7 +160,7 @@ class ImageService implements ImageServiceInterface
 
 			if ($width > $sizeValue || $height > $sizeValue)
 			{
-				$this->resizeImage($sizedImagePath, $sizeValue, $originalFilenameMime);
+				$this->resizeImage($sizedImagePath, $sizeValue, static::SIZED_IMAGE_FIRST_MIME);
 			}
 			$sizedImagePaths[$sizeName] = $sizedImagePath;
 		}
