@@ -24,6 +24,7 @@ class UserItem extends ItemDetail
 		$this->images = $itemDetail->images;
 		$this->tags = $itemDetail->tags;
 		$this->itemType = $itemDetail->itemType;
+		$this->specificationCategoriesList->setEntitiesArray($itemDetail->getSpecificationCategoriesList());
 	}
 
 	/**
