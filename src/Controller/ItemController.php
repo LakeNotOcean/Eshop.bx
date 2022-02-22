@@ -87,11 +87,15 @@ class ItemController
 		$userId = $request->getUser()->getId();
 
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
+		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
+			'currentPage' => $currentPage,
+			'pagesAmount' => $pagesAmount,
+		]);
+
 		$pages = $this->templateProcessor->render('catalog.php', [
 			'items' => $this->itemService->mapItemsToUserItems($userId, $items),
-			'currentPage' => $currentPage,
 			'itemsAmount' => $itemsAmount,
-			'pagesAmount' => $pagesAmount,
+			'paginator' => $paginator,
 			'query' => $query,
 			'categories' => $categories,
 			'tags' => $tags,
@@ -117,10 +121,14 @@ class ItemController
 		$itemsAmount = $this->itemService->getFavoriteItemsAmount($userId);
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
 
+		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
+			'currentPage' => $currentPage,
+			'pagesAmount' => $pagesAmount,
+		]);
+
 		$page = $this->templateProcessor->render('favorites.php', [
 			'favoriteItems' => $this->itemService->mapItemsToUserItems($userId, $favoriteItems),
-			'currentPage' => $currentPage,
-			'pagesAmount' => $pagesAmount
+			'paginator' => $paginator
 		], 'layout/main.php', [
 			 'isAuthenticated' => $request->isAuthenticated(),
 			 'isAdmin' => $request->isAdmin(),

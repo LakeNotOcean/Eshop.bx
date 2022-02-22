@@ -173,7 +173,7 @@ item-main-container
 	flex-direction: column;
 	margin-bottom: 70px;
 	margin-right: 20px;
-	max-width: calc(100% - 400px);
+	max-width: calc(100% - 350px);
 	width: 100%;
 }
 
