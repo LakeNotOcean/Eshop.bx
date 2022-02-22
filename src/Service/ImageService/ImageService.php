@@ -293,7 +293,7 @@ class ImageService implements ImageServiceInterface
 			throw new MimeTypeException("Invalid mime file type. Now: {$originalFileMimeType}");
 		}
 
-		$image = static::validMimeTypeToCreateImageFunction[$originalFileMimeType]($filePath);
+		$image = (static::validMimeTypeToCreateImageFunction[$originalFileMimeType])($filePath);
 		if (!$image)
 		{
 			throw new \RuntimeException("Can't find file {$filePath}");
@@ -309,7 +309,7 @@ class ImageService implements ImageServiceInterface
 		{
 			$image = imagescale($image, $size, floor($size * $height / $width));
 		}
-		static::validMimeTypeToSaveImageFunction[$resultFileMimeType]($image, $filePath);
+		(static::validMimeTypeToSaveImageFunction[$resultFileMimeType])($image, $filePath);
 	}
 
 	public function createImageWithExtension(string $imagePath, string $anotherExtension, string $resultFileMime): string
@@ -323,9 +323,7 @@ class ImageService implements ImageServiceInterface
 		$imagePathWithoutExtension = $pathInfo['dirname'] . '/' . $pathInfo['filename'];
 
 		$resultPath = $imagePathWithoutExtension . '.' . $anotherExtension;
-		static::validMimeTypeToSaveImageFunction[
-		$resultFileMime
-			]($image, $resultPath);
+		(static::validMimeTypeToSaveImageFunction[$resultFileMime])($image, $resultPath);
 
 		return $resultPath;
 	}
