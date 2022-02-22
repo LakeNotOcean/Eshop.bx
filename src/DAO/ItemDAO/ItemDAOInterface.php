@@ -18,5 +18,7 @@ interface ItemDAOInterface
 
 	public function deactivateItem(int $id): void;
 
+	public function activateItem(int $id): void;
+
 	public function updateCommonInfo(Item $item): Item;
 }

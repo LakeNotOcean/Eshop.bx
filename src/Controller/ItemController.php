@@ -56,14 +56,15 @@ class ItemController
 
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
 		$currentPage = $currentPage > 0 ? $currentPage : 1;
-		if ($request->containsQuery('price') || $request->containsQuery('tag') || $request->containsQuery('spec'))
+		if ($request->containsQuery('price') || $request->containsQuery('tag') || $request->containsQuery('spec') || $request->containsQuery('deactivate_include'))
 		{
 			$query = $request->containsQuery('query') ? $request->getQueriesByName('query') : '';
 			$price = $request->containsQuery('price') ? $request->getQueriesByName('price') : '';
 			$tags = $request->containsQuery('tag') ? $request->getQueriesByName('tag') : [];
 			$specs = $request->containsQuery('spec') ? $request->getQueriesByName('spec') : [];
-			$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query,$price,$tags,$specs);
-			$itemsAmount = $this->itemService->getItemsAmountByFilters($query,$price,$tags,$specs);
+			$deactivate = $request->containsQuery('deactivate_include') && $isAdmin;
+			$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query,$price,$tags,$specs, $deactivate);
+			$itemsAmount = $this->itemService->getItemsAmountByFilters($query,$price,$tags,$specs, $deactivate);
 		}
 		elseif ($request->containsQuery('query'))
 		{
@@ -205,6 +206,12 @@ class ItemController
 	public function deactivateItem(Request $request, int $id): Response
 	{
 		$this->itemService->deactivateItem($id);
+		return (new Response())->withBodyHTML('');
+	}
+
+	public function activateItem(Request $request, int $id): Response
+	{
+		$this->itemService->activateItem($id);
 		return (new Response())->withBodyHTML('');
 	}
 

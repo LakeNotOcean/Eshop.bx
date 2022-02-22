@@ -36,6 +36,15 @@
 	border-color: #DF0310;
 }
 
+.btn-return{
+	color: #71e761;
+}
+
+.btn-return:hover{
+	background: #71e761;
+	border-color: #71e761;
+}
+
 .btn-add {
 	margin-top: 5px;
 	margin-bottom: 20px;

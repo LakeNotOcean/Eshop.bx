@@ -134,7 +134,8 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		string $query,
 		string $price,
 		array $tags,
-		array $specs
+		array $specs,
+		bool $deactivate_include
 	): array
 	{
 		$newSpecs = [];
@@ -152,7 +153,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				$newSpecs[$spec][] = $value;
 			}
 		}
-		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems, $query, $price, $tags, $newSpecs);
+		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems, $query, $price, $tags, $newSpecs, $deactivate_include);
 		$result = $this->dbConnection->query($dbQuery);
 		$items = [];
 		while ($row = $result->fetch())
@@ -404,6 +405,11 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		$this->dbConnection->query("UPDATE up_item SET ACTIVE = 0 WHERE ID={$id}");
 	}
 
+	public function activateItem(int $id): void
+	{
+		$this->dbConnection->query("UPDATE up_item SET ACTIVE = 1 WHERE ID={$id}");
+	}
+
 	public function updateCommonInfo(Item $item): Item
 	{
 		$statement = $this->dbConnection->prepare($this->getUpdateCommonInfoQuery());
@@ -431,7 +437,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				WHERE ID=?";
 	}
 
-	public function getItemsAmountByFilters(string $query, string $price, array $tags, array $specs)
+	public function getItemsAmountByFilters(string $query, string $price, array $tags, array $specs, bool $deactivate_include = false)
 	{
 		$newSpecs = [];
 		foreach ($specs as $spec => $value)
@@ -448,7 +454,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				$newSpecs[$spec][] = $value;
 			}
 		}
-		$query = $this->getItemsAmountByFiltersQuery($query, $price, $tags, $newSpecs);
+		$query = $this->getItemsAmountByFiltersQuery($query, $price, $tags, $newSpecs, $deactivate_include);
 		$result = $this->dbConnection->query($query);
 
 		return $result->fetch()['num_items'];
@@ -627,7 +633,8 @@ LIMIT "
 		string $searchQuery,
 		string $price,
 		array $tags,
-		array $newSpecs
+		array $newSpecs,
+		bool $deactivate_include
 	): string
 	{
 		$query = "SELECT ui.ID as ui_ID,
@@ -724,8 +731,11 @@ INNER JOIN (select ID as ITEM_ID,
 			$query .= $searchQuery;
 			$query .= "%') as uit on uit.ITEM_ID = ID";
 		}
+		if(!$deactivate_include)
+		{
+			$query .= "\nWHERE ACTIVE = 1";
+		}
 		$query .= "
-		WHERE ACTIVE = 1 
 		ORDER BY ui.SORT_ORDER, ID
 		LIMIT {$offset}, {$amountItems}";
 		$query .= ") as uiI
@@ -767,7 +777,8 @@ INNER JOIN (select ID as ITEM_ID,
 		string $searchQuery,
 		string $price,
 		array  $tags,
-		array  $newSpecs
+		array  $newSpecs,
+		bool $deactivate_include
 	): string
 	{
 
@@ -849,8 +860,12 @@ INNER JOIN (select ID as ITEM_ID,
 			$query .= $searchQuery;
 			$query .= "%') as uit on uit.ITEM_ID = ID";
 		}
-		$query .= "
-		WHERE ACTIVE = 1";
+		if(!$deactivate_include)
+		{
+			$query .= "
+			WHERE ACTIVE = 1";
+		}
+
 
 		return $query;
 	}

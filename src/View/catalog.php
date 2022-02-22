@@ -75,6 +75,12 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 					</div>
 					<?php endforeach;?>
 				</div>
+				<?php if($isAdmin): ?>
+				<label class="deactivate_include_checkbox_label">
+					<input type="checkbox" form="filter-form" class="deactivate_include_checkbox" name="deactivate_include">
+					в том числе неактивные
+				</label>
+				<?php endif; ?>
 				<div class="filter-tags">
 					<div class="filter-title">Теги</div>
 					<div class="tag-list">
@@ -226,6 +232,6 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 <script src="/js/catalog-filters/queryPush.js"></script>
 <script src="/js/catalog-filters/filter-set-query.js"></script>
 <?php if ($isAdmin): ?>
-	<script src="/js/delete-item.js"></script>
+	<script src="/js/deactivate-item.js"></script>
 	<script src="/js/fast-update-item.js"></script>
 <?php endif;?>
