@@ -13,7 +13,9 @@ interface ItemServiceInterface
 
 	public function getFavoriteItems(int $userId, array $limitOffset): array;
 
-	public function mapFavorites(int $userId, array $items): array;
+	public function mapItemsToUserItems(int $userId, array $items): array;
+
+	public function mapItemDetailsToUserItems(int $userId, array $itemDetails): array;
 
 	public function getFavoriteItemsAmount(int $userId): int;
 

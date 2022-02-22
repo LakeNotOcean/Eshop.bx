@@ -63,7 +63,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 	{
 		$query = "
 			DELETE FROM `up_user-favorite_item`
-			WHERE USER_ID = $userId AND FAVORITE_ITEM_ID $favoriteItemId;";
+			WHERE USER_ID = $userId AND FAVORITE_ITEM_ID = $favoriteItemId;";
 		$this->dbConnection->query($query);
 	}
 

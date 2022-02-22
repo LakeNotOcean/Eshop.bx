@@ -88,7 +88,7 @@ class ItemController
 
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
 		$pages = $this->templateProcessor->render('catalog.php', [
-			'items' => $this->itemService->mapFavorites($userId, $items),
+			'items' => $this->itemService->mapItemsToUserItems($userId, $items),
 			'currentPage' => $currentPage,
 			'itemsAmount' => $itemsAmount,
 			'pagesAmount' => $pagesAmount,
@@ -118,7 +118,7 @@ class ItemController
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
 
 		$page = $this->templateProcessor->render('favorites.php', [
-			'favoriteItems' => $favoriteItems,
+			'favoriteItems' => $this->itemService->mapItemsToUserItems($userId, $favoriteItems),
 			'currentPage' => $currentPage,
 			'pagesAmount' => $pagesAmount
 		], 'layout/main.php', [
@@ -152,6 +152,10 @@ class ItemController
 	public function removeFromFavorites(Request $request): Response
 	{
 		$userId = $request->getUser()->getId();
+		if ($userId === 0)
+		{
+			throw new RuntimeException('Пользователь не авторизовн');
+		}
 		$favoriteItemId = $request->getPostParametersByName('favorite-item-id');
 		$this->itemService->removeFromFavorites($userId, $favoriteItemId);
 		return (new Response())->withBodyHTML('');

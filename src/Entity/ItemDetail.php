@@ -5,17 +5,17 @@ namespace Up\Entity;
 
 class ItemDetail extends Item
 {
-	private $fullDescription = '';
+	protected $fullDescription = '';
 
 	/**
 	 * @var EntityArray
 	 */
-	private $images;
+	protected $images;
 
 	/**
 	 * @var EntityArray
 	 */
-	private $tags;
+	protected $tags;
 
 	/**
 	 * @var EntityArray
@@ -158,4 +158,5 @@ class ItemDetail extends Item
 	{
 		return $this->images->contains($id);
 	}
+
 }

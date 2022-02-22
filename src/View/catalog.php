@@ -1,5 +1,5 @@
 <?php
-/** @var array<UP\Entity\Item> $items */
+/** @var array<UP\Entity\UserItem> $items */
 /** @var array<Up\Entity\SpecificationCategory> $categories */
 /** @var array<Up\Entity\ItemsTag> $tags */
 /** @var array $price */
@@ -131,7 +131,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 								</a>
 								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 								<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
-									<svg class="add-to-favorites">
+									<svg class="add-to-favorites <?= $item->getIsFavorite() ? "favoriteActive" : ""?>">
 										<use xlink:href="/img/sprites.svg#heart"></use>
 									</svg>
 								</div>
