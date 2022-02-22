@@ -150,7 +150,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				$newSpecs[$spec][] = $value;
 			}
 		}
-		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$query,$price,$tags,$newSpecs);
+		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$query,$price,$tags,$newSpecs, $deactivate_include);
 		$result = $this->dbConnection->query($dbQuery);
 		return $this->mapItems($result);
 	}

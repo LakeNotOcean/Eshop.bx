@@ -2,6 +2,7 @@
 
 namespace Up\Controller;
 
+use RuntimeException;
 use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
@@ -128,10 +129,15 @@ class ItemController
 
 	/**
 	 * @throws NoSuchQueryParameterException
+	 * @throws RuntimeException
 	 */
 	public function addToFavorites(Request $request): Response
 	{
 		$userId = $request->getUser()->getId();
+		if ($userId === 0)
+		{
+			throw new RuntimeException('Пользователь не авторизовн');
+		}
 		$favoriteItemId = $request->getPostParametersByName('favorite-item-id');
 		$this->itemService->addToFavorites($userId, $favoriteItemId);
 		return (new Response())->withBodyHTML('');
