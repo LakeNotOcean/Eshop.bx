@@ -70,7 +70,7 @@ class ItemController
 		$price = $this->itemService->getItemsMinMaxPriceByItemTypes($typeIds);
 		$itemsAmount = $this->itemService->getItemsAmountByFilters($query['query'],$query['price'],$query['tag'],$query['spec'],$queryTypeId,$deactivate);
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
-
+		$isTypeIdSingle = (count($typeIds) > 1) ? 0 : $typeIds[0];
 		$userId = $request->getUser()->getId();
 
 		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
@@ -87,8 +87,8 @@ class ItemController
 			'paginator' => $paginator,
 			'query' => $query['query'],
 			'price'=> $price,
-			'tags' => $this->tagService->getTagsByItemType($typeIds),
-			'categories' => $this->itemService->getItemsCategoriesByItemType($typeIds),
+			'tags' => $this->tagService->getTagsByItemType($isTypeIdSingle),
+			'categories' => $this->itemService->getItemsCategoriesByItemType($isTypeIdSingle),
 			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false
 		], 'layout/main.php', [
 			'isAuthenticated' => $isAuthenticated,
