@@ -1,5 +1,5 @@
 <?php
-/** @var \Up\Entity\ItemDetail $item */
+/** @var \Up\Entity\UserItem $item */
 /** @var array<UP\Entity\Item> $similarItems */
 //$itemImages = ['/img/2_big.webp', '/img/2-1_big.webp', '/img/2-2_big.webp'];
 ?>
@@ -11,8 +11,8 @@
 	<div class="open-images-container">
 		<div class="open-images-header">
 			<div class="btn-back"></div>
-			<div class="add-to-favorites">
-				<svg class="add-to-favorites-icon">
+			<div class="btn-add-to-favorites">
+				<svg class="add-to-favorites">
 					<use xlink:href="/img/sprites.svg#heart"></use>
 				</svg>
 				<div class="add-to-favorites-label">В избранное</div>
@@ -34,8 +34,9 @@
 	<a class="anchor" id="main"></a>
 	<div class="item-header">
 		<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
-		<div class="add-to-favorites">
-			<svg class="add-to-favorites-icon">
+		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+		<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
+			<svg class="add-to-favorites <?= $item->getIsFavorite() ? "favoriteActive" : ""?>">
 				<use xlink:href="/img/sprites.svg#heart"></use>
 			</svg>
 			<div class="add-to-favorites-label">В избранное</div>
@@ -199,9 +200,12 @@
 	</div>
 </div>
 
-
 <script src="/js/lib/scroll.js"></script>
 <script src="/js/lib/fix-node.js"></script>
 <script src="/js/item/fixed-scroll-menu.js"></script>
+
 <script src="/js/item/open-images.js"></script>
 <script src="/js/item/scroll-similar-items.js"></script>
+
+<script src="/js/lib/showPopup.js"></script>
+<script src="/js/add-to-favorites.js"></script>

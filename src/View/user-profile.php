@@ -4,6 +4,8 @@
 
 ?>
 
+<script src="/js/user/user-menu.js"></script>
+
 <link rel="stylesheet" href="/css/user-profile.css">
 
 <div class="container">
@@ -57,6 +59,6 @@
 	<a class="btn btn-normal" href="<?= \Up\Core\Router\URLResolver::resolve('change-password') ?>">Сменить пароль</a>
 </div>
 
-<script src="/js/lib/popup.js"></script>
+<script src="/js/lib/showPopup.js"></script>
 <script src="/js/user/edit-profile.js"></script>
 <script src="/js/lib/phone-input.js"></script>

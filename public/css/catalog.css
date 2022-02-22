@@ -10,10 +10,11 @@
 	background: #F6F6F6;
 	max-width: 1500px;
 	min-height: calc(100vh - var(--nav-height));
+	padding: 0 50px;
 }
 
 .search_result_count {
-	margin: 25px 50px;
+	margin: 25px 50px 25px 0;
 	font-size: 18px;
 }
 
@@ -24,7 +25,6 @@ items
 .item-list {
 	flex: 1;
 	overflow: auto;
-	margin-right: 50px;
 }
 
 .item {
@@ -38,6 +38,28 @@ items
 	text-decoration: none;
 	color: inherit;
 	transition: .3s;
+	overflow: hidden;
+}
+
+[name=fast-update] {
+	position: relative;
+}
+
+.no-active {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	opacity: 1;
+	transition: 0.3s;
+
+	background: rgba(0, 0, 0, 0.1);
+}
+
+[name=fast-update]:hover .no-active {
+	opacity: 0;
+	pointer-events: none;
 }
 
 .item:hover {
@@ -139,6 +161,30 @@ add-to-favorites
 	stroke: none;
 }
 
+.favoriteActive {
+	fill: red;
+	stroke: none;
+	animation: like .3s forwards;
+	transform-origin: center;
+}
+
+.removedFromFavorites {
+	fill: none !important;
+	stroke: #222222 !important;
+}
+
+@keyframes like {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
 /*==========================
 rating
 ==========================*/
@@ -196,7 +242,7 @@ filters main
 .filters-column {
 	display: flex;
 	width: 300px;
-	margin: 0 50px;
+	margin-right: 50px;
 }
 
 .filters {

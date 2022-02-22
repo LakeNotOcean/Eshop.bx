@@ -1,8 +1,17 @@
-let filterCheckboxes = document.getElementsByClassName('category_checkbox');
+let filterCheckboxes = document.querySelectorAll('.category_checkbox');
 let priceInputs = document.querySelectorAll('.price-input input');
 let paramsQuery = (new URL(document.location)).searchParams;
 let currentLocation= decodeURI(location.search.toString());
 let searchField = document.getElementsByClassName('search-field');
+let deactivateCheckbox = document.querySelector('.deactivate_include_checkbox');
+
+if(deactivateCheckbox !== null)
+{
+	if(currentLocation.indexOf(deactivateCheckbox.name + '=' + deactivateCheckbox.value + '&') !== -1){
+		deactivateCheckbox.checked = true;
+	}
+}
+
 
 for (let filterCheckbox of filterCheckboxes)
 {

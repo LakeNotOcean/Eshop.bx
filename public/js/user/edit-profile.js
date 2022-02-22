@@ -28,11 +28,11 @@ for (let userInfo of userInfos)
 			body: postBody
 		}).then((r) => {
 			if (r.ok) {
-				popup('Профиль изменён');
+				showPopup('Профиль изменён');
 				closeUserInfoEditor(userInfo)
 				updateInterface(postBody);
 			} else {
-				popup('Профиль изменить не удалось')
+				showPopup('Профиль изменить не удалось')
 			}
 		});
 	})

@@ -11,10 +11,10 @@ document.querySelectorAll('[name=fast-update]').forEach((form) => {
 		});
 		fastUpdateItem(data).then((r) => {
 			if(r.ok){
-				popup('Товар сохранен');
+				showPopup('Товар сохранен');
 				setTimeout(() => location.reload(), 500)
 			}else {
-				popup('Не удалось сохранить товар');
+				showPopup('Не удалось сохранить товар');
 			}
 		});
 	});

@@ -33,26 +33,38 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 	public function getItems(int $offset, int $amountItems): array
 	{
 		$result = $this->dbConnection->query($this->getItemsQuery($offset, $amountItems));
-		$items = [];
-		while ($row = $result->fetch())
-		{
-			$itemId = (int)$row['ui_ID'];
-			if (!array_key_exists($itemId, $items))
-			{
-				$item = new Item();
-				$this->mapItemCommonInfo($item, $row);
-				$image = new ItemsImage();
-				$this->mapItemsImageInfo($image, $row);
-				$item->setMainImage($image);
-				$items[$itemId] = $item;
-			}
-			else
-			{
-				$this->mapItemsImageInfo($items[$itemId]->getMainImage(), $row);
-			}
-		}
+		return $this->mapItems($result);
+	}
 
-		return $items;
+	public function getFavoriteItems(int $userId, int $offset, int $amountItems): array
+	{
+		$query = $this->getFavoriteItemsQuery($userId, $offset, $amountItems);
+		$result = $this->dbConnection->query($query);
+		return $this->mapItems($result);
+	}
+
+	public function getFavoriteItemsAmount(int $userId): int
+	{
+		$query = "SELECT COUNT(USER_ID) AS `favorites_count` FROM `up_user-favorite_item`
+			WHERE USER_ID = $userId GROUP BY USER_ID;";
+		$result = $this->dbConnection->query($query);
+		return $result->fetch()['favorites_count'] ?? 0;
+	}
+
+	public function addToFavorites(int $userId, int $favoriteItemId): void
+	{
+		$query = "
+			INSERT INTO `up_user-favorite_item` (USER_ID, FAVORITE_ITEM_ID) 
+			VALUES ($userId, $favoriteItemId);";
+		$this->dbConnection->query($query);
+	}
+
+	public function removeFromFavorites(int $userId, int $favoriteItemId): void
+	{
+		$query = "
+			DELETE FROM `up_user-favorite_item`
+			WHERE USER_ID = $userId AND FAVORITE_ITEM_ID = $favoriteItemId;";
+		$this->dbConnection->query($query);
 	}
 
 
@@ -87,33 +99,18 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		$dbQuery = $this->getItemsQuery($offset, $amountItems, $searchQuery);
 		$result = $this->dbConnection->prepare($dbQuery);
 		$result->execute(["%$searchQuery%"]);
-		$items = [];
-		while ($row = $result->fetch())
-		{
-			$itemId = (int)$row['ui_ID'];
-			if (!array_key_exists($itemId, $items))
-			{
-				$item = new Item();
-				$this->mapItemCommonInfo($item, $row);
-				$image = new ItemsImage();
-				$this->mapItemsImageInfo($image, $row);
-				$item->setMainImage($image);
-				$items[$itemId] = $item;
-			}
-			else
-			{
-				$this->mapItemsImageInfo($items[$itemId]->getMainImage(), $row);
-			}
-		}
-
-		return $items;
+		return $this->mapItems($result);
 	}
 
 	public function getSimilarItemById(int $id, int $similarAmount): array
 	{
-		$dbQuery = $this->getSimilarItemByIdQuery($id, $similarAmount);
-		$result = $this->dbConnection->prepare($dbQuery);
-		$result->execute();
+		$dbQuery = $this->getSimilarItemByIdQuery($id,$similarAmount);
+		$result = $this->dbConnection->query($dbQuery);
+		return $this->mapItems($result);
+	}
+
+	protected function mapItems(PDOStatement $result): array
+	{
 		$items = [];
 		while ($row = $result->fetch())
 		{
@@ -132,9 +129,9 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				$this->mapItemsImageInfo($items[$itemId]->getMainImage(), $row);
 			}
 		}
-
 		return $items;
 	}
+
 
 	public function getItemsMinMaxPrice(): array
 	{
@@ -185,7 +182,8 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		string $price,
 		array $tags,
 		array $specs,
-		int $typeId
+		int $typeId,
+		bool $deactivate_include
 	): array
 	{
 		$newSpecs = [];
@@ -269,6 +267,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 			$item->setPrice($row['PRICE']);
 			$items[] = $item;
 		}
+
 		return $items;
 	}
 
@@ -342,6 +341,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		$oldSpecs = $this->getSpecsFromCategory($oldSpecsCat);
 		$newSpecs = $this->getSpecsFromCategory($newSpecsCat);
 
+
 		if (!empty($oldTags))
 		{
 			$this->dbConnection->query(
@@ -390,16 +390,16 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 			'ID'
 		);
 		$statement->execute([
-								$item->getTitle(),
-								$item->getPrice(),
-								$item->getShortDescription(),
-								$item->getFullDescription(),
-								$item->getSortOrder(),
-								$item->getIsActive(),
-								$item->getItemType()->getId(),
-								date('Y-m-d H:i:s'),
-								$item->getId()
-							]);
+			$item->getTitle(),
+			$item->getPrice(),
+			$item->getShortDescription(),
+			$item->getFullDescription(),
+			$item->getSortOrder(),
+			$item->getIsActive(),
+			$item->getItemType()->getId(),
+			date('Y-m-d H:i:s'),
+			$item->getId()
+		]);
 
 		return $item;
 	}
@@ -417,16 +417,16 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 			'DATE_UPDATE',
 			'ITEM_TYPE_ID',
 		])->execute([
-						$item->getTitle(),
-						$item->getPrice(),
-						$item->getShortDescription(),
-						$item->getFullDescription(),
-						$item->getSortOrder(),
-						$item->getIsActive(),
-						date('Y-m-d H:i:s'),
-						date('Y-m-d H:i:s'),
-						$item->getItemType()->getId(),
-					]);
+			$item->getTitle(),
+			$item->getPrice(),
+			$item->getShortDescription(),
+			$item->getFullDescription(),
+			$item->getSortOrder(),
+			$item->getIsActive(),
+			date('Y-m-d H:i:s'),
+			date('Y-m-d H:i:s'),
+			$item->getItemType()->getId(),
+		]);
 		$id = $this->dbConnection->lastInsertId();
 		$item->setId($id);
 		$tags = $item->getTags();
@@ -497,6 +497,16 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		$this->dbConnection->query("UPDATE up_item SET ACTIVE = 0 WHERE ID={$id}");
 	}
 
+	public function activateItem(int $id): void
+	{
+		$this->dbConnection->query("UPDATE up_item SET ACTIVE = 1 WHERE ID={$id}");
+	}
+
+	public function deleteItem(int $id): void
+	{
+		$this->dbConnection->query("DELETE FROM up_item WHERE ID={$id}");
+	}
+
 	public function updateCommonInfo(Item $item): Item
 	{
 		$statement = $this->dbConnection->prepare($this->getUpdateCommonInfoQuery());
@@ -524,7 +534,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				WHERE ID=?";
 	}
 
-	public function getItemsAmountByFilters(string $query, string $price, array $tags, array $specs,int $typeId)
+	public function getItemsAmountByFilters(string $query, string $price, array $tags, array $specs,int $typeId,bool $deactivate_include = false)
 	{
 		$newSpecs = [];
 		foreach ($specs as $spec => $value)
@@ -541,8 +551,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				$newSpecs[$spec][] = $value;
 			}
 		}
-
-		$dbQuery = $this->getItemsAmountByFiltersQuery($query, $price, $tags, $newSpecs,$typeId);
+		$dbQuery = $this->getItemsAmountByFiltersQuery($query, $price, $tags, $newSpecs, $deactivate_include);
 		$preparedQuery = $this->dbConnection->prepare($dbQuery);
 
 		$executeParam = [];
@@ -629,12 +638,33 @@ LIMIT "
 		
 									   ) as uiI
 				)
-				ORDER BY ui.SORT_ORDER desc, ui.ID;
-";
+				ORDER BY ui.SORT_ORDER desc, ui.ID;";
 	}
 
-
-
+	private function getFavoriteItemsQuery(int $userId, int $offset, int $amountItems): string
+	{
+		return "
+		SELECT ui.ID as ui_ID,
+			TITLE as TITLE,
+			PRICE as PRICE,
+			SORT_ORDER as SORT_ORDER,
+			SHORT_DESC as SHORT_DESC,
+			ACTIVE as ACTIVE,
+			uoi.ID as ORIGINAL_IMAGE_ID,
+			uoi.PATH as ORIGINAL_IMAGE_PATH,
+			uoi.IS_MAIN as ORIGINAL_IMAGE_IS_MAIN,
+			uiws.PATH as IMAGE_WITH_SIZE_PATH,
+			uiws.SIZE as IMAGE_WITH_SIZE_SIZE
+		FROM up_item ui
+		INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
+		INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
+		WHERE ui.ID IN (
+			select ufi.ID from (
+				SELECT FAVORITE_ITEM_ID as ID FROM `up_user-favorite_item`
+				WHERE USER_ID = $userId
+				" . ($offset >= 0 ? "LIMIT $offset, $amountItems" : "") . ") as ufi)
+		ORDER BY ui.SORT_ORDER desc, ui.ID;";
+	}
 
 	private function getItemsByOrderIdQuery(int $orderId): string
 	{
@@ -783,7 +813,8 @@ LIMIT "
 		int $typeId,
 		string $searchQuery,
 		array $tags,
-		array $newSpecs
+		array $newSpecs,
+		bool $deactivate_include
 	): string
 	{
 		$query = "SELECT ui.ID as ui_ID,
@@ -877,8 +908,11 @@ INNER JOIN (select ID as ITEM_ID,
             FROM up_item
             WHERE TITLE LIKE ?) as uit on uit.ITEM_ID = ID";
 		}
-		$query .="
-		WHERE ACTIVE = 1 ";
+		$query .=" WHERE 1 ";
+		if(!$deactivate_include)
+		{
+			$query .= "\n AND ACTIVE = 1";
+		}
 		if ($typeId !== 0)
 		{
 			$query .= " AND ITEM_TYPE_ID = {$typeId} ";
@@ -928,7 +962,13 @@ INNER JOIN (select ID as ITEM_ID,
 	}
 
 
-	private function getItemsAmountByFiltersQuery(string $searchQuery,string $price,array $tags,array $newSpecs, int $typeId):string
+	private function getItemsAmountByFiltersQuery(
+		string $searchQuery,
+		string $price,
+		array $tags,
+		array $newSpecs,
+		int $typeId,
+		bool $deactivate_include):string
 	{
 
 		$query = "
@@ -1007,7 +1047,12 @@ INNER JOIN (select ID as ITEM_ID,
             WHERE TITLE LIKE ?) as uit on uit.ITEM_ID = ID";
 		}
 		$query .="
-		WHERE ACTIVE = 1 ";
+		WHERE 1 ";
+		if(!$deactivate_include)
+		{
+			$query .= "
+			AND ACTIVE = 1";
+		}
 		if ($typeId !== 0)
 		{
 			$query .= " AND ITEM_TYPE_ID = {$typeId} ";

@@ -15,6 +15,17 @@
 					<input type="hidden" name="item-type" value="<?= $item->getItemType()->getId() ?>">
 				<?php
 				endif; ?>
+				<?php if (isset($item)): ?>
+					<label for="item-is-active" class="field">
+						<span class="label-title">Изменить отображение в каталоге</span>
+						<?php if ($item->getIsActive()): ?>
+							<div class="btn btn-deactivate">Скрыть</div>
+						<?php else: ?>
+							<div class="btn btn-return">Вернуть</div>
+						<?php endif; ?>
+					</label>
+				<?php endif; ?>
+
 				<label for="item-title" class="field">
 					<span class="label-title">Название товара</span>
 					<input type="text" id="item-title" name="item-title" placeholder="Ввести название товара"
@@ -38,7 +49,6 @@
 					<input type="text" id="item-full-description" name="item-full-description" placeholder="Ввести полное описание товара"
 						   value="<?= isset($item) ? htmlspecialchars($item->getFullDescription()) : '' ?>" class="input">
 				</label>
-
 				<label for="item-tags" class="field">
 					<span class="label-title">Теги</span>
 					<input type="text" id="item-tags" name="item-tags" placeholder="Ввести теги через запятую"
@@ -110,10 +120,14 @@
 		</div>
 
 		<input type="submit" value="Сохранить товар в базу данных" class="btn btn-normal input">
+		<?php if (isset($item)): ?>
+		<a class="btn btn-delete btn-delete-item" href="<?= \Up\Core\Router\URLResolver::resolve('accept-deletion-item', ['id' => $item->getId()]) ?>">Удалить товар</a>
+		<?php endif; ?>
 	</form>
 </div>
-<script src="/js/lib/popup.js"></script>
+<script src="/js/lib/showPopup.js"></script>
 <script src="/js/add-item/preview-images.js"></script>
 <script src="/js/eshop-api.js"></script>
 <script src="/js/add-item/build-specs.js"></script>
 <script src="/js/add-item/add-item-script.js"></script>
+<script src="/js/deactivate-item.js"></script>

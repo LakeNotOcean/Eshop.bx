@@ -1,5 +1,6 @@
 @import "opened-images.css";
 @import "lib/card.css";
+@import "lib/popup.css";
 
 main {
 	background: white;
@@ -37,7 +38,11 @@ item-header
 	font-weight: 700;
 }
 
-.add-to-favorites {
+/*==========================
+add-to-favorites
+==========================*/
+
+.btn-add-to-favorites {
 	display: flex;
 	margin-left: 15px;
 	justify-content: end;
@@ -49,9 +54,10 @@ item-header
 	padding-left: 10px;
 	text-decoration: underline;
 	font-weight: 600;
+	user-select: none;
 }
 
-.add-to-favorites-icon {
+.add-to-favorites {
 	width: 30px;
 	height: 25px;
 
@@ -60,9 +66,33 @@ item-header
 	stroke: #222222;
 }
 
-.add-to-favorites:hover .add-to-favorites-icon {
+.btn-add-to-favorites:hover .add-to-favorites {
 	fill: red;
 	stroke: none;
+}
+
+.favoriteActive {
+	fill: red;
+	stroke: none;
+	animation: like .3s forwards;
+	transform-origin: center;
+}
+
+.removedFromFavorites {
+	fill: none !important;
+	stroke: #222222 !important;
+}
+
+@keyframes like {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(1);
+	}
 }
 
 /*==========================
@@ -143,7 +173,7 @@ item-main-container
 	flex-direction: column;
 	margin-bottom: 70px;
 	margin-right: 20px;
-	max-width: calc(100% - 400px);
+	max-width: calc(100% - 350px);
 	width: 100%;
 }
 
@@ -206,7 +236,7 @@ item-main-buy
 }
 
 .buy-price-measure {
-	margin-left: 5px;
+	margin: 0 10px 0 5px;
 }
 
 /*==========================
@@ -252,6 +282,7 @@ item-reviews
 	align-items: center;
 	text-decoration: none;
 	color: #fff;
+	user-select: none;
 }
 
 /*==========================

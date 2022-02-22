@@ -104,11 +104,14 @@ class OrderController
 		$ordersAmount = $this->orderService->getOrdersAmount($status, $query);
 		$pagesAmount = Paginator::getPageCount($ordersAmount, $this->ordersOnPage);
 
+		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
+			'currentPage' => $currentPage,
+			'pagesAmount' => $pagesAmount,
+		]);
+
 		$page = $this->templateProcessor->render('orders.php', [
 			'orders' => $orders,
-			'currentPage' => $currentPage,
-			'itemsAmount' => $ordersAmount,
-			'pagesAmount' => $pagesAmount,
+			'paginator' => $paginator,
 			'query' => $query,
 		], 'layout/main.php', [
 			'isAuthenticated' => $request->isAuthenticated(),

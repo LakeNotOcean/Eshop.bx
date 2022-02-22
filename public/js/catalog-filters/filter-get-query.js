@@ -21,6 +21,9 @@ function getFilterQuery()
 			finalQuery += 'tag[]=' + value + '&'
 		}
 	}
+	let deactivate = document.querySelector('.deactivate_include_checkbox');
+	if(deactivate !== null && deactivate .checked)
+		finalQuery += 'deactivate_include=on&';
 	let minPriceInput = document.getElementById('min-price');
 	let maxPriceInput = document.getElementById('max-price');
 	if (minPriceInput.value==='' && maxPriceInput.value==='')

@@ -1,9 +1,9 @@
 <?php
 
 /** @var array<\Up\Entity\Order\Order> $orders */
-/** @var int $currentPage */
-/** @var int $pagesAmount */
 /** @var string $query */
+
+/** @var $paginator */
 
 ?>
 
@@ -84,53 +84,9 @@
 		<?php endforeach;?>
 	</div>
 
-	<div class="navigation">
-		<a href="/admin/getOrders?page=<?= $currentPage - 1 ?>" class="navigation-page navigation-item
-				<?= $currentPage === 1 ? 'navigation-blocked' : '' ?>"> < </a>
-		<a href="/admin/getOrders?page=1" class="navigation-page navigation-item
-				<?= $currentPage === 1 ? 'navigation-active' : '' ?>">1</a>
-
-		<?php if ($pagesAmount > 7 && $currentPage >= 1 + 4): ?>
-			<div class="navigation-dots navigation-item">···</div>
-		<?php endif;?>
-
-		<?php
-		$startPage = 2;
-		$endPage = 5;
-		if ($currentPage >= 5)
-		{
-			$startPage = $currentPage - 1;
-			$endPage = $currentPage + 1;
-		}
-		if ($currentPage > $pagesAmount - 4)
-		{
-			$startPage = $pagesAmount - 4;
-			$endPage = $pagesAmount - 1;
-		}
-		if ($pagesAmount <= 7)
-		{
-			$startPage = 2;
-			$endPage = $pagesAmount - 1;
-		}
-		for ($i = $startPage; $i <= $endPage; $i++): ?>
-			<a href="/admin/getOrders?page=<?= $i ?>" class="navigation-page navigation-item
-					<?= $currentPage === $i ? 'navigation-active' : '' ?>"> <?= $i ?> </a>
-		<?php endfor;?>
-
-		<?php if ($pagesAmount > 7 && $currentPage <= $pagesAmount - 4): ?>
-			<div class="navigation-dots navigation-item">···</div>
-		<?php endif;?>
-
-		<?php if ($pagesAmount > 1): ?>
-			<a href="/admin/getOrders?page=<?= $pagesAmount?>" class="navigation-page navigation-item
-				<?= $currentPage === $pagesAmount ? 'navigation-active' : '' ?>"><?= $pagesAmount?></a>
-		<?php endif;?>
-
-		<a href="/admin/getOrders?page=<?= $currentPage + 1 ?>" class="navigation-page navigation-item
-				<?= $currentPage === $pagesAmount ? 'navigation-blocked' : '' ?>"> > </a>
-	</div>
+	<?= $paginator?>
 </div>
 
-<script src="/js/lib/popup.js"></script>
+<script src="/js/lib/showPopup.js"></script>
 <script src="/js/admin-orders/change-status.js"></script>
 <script src="/js/admin-orders/manage-orders.js"></script>
