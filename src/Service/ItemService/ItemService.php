@@ -45,7 +45,9 @@ class ItemService implements ItemServiceInterface
 		foreach ($items as $item)
 		{
 			$userItem = $item;
+			$userItems[] = $userItem;
 		}
+		return $userItems;
 	}
 
 	public function getFavoriteItemsAmount(int $userId): int
