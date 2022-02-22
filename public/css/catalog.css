@@ -38,6 +38,7 @@ items
 	text-decoration: none;
 	color: inherit;
 	transition: .3s;
+	overflow: hidden;
 }
 
 [name=fast-update] {

@@ -25,6 +25,7 @@ $router->post('/login', [UserController::class, 'loginUser'], 'login-user');
 $router->get('/logout', [UserController::class, 'logout'], 'logout-user');
 $router->get('/passwordChange', [UserController::class, 'changePasswordPage'], 'change-password');
 $router->post('/passwordChange', [UserController::class, 'changePassword'], 'change-password');
+
 $router->get('/profile', [UserController::class, 'getProfilePage'], 'user-profile');
 $router->post('/updateUser', [UserController::class, 'updateUser'], 'update-user');
 

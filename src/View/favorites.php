@@ -1,6 +1,7 @@
 <?php
 
 /** @var array<\Up\Entity\UserItem> $favoriteItems */
+/** @var $paginator */
 
 use Up\Core\Router\URLResolver;
 
@@ -60,6 +61,8 @@ use Up\Core\Router\URLResolver;
 			</div>
 		</div>
 		<?php endforeach;?>
+
+		<?= $paginator?>
 	</div>
 </div>
 
