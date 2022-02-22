@@ -23,7 +23,8 @@ $router->get('/login', [UserController::class, 'loginUserPage'], 'login-user');
 $router->post('/register', [UserController::class, 'registerUser'], 'register-user');
 $router->post('/login', [UserController::class, 'loginUser'], 'login-user');
 $router->get('/logout', [UserController::class, 'logout'], 'logout-user');
-
+$router->get('/passwordChange', [UserController::class, 'changePasswordPage'], 'change-password');
+$router->post('/passwordChange', [UserController::class, 'changePassword'], 'change-password');
 $router->get('/profile', [UserController::class, 'getProfilePage'], 'user-profile');
 $router->post('/updateUser', [UserController::class, 'updateUser'], 'update-user');
 
@@ -51,6 +52,7 @@ $router->get('/admin/deleteSpec/{positiveInt:id}',[CategoryController::class, 'd
 $router->post('/admin/deleteSpecification', [CategoryController::class, 'deleteSpec'], 'delete-specification');
 $router->get('/admin/editItem/{positiveInt:id}', [ItemController::class, 'addItem'], 'edit-item');
 $router->post('/admin/deactivateItem/{positiveInt:id}', [ItemController::class, 'deactivateItem'], 'deactivate-item');
+$router->post('/admin/activateItem/{positiveInt:id}', [ItemController::class, 'activateItem'], 'activate-item');
 $router->post('/admin/fastUpdateItem', [ItemController::class, 'updateCommonInfo'], 'fast-item-update');
 $router->post('/admin/deleteImage/{positiveInt:id}', [ImageController::class, 'deleteImageById'], 'delete-image');
 

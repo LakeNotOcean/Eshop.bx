@@ -75,6 +75,12 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 					</div>
 					<?php endforeach;?>
 				</div>
+				<?php if($isAdmin): ?>
+				<label class="deactivate_include_checkbox_label">
+					<input type="checkbox" form="filter-form" class="deactivate_include_checkbox" name="deactivate_include">
+					в том числе неактивные
+				</label>
+				<?php endif; ?>
 				<div class="filter-tags">
 					<div class="filter-title">Теги</div>
 					<div class="tag-list">
@@ -130,40 +136,46 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 									<use xlink:href="/img/sprites.svg#heart"></use>
 								</svg>
 							</div>
-						</div>
-						<?php if ($isAdmin): ?>
-							<div class="textarea-container">
-								<textarea name="item-short-description" class="item-short-description-textarea"><?=htmlspecialchars($item->getShortDescription())?></textarea>
+							<?php if ($isAdmin): ?>
+								<div class="textarea-container">
+									<textarea name="item-short-description" class="item-short-description-textarea"><?=htmlspecialchars($item->getShortDescription())?></textarea>
+								</div>
+							<?php else: ?>
+							<div class="item-short-description">
+								<?=htmlspecialchars($item->getShortDescription())?>
 							</div>
-						<?php else: ?>
-						<div class="item-short-description">
-							<?=htmlspecialchars($item->getShortDescription())?>
+							<?php endif;?>
 						</div>
-						<?php endif;?>
+						<div class="item-other-footer">
+							<div class="rating">
+								<svg class="star-icon">
+									<use xlink:href="./img/sprites.svg#star"></use>
+								</svg>
+								<div class="rating-value"><?= (float)random_int(40, 50) / 10 ?></div>
+								<div class="review-count">(<?= random_int(5, 50) ?> отзывов)</div>
+							</div>
+							<?php if ($isAdmin): ?>
+							<input name="item-sort_order" class="input display-order" type="number" value="<?= $item->getSortOrder() ?>">
+							<div class="admin-btn-container">
+								<a class="btn btn-normal" href="<?=URLResolver::resolve('edit-item', ['id' => $item->getId()])?>">Редактировать</a>
+								<input type="submit" style="display: none">
+								<?php if ($item->getIsActive()): ?>
+								<a class="btn btn-delete">Скрыть</a>
+								<?php else: ?>
+								<a class="btn btn-return">Вернуть</a>
+								<?php endif; ?>
+							</div>
+							<input name="item-price" class="input price" type="number" value="<?= htmlspecialchars($item->getPrice()) ?>">₽
+							<input name="item-id" value="<?= $item->getId() ?>" type="hidden" class="input">
+								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+							<?php else: ?>
+							<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
+							<?php endif;?>
+						</div>
 					</div>
-					<div class="item-other-footer">
-						<div class="rating">
-							<svg class="star-icon">
-								<use xlink:href="./img/sprites.svg#star"></use>
-							</svg>
-							<div class="rating-value"><?= (float)random_int(40, 50) / 10 ?></div>
-							<div class="review-count">(<?= random_int(5, 50) ?> отзывов)</div>
-						</div>
-						<?php if ($isAdmin): ?>
-						<input name="item-sort_order" class="input display-order" type="number" value="<?= $item->getSortOrder() ?>">
-						<div class="admin-btn-container">
-							<a class="btn btn-normal" href="<?=URLResolver::resolve('edit-item', ['id' => $item->getId()])?>">Редактировать</a>
-							<input type="submit" style="display: none">
-							<a class="btn btn-delete">Удалить</a>
-						</div>
-						<input name="item-price" class="input price" type="number" value="<?= htmlspecialchars($item->getPrice()) ?>">₽
-						<input name="item-id" value="<?= $item->getId() ?>" type="hidden" class="input">
-							<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
-						<?php else: ?>
-						<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
-						<?php endif;?>
-					</div>
-				</div>
+					<?php if(!$item->getIsActive()): ?>
+					<div class="no-active"></div>
+					<?php endif; ?>
 				<?php if (!$isAdmin):?>
 				</div>
 				<?php else:?>
@@ -226,6 +238,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 <script src="/js/lib/fix-node.js"></script>
 <script src="/js/fixed-filters.js"></script>
 
+<!--<script src="/js/catalog-filters/filter-button.js"></script>-->
 <script src="/js/catalog-filters/filter-reset.js"></script>
 <script src="/js/catalog-filters/get-search-query.js"></script>
 <script src="/js/catalog-filters/filter-get-query.js"></script>
@@ -238,6 +251,6 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 <script src="/js/add-to-favorites.js"></script>
 
 <?php if ($isAdmin): ?>
-	<script src="/js/delete-item.js"></script>
+	<script src="/js/deactivate-item.js"></script>
 	<script src="/js/fast-update-item.js"></script>
 <?php endif;?>

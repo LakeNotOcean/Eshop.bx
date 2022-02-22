@@ -58,9 +58,9 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItemsByQuery($limitOffset['offset'], $limitOffset['amountItems'], $searchQuery);
 	}
 
-	public function getItemsByFilters(array $limitOffset,string $query = '',string $price = '',array $tags = [],array $specs = []): array
+	public function getItemsByFilters(array $limitOffset,string $query = '',string $price = '',array $tags = [],array $specs = [], bool $deactivateInclude = false): array
 	{
-		return $this->itemDAO->getItemsByFilters($limitOffset['offset'], $limitOffset['amountItems'],$query, $price, $tags,$specs);
+		return $this->itemDAO->getItemsByFilters($limitOffset['offset'], $limitOffset['amountItems'],$query, $price, $tags,$specs, $deactivateInclude);
 	}
 
 	public function getItemsMinMaxPrice(): array
@@ -83,9 +83,9 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItemsAmount($query);
 	}
 
-	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs): int
+	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs, bool $deactivate_include = false):int
 	{
-		return $this->itemDAO->getItemsAmountByFilters($query,$price,$tags,$specs);
+		return $this->itemDAO->getItemsAmountByFilters($query,$price,$tags,$specs, $deactivate_include);
 	}
 
 	public function getItemsTags(): array
@@ -107,6 +107,11 @@ class ItemService implements ItemServiceInterface
 	public function deactivateItem(int $id): void
 	{
 		$this->itemDAO->deactivateItem($id);
+	}
+
+	public function activateItem(int $id): void
+	{
+		$this->itemDAO->activateItem($id);
 	}
 
 	public function updateCommonInfo(Item $item): Item

@@ -22,4 +22,5 @@ interface UserServiceInterface
 
 	public function updateUser(User $user): void;
 
+	public function isValidPassword(string $password, User $user): bool;
 }

@@ -31,11 +31,11 @@ class Validator
 	];
 	private const ValidatorPathMethod = "Up\Validator\Validator::";
 
-	/** @param string|int $data
+	/**
+	 * @param string|int $data
 	 * @param DataTypes $dataType
 	 *
-	 * @throws EnumException
-	 * @throws ReflectionException
+	 * @return string
 	 */
 	public static function validate($data, DataTypes $dataType): string
 	{

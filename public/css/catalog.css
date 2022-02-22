@@ -40,6 +40,27 @@ items
 	transition: .3s;
 }
 
+[name=fast-update]{
+	position: relative;
+}
+
+.no-active{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	opacity: 1;
+	transition: 0.3s;
+
+	background: rgba(0, 0, 0, 0.1);
+}
+
+[name=fast-update]:hover .no-active{
+	opacity: 0;
+	pointer-events: none;
+}
+
 .item:hover {
 	box-shadow: 0 8px 6px rgba(0, 0, 0, 0.3);
 	transition: .3s;
