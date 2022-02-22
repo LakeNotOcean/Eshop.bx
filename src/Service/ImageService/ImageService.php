@@ -159,7 +159,7 @@ class ImageService implements ImageServiceInterface
 
 			if ($width > $sizeValue || $height > $sizeValue)
 			{
-				$this->resizeImage($sizedImagePath, $sizeValue, mime_content_type($originalFilename), static::SIZED_IMAGE_FIRST_MIME);
+				$this->resizeImage($sizedImagePath, $sizeValue, mime_content_type($originalFilePath), static::SIZED_IMAGE_FIRST_MIME);
 			}
 			$sizedImagePaths[$sizeName] = $sizedImagePath;
 		}
@@ -335,7 +335,9 @@ class ImageService implements ImageServiceInterface
 		foreach ($image->getPathArray() as $sizedPath)
 		{
 			foreach ($this->availableExtensions as $availableExtension)
-			unlink($this->generateFilename($sizedPath, $availableExtension));
+			{
+				unlink($this->generateFilename($sizedPath, $availableExtension));
+			}
 		}
 	}
 }
