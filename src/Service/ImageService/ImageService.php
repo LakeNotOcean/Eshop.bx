@@ -139,7 +139,6 @@ class ImageService implements ImageServiceInterface
 
 	/**
 	 * @param string $originalFilename
-	 * @param string $originalFilenameMime
 	 *
 	 * @return array{small:string, medium:string, big:string}
 	 * @throws MimeTypeException
@@ -160,7 +159,7 @@ class ImageService implements ImageServiceInterface
 
 			if ($width > $sizeValue || $height > $sizeValue)
 			{
-				$this->resizeImage($sizedImagePath, $sizeValue, static::SIZED_IMAGE_FIRST_MIME);
+				$this->resizeImage($sizedImagePath, $sizeValue, mime_content_type($originalFilename), static::SIZED_IMAGE_FIRST_MIME);
 			}
 			$sizedImagePaths[$sizeName] = $sizedImagePath;
 		}
@@ -286,14 +285,14 @@ class ImageService implements ImageServiceInterface
 	/**
 	 * @throws MimeTypeException
 	 */
-	private function resizeImage(string $filePath, int $size, string $mimeType): void
+	private function resizeImage(string $filePath, int $size, string $originalFileMimeType, string $resultFileMimeType): void
 	{
-		if (!isset(static::validMimeTypeToCreateImageFunction[$mimeType]))
+		if (!isset(static::validMimeTypeToCreateImageFunction[$originalFileMimeType]))
 		{
-			throw new MimeTypeException("Invalid mime file type. Now: {$mimeType}");
+			throw new MimeTypeException("Invalid mime file type. Now: {$originalFileMimeType}");
 		}
 
-		$image = static::validMimeTypeToCreateImageFunction[$mimeType]($filePath);
+		$image = static::validMimeTypeToCreateImageFunction[$originalFileMimeType]($filePath);
 		if (!$image)
 		{
 			throw new \RuntimeException("Can't find file {$filePath}");
@@ -309,7 +308,7 @@ class ImageService implements ImageServiceInterface
 		{
 			$image = imagescale($image, $size, floor($size * $height / $width));
 		}
-		static::validMimeTypeToSaveImageFunction[$mimeType]($image, $filePath);
+		static::validMimeTypeToSaveImageFunction[$resultFileMimeType]($image, $filePath);
 	}
 
 	public function createImageWithExtension(string $imagePath, string $anotherExtension, string $resultFileMime): string
