@@ -74,13 +74,12 @@ class TagDAOmysql implements TagDAOInterface
 		return $tags;
 	}
 
-	public function getTagsByItemType(array $typeIds): array
+	public function getTagsByItemType(int $typeId): array
 	{
-		if (count($typeIds) > 1)
+		if ($typeId === 0)
 		{
 			return [];
 		}
-		$typeId = (int) $typeIds[0];
 		$result = $this->DBConnection->prepare($this->getTagsByItemTypeQuery($typeId));
 		$result->execute();
 		$tags = [];
