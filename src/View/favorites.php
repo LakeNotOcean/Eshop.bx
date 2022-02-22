@@ -1,6 +1,7 @@
 <?php
 
-/** @var array<\Up\Entity\ItemDetail> $favoriteItems */
+/** @var array<\Up\Entity\UserItem> $favoriteItems */
+/** @var $paginator */
 
 use Up\Core\Router\URLResolver;
 
@@ -36,8 +37,9 @@ use Up\Core\Router\URLResolver;
 						<a href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>" class="item-title">
 							<?= htmlspecialchars($item->getTitle()) ?>
 						</a>
+						<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 						<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
-							<svg class="add-to-favorites">
+							<svg class="add-to-favorites <?= $item->getIsFavorite() ? "favoriteActive" : ""?>">
 								<use xlink:href="/img/sprites.svg#heart"></use>
 							</svg>
 						</div>
@@ -59,6 +61,8 @@ use Up\Core\Router\URLResolver;
 			</div>
 		</div>
 		<?php endforeach;?>
+
+		<?= $paginator?>
 	</div>
 </div>
 

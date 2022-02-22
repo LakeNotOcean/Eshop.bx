@@ -6,6 +6,26 @@ class UserItem extends ItemDetail
 {
 	protected $isFavorite;
 
+	public function setItem(Item $item): void
+	{
+		$this->id = $item->id;
+		$this->title = $item->title;
+		$this->price = $item->price;
+		$this->shortDescription = $item->shortDescription;
+		$this->sortOrder = $item->sortOrder;
+		$this->isActive = $item->isActive;
+		$this->mainImage = $item->mainImage;
+	}
+
+	public function setItemDetail(ItemDetail $itemDetail): void
+	{
+		$this->setItem($itemDetail);
+		$this->fullDescription = $itemDetail->fullDescription;
+		$this->images = $itemDetail->images;
+		$this->tags = $itemDetail->tags;
+		$this->itemType = $itemDetail->itemType;
+	}
+
 	/**
 	 * @return bool
 	 */

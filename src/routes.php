@@ -25,12 +25,14 @@ $router->post('/login', [UserController::class, 'loginUser'], 'login-user');
 $router->get('/logout', [UserController::class, 'logout'], 'logout-user');
 $router->get('/passwordChange', [UserController::class, 'changePasswordPage'], 'change-password');
 $router->post('/passwordChange', [UserController::class, 'changePassword'], 'change-password');
+
 $router->get('/profile', [UserController::class, 'getProfilePage'], 'user-profile');
 $router->post('/updateUser', [UserController::class, 'updateUser'], 'update-user');
 
 $router->get('/favorites', [ItemController::class, 'getFavoriteItems'], 'user-favorites');
 $router->post('/addToFavorites', [ItemController::class, 'addToFavorites'], 'add-to-favorites');
 $router->post('/removeFromFavorites', [ItemController::class, 'removeFromFavorites'], 'remove-from-favorites');
+$router->get('/removeFromFavorites', [ItemController::class, 'removeFromFavorites'], 'remove-from-favorites');
 
 //Admin
 $router->get('/admin/addItem', [ItemController::class, 'addItem'], 'add-item');

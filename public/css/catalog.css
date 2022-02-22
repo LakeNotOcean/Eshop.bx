@@ -10,10 +10,11 @@
 	background: #F6F6F6;
 	max-width: 1500px;
 	min-height: calc(100vh - var(--nav-height));
+	padding: 0 50px;
 }
 
 .search_result_count {
-	margin: 25px 50px;
+	margin: 25px 50px 25px 0;
 	font-size: 18px;
 }
 
@@ -24,7 +25,6 @@ items
 .item-list {
 	flex: 1;
 	overflow: auto;
-	margin-right: 50px;
 }
 
 .item {
@@ -38,13 +38,14 @@ items
 	text-decoration: none;
 	color: inherit;
 	transition: .3s;
+	overflow: hidden;
 }
 
-[name=fast-update]{
+[name=fast-update] {
 	position: relative;
 }
 
-.no-active{
+.no-active {
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -56,7 +57,7 @@ items
 	background: rgba(0, 0, 0, 0.1);
 }
 
-[name=fast-update]:hover .no-active{
+[name=fast-update]:hover .no-active {
 	opacity: 0;
 	pointer-events: none;
 }
@@ -241,7 +242,7 @@ filters main
 .filters-column {
 	display: flex;
 	width: 300px;
-	margin: 0 50px;
+	margin-right: 50px;
 }
 
 .filters {

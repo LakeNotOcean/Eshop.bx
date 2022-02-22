@@ -8,27 +8,24 @@ use Up\DAO\TagDAO\TagDAOInterface;
 use Up\Entity\EntityArray;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
-use Up\Service\ImageService\ImageServiceInterface;
+
 
 class ItemService implements ItemServiceInterface
 {
 	protected $itemDAO;
 	protected $specificationDAO;
 	protected $tagDAO;
-	protected $imageService;
 
 	/**
 	 * @param \Up\DAO\ItemDAO\ItemDAOmysql $itemDAO
 	 * @param \Up\DAO\SpecificationDAO\SpecificationDAOmysql $specificationDAO
 	 * @param \Up\DAO\TagDAO\TagDAOmysql $tagDAO
-	 * @param \Up\Service\ImageService\ImageService $imageService
 	 */
-	public function __construct(ItemDAOInterface $itemDAO, SpecificationDAOInterface $specificationDAO, TagDAOInterface $tagDAO, ImageServiceInterface $imageService)
+	public function __construct(ItemDAOInterface $itemDAO, SpecificationDAOInterface $specificationDAO, TagDAOInterface $tagDAO)
 	{
 		$this->itemDAO = $itemDAO;
 		$this->specificationDAO = $specificationDAO;
 		$this->tagDAO = $tagDAO;
-		$this->imageService = $imageService;
 	}
 
 	public function getItems(array $limitOffset): array
@@ -41,13 +38,31 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getFavoriteItems($userId, $limitOffset['offset'], $limitOffset['amountItems']);
 	}
 
-	public function mapFavorites(int $userId, array $items): array
+	public function mapItemsToUserItems(int $userId, array $items): array
 	{
 		$favoriteItems = $this->getFavoriteItems($userId);
 		$userItems = [];
 		foreach ($items as $item)
 		{
-			$userItem = $item;
+			$userItem = new UserItem();
+			$userItem->setItem($item);
+			$isFavorite = array_key_exists($userItem->getId(), $favoriteItems);
+			$userItem->setIsFavorite($isFavorite);
+			$userItems[] = $userItem;
+		}
+		return $userItems;
+	}
+
+	public function mapItemDetailsToUserItems(int $userId, array $itemDetails): array
+	{
+		$favoriteItems = $this->getFavoriteItems($userId);
+		$userItems = [];
+		foreach ($itemDetails as $itemDetail)
+		{
+			$userItem = new UserItem();
+			$userItem->setItemDetail($itemDetail);
+			$isFavorite = array_key_exists($userItem->getId(), $favoriteItems);
+			$userItem->setIsFavorite($isFavorite);
 			$userItems[] = $userItem;
 		}
 		return $userItems;
