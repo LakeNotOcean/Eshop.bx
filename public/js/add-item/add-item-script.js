@@ -90,12 +90,12 @@ document.querySelector('.form-add').addEventListener('submit', (e) => {
 				setTimeout(() => {
 					location.href = r.url;
 				}, 500);
-				popup('Товар добавлен');
+				showPopup('Товар добавлен');
 				//resetForm(e.target);
 			}
 			else
 			{
-				popup('Товар не удалось добавить.');
+				showPopup('Товар не удалось добавить.');
 			}
 		});
 	}

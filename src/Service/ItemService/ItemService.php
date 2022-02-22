@@ -28,10 +28,39 @@ class ItemService implements ItemServiceInterface
 		$this->tagDAO = $tagDAO;
 	}
 
-
 	public function getItems(array $limitOffset): array
 	{
 		return $this->itemDAO->getItems($limitOffset['offset'], $limitOffset['amountItems']);
+	}
+
+	public function getFavoriteItems(int $userId, array $limitOffset = ['offset' => -1, 'amountItems' => 0]): array
+	{
+		return $this->itemDAO->getFavoriteItems($userId, $limitOffset['offset'], $limitOffset['amountItems']);
+	}
+
+	public function mapFavorites(int $userId, array $items): array
+	{
+		$favoriteItems = $this->getFavoriteItems($userId);
+		$userItems = [];
+		foreach ($items as $item)
+		{
+			$userItem = $item;
+		}
+	}
+
+	public function getFavoriteItemsAmount(int $userId): int
+	{
+		return $this->itemDAO->getFavoriteItemsAmount($userId);
+	}
+
+	public function addToFavorites(int $userId, int $favoriteItemId): void
+	{
+		$this->itemDAO->addToFavorites($userId, $favoriteItemId);
+	}
+
+	public function removeFromFavorites(int $userId, int $favoriteItemId): void
+	{
+		$this->itemDAO->removeFromFavorites($userId, $favoriteItemId);
 	}
 
 	public function getItemsByQuery(array $limitOffset, string $searchQuery): array
@@ -51,9 +80,6 @@ class ItemService implements ItemServiceInterface
 
 	public function getItemById(int $id): ItemDetail
 	{
-		//$itemCategories = $this->specificationDAO->getItemCategoriesByItem($item);
-		//$this->specificationsSort($itemCategories);
-		//$item->setSpecificationCategoryList($itemCategories);
 		return $this->itemDAO->getItemDetailById($id);
 	}
 
@@ -61,7 +87,6 @@ class ItemService implements ItemServiceInterface
 	{
 		return $this->itemDAO->getSimilarItemById($id, $similarAmount);
 	}
-
 
 	public function getItemsAmount(string $query = ''): int
 	{
@@ -75,9 +100,8 @@ class ItemService implements ItemServiceInterface
 
 	public function getItemsTags(): array
 	{
-		$entityArray = $this->tagDAO->getAllTags();
-		$tags = $entityArray->getEntitiesArray();
-		return $tags;
+		$tags = $this->tagDAO->getAllTags();
+		return $tags->getEntitiesArray();
 	}
 
 	public function getItemsCategories(int $typeID = 1): array
@@ -104,4 +128,5 @@ class ItemService implements ItemServiceInterface
 	{
 		return $this->itemDAO->updateCommonInfo($item);
 	}
+
 }

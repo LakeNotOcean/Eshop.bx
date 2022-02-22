@@ -75,20 +75,18 @@ if (!isset($query))
 	<?php endif;?>
 
 	<?php if ($isAuthenticated): ?>
-		<div class="nav-item">
+		<div class="nav-item" id="userMenu">
 			<div class="nav-item-label"><?= $userName?></div>
 			<div class="menu-container profile">
 				<div class="menu">
-					<a class="menu-item" href="<?= URLResolver::resolve('user-profile') ?>">
-						Личный кабинет
-					</a>
+					<a class="menu-item" href="<?= URLResolver::resolve('user-favorites') ?>">Избранное</a>
+					<a class="menu-item" href="<?= URLResolver::resolve('user-profile') ?>">Личный кабинет</a>
 					<a href="<?= URLResolver::resolve('logout-user') ?>">
 						<div class="btn btn-normal sign-in">Выйти</div>
 					</a>
 				</div>
 			</div>
 		</div>
-
 	<?php else: ?>
 		<a href="<?= URLResolver::resolve('login-user') ?>">
 			<div class="btn btn-normal sign-in">Войти</div>

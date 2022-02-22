@@ -28,6 +28,10 @@ $router->post('/passwordChange', [UserController::class, 'changePassword'], 'cha
 $router->get('/profile', [UserController::class, 'getProfilePage'], 'user-profile');
 $router->post('/updateUser', [UserController::class, 'updateUser'], 'update-user');
 
+$router->get('/favorites', [ItemController::class, 'getFavoriteItems'], 'user-favorites');
+$router->post('/addToFavorites', [ItemController::class, 'addToFavorites'], 'add-to-favorites');
+$router->post('/removeFromFavorites', [ItemController::class, 'removeFromFavorites'], 'remove-from-favorites');
+
 //Admin
 $router->get('/admin/addItem', [ItemController::class, 'addItem'], 'add-item');
 $router->get('/admin/updateItem',[ItemController::class, 'updateItemPage'],'update-item');

@@ -14,7 +14,7 @@ for (let navItem of navItems) {
 
 		if (menuItem.getAttribute('href') === uri || matchId) {
 			let label = navItem.querySelector('.nav-item-label');
-			label.innerText = menuItem.innerHTML;
+			label.innerText = menuItem.textContent;
 			navItem.classList.add('nav-item-active');
 			foundNavItem = true;
 		}

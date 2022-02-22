@@ -2,6 +2,7 @@
 
 namespace Up\Controller;
 
+use RuntimeException;
 use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
@@ -18,6 +19,7 @@ use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\TagService\TagServiceInterface;
 use Up\Service\UserService\UserServiceInterface;
+
 
 class ItemController
 {
@@ -82,9 +84,11 @@ class ItemController
 		$tags = $this->itemService->getItemsTags();
 		$price = $this->itemService->getItemsMinMaxPrice();
 
+		$userId = $request->getUser()->getId();
+
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
 		$pages = $this->templateProcessor->render('catalog.php', [
-			'items' => $items,
+			'items' => $this->itemService->mapFavorites($userId, $items),
 			'currentPage' => $currentPage,
 			'itemsAmount' => $itemsAmount,
 			'pagesAmount' => $pagesAmount,
@@ -103,11 +107,61 @@ class ItemController
 		return (new Response())->withBodyHTML($pages);
 	}
 
+	public function getFavoriteItems(Request $request): Response
+	{
+		$userId = $request->getUser()->getId();
+		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
+		$currentPage = $currentPage > 0 ? $currentPage : 1;
+		$favoriteItems = $this->itemService->getFavoriteItems($userId, Paginator::getLimitOffset($currentPage, $this->itemsInPage));
+
+		$itemsAmount = $this->itemService->getFavoriteItemsAmount($userId);
+		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
+
+		$page = $this->templateProcessor->render('favorites.php', [
+			'favoriteItems' => $favoriteItems,
+			'currentPage' => $currentPage,
+			'pagesAmount' => $pagesAmount
+		], 'layout/main.php', [
+			 'isAuthenticated' => $request->isAuthenticated(),
+			 'isAdmin' => $request->isAdmin(),
+			 'userName' => $request->getUser()->getName()
+		 ]);
+
+		return (new Response())->withBodyHTML($page);
+	}
+
+	/**
+	 * @throws NoSuchQueryParameterException
+	 * @throws RuntimeException
+	 */
+	public function addToFavorites(Request $request): Response
+	{
+		$userId = $request->getUser()->getId();
+		if ($userId === 0)
+		{
+			throw new RuntimeException('Пользователь не авторизовн');
+		}
+		$favoriteItemId = $request->getPostParametersByName('favorite-item-id');
+		$this->itemService->addToFavorites($userId, $favoriteItemId);
+		return (new Response())->withBodyHTML('');
+	}
+
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
+	public function removeFromFavorites(Request $request): Response
+	{
+		$userId = $request->getUser()->getId();
+		$favoriteItemId = $request->getPostParametersByName('favorite-item-id');
+		$this->itemService->removeFromFavorites($userId, $favoriteItemId);
+		return (new Response())->withBodyHTML('');
+	}
+
 	public function getItem(Request $request, int $id): Response
 	{
 		$item = $this->itemService->getItemById($id);
 		$itemsSimilar = $this->itemService->getItemsSimilarById($id,5);
-		$pages = $this->templateProcessor->render('item.php', [
+		$page = $this->templateProcessor->render('item.php', [
 			'item' => $item,
 			'similarItems' => $itemsSimilar,
 		], 'layout/main.php', [
@@ -116,7 +170,7 @@ class ItemController
 			'userName' => $request->getUser()->getName()
 		]);
 
-		return (new Response())->withBodyHTML($pages);
+		return (new Response())->withBodyHTML($page);
 	}
 
 	/**
