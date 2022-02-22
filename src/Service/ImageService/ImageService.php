@@ -28,7 +28,7 @@ class ImageService implements ImageServiceInterface
 		'image/jpeg' => 'imagejpeg',
 		'image/webp' => 'imagewebp',
 	];
-	private const SIZED_IMAGE_FIRST_MIME = 'imagejpeg';
+	private const SIZED_IMAGE_FIRST_MIME = 'image/jpeg';
 	protected $imageDirPath;
 	protected $availableExtensions;
 	protected const OriginalImagesDir = 'original/';
