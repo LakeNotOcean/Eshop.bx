@@ -144,13 +144,14 @@ class ItemController
 	 */
 	public function addToFavorites(Request $request): Response
 	{
-		$userId = $request->getUser()->getId();
-		if ($userId === 0)
+		if (!$request->isAuthenticated())
 		{
 			throw new RuntimeException('Пользователь не авторизовн');
 		}
+		$userId = $request->getUser()->getId();
 		$favoriteItemId = $request->getPostParametersByName('favorite-item-id');
 		$this->itemService->addToFavorites($userId, $favoriteItemId);
+
 		return (new Response())->withBodyHTML('');
 	}
 

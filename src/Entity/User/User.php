@@ -44,9 +44,10 @@ class User extends Entity
 	/**
 	 * @param mixed $secondName
 	 */
-	public function setSecondName($secondName): void
+	public function setSecondName($secondName): self
 	{
 		$this->secondName = $secondName;
+		return $this;
 	}
 
 	/**
@@ -60,25 +61,32 @@ class User extends Entity
 	/**
 	 * @param mixed $firstName
 	 */
-	public function setFirstName($firstName): void
+	public function setFirstName($firstName): self
 	{
 		$this->firstName = $firstName;
+		return $this;
 	}
 
 	/**
 	 * @param string $email
+	 *
+	 * @return User
 	 */
-	public function setEmail(string $email): void
+	public function setEmail(string $email): self
 	{
 		$this->email = $email;
+		return $this;
 	}
 
 	/**
 	 * @param string $phone
+	 *
+	 * @return User
 	 */
-	public function setPhone(string $phone): void
+	public function setPhone(string $phone): self
 	{
 		$this->phone = $phone;
+		return $this;
 	}
 
 	/**

@@ -12,7 +12,7 @@ interface UserDAOInterface
 
 	public function getUserByLogin(string $login): User;
 
-	public function addUser(User $user, string $password): void;
+	public function addUser(User $user, string $password): User;
 
 	public function giveUserModeratorRoleByLogin(string $login): void;
 
