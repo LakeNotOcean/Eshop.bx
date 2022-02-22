@@ -47,7 +47,12 @@ class Router
 	 */
 	public function register(string $method, string $urlTemplate, array $callback, string $name): void
 	{
-		$this->routes[] = [
+		$key = $this->getUrlPatternWithoutTemplate($urlTemplate);
+		if (array_key_exists($key, $this->routes) && $this->routes[$key][0]['name'] !== $name)
+		{
+			throw new \InvalidArgumentException('Dont create routes with equal url, but with different names');
+		}
+		$this->routes[$key][] = [
 			'method' => $method,
 			'urlTemplate' => $urlTemplate,
 			'urlRegex' => $this->makeRegexFromUrl($urlTemplate),
@@ -89,11 +94,14 @@ class Router
 
 	public function getUrlTemplateByName(string $name): ?string
 	{
-		foreach ($this->routes as $route)
+		foreach ($this->routes as $routesWithEqualURL)
 		{
-			if ($route['name'] === $name)
+			foreach ($routesWithEqualURL as $route)
 			{
-				return $route['urlTemplate'];
+				if ($route['name'] === $name)
+				{
+					return $route['urlTemplate'];
+				}
 			}
 		}
 
@@ -106,15 +114,18 @@ class Router
 	public function route(string $method, string $path): array
 	{
 		$path = URLHelper::removeIfExistGetParametersFromPath($path);
-		foreach ($this->routes as $route)
+		foreach ($this->routes as $routesWithEqualURL)
 		{
-			$matches = [];
-			if ($method === $route['method'] && preg_match($route['urlRegex'], $path, $matches))
+			foreach ($routesWithEqualURL as $route)
 			{
-				return [
-					'callback' => $route['callback'],
-					'params' => $matches,
-				];
+				$matches = [];
+				if ($method === $route['method'] && preg_match($route['urlRegex'], $path, $matches))
+				{
+					return [
+						'callback' => $route['callback'],
+						'params' => $matches,
+					];
+				}
 			}
 		}
 		throw new Error\RoutingException("Не найдена ручка соответствующая пути {$path} и методу {$method}");
@@ -123,16 +134,18 @@ class Router
 	/**
 	 * @throws Error\RoutingException
 	 */
-	//TODO: Убрать в методе getRoute второй параметр и поставить ограничения в роутер
 	public function getRouteName(string $url)
 	{
 		$path = URLHelper::removeIfExistGetParametersFromPath($url);
-		foreach ($this->routes as $route)
+		foreach ($this->routes as $routesWithEqualURL)
 		{
-			$matches = [];
-			if (preg_match($route['urlRegex'], $path, $matches))
+			foreach ($routesWithEqualURL as $route)
 			{
-				return $route['name'];
+				$matches = [];
+				if (preg_match($route['urlRegex'], $path, $matches))
+				{
+					return $route['name'];
+				}
 			}
 		}
 		throw new Error\RoutingException("Не найдена ручка соответствующая имени {$route['name']}");
@@ -151,5 +164,10 @@ class Router
 		}
 
 		return '(?<' . $variableName . '>' . $this->typeToRegex[$type] . ')';
+	}
+
+	private function getUrlPatternWithoutTemplate(string $urlTemplate)
+	{
+		return preg_replace('/{\w+:\w+}/', '', $urlTemplate);
 	}
 }
