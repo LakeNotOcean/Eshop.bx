@@ -62,15 +62,26 @@ class ItemController
 		$currentPage = $query['page'] > 0 ? $query['page'] : 1;
 
 		$typeIds = $this->itemService->getTypeIdByQuery($query['query']);
-		$queryTypeId = ($typeIds[0] === 0) ? 1 : 0; //1 - значение передаваетмая через ручки.
+
+		if (empty($typeIds))
+		{
+			$queryTypeId = 1;    //1 - значение передаваетмая через ручки.
+		}
+		elseif (count($typeIds) === 1)
+		{
+			$queryTypeId = $typeIds[0];
+		}
+		else
+		{
+			$queryTypeId = 0;
+		}
 
 		$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage),
-			$query['query'],$query['price'],$query['tag'],$query['spec'],$queryTypeId,$deactivate);
+			$query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate);
 
 		$price = $this->itemService->getItemsMinMaxPriceByItemTypes($typeIds);
-		$itemsAmount = $this->itemService->getItemsAmountByFilters($query['query'],$query['price'],$query['tag'],$query['spec'],$queryTypeId,$deactivate);
+		$itemsAmount = $this->itemService->getItemsAmountByFilters($query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate);
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
-		$isTypeIdSingle = (count($typeIds) > 1) ? 0 : $typeIds[0];
 		$userId = $request->getUser()->getId();
 
 		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
@@ -87,8 +98,8 @@ class ItemController
 			'paginator' => $paginator,
 			'query' => $query['query'],
 			'price'=> $price,
-			'tags' => $this->tagService->getTagsByItemType($isTypeIdSingle),
-			'categories' => $this->itemService->getItemsCategoriesByItemType($isTypeIdSingle),
+			'tags' => $this->tagService->getTagsByItemType($queryTypeId),
+			'categories' => $this->itemService->getItemsCategoriesByItemType($queryTypeId),
 			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false
 		], 'layout/main.php', [
 			'isAuthenticated' => $isAuthenticated,

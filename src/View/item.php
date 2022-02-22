@@ -70,7 +70,10 @@
 				<a class="scroll-menu-item" title="specs">Характеристики</a>
 				<a class="scroll-menu-item" title="description">Описание</a>
 				<a class="scroll-menu-item" title="reviews">Отзывы</a>
+				<?php
+				if (!empty($similarItems)){?>
 				<a class="scroll-menu-item" title="similar">Похожие товары</a>
+				<?}?>
 			</div>
 		</div>
 
@@ -169,6 +172,8 @@
 					</div>
 				</div>
 			</div>
+			<?php
+			if (!empty($similarItems)){?>
 			<div class="similar-item-section">
 				<a class="anchor" id="similar"></a>
 				<div class="item-section-title">Похожие товары</div>
@@ -196,6 +201,7 @@
 					<div class="btn-back similar-item-cards-right-arrow"></div>
 				</div>
 			</div>
+			<?}?>
 		</div>
 	</div>
 </div>
