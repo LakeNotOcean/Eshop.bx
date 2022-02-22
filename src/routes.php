@@ -39,14 +39,14 @@ $router->get('/removeFromFavorites', [ItemController::class, 'removeFromFavorite
 //Admin
 $router->get('/admin/addItem', [ItemController::class, 'addItem'], 'add-item');
 $router->get('/admin/updateItem',[ItemController::class, 'updateItemPage'],'update-item');
-$router->post('/admin/addItem', [ItemController::class, 'createNewItem'], 'add-item-db');
+$router->post('/admin/addItem', [ItemController::class, 'createNewItem'], 'add-item');
 $router->get('/admin/chooseItemType', [CategoryController::class, 'chooseItemType'], 'choose-item-type');
 $router->get('/admin/addItemType', [CategoryController::class, 'addItemType'], 'add-item-type');
-$router->post('/admin/addItemType', [CategoryController::class, 'addItemTypeAndSaveToDB'], 'add-item-type-db');
+$router->post('/admin/addItemType', [CategoryController::class, 'addItemTypeAndSaveToDB'], 'add-item-type');
 $router->get('/admin/addCategory', [CategoryController::class, 'addCategory'], 'add-category');
-$router->post('/admin/addCategory', [CategoryController::class, 'addCategoryAndSaveToDB'], 'add-category-db');
+$router->post('/admin/addCategory', [CategoryController::class, 'addCategoryAndSaveToDB'], 'add-category');
 $router->get('/admin/addSpecification', [CategoryController::class, 'addSpecification'], 'add-specification');
-$router->post('/admin/addSpecification', [CategoryController::class, 'addSpecificationAndSaveToDB'], 'add-specification-db');
+$router->post('/admin/addSpecification', [CategoryController::class, 'addSpecificationAndSaveToDB'], 'add-specification');
 
 $router->get('/admin/', [ItemController::class, 'getItems'], 'home-admin');
 $router->get('/admin/deleteCategory', [CategoryController::class, 'deleteCategoryPage'], 'delete-category');
