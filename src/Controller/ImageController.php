@@ -9,17 +9,13 @@ use Up\Service\ImageService\ImageServiceInterface;
 
 class ImageController
 {
-	protected $templateProcessor;
 	protected $imageService;
 
 	/**
-	 * @param \Up\Core\TemplateProcessor $templateProcessor
 	 * @param \Up\Service\ImageService\ImageService $imageService
 	 */
-	public function __construct(TemplateProcessorInterface     $templateProcessor,
-								ImageServiceInterface          $imageService)
+	public function __construct(ImageServiceInterface          $imageService)
 	{
-		$this->templateProcessor = $templateProcessor;
 		$this->imageService = $imageService;
 	}
 
@@ -28,4 +24,5 @@ class ImageController
 		$this->imageService->deleteImageById($id);
 		return (new Response())->withBodyJSON([]);
 	}
+
 }

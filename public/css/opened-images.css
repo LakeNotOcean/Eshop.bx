@@ -9,7 +9,7 @@ opened-images
 	flex-direction: column;
 	width: 100vw;
 	min-height: calc(100vh - var(--nav-height));
-	background: #ffffff;
+	background: var(--color-main);
 	align-items: center;
 }
 
@@ -93,4 +93,5 @@ opened-images
 .item-image {
 	object-fit: none;
 	margin: 30px;
+	border-radius: 15px;
 }

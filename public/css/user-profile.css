@@ -3,7 +3,7 @@
 @import "lib/popup.css";
 
 .center {
-	background: #ffffff;
+	background: var(--color-main);
 }
 
 .container {
@@ -29,7 +29,7 @@ user-info
 	display: flex;
 	flex-direction: column;
 	padding: 15px 0;
-	border-bottom: 1px solid #ebebeb;
+	border-bottom: 1px solid var(--color-separator);
 }
 
 .user-info-header {
@@ -45,7 +45,7 @@ user-info
 .user-info-value {
 	display: flex;
 	white-space: pre;
-	color: #797979;
+	color: var(--color-font-secondary);
 }
 
 .user-info-change {

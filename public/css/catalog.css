@@ -2,12 +2,12 @@
 @import "lib/card.css";
 @import "lib/input.css";
 @import "lib/popup.css";
+@import "lib/add-to-favorites.css";
 
 .container {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	background: #F6F6F6;
 	max-width: 1500px;
 	min-height: calc(100vh - var(--nav-height));
 	padding: 0 50px;
@@ -32,8 +32,6 @@ items
 	flex: 1;
 	min-height: 150px;
 	margin: 0 5px 30px;
-	background: #FFFFFF;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 	border-radius: 10px;
 	text-decoration: none;
 	color: inherit;
@@ -62,14 +60,54 @@ items
 	pointer-events: none;
 }
 
-.item:hover {
-	box-shadow: 0 8px 6px rgba(0, 0, 0, 0.3);
-	transition: .3s;
-}
-
 .message-no-results {
 	font-size: 16px;
 	font-weight: 500;
+}
+
+/*==========================
+sort
+==========================*/
+
+.item-sorting-box {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 50px;
+	margin: 10px 0 30px;
+}
+
+.item-sorting-box-title {
+	padding: 10px;
+	white-space: nowrap;
+}
+
+.item-sorting-button {
+	display: flex;
+	align-items: center;
+	margin: 5px;
+	padding: 10px;
+	border-radius: 15px;
+	border: 1px solid var(--color-outline);
+	background: var(--color-main);
+	line-height: 1;
+	cursor: pointer;
+	user-select: none;
+}
+
+.sort-direction {
+	font-family: sans-serif;
+	margin-left: 5px;
+}
+
+.item-sorting-button.active {
+	border: 2px solid var(--color-accent);
+}
+
+.item-sorting-button:hover {
+	background: var(--color-accent);
+	border-color: var(--color-accent);
+	color: #ffffff;
 }
 
 /*==========================
@@ -81,6 +119,7 @@ item-image
 	height: 130px;
 	width: 130px;
 	margin: 10px;
+	border-radius: 10px;
 }
 
 /*==========================
@@ -112,7 +151,7 @@ item-other-header
 }
 
 .item-short-description {
-	color: #7D7D7D;
+	color: var(--color-font-secondary);
 }
 
 /*==========================
@@ -144,48 +183,6 @@ item-other-footer
 }
 
 /*==========================
-add-to-favorites
-==========================*/
-
-.add-to-favorites {
-	width: 30px;
-	height: 25px;
-	min-width: 30px;
-	fill: none;
-	stroke: #222222;
-	cursor: pointer;
-}
-
-.add-to-favorites:hover {
-	fill: red;
-	stroke: none;
-}
-
-.favoriteActive {
-	fill: red;
-	stroke: none;
-	animation: like .3s forwards;
-	transform-origin: center;
-}
-
-.removedFromFavorites {
-	fill: none !important;
-	stroke: #222222 !important;
-}
-
-@keyframes like {
-	0% {
-		transform: scale(1);
-	}
-	50% {
-		transform: scale(1.2);
-	}
-	100% {
-		transform: scale(1);
-	}
-}
-
-/*==========================
 rating
 ==========================*/
 
@@ -196,7 +193,7 @@ rating
 }
 
 .star-icon {
-	fill: #FF791E;
+	fill: var(--color-accent);
 	width: 25px;
 	height: 25px
 }
@@ -204,17 +201,15 @@ rating
 .rating-value {
 	margin: 0 10px;
 	font-weight: bold;
-	color: #333333;
 }
 
 .review-count {
-	color: #7D7D7D;
+	color: var(--color-font-secondary);
 }
 
 .price {
 	font-size: 18px;
 	font-weight: bold;
-	color: #333333;
 }
 
 /*==========================
@@ -228,7 +223,6 @@ admin-btn-container
 .admin-btn-container .btn {
 	margin: 0 10px;
 }
-
 
 /*==========================
 filters main
@@ -246,9 +240,7 @@ filters main
 
 .filters {
 	width: 270px;
-	background: #FFFFFF;
 	border-radius: 10px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 	padding: 15px;
 
 	--filters-height: calc(100vh - var(--nav-height) - 140px);
@@ -285,19 +277,19 @@ filters price category
 	flex: 1;
 	padding: 0 6px;
 	border-radius: 10px;
-	border: 2px solid #D9D9D9;
+	border: 2px solid var(--color-outline);
 }
 
 .range-dash {
 	width: 15px;
 	height: 3px;
 	margin: 5px;
-	background: #C4C4C4;
+	background: var(--color-outline);
 }
 
 .price-label {
 	font-size: 11px;
-	color: #aaaaaa;
+	color: var(--color-icon);
 }
 
 .price-input {
@@ -377,11 +369,11 @@ btn-expand
 
 .spec-filter-section {
 	padding: 5px 0;
-	border-bottom: 1px solid #ebebeb;
+	border-bottom: 1px solid var(--color-separator);
 }
 
 .spec-filter-section:first-child {
-	border-top: 1px solid #ebebeb;
+	border-top: 1px solid var(--color-separator);
 }
 
 .spec-value {
@@ -413,7 +405,7 @@ filters tag category
 .tag label {
 	display: block;
 	position: relative;
-	border: 2px solid #D9D9D9;
+	border: 2px solid var(--color-outline);
 	border-radius: 1in;
 	padding: 5px;
 }
@@ -429,9 +421,9 @@ filters tag category
 
 .tag input:checked ~ label {
 	font-weight: 500;
-	color: #ffffff;
-	background: #444444;
-	border-color: #444444;
+	color: var(--color-main);
+	background: var(--color-font);
+	border-color: var(--color-font);
 }
 
 /*==========================

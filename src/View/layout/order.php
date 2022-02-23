@@ -1,5 +1,6 @@
 <?php
 /** @var string $content */
+/** @var bool $darkMode */
 
 /** @var int $orderSize */
 /** @var int $cost */
@@ -20,6 +21,13 @@
 	<link rel="mask-icon" href="/img/logo/safari-pinned-tab.svg" color="#5bbad5">
 	<meta name="msapplication-TileColor" content="#da532c">
 	<meta name="theme-color" content="#ffffff">
+
+	<?php if ($darkMode):?>
+		<link rel="stylesheet" href="/css/appearance/dark-theme.css">
+	<?php else:?>
+		<link rel="stylesheet" href="/css/appearance/light-theme.css">
+	<?php endif;?>
+
 	<link rel="stylesheet" href="/css/order.css">
 </head>
 <body>

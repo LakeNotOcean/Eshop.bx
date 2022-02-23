@@ -34,16 +34,15 @@ blockquote, q {
 }
 blockquote:before, blockquote:after,
 q:before, q:after {
-	content: '';
 	content: none;
 }
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-
-a
-{
+a {
+	display: flex;
+	align-items: center;
 	text-decoration: none;
 	color: inherit;
 }

@@ -11,7 +11,9 @@ use Up\Core\TemplateProcessorInterface;
 use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
 use Up\Entity\User\UserRole;
+use Up\LayoutManager\MainLayoutManager;
 use Up\Lib\Redirect;
+use Up\Lib\URLHelper;
 use Up\Service\UserService\Error\UserServiceException;
 use Up\Validator\DataTypes;
 use Up\Validator\Validator;
@@ -21,16 +23,22 @@ use Up\Service\UserService\UserServiceInterface;
 class UserController
 {
 	protected $templateProcessor;
+	protected $mainLayoutManager;
 	protected $userService;
 	public const nextUrlQueryKeyword = 'next';
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
+	 * @param \Up\LayoutManager\MainLayoutManager $mainLayoutManager
 	 * @param \Up\Service\UserService\UserService $userService
 	 */
-	public function __construct(TemplateProcessorInterface $templateProcessor, UserServiceInterface $userService)
+	public function __construct(
+		TemplateProcessorInterface $templateProcessor,
+		MainLayoutManager 		   $mainLayoutManager,
+		UserServiceInterface 	   $userService)
 	{
 		$this->templateProcessor = $templateProcessor;
+		$this->mainLayoutManager = $mainLayoutManager;
 		$this->userService = $userService;
 	}
 
@@ -62,11 +70,7 @@ class UserController
 		}
 		catch (Exception $e)
 		{
-			$page = $this->templateProcessor->render('register.php', [], 'layout/main.php', [
-				'isAuthenticated' => $request->isAuthenticated(),
-				'isAdmin' => $request->isAdmin(),
-				'userName' => $request->getUser()->getName()
-			]);
+			$page = $this->mainLayoutManager->render('register.php', []);
 			$response = new Response();
 			$response = $response->withStatus(409);
 
@@ -86,12 +90,9 @@ class UserController
 
 		if ($errorString !== '')
 		{
-			return (new Response())->withStatus(409)->withBodyHTML($this->templateProcessor->render(
-				'login.php', ['error' => $errorString],
-				'layout/main.php', [
-					'isAuthenticated' => $request->isAuthenticated(),
-					'isAdmin' => $request->isAdmin(),
-					'userName' => $request->getUser()->getName()
+			return (new Response())->withStatus(409)->withBodyHTML(
+				$this->mainLayoutManager->render('login.php', [
+				'error' => $errorString
 			]));
 		}
 
@@ -101,15 +102,20 @@ class UserController
 		}
 		catch (UserServiceException $e)
 		{
-			$page = $this->templateProcessor->render('login.php', [], 'layout/main.php', [
-				'isAuthenticated' => $request->isAuthenticated(),
-				'isAdmin' => $request->isAdmin(),
-				'userName' => $request->getUser()->getName()
-			]);
+			$page = $this->mainLayoutManager->render('login.php', []);
 			$response = new Response();
 			$response = $response->withStatus(409);
 
 			return $response->withBodyHTML($page);
+		}
+
+		if ($request->containsQuery(static::nextUrlQueryKeyword))
+		{
+			$next = $request->getQueriesByName(static::nextUrlQueryKeyword);
+			if (URLHelper::isValidUrl($next))
+			{
+				return Redirect::createResponseByURL($next);
+			}
 		}
 
 		return Redirect::createResponseByURLName('home');
@@ -128,12 +134,9 @@ class UserController
 			$nextUrlParam = '?' . static::nextUrlQueryKeyword . '=' . $nextUrlParam;
 		}
 
-		$page = $this->templateProcessor->render('login.php', [
-			'state' => 'process', 'next' => $nextUrlParam
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
+		$page = $this->mainLayoutManager->render('login.php', [
+			'state' => 'process',
+			'next' => $nextUrlParam
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -141,12 +144,8 @@ class UserController
 
 	public function registerUserPage(Request $request): Response
 	{
-		$page = $this->templateProcessor->render('register.php', [
+		$page = $this->mainLayoutManager->render('register.php', [
 			'state' => 'process'
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -154,12 +153,8 @@ class UserController
 
 	public function getProfilePage(Request $request): Response
 	{
-		$page = $this->templateProcessor->render('user-profile.php', [
+		$page = $this->mainLayoutManager->render('user-profile.php', [
 			'user' => $request->getUser()
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -274,12 +269,9 @@ class UserController
 
 	public function changePasswordPage(Request $request)
 	{
-		return (new Response())->withBodyHTML($this->templateProcessor->render(
-			'change-password.php', [], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()]
-		));
+		return (new Response())->withBodyHTML(
+			$this->mainLayoutManager->render('change-password.php', [])
+		);
 	}
 
 	public function changePassword(Request $request)
@@ -315,18 +307,16 @@ class UserController
 
 		if (!empty($validationErrors))
 		{
-			return (new Response())->withBodyHTML($this->templateProcessor->render(
-				'change-password.php', [
+			return (new Response())->withBodyHTML(
+				$this->mainLayoutManager->render('change-password.php', [
 					'errors' => $validationErrors
-			], 'layout/main.php', [
-										 'isAuthenticated' => $request->isAuthenticated(),
-										 'isAdmin' => $request->isAdmin(),
-										 'userName' => $request->getUser()->getName()]
-			));
+				])
+			);
 		}
 
 		$this->userService->updatePassword($newPassword1, $request->getUser());
 
 		return Redirect::createResponseByURLName('home');
 	}
+
 }

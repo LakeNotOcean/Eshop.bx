@@ -83,6 +83,10 @@ class Application
 
 			return false;
 		}
+		catch (Exception $exception)
+		{
+			$a = 1;
+		}
 
 		$args = [];
 		foreach ($callbackReflection->getParameters() as $parameter)

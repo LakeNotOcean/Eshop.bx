@@ -13,8 +13,11 @@ use Up\Entity\ItemType;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 use Up\Entity\User\UserEnum;
+use Up\LayoutManager\LayoutManagerInterface;
+use Up\LayoutManager\MainLayoutManager;
 use Up\Lib\Paginator\Paginator;
 use Up\Lib\Redirect;
+use Up\Service\CartService\CartServiceInterface;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\TagService\TagServiceInterface;
@@ -24,28 +27,36 @@ use Up\Service\UserService\UserServiceInterface;
 class ItemController
 {
 	protected $templateProcessor;
+	protected $mainLayoutManager;
 	protected $itemService;
 	protected $imageService;
 	protected $tagService;
+	protected $cartService;
 	protected $itemsInPage = 10;
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
+	 * @param \Up\LayoutManager\MainLayoutManager $mainLayoutManager
 	 * @param \Up\Service\ItemService\ItemService $itemService
 	 * @param \Up\Service\ImageService\ImageService $imageService
 	 * @param \Up\Service\TagService\TagService $tagService
+	 * @param \Up\Service\CartService\CartService $cartService
 	 */
 	public function __construct(
 		TemplateProcessorInterface $templateProcessor,
+		MainLayoutManager		   $mainLayoutManager,
 		ItemServiceInterface       $itemService,
 		ImageServiceInterface      $imageService,
-		TagServiceInterface        $tagService
+		TagServiceInterface        $tagService,
+		CartServiceInterface       $cartService
 	)
 	{
 		$this->templateProcessor = $templateProcessor;
+		$this->mainLayoutManager = $mainLayoutManager;
 		$this->itemService = $itemService;
 		$this->imageService = $imageService;
 		$this->tagService = $tagService;
+		$this->cartService = $cartService;
 	}
 
 	/**
@@ -53,16 +64,18 @@ class ItemController
 	 */
 	public function getItems(Request $request): Response
 	{
-		$isAuthenticated = $request->isAuthenticated();
 		$isAdmin = $request->isAdmin();
 
 		$deactivate = $request->containsQuery('deactivate_include') && $isAdmin;
-		$query = $request->getQueriesOrDefaultList(['page'=> '1', 'query' => '', 'tag' => [], 'spec' => [], 'price' => '']);
+		$query = $request->getQueriesOrDefaultList(['page'=> '1', 'query' => '', 'tag' => [], 'spec' => [], 'price' => '', 'sorting' => 'sort_order']);
 
 		$currentPage = $query['page'] > 0 ? (int)$query['page'] : 1;
+		$currentPage = $currentPage > 0 ? $currentPage : 1;
+
+		$sortingMethods = ['sort_order' => 'SORT_ORDER', 'price' => 'PRICE', 'price_desc' => 'PRICE DESC', 'name' => 'TITLE', 'name_desc' => 'TITLE DESC'];
+		$sortingMethod = $sortingMethods[$query['sorting']];
 
 		$typeIds = $this->itemService->getTypeIdByQuery($query['query']);
-
 		if (empty($typeIds))
 		{
 			$queryTypeId = 1;    //1 - значение передаваемое через ручки.
@@ -77,7 +90,7 @@ class ItemController
 		}
 
 		$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage),
-			$query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate);
+			$query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate, $sortingMethod);
 
 		$price = $this->itemService->getItemsMinMaxPriceByItemTypes($typeIds);
 		$itemsAmount = $this->itemService->getItemsAmountByFilters($query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate);
@@ -89,7 +102,9 @@ class ItemController
 			'pagesAmount' => $pagesAmount,
 		]);
 
-		$pages = $this->templateProcessor->render('catalog.php', [
+		$page = $this->mainLayoutManager
+			->setQuery($query['query'])
+			->render('catalog.php', [
 			'items' => $this->itemService->mapItemsToUserItems($userId, $items),
 			'itemsAmount' => $itemsAmount,
 			'paginator' => $paginator,
@@ -97,15 +112,11 @@ class ItemController
 			'price'=> $price,
 			'tags' => $this->tagService->getTagsByItemType($queryTypeId),
 			'categories' => $this->itemService->getItemsCategoriesByItemType($queryTypeId),
-			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false
-		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin,
-			'query' => $query['query'],
-			'userName' => $request->getUser()->getName()
+			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false,
+			'sortingMethod' => $query['sorting']
 		]);
 
-		return (new Response())->withBodyHTML($pages);
+		return (new Response())->withBodyHTML($page);
 	}
 
 	public function getFavoriteItems(Request $request): Response
@@ -123,14 +134,10 @@ class ItemController
 			'pagesAmount' => $pagesAmount,
 		]);
 
-		$page = $this->templateProcessor->render('favorites.php', [
+		$page = $this->mainLayoutManager->render('favorites.php', [
 			'favoriteItems' => $this->itemService->mapItemsToUserItems($userId, $favoriteItems),
 			'paginator' => $paginator
-		], 'layout/main.php', [
-			 'isAuthenticated' => $request->isAuthenticated(),
-			 'isAdmin' => $request->isAdmin(),
-			 'userName' => $request->getUser()->getName()
-		 ]);
+		]);
 
 		return (new Response())->withBodyHTML($page);
 	}
@@ -173,13 +180,9 @@ class ItemController
 		$item = $this->itemService->getItemById($id);
 		$itemsSimilar = $this->itemService->getItemsSimilarById($id,5);
 
-		$page = $this->templateProcessor->render('item.php', [
+		$page = $this->mainLayoutManager->render('item.php', [
 			'item' => $this->itemService->mapItemDetailToUserItem($userId, $item),
 			'similarItems' => $itemsSimilar,
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -190,12 +193,8 @@ class ItemController
 	 */
 	public function addItem(Request $request, int $id = 0): Response
 	{
-		$page = $this->templateProcessor->render('add-item.php', [
+		$page = $this->mainLayoutManager->render('add-item.php', [
 			'item' => $id === 0 ? null : $this->itemService->getItemById($id)
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -204,12 +203,8 @@ class ItemController
 	public function updateItemPage(Request $request, int $id): Response
 	{
 		$item = $this->itemService->getItemById($id);
-		$page = $this->templateProcessor->render('add-item.php', [
+		$page = $this->mainLayoutManager->render('add-item.php', [
 			'item' => $item
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		$response = new Response();
@@ -272,10 +267,8 @@ class ItemController
 	public function acceptDeletion(Request $request, int $id): Response
 	{
 		$item = $this->itemService->getItemById($id);
-		$page = $this->templateProcessor->render('accept-deletion-item.php', ['item' => $item], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
+		$page = $this->mainLayoutManager->render('accept-deletion-item.php', [
+			'item' => $item
 		]);
 		return (new Response())->withBodyHTML($page);
 	}
