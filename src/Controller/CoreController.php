@@ -4,29 +4,24 @@ namespace Up\Controller;
 
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
-use Up\Core\TemplateProcessorInterface;
-use Up\Entity\User\UserEnum;
+use Up\LayoutManager\MainLayoutManager;
 
 class CoreController
 {
-	private $templateProcessor;
+	protected $mainLayoutManager;
 
 	/**
-	 * @param \Up\Core\TemplateProcessor $templateProcessor
+	 * @param \Up\LayoutManager\MainLayoutManager $mainLayoutManager
 	 */
-	public function __construct(TemplateProcessorInterface $templateProcessor)
+	public function __construct(MainLayoutManager $mainLayoutManager)
 	{
-		$this->templateProcessor = $templateProcessor;
+		$this->mainLayoutManager = $mainLayoutManager;
 	}
 
 	public function get404(Request $request)
 	{
 		return (new Response())->withBodyHTML(
-			$this->templateProcessor->render('404.php', [], 'layout/main.php', [
-				'isAuthenticated' => $request->isAuthenticated(),
-				'isAdmin' => $request->isAdmin(),
-				'userName' => $request->getUser()->getName()
-			])
+			$this->mainLayoutManager->render('404.php', [])
 		);
 	}
 }
