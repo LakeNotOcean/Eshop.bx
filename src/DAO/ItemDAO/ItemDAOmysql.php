@@ -133,6 +133,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 	{
 		$dbQuery = $this->getItemsMinMaxPriceByItemTypesQuery($typeIds);
 		$preparedQuery = $this->dbConnection->prepare($dbQuery);
+		$preparedParam = [];
 		foreach ($typeIds as $typeId)
 		{
 			$preparedParam[] = $typeId;
