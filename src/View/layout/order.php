@@ -1,10 +1,9 @@
 <?php
 /** @var string $content */
+/** @var bool $darkMode */
 
 /** @var int $orderSize */
 /** @var int $cost */
-
-$darkMode = true;
 
 ?>
 

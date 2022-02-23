@@ -1,11 +1,11 @@
 <?php
 /** @var string $content */
-/** @var string $query */
+/** @var bool $darkMode */
 
+/** @var string $query */
 /** @var string $userName */
 /** @var bool $isAdmin */
 /** @var bool $isAuthenticated */
-/** @var bool $darkMode */
 
 use Up\Core\Router\URLResolver;
 
@@ -13,8 +13,6 @@ if (!isset($query))
 {
 	$query = '';
 }
-
-$darkMode = false;
 
 ?>
 
@@ -121,10 +119,9 @@ $darkMode = false;
 		<?= $content ?>
 	</div>
 
-
-		<div class="footer">
-			© 2022, EShop Inc. · <a href="/">Главная страница</a> · <a href="/">Помощь</a> · <a href="/">Поддержка</a>
-		</div>
+	<div class="footer">
+		© 2022, EShop Inc. · <a href="/">Главная страница</a> · <a href="/">Помощь</a> · <a href="/">Поддержка</a>
+	</div>
 </main>
 
 </body>

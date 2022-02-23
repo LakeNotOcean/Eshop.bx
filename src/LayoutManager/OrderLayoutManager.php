@@ -31,6 +31,7 @@ class OrderLayoutManager  implements LayoutManagerInterface
 	protected function getLayoutParams(): array
 	{
 		return [
+			'darkMode' => $this->getDarkMode(),
 			'cost' => $this->calculateTotalCost($this->orderItems),
 			'orderSize' => count($this->orderItems)
 		];
@@ -42,7 +43,17 @@ class OrderLayoutManager  implements LayoutManagerInterface
 		return $this;
 	}
 
-	private function calculateTotalCost(array $items): int
+	protected function getDarkMode(): bool
+	{
+		$darkMode = false;
+		if ($this->request->containsCookie('darkMode'))
+		{
+			$darkMode = $this->request->getCookiesParametersByName('darkMode');
+		}
+		return $darkMode;
+	}
+
+	protected function calculateTotalCost(array $items): int
 	{
 		$cost = 0;
 		foreach ($items as $item)
