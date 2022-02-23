@@ -36,14 +36,14 @@ use Up\Entity\Item;
 						<div class="price-box">
 							<label for="min-price" class="price-label">мин. цена</label>
 							<div class="price-input">
-								₽<input type=text id="min-price" name="min-price" placeholder="<?= $price['minPrice']?>" class="input">
+								₽<input type="number" id="min-price" name="min-price"  placeholder="<?= $price['minPrice']?>" class="input">
 							</div>
 						</div>
 						<div class="range-dash"></div>
 						<div class="price-box">
 							<label for="max-price" class="price-label">макс. цена</label>
 							<div class="price-input">
-								₽<input type=text id="max-price" name="max-price" placeholder="<?= $price['maxPrice']?>" class="input">
+								₽<input type="number" id="max-price" name="max-price"  placeholder="<?= $price['maxPrice']?>" class="input">
 							</div>
 						</div>
 					</div>
