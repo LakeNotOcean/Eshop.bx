@@ -92,11 +92,15 @@ if (!isset($query))
 	<?php endif;?>
 
 	<?php if ($isAuthenticated): ?>
-		<a href="<?= URLResolver::resolve('make-order') ?>">
-			<svg class="cart">
-				<use xlink:href="/img/sprites.svg#cart"></use>
-			</svg>
-		</a>
+		<div class="nav-item" id="userMenu">
+			<a href="<?= URLResolver::resolve('make-order') ?>">
+				<svg class="cart">
+					<use xlink:href="/img/sprites.svg#cart"></use>
+				</svg>
+				Корзина
+			</a>
+		</div>
+
 		<div class="nav-item" id="userMenu">
 			<div class="nav-item-label"><?= $userName ?></div>
 			<div class="menu-container profile">
@@ -122,13 +126,15 @@ if (!isset($query))
 			<div class="btn btn-normal sign-in">Зарегистрироваться</div>
 		</a>
 	<?php endif; ?>
-	<svg class="btn-theme">
-		<?php if ($darkMode):?>
-			<use xlink:href="/img/sprites.svg#sun"></use>
-		<?php else:?>
-			<use xlink:href="/img/sprites.svg#moon"></use>
-		<?php endif;?>
-	</svg>
+	<div title="Переключить тему">
+		<svg class="btn-theme">
+			<?php if ($darkMode):?>
+				<use xlink:href="/img/sprites.svg#sun"></use>
+			<?php else:?>
+				<use xlink:href="/img/sprites.svg#moon"></use>
+			<?php endif;?>
+		</svg>
+	</div>
 	<script src="/js/change-theme.js"></script>
 </nav>
 

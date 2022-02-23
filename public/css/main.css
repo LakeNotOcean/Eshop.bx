@@ -115,10 +115,12 @@ nav-bar
 }
 
 .nav-item {
+	display: flex;
+	align-items: center;
 	position: relative;
-	line-height: var(--nav-height);
+	height: var(--nav-height);
 	padding: 0 20px;
-	box-shadow: inset 0 0 var(--color-accent);
+	border-bottom: inset 0 0 var(--color-accent);
 	transition: .1s;
 }
 
