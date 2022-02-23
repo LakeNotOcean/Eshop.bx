@@ -12,7 +12,7 @@ async function getSpecOption(select, catId)
 }
 
 function changeChild(parent, catId){
-	nodeList = parent.parentElement.parentElement.parentElement.querySelectorAll('.input-spec-name');
+	let nodeList = parent.parentElement.parentElement.parentElement.querySelectorAll('.input-spec-name');
 	nodeList.forEach(node => {
 		getSpecOption(node, catId);
 	});
@@ -43,31 +43,28 @@ for (let btnAddSpec of addSpec) {
 async function createSpec(btn) {
 	let specDiv = document.createElement('div');
 	specDiv.classList.add('spec');
+	specDiv.innerHTML = `
+		<div class="field">
+			<select name="template-specs[]" class="input-spec-name">
+				<option value="10">Подсветка</option>
+			</select>
+		</div>
+		<div class="btn btn-delete">Удалить</div>
+	`;
 
-	let fieldDiv = document.createElement('div');
-	fieldDiv.classList.add('field');
-	let specNameInput = document.createElement('select');
-	specNameInput.name = 'template-specs[]';
+	let selectSpecName = specDiv.querySelector('.input-spec-name');
 
 	let category = btn.parentNode;
 	let inputCategory = category.querySelector('.input-category');
 	let categoryId = inputCategory.value;
 
-	await getSpecOption(specNameInput, categoryId);
+	await getSpecOption(selectSpecName, categoryId);
 
-
-	specNameInput.classList.add('input-spec-name');
-	fieldDiv.append(specNameInput);
-
-	let btnDeleteDiv = document.createElement('div');
-	btnDeleteDiv.classList.add('btn', 'btn-delete');
-	btnDeleteDiv.innerText = "Удалить";
-
+	let btnDeleteDiv = specDiv.querySelector('.btn-delete');
 	btnDeleteDiv.addEventListener('click', () => {
-		btnDeleteDiv.parentNode.parentNode.removeChild(btnDeleteDiv.parentNode);
+		specDiv.remove();
 	});
 
-	specDiv.append(fieldDiv, btnDeleteDiv);
 	return specDiv;
 }
 
@@ -82,52 +79,39 @@ for (let btnAddCategory of addCategory) {
 async function createCategory() {
 	let categoryDiv = document.createElement('div');
 	categoryDiv.classList.add('category');
-
-	let categoryFieldDiv = document.createElement('div');
-	categoryFieldDiv.classList.add('category-field');
-
-	let fieldDiv = document.createElement('div');
-	fieldDiv.classList.add('field');
-
-	let inputCategoryInput = document.createElement('select');
-	inputCategoryInput.classList.add('input-category');
+	categoryDiv.innerHTML = `
+		<div class="category-field">
+			<div class="field">
+				<select class="input-category"></select>
+			</div>
+			<div class="btn btn-delete">Удалить</div>
+		</div>
+		<div class="btn btn-add">Добавить спецификацию</div>
+	`;
 
 	let categories = await getCategory();
+	let selectCategory = categoryDiv.querySelector('.input-category');
 
-	for (let categoryId in categories)
-	{
-		let option = document.createElement('option');
+	for (let categoryId in categories) {
+		const option = document.createElement('option');
 		option.value = categoryId;
-		option.text = categories[categoryId][0];
-		inputCategoryInput.append(option);
+		option.innerText = categories[categoryId][0];
+		selectCategory.append(option);
 	}
 
-	inputCategoryInput.addEventListener('change', (event)=>{
+	selectCategory.addEventListener('change', (event)=>{
 		changeChild(event.target, event.target.value);
 	});
 
-	fieldDiv.append(inputCategoryInput);
-
-	let btnDeleteDiv = document.createElement('div');
-	btnDeleteDiv.classList.add('btn', 'btn-delete');
-	btnDeleteDiv.innerText = "Удалить";
-
-	btnDeleteDiv.addEventListener('click', () => {
-		btnDeleteDiv.parentNode.parentNode.parentNode.removeChild(btnDeleteDiv.parentNode.parentNode);
+	let btnDeleteCategory = categoryDiv.querySelector('.btn-delete');
+	btnDeleteCategory.addEventListener('click', () => {
+		categoryDiv.remove();
 	});
 
-	categoryFieldDiv.append(fieldDiv, btnDeleteDiv);
-
-	let btnAddDiv = document.createElement('div');
-	btnAddDiv.classList.add('btn', 'btn-add');
-	btnAddDiv.innerText = "Добавить спецификацию";
-
-	btnAddDiv.addEventListener('click', async () => {
-		let spec = await createSpec(btnAddDiv);
-		btnAddDiv.parentNode.insertBefore(spec, btnAddDiv);
+	let btnAddSpec = categoryDiv.querySelector('.btn-add');
+	btnAddSpec.addEventListener('click', async () => {
+		let spec = await createSpec(btnAddSpec);
+		btnAddSpec.parentNode.insertBefore(spec, btnAddSpec);
 	});
-
-	categoryDiv.append(categoryFieldDiv, btnAddDiv);
-
 	return categoryDiv;
 }

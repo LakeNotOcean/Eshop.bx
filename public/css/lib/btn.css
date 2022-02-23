@@ -12,7 +12,7 @@
 }
 
 .btn:hover {
-	color: white;
+	color: #ffffff !important;
 }
 
 .btn-normal {
@@ -23,12 +23,11 @@
 .btn-normal:hover {
 	background: #F17F42;
 	border-color: #F17F42;
-	color: #ffffff;
 	font-weight: 500;
 }
 
 .btn-delete, .btn-deactivate {
-	color: #DF0310;
+	color: #DF0310 !important;
 }
 
 .btn-delete:hover, .btn-deactivate:hover {
@@ -36,7 +35,7 @@
 	border-color: #DF0310;
 }
 
-.btn-return{
+.btn-return {
 	color: #71e761;
 }
 
