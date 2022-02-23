@@ -98,7 +98,7 @@ $darkMode = true;
 				<div class="menu">
 					<a class="menu-item" href="<?= URLResolver::resolve('user-favorites') ?>">Избранное</a>
 					<a class="menu-item" href="<?= URLResolver::resolve('user-profile') ?>">Личный кабинет</a>
-					<a href="<?= URLResolver::resolve('logout-user') ?>">
+					<a href="<?= URLResolver::resolve('logout-user') ?>" class="menu-item-btn">
 						<div class="btn btn-normal sign-in">Выйти</div>
 					</a>
 				</div>

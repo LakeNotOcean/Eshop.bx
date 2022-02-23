@@ -155,9 +155,11 @@ menu
 	display: block;
 	padding: 0 15px;
 	line-height: 40px;
-	text-decoration: none;
-	color: inherit;
 	user-select: none;
+}
+
+.menu-item-btn {
+	display: block;
 }
 
 .menu-item:hover {
