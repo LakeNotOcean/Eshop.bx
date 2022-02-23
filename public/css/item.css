@@ -228,6 +228,7 @@ item-reviews
 	text-decoration: none;
 	color: #ffffff;
 	user-select: none;
+	cursor: pointer;
 }
 
 .btn-item-added {

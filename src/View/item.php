@@ -110,13 +110,13 @@
 							<div id="cart-add-item">
 								<input class="item-id" type="hidden" name="item-id" value="<?= $item->getId() ?>">
 								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
-								<button id="send-item-id" class="btn btn-buy">Добавить товар в корзину</button>
+								<div id="send-item-id" class="btn-buy">Добавить товар в корзину</div>
 							</div>
 						<?php else: ?>
 							<div id="cart-item-added">
 								<input class="item-id" type="hidden" name="item-id" value="<?= $item->getId() ?>">
 								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
-								<button id="send-item-id" class="btn btn-buy btn-item-added">Удалить товар из корзины</button>
+								<div id="send-item-id" class="btn-buy btn-item-added">Удалить товар из корзины</div>
 							</div>
 						<?php endif; ?>
 					</div>
