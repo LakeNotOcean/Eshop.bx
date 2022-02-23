@@ -13,6 +13,8 @@ if (!isset($query))
 	$query = '';
 }
 
+$darkMode = true;
+
 ?>
 
 <!doctype html>
@@ -28,7 +30,14 @@ if (!isset($query))
 	<link rel="manifest" href="/img/logo/site.webmanifest">
 	<link rel="mask-icon" href="/img/logo/safari-pinned-tab.svg" color="#5bbad5">
 	<meta name="msapplication-TileColor" content="#da532c">
-	<meta name="theme-color" content="#ffffff">
+	<meta name="theme-color" content="#333333">
+
+	<?php if ($darkMode):?>
+		<link rel="stylesheet" href="/css/appearance/dark-theme.css">
+	<?php else:?>
+		<link rel="stylesheet" href="/css/appearance/light-theme.css">
+	<?php endif;?>
+
 	<link rel="stylesheet" href="/css/main.css">
 </head>
 <body>

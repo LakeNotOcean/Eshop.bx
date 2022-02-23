@@ -1,0 +1,54 @@
+
+.btn-add-to-favorites {
+	display: flex;
+	margin-left: 15px;
+	justify-content: end;
+	align-items: center;
+	cursor: pointer;
+}
+
+.add-to-favorites-label {
+	padding-left: 10px;
+	text-decoration: underline;
+	font-weight: 600;
+	color: var(--color-font);
+	user-select: none;
+}
+
+.add-to-favorites {
+	width: 30px;
+	height: 25px;
+	min-width: 30px;
+	fill: none;
+	stroke: var(--color-font);
+	cursor: pointer;
+}
+
+.btn-add-to-favorites:hover .add-to-favorites, .add-to-favorites:hover {
+	fill: var(--color-like);
+	stroke: none;
+}
+
+.favoriteActive {
+	fill: var(--color-like);
+	stroke: none;
+	animation: like .3s forwards;
+	transform-origin: center;
+}
+
+.removedFromFavorites {
+	fill: none !important;
+	stroke: var(--color-font) !important;
+}
+
+@keyframes like {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(1);
+	}
+}

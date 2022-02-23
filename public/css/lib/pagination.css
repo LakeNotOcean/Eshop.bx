@@ -16,11 +16,12 @@
 	border-radius: 50%;
 	font-size: 15px;
 	font-weight: 600;
+	user-select: none;
 }
 
 .navigation-page {
-	background-color: white;
-	color: black;
+	background-color: var(--color-main);
+	color: var(--color-font);
 	margin: 0 10px;
 	transition: .3s;
 	cursor: pointer;
@@ -28,7 +29,7 @@
 
 .navigation-blocked {
 	pointer-events: none;
-	color: #dddddd;
+	color: var(--color-blocked);
 }
 
 .navigation-page:hover {
@@ -37,6 +38,6 @@
 }
 
 .navigation-active {
-	background-color: #333;
-	color: white;
+	background-color: var(--color-font);
+	color: var(--color-main);
 }

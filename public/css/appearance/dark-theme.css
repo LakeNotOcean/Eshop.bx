@@ -1,0 +1,15 @@
+
+:root {
+	--color-main: #333333;
+	--color-secondary: #555555;
+	--color-footer: #222222;
+	--color-accent: #F17F42;
+	--color-icon: #afafaf;
+	--color-font: #ffffff;
+	--color-font-secondary: #7D7D7D;
+	--color-blocked: #999999;
+	--color-placeholder: #bbbbbb;
+	--color-separator: #ebebeb;
+
+	--color-like: #ff0c0c;
+}
