@@ -9,6 +9,7 @@
 	font-weight: 500;
 	cursor: pointer;
 	user-select: none;
+	white-space: nowrap;
 }
 
 .btn:hover {
