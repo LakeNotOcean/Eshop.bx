@@ -166,6 +166,7 @@ menu
 	line-height: 40px;
 	text-align: left;
 	user-select: none;
+	transition: .1s;
 }
 
 .menu-item-btn {

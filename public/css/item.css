@@ -98,10 +98,10 @@ scroll-menu
 	display: flex;
 	align-items: center;
 	padding: 15px;
-	transition: .2s;
 	text-decoration: none;
 	cursor: pointer;
 	user-select: none;
+	transition: .1s;
 }
 
 .scroll-menu-item:hover {
