@@ -72,10 +72,11 @@ class UserService implements UserServiceInterface
 		return $_SESSION[self::UserSessionKey];
 	}
 
-	public function registerUser(user $user, string $password): void
+	public function registerUser(user $user, string $password): User
 	{
-		$this->userDAO->addUser($user, $password);
-		$this->addUserToSession($user);
+		$newUser = $this->userDAO->addUser($user, $password);
+		$this->addUserToSession($newUser);
+		return $newUser;
 	}
 
 	public function updateUser(User $user): void
@@ -146,5 +147,15 @@ class UserService implements UserServiceInterface
 		{
 			session_start();
 		}
+	}
+
+	public function isValidPassword(string $password, User $user): bool
+	{
+		return $this->userDAO->authenticateUser($user->getLogin(), $password);
+	}
+
+	public function updatePassword(string $newPassword, User $user)
+	{
+		$this->userDAO->updatePassword($user, $newPassword);
 	}
 }

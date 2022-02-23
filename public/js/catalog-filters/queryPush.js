@@ -1,17 +1,4 @@
 
-let pageButtons = document.getElementsByClassName('redirect-button');
-for (let pageButton of pageButtons)
-{
-	pageButton.addEventListener('click', (e) => {
-		let searchParams = new URLSearchParams(location.search.toString())
-		searchParams.set('page', pageButton.id)
-		let finalQuery = searchParams.toString()
-		finalQuery = prepareQuery(finalQuery)
-		localStorage.setItem('query',finalQuery)
-		window.location = decodeURIComponent(finalQuery);
-	});
-}
-
 
 let sortingButtons = document.getElementsByClassName('sorting-button');
 for (let sortingButton of sortingButtons)
@@ -66,7 +53,6 @@ function prepareQuery(finalQuery)
 	}
 	if (finalQuery.slice(-1) === "&")
 	{
-
 		finalQuery = finalQuery.slice(0,-1)
 	}
 	if (finalQuery.length === 1)

@@ -1,0 +1,11 @@
+@import "lib/popup.css";
+
+.main-title {
+	font-size: 22px;
+	font-weight: 600;
+	margin-bottom: 30px;
+}
+
+.container {
+	padding: 30px 50px;
+}

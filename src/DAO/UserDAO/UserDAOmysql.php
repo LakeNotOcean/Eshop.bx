@@ -3,6 +3,7 @@
 namespace Up\DAO\UserDAO;
 
 use Up\Core\Database\DefaultDatabase;
+use Up\Core\Password;
 use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
 use Up\Entity\User\UserRole;
@@ -34,7 +35,7 @@ class UserDAOmysql implements UserDAOInterface
 			$resultList[$row['USER_LOGIN']] = $row['USER_PASSWORD'];
 		}
 
-		return array_key_exists($login, $resultList) && password_verify($password, $resultList[$login]);
+		return array_key_exists($login, $resultList) && Password::verifyPassword($password, $resultList[$login]);
 	}
 
 	public function getUserByLogin(string $login): User
@@ -44,25 +45,44 @@ class UserDAOmysql implements UserDAOInterface
 		return $userList[$login];
 	}
 
-	public function addUser(User $user, string $password): void
+	/**
+	 * @param User $user
+	 * @param string $password
+	 *
+	 * @return User
+	 */
+	public function addUser(User $user, string $password): User
 	{
-		$password = password_hash($password, PASSWORD_BCRYPT);
-
-		$preparedQuery = $this->DBConnection->prepare(
-			'INSERT INTO up_user (LOGIN, EMAIL, PHONE, PASSWORD, ROLE_ID,FIRST_NAME,SECOND_NAME)
+		$password = PassWord::hashPassword($password);
+		try
+		{
+			$this->DBConnection->beginTransaction();
+			$preparedQuery = $this->DBConnection->prepare(
+				'INSERT INTO up_user (LOGIN, EMAIL, PHONE, PASSWORD, ROLE_ID,FIRST_NAME,SECOND_NAME)
 			VALUES (:login,:email,:phone,:password,2,:firstName,:secondName)'
-		);
+			);
 
-		$preparedQuery->execute(
-			[
-				'login' => $user->getLogin(),
-				'email' => $user->getEmail(),
-				'phone' => $user->getPhone(),
-				'password' => $password,
-				'firstName' => $user->getFirstName(),
-				'secondName' => $user->getSecondName(),
-			]
-		);
+			$preparedQuery->execute(
+				[
+					'login' => $user->getLogin(),
+					'email' => $user->getEmail(),
+					'phone' => $user->getPhone(),
+					'password' => $password,
+					'firstName' => $user->getFirstName(),
+					'secondName' => $user->getSecondName(),
+				]
+			);
+			$newUser = clone $user;
+			$newUser->setId($this->DBConnection->lastInsertId());
+			$this->DBConnection->commit();
+
+			return $newUser;
+		}
+		catch (\PDOException $pdoException)
+		{
+			$this->DBConnection->rollBack();
+			throw $pdoException;
+		}
 	}
 
 	public function giveUserModeratorRoleByLogin(string $login): void
@@ -142,5 +162,13 @@ class UserDAOmysql implements UserDAOInterface
 		$preparedStatement = $this->DBConnection->prepare($query);
 		$preparedStatement->execute(
 			[$user->getFirstName(), $user->getSecondName(), $user->getPhone(), $user->getEmail()]);
+	}
+
+	public function updatePassword(User $user, string $newPassword)
+	{
+		$newPasswordHash = Password::hashPassword($newPassword);
+
+		$query = "UPDATE up_user SET PASSWORD = '{$newPasswordHash}' WHERE ID = {$user->getId()}";
+		$this->DBConnection->query($query);
 	}
 }

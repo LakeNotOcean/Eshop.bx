@@ -1,4 +1,4 @@
-function popup(text) {
+function showPopup(text) {
 	let popup = document.createElement('div');
 	popup.textContent = text;
 	popup.classList.add('popup');

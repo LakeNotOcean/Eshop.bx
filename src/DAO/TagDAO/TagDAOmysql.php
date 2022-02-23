@@ -62,16 +62,31 @@ class TagDAOmysql implements TagDAOInterface
 		return $tags;
 	}
 
-	public function getAllTags(): EntityArray
-	{
-		$tags = new EntityArray();
+	public function getAllTags(): array
+	{;
 		$result = $this->DBConnection->prepare($this->getAllTagsQuery());
 		$result->execute();
 		while ($row = $result->fetch())
 		{
-			$tags->addEntity(new ItemsTag($row['ID'], $row['TITLE']));
+			$tags[] = new ItemsTag($row['ID'], $row['TITLE']);
 		}
 
+		return $tags;
+	}
+
+	public function getTagsByItemType(int $queryTypeId): array
+	{
+		/*if ($queryTypeId === 0)
+		{
+			return [];
+		}*/
+		$result = $this->DBConnection->prepare($this->getTagsByItemTypeQuery($queryTypeId));
+		$result->execute();
+		$tags = [];
+		while ($row = $result->fetch())
+		{
+			$tags[] = new ItemsTag($row['ID'], $row['TITLE']);
+		}
 		return $tags;
 	}
 
@@ -98,6 +113,12 @@ class TagDAOmysql implements TagDAOInterface
 		$in = implode(',', $names);
 
 		return "SELECT ID, TITLE FROM up_tag WHERE TITLE IN ({$in})";
+	}
+
+	private function getTagsByItemTypeQuery(int $typeId): string
+	{
+		$query = "SELECT ID, TITLE FROM up_tag WHERE ITEM_TYPE_ID = " . $typeId;
+		return $query;
 	}
 
 }

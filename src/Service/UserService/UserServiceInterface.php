@@ -16,10 +16,11 @@ interface UserServiceInterface
 
 	public function getUsersInfo(): array;
 
-	public function registerUser(User $user, string $password): void;
+	public function registerUser(User $user, string $password): User;
 
 	public function removeUserFromSession(): void;
 
 	public function updateUser(User $user): void;
 
+	public function isValidPassword(string $password, User $user): bool;
 }
