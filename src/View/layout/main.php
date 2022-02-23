@@ -83,6 +83,11 @@ if (!isset($query))
 	<?php endif;?>
 
 	<?php if ($isAuthenticated): ?>
+		<a href="<?= URLResolver::resolve('make-order') ?>">
+			<svg class="cart">
+				<use xlink:href="/img/sprites.svg#cart"></use>
+			</svg>
+		</a>
 		<div class="nav-item" id="userMenu">
 			<div class="nav-item-label"><?= $userName ?></div>
 			<div class="menu-container profile">
@@ -96,6 +101,11 @@ if (!isset($query))
 			</div>
 		</div>
 	<?php else: ?>
+		<a href="<?= URLResolver::resolve('make-order') ?>">
+			<svg class="cart">
+				<use xlink:href="/img/sprites.svg#cart"></use>
+			</svg>
+		</a>
 		<a href="<?= URLResolver::resolve('login-user') ?>">
 			<div class="btn btn-normal sign-in">Войти</div>
 		</a>

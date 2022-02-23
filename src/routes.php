@@ -20,6 +20,7 @@ $router->get('/item/{positiveInt:id}', [ItemController::class, 'getItem'], 'item
 $router->post('/finishOrder', [OrderController::class, 'finishOrder'], 'finish-order');
 $router->post('/addItemToCart', [CartController::class, 'addItemToCart'], 'add-item-to-cart');
 $router->post('/deleteItemFromCart', [CartController::class, 'deleteItemFromCart'], 'delete-item-from-cart');
+$router->get('/makeOrder', [OrderController::class, 'makeOrder'], 'make-order');
 
 $router->get('/register', [UserController::class, 'registerUserPage'], 'register-user');
 $router->get('/login', [UserController::class, 'loginUserPage'], 'login-user');

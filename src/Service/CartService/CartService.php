@@ -46,8 +46,14 @@ class CartService implements CartServiceInterface
 	{
 		if (in_array($itemId, $_SESSION[static::CART_SESSION_KEY], true))
 		{
-			unset($_SESSION[static::CART_SESSION_KEY]);
+			$key = array_search($itemId, $_SESSION[static::CART_SESSION_KEY]);
+			unset($_SESSION[static::CART_SESSION_KEY][$key]);
 		}
+	}
+
+	public function clearCart()
+	{
+		unset($_SESSION[static::CART_SESSION_KEY]);
 	}
 
 	/**

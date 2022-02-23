@@ -55,7 +55,7 @@ interface ItemDAOInterface
 	/**
 	 * @param int[] $itemIds
 	 *
-	 * @return array
+	 * @return Item[]
 	 */
 	public function getItemsWithIds(array $itemIds): array;
 

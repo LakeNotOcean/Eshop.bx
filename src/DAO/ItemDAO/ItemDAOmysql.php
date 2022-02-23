@@ -43,6 +43,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 	 */
 	public function getItemsWithIds(array $itemIds): array
 	{
+		$resultItemIds = [];
 		foreach ($itemIds as $index => $itemId)
 		{
 			if (!is_numeric($itemId))
@@ -50,10 +51,11 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				$type = gettype($itemId);
 				throw new \InvalidArgumentException("Item id must be int or numeric. Now: {$type}");
 			}
+			$resultItemIds[] = $itemId;
 		}
 
 		$statement = $this->prepareItemWhereIdInRange(count($itemIds));
-		$statement->execute($itemIds);
+		$statement->execute($resultItemIds);
 		return $this->mapItems($statement);
 	}
 
