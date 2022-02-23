@@ -9,7 +9,7 @@ function getFilterQuery()
 		{
 			let param = filterCheckbox.name;
 			let value = filterCheckbox.value;
-			finalQuery += 'spec[]=' + param + '=' + value + '&'
+			finalQuery += 'spec['+ param + ']=' + value + '&'
 		}
 	}
 	let tagCheckboxes = document.getElementsByClassName('category_tag_checkbox');

@@ -70,6 +70,14 @@ if (!isset($query))
 					</div>
 				</div>
 			</div>
+			<div class="nav-item">
+				<div class="nav-item-label">Администрирование</div>
+				<div class="menu-container">
+					<div class="menu">
+						<a class="menu-item" href="/admin/adminList">Список администраторов</a>
+					</div>
+				</div>
+			</div>
 			<script src="/js/admin-menu.js"></script>
 		</div>
 	<?php endif;?>
