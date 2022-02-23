@@ -17,6 +17,7 @@ use Up\LayoutManager\LayoutManagerInterface;
 use Up\LayoutManager\MainLayoutManager;
 use Up\Lib\Paginator\Paginator;
 use Up\Lib\Redirect;
+use Up\Service\CartService\CartServiceInterface;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\TagService\TagServiceInterface;
@@ -30,6 +31,7 @@ class ItemController
 	protected $itemService;
 	protected $imageService;
 	protected $tagService;
+	protected $cartService;
 	protected $itemsInPage = 10;
 
 	/**
@@ -38,13 +40,15 @@ class ItemController
 	 * @param \Up\Service\ItemService\ItemService $itemService
 	 * @param \Up\Service\ImageService\ImageService $imageService
 	 * @param \Up\Service\TagService\TagService $tagService
+	 * @param \Up\Service\CartService\CartService $cartService
 	 */
 	public function __construct(
 		TemplateProcessorInterface $templateProcessor,
 		MainLayoutManager		   $mainLayoutManager,
 		ItemServiceInterface       $itemService,
 		ImageServiceInterface      $imageService,
-		TagServiceInterface        $tagService
+		TagServiceInterface        $tagService,
+		CartServiceInterface       $cartService
 	)
 	{
 		$this->templateProcessor = $templateProcessor;
@@ -52,6 +56,7 @@ class ItemController
 		$this->itemService = $itemService;
 		$this->imageService = $imageService;
 		$this->tagService = $tagService;
+		$this->cartService = $cartService;
 	}
 
 	/**
@@ -62,15 +67,18 @@ class ItemController
 		$isAdmin = $request->isAdmin();
 
 		$deactivate = $request->containsQuery('deactivate_include') && $isAdmin;
-		$query = $request->getQueriesOrDefaultList(['page'=> '1', 'query' => '', 'tag' => [], 'spec' => [], 'price' => '']);
+		$query = $request->getQueriesOrDefaultList(['page'=> '1', 'query' => '', 'tag' => [], 'spec' => [], 'price' => '', 'sorting' => 'sort_order']);
 
 		$currentPage = $query['page'] > 0 ? (int)$query['page'] : 1;
+		$currentPage = $currentPage > 0 ? $currentPage : 1;
+
+		$sortingMethods = ['sort_order' => 'SORT_ORDER', 'price' => 'PRICE', 'price_desc' => 'PRICE DESC', 'name' => 'TITLE', 'name_desc' => 'TITLE DESC'];
+		$sortingMethod = $sortingMethods[$query['sorting']];
 
 		$typeIds = $this->itemService->getTypeIdByQuery($query['query']);
-
 		if (empty($typeIds))
 		{
-			$queryTypeId = 1;    //1 - значение передаваетмая через ручки.
+			$queryTypeId = 1;    //1 - значение передаваемое через ручки.
 		}
 		elseif (count($typeIds) === 1)
 		{
@@ -82,7 +90,7 @@ class ItemController
 		}
 
 		$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage),
-			$query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate);
+			$query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate, $sortingMethod);
 
 		$price = $this->itemService->getItemsMinMaxPriceByItemTypes($typeIds);
 		$itemsAmount = $this->itemService->getItemsAmountByFilters($query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate);
@@ -104,7 +112,8 @@ class ItemController
 			'price'=> $price,
 			'tags' => $this->tagService->getTagsByItemType($queryTypeId),
 			'categories' => $this->itemService->getItemsCategoriesByItemType($queryTypeId),
-			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false
+			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false,
+			'sortingMethod' => $query['sorting']
 		]);
 
 		return (new Response())->withBodyHTML($page);

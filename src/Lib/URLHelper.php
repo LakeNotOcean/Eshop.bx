@@ -2,6 +2,9 @@
 
 namespace Up\Lib;
 
+use Up\Core\Router\Error\RoutingException;
+use Up\Core\Router\Router;
+
 class URLHelper
 {
 	public static function removeIfExistGetParametersFromPath(string $path): string
@@ -33,5 +36,19 @@ class URLHelper
 		}
 
 		return false;
+	}
+
+	public static function isValidUrl(string $url): bool
+	{
+		try
+		{
+			$router = Router::getInstance();
+			$router->getRouteName($url);
+			return true;
+		}
+		catch (RoutingException $exception)
+		{
+			return false;
+		}
 	}
 }

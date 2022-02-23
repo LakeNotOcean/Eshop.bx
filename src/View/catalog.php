@@ -6,6 +6,7 @@
 /** @var int $result_count */
 /** @var int $itemsAmount */
 /** @var string $query */
+/** @var string $sortingMethod */
 /** @var bool $isAdmin */
 
 /** @var $paginator */
@@ -36,14 +37,14 @@ use Up\Entity\Item;
 						<div class="price-box">
 							<label for="min-price" class="price-label">мин. цена</label>
 							<div class="price-input">
-								₽<input type=text id="min-price" name="min-price" placeholder="<?= $price['minPrice']?>" class="input">
+								₽<input type="number" id="min-price" name="min-price"  placeholder="<?= $price['minPrice']?>" class="input">
 							</div>
 						</div>
 						<div class="range-dash"></div>
 						<div class="price-box">
 							<label for="max-price" class="price-label">макс. цена</label>
 							<div class="price-input">
-								₽<input type=text id="max-price" name="max-price" placeholder="<?= $price['maxPrice']?>" class="input">
+								₽<input type="number" id="max-price" name="max-price"  placeholder="<?= $price['maxPrice']?>" class="input">
 							</div>
 						</div>
 					</div>
@@ -103,10 +104,19 @@ use Up\Entity\Item;
 			<div class="message-no-results">
 				По вашему запросу не найдено ни одного товара. Попробуйте изменить условия поиска.
 			</div>
+			<?php else: ?>
+			<div class="item-sorting-box">
+				<div class="item-sorting-box-title">Сортировка товаров:</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'sort_order' ? 'active' : '' ?>" id="sort_order">По популярности</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'price' ? 'active' : '' ?>" id="price">По цене (возр.)</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'price_desc' ? 'active' : '' ?>" id="price_desc">По цене (убыв.)</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'name' ? 'active' : '' ?>" id="name">По названию (возр.)</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'name_desc' ? 'active' : '' ?>" id="name_desc">По названию (убыв.)</div>
+			</div>
 			<?php endif; ?>
 
 			<?php
-			foreach ($items as $item) : ?>
+			foreach ($items as $item): ?>
 
 				<?php if ($isAdmin):?>
 				<form enctype="multipart/form-data" action="/admin/fastUpdateItem" name="fast-update" method="post" class="item card card-hover">

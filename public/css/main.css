@@ -229,3 +229,9 @@ footer
 	background: #444;
 	transition: .5s;
 }
+
+.cart {
+	margin: auto 6px;
+	width: 26px;
+	height: 26px;
+}

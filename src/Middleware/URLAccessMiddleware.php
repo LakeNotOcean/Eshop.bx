@@ -105,43 +105,12 @@ class URLAccessMiddleware extends AbstractMiddleware
 	 */
 	private function handleUrlWithNextParam(Request $request, array $params)
 	{
-		$router = Router::getInstance();
 		$urlName = $request->getRouteName();
 		if ($urlName !== 'login-user')
 		{
 			return Redirect::createResponseByURLName('home');
 		}
 
-		if ($request->getMethod() === 'GET')
-		{
-			return call_user_func($this->getResponse, $request, ...$params);
-		}
-
-		$response = call_user_func($this->getResponse, $request, ...$params);
-		if ($response->getStatusCode() !== 200)
-		{
-			return $response;
-		}
-
-		$nextUrl = $request->getQueriesByName(UserController::nextUrlQueryKeyword);
-		if ($this->isValidUrl($nextUrl, $router))
-		{
-			return Redirect::createResponseByURL($nextUrl);
-		}
-
-		return Redirect::createResponseByURLName('home');
-	}
-
-	private function isValidUrl(string $url, Router $router): bool
-	{
-		try
-		{
-			$router->getRouteName($url);
-			return true;
-		}
-		catch (RoutingException $exception)
-		{
-			return false;
-		}
+		return call_user_func($this->getResponse, $request, ...$params);
 	}
 }

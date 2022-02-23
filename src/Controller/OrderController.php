@@ -11,6 +11,7 @@ use Up\Entity\Order\OrderStatus;
 use Up\LayoutManager\MainLayoutManager;
 use Up\LayoutManager\OrderLayoutManager;
 use Up\Lib\Paginator\Paginator;
+use Up\Service\CartService\CartServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\OrderService\OrderServiceInterface;
 
@@ -20,6 +21,7 @@ class OrderController
 	protected $mainLayoutManager;
 	protected $orderLayoutManager;
 	protected $itemService;
+	protected $cartService;
 	protected $orderService;
 
 	protected $ordersOnPage = 10;
@@ -28,6 +30,7 @@ class OrderController
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
 	 * @param \Up\LayoutManager\MainLayoutManager $mainLayoutManager
 	 * @param \Up\LayoutManager\OrderLayoutManager $orderLayoutManager
+	 * @param \Up\Service\CartService\CartService $cartService
 	 * @param \Up\Service\ItemService\ItemService $itemService
 	 * @param \Up\Service\OrderService\OrderService $orderService
 	 */
@@ -35,20 +38,21 @@ class OrderController
 		TemplateProcessorInterface $templateProcessor,
 		MainLayoutManager		   $mainLayoutManager,
 		OrderLayoutManager 		   $orderLayoutManager,
+		CartServiceInterface $cartService,
 		ItemServiceInterface $itemService,
 		OrderServiceInterface $orderService)
 	{
 		$this->templateProcessor = $templateProcessor;
+		$this->cartService = $cartService;
 		$this->mainLayoutManager = $mainLayoutManager;
 		$this->orderLayoutManager = $orderLayoutManager;
 		$this->itemService = $itemService;
 		$this->orderService = $orderService;
 	}
 
-	public function makeOrder(Request $request, int $id): Response
+	public function makeOrder(Request $request): Response
 	{
-		$item = $this->itemService->getItemById($id);
-		$items = [$item];
+		$items = $this->cartService->getItemsFromCart();
 		$page = $this->orderLayoutManager
 			->setOrderItems($items)
 			->render('make-order.php', [
@@ -64,13 +68,7 @@ class OrderController
 	 */
 	public function finishOrder(Request $request): Response
 	{
-		//TODO(catalogService->getItemsByIds) for id array
-		$itemIds = $request->getPostParametersByName('itemIds');
-		$items = [];
-		foreach ($itemIds as $id)
-		{
-			$items[] = $this->itemService->getItemById($id);
-		}
+		$items = $this->cartService->getItemsFromCart();
 
 		$first_name = $request->getPostParametersByName('first-name');
 		$second_name = $request->getPostParametersByName('second-name');
@@ -89,6 +87,7 @@ class OrderController
 		$order->setUser($request->getUser());
 
 		$this->orderService->saveOrder($order);
+		$this->cartService->clearCart();
 
 		$page = $this->orderLayoutManager
 			->setOrderItems($items)

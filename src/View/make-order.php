@@ -38,12 +38,7 @@ if ($user->getRole()->getName() != UserEnum::Guest())
 		<?php
 		endforeach; ?>
 	</div>
-	<form action="/finishOrder" method="post" enctype="multipart/form-data" class="user-data">
-		<?php
-		foreach ($items as $item): ?>
-			<input type="hidden" name="itemIds[]" value="<?= $item->getId() ?>"/>
-		<?php
-		endforeach; ?>
+	<form action="<?= \Up\Core\Router\URLResolver::resolve('finish-order') ?>" method="post" enctype="multipart/form-data" class="user-data">
 		<div class="user-data-title">Данные покупателя</div>
 		<div class="user-name">
 			<label for="first-name" class="field">

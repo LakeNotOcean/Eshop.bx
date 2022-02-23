@@ -105,7 +105,21 @@
 							</div>
 						</a>
 					</div>
-					<a class="btn-buy" href="/makeOrder/<?= $item->getId() ?>">Купить</a>
+					<div id="item-cart-container">
+						<?php if (!isset($isItemAdded) || !$isItemAdded): ?>
+							<div id="cart-add-item">
+								<input class="item-id" type="hidden" name="item-id" value="<?= $item->getId() ?>">
+								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+								<button id="send-item-id" class="btn btn-buy">Добавить товар в корзину</button>
+							</div>
+						<?php else: ?>
+							<div id="cart-item-added">
+								<input class="item-id" type="hidden" name="item-id" value="<?= $item->getId() ?>">
+								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+								<button id="send-item-id" class="btn btn-buy btn-item-added">Удалить товар из корзины</button>
+							</div>
+						<?php endif; ?>
+					</div>
 				</div>
 			</div>
 
@@ -116,12 +130,14 @@
 				foreach ($item->getSpecificationCategoriesList() as $category): ?>
 					<div class="spec-category"><?= htmlspecialchars($category->getName()) ?></div>
 					<?php
-					foreach ($category->getSpecifications() as $spec): ?>
+					foreach ($category->getSpecifications() as $spec):
+						if ($spec->getValue()):
+						?>
 						<div class="item-spec">
 							<div class="item-spec-name"><?= htmlspecialchars($spec->getName()) ?></div>
 							<div class="item-spec-value"><?= htmlspecialchars($spec->getValue()) ?></div>
 						</div>
-					<?php
+					<?php endif;
 					endforeach; ?>
 				<?php
 				endforeach; ?>
@@ -180,7 +196,7 @@
 					<div class="slider-wrapper">
 					<div class="similar-item-cards-section">
 					<?php
-					foreach (array_values($similarItems) as $index=>$similarItem): ?>
+					foreach (array_values($similarItems) as $index => $similarItem): ?>
 						<a href="/item/<?=$similarItem->getId()?>" class="similar-item-card card-outline">
 							<div class="similar-item-image-section">
 								<picture>
@@ -189,7 +205,7 @@
 								</picture>
 							</div>
 							<div class="similar-item-body-section">
-								<div class="similar-item-body-title"><?=htmlspecialchars($similarItem->getTitle())?></div>
+								<div class="similar-item-body-title"><?= htmlspecialchars($similarItem->getTitle()) ?></div>
 								<div class="similar-item-body-price"><?= htmlspecialchars($similarItem->getPrice()) ?> ₽</div>
 							</div>
 						</a>
@@ -211,5 +227,8 @@
 <script src="/js/item/open-images.js"></script>
 <script src="/js/item/scroll-similar-items.js"></script>
 
-<script src="/js/lib/showPopup.js"></script>
+<script src="/js/lib/showPopup.js" type="module"></script>
 <script src="/js/add-to-favorites.js"></script>
+
+<script src="/js/csrf.js" type="module"></script>
+<script src="/js/cart/add-item.js" type="module"></script>
