@@ -70,7 +70,7 @@ class ItemController
 
 		if (empty($typeIds))
 		{
-			$queryTypeId = 1;    //1 - значение передаваетмая через ручки.
+			$queryTypeId = 1;    //1 - значение передаваемое через ручки.
 		}
 		elseif (count($typeIds) === 1)
 		{
