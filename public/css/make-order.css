@@ -6,7 +6,6 @@
 	display: flex;
 	flex-direction: column;
 	padding: 30px 50px 0;
-	max-width: 1500px;
 }
 
 /*==========================
@@ -55,6 +54,10 @@ order-items
 customer-data
 ==========================*/
 
+.container form {
+	max-width: 1200px;
+}
+
 .user-data {
 	display: flex;
 	flex-direction: column;
@@ -70,4 +73,24 @@ customer-data
 .user-name, .user-contact {
 	display: flex;
 	flex-wrap: wrap;
+}
+
+.order-summary {
+	font-size: 20px;
+	font-weight: bold;
+	padding: 20px;
+	text-align: center;
+}
+
+/*==========================
+cart-notification
+==========================*/
+
+
+.cart-notification {
+	display: flex;
+	font-size: 22px;
+	font-weight: bold;
+	justify-content: center;
+	margin: 100px 0;
 }
