@@ -6,7 +6,6 @@ use Up\Entity\ItemType;
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
-<link rel="stylesheet" href="/css/choose-item-type.css">
 <div class="form-container">
 	<form action="/admin/addItem" method="get" enctype="multipart/form-data" class="form-add">
 		<label for="item-type" class="field">
@@ -18,7 +17,7 @@ use Up\Entity\ItemType;
 				<?php
 				endforeach; ?>
 			</select>
-			<a href="/admin/addItemType" class="btn-add-type">Добавить тип</a>
+			<a href="/admin/addItemType" class="btn btn-normal">Добавить тип</a>
 		</label>
 		<input type="submit" value="Далее" class="btn btn-normal input">
 	</form>

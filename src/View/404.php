@@ -184,6 +184,8 @@ $particles = $random === 1;
 		//endregion classes
 
 		//region init
+		let backgroundColor = getComputedStyle(document.body).getPropertyValue('--color-background');
+
 		let canvas = document.createElement('canvas');
 		let container = document.querySelector('.container');
 
@@ -250,7 +252,7 @@ $particles = $random === 1;
 
 		function draw()
 		{
-			background('#f7f7f7');
+			background(backgroundColor);
 
 			fill('black');
 			stroke('white');
@@ -448,6 +450,8 @@ $particles = $random === 1;
 <?php if ($particles):?>
 	<script>
 	//region init
+	let backgroundColor = getComputedStyle(document.body).getPropertyValue('--color-background');
+	let fontColor = getComputedStyle(document.body).getPropertyValue('--color-font');
 	let mouseX = 0;
 	let mouseY = 0;
 	let canvas = document.createElement('canvas');
@@ -533,7 +537,7 @@ $particles = $random === 1;
 		}
 
 		show() {
-			fill('#000000');
+			fill(fontColor);
 			circle(this.pos.x, this.pos.y, this.r);
 		}
 
@@ -588,7 +592,7 @@ $particles = $random === 1;
 	}
 
 	function draw() {
-		background('#f7f7f7');
+		background(backgroundColor);
 		particles.forEach(particle => {
 			particle.behaviors();
 			particle.update();

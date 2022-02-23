@@ -9,62 +9,48 @@ use Up\Core\TemplateProcessorInterface;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
 use Up\Entity\User\UserEnum;
+use Up\LayoutManager\MainLayoutManager;
 use Up\Service\SpecificationService\SpecificationsServiceInterface;
 
 
 class CategoryController
 {
-	protected $templateProcessor;
+	protected $mainLayoutManager;
 	protected $specificationsService;
 
 	/**
-	 * @param \Up\Core\TemplateProcessor $templateProcessor
+	 * @param \Up\LayoutManager\MainLayoutManager $mainLayoutManager
 	 * @param \Up\Service\SpecificationService\SpecificationsService $specificationsService
 	 * @param \Up\Service\UserService\UserService $specificationsService
 	 */
-	public function __construct(TemplateProcessorInterface     $templateProcessor,
-								SpecificationsServiceInterface $specificationsService
+	public function __construct(
+		MainLayoutManager 			   $mainLayoutManager,
+		SpecificationsServiceInterface $specificationsService
 	)
 	{
-		$this->templateProcessor = $templateProcessor;
 		$this->specificationsService = $specificationsService;
+		$this->mainLayoutManager = $mainLayoutManager;
 	}
 
 	public function chooseItemType(Request $request): Response
 	{
 		$itemTypes = $this->specificationsService->getItemTypes();
-		$page = $this->templateProcessor->render('choose-item-type.php', [
+		$page = $this->mainLayoutManager->render('choose-item-type.php', [
 			'itemTypes' => $itemTypes
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
-		$response = new Response();
-
-		return $response->withBodyHTML($page);
+		return (new Response())->withBodyHTML($page);
 	}
 
 	public function addItemType(Request $request): Response
 	{
-		$isAuthenticated = $request->getUser()->getRole()->getName() != UserEnum::Guest();
-		$isAdmin = $request->getUser()->getRole()->getName() == UserEnum::Admin();
-
 		$categories = $this->specificationsService->getCategoriesWithSpecifications();
-		$page = $this->templateProcessor->render('add-item-type.php', [
+		$page = $this->mainLayoutManager->render('add-item-type.php', [
 			'categories' => $categories,
 			'isNewItemTypeAdded' => false
-		], 'layout/main.php', [
-			'isAuthenticated' => $isAuthenticated,
-			'isAdmin' => $isAdmin,
-			'userName' => $request->getUser()->getName()
 		]);
 
-		$response = new Response();
-
-
-		return $response->withBodyHTML($page);
+		return (new Response())->withBodyHTML($page);
 	}
 
 	/**
@@ -77,13 +63,9 @@ class CategoryController
 		$this->specificationsService->addItemType($itemTypeName, $templateSpecs);
 
 		$categories = $this->specificationsService->getCategoriesWithSpecifications();
-		$page = $this->templateProcessor->render('add-item-type.php', [
+		$page = $this->mainLayoutManager->render('add-item-type.php', [
 			'categories' => $categories,
 			'isNewItemTypeAdded' => true
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -91,12 +73,8 @@ class CategoryController
 
 	public function addCategory(Request $request): Response
 	{
-		$page = $this->templateProcessor->render('add-category.php', [
+		$page = $this->mainLayoutManager->render('add-category.php', [
 			'isNewCategoryAdded' => false
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -111,12 +89,8 @@ class CategoryController
 		$categoryOrder = $request->getPostParametersByName('category-order');
 		$newCategory = new SpecificationCategory(0, $category, $categoryOrder);
 		$this->specificationsService->addCategory($newCategory);
-		$page = $this->templateProcessor->render('add-category.php', [
+		$page = $this->mainLayoutManager->render('add-category.php', [
 			'isNewCategoryAdded' => true
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -125,13 +99,9 @@ class CategoryController
 	public function addSpecification(Request $request): Response
 	{
 		$categories = $this->specificationsService->getCategories();
-		$page = $this->templateProcessor->render('add-specification.php', [
+		$page = $this->mainLayoutManager->render('add-specification.php', [
 			'categories' => $categories,
 			'isNewSpecAdded' => false
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -149,13 +119,9 @@ class CategoryController
 		$this->specificationsService->addSpecification($categoryId, $newSpec);
 
 		$categories = $this->specificationsService->getCategories();
-		$page = $this->templateProcessor->render('add-specification.php', [
+		$page = $this->mainLayoutManager->render('add-specification.php', [
 			'categories' => $categories,
 			'isNewSpecAdded' => true
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -165,7 +131,7 @@ class CategoryController
 	{
 		return (new Response())->withBodyJSON(array_map(function(SpecificationCategory $spec){
 			return $spec->getName();
-		},$this->specificationsService->getCategories()));
+		}, $this->specificationsService->getCategories()));
 	}
 
 	public function getCategoriesWithSpecsJSON(Request $request): Response
@@ -195,13 +161,9 @@ class CategoryController
 	public function deleteCategoryPage(Request $request): Response
 	{
 		$categories = $this->specificationsService->getCategories();
-		$page = $this->templateProcessor->render('delete-category.php', [
+		$page = $this->mainLayoutManager->render('delete-category.php', [
 			'categories' => $categories,
 			'isCategoryDeleted' => false
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -215,13 +177,9 @@ class CategoryController
 		$id = $request->getPostParametersByName('category-id');
 		$this->specificationsService->deleteCategoryById($id);
 		$categories = $this->specificationsService->getCategories();
-		$page = $this->templateProcessor->render('delete-category.php', [
+		$page = $this->mainLayoutManager->render('delete-category.php', [
 			'categories' => $categories,
 			'isCategoryDeleted' => true
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -230,12 +188,8 @@ class CategoryController
 	public function chooseCategoryToSpecDelete(Request $request): Response
 	{
 		$categories = $this->specificationsService->getCategories();
-		$page = $this->templateProcessor->render('choose-category-specs-delete.php', [
+		$page = $this->mainLayoutManager->render('choose-category-specs-delete.php', [
 			'categories' => $categories
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -244,14 +198,10 @@ class CategoryController
 	public function deleteSpecPage(Request $request, int $id): Response
 	{
 		$specifications = $this->specificationsService->getSpecificationByCategoryId($id);
-		$page = $this->templateProcessor->render('delete-specification.php', [
+		$page = $this->mainLayoutManager->render('delete-specification.php', [
 			'specifications' => $specifications,
 			'categoryId' => $id,
 			'isSpecificationDeleted' => false
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -263,14 +213,10 @@ class CategoryController
 		$categoryId = $request->getPostParametersByName('category-id');
 		$this->specificationsService->deleteSpecificationById($specId);
 		$specifications = $this->specificationsService->getSpecificationByCategoryId($categoryId);
-		$page = $this->templateProcessor->render('delete-specification.php', [
+		$page = $this->mainLayoutManager->render('delete-specification.php', [
 			'specifications' => $specifications,
 			'categoryId' => $categoryId,
 			'isSpecificationDeleted' => true
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);

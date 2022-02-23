@@ -8,16 +8,18 @@ use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
 use Up\Entity\Order\Order;
 use Up\Entity\Order\OrderStatus;
-use Up\Entity\User\UserEnum;
+use Up\LayoutManager\MainLayoutManager;
+use Up\LayoutManager\OrderLayoutManager;
 use Up\Lib\Paginator\Paginator;
 use Up\Service\CartService\CartServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\OrderService\OrderServiceInterface;
 
-
 class OrderController
 {
 	protected $templateProcessor;
+	protected $mainLayoutManager;
+	protected $orderLayoutManager;
 	protected $itemService;
 	protected $cartService;
 	protected $orderService;
@@ -26,17 +28,24 @@ class OrderController
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
+	 * @param \Up\LayoutManager\MainLayoutManager $mainLayoutManager
+	 * @param \Up\LayoutManager\OrderLayoutManager $orderLayoutManager
 	 * @param \Up\Service\CartService\CartService $cartService
 	 * @param \Up\Service\ItemService\ItemService $itemService
 	 * @param \Up\Service\OrderService\OrderService $orderService
 	 */
-	public function __construct(TemplateProcessorInterface $templateProcessor,
-								CartServiceInterface $cartService,
-								ItemServiceInterface $itemService,
-								OrderServiceInterface $orderService)
+	public function __construct(
+		TemplateProcessorInterface $templateProcessor,
+		MainLayoutManager		   $mainLayoutManager,
+		OrderLayoutManager 		   $orderLayoutManager,
+		CartServiceInterface $cartService,
+		ItemServiceInterface $itemService,
+		OrderServiceInterface $orderService)
 	{
 		$this->templateProcessor = $templateProcessor;
 		$this->cartService = $cartService;
+		$this->mainLayoutManager = $mainLayoutManager;
+		$this->orderLayoutManager = $orderLayoutManager;
 		$this->itemService = $itemService;
 		$this->orderService = $orderService;
 	}
@@ -44,12 +53,11 @@ class OrderController
 	public function makeOrder(Request $request): Response
 	{
 		$items = $this->cartService->getItemsFromCart();
-		$page = $this->templateProcessor->render('make-order.php', [
+		$page = $this->orderLayoutManager
+			->setOrderItems($items)
+			->render('make-order.php', [
 			'items' => $items,
 			'user' => $request->getUser()
-		],'layout/order.php', [
-			'cost' => $this->calculateTotalCost($items),
-			'orderSize' => count($items),
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -81,11 +89,10 @@ class OrderController
 		$this->orderService->saveOrder($order);
 		$this->cartService->clearCart();
 
-		$page = $this->templateProcessor->render('finish-order.php', [
+		$page = $this->orderLayoutManager
+			->setOrderItems($items)
+			->render('finish-order.php', [
 			'items' => $items,
-		], 'layout/order.php', [
-			'cost' => $order->getTotalCost(),
-			'orderSize' => count($items),
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -108,14 +115,10 @@ class OrderController
 			'pagesAmount' => $pagesAmount,
 		]);
 
-		$page = $this->templateProcessor->render('orders.php', [
+		$page = $this->mainLayoutManager->render('orders.php', [
 			'orders' => $orders,
 			'paginator' => $paginator,
 			'query' => $query,
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -138,16 +141,6 @@ class OrderController
 		$this->orderService->deleteOrder($orderId);
 
 		return (new Response())->withBodyHTML('');
-	}
-
-	private function calculateTotalCost(array $items): int
-	{
-		$cost = 0;
-		foreach ($items as $item)
-		{
-			$cost += $item->getPrice();
-		}
-		return $cost;
 	}
 
 	private function getDatetime(): string

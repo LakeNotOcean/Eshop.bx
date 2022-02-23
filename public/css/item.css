@@ -1,9 +1,10 @@
 @import "opened-images.css";
 @import "lib/card.css";
 @import "lib/popup.css";
+@import "lib/add-to-favorites.css";
 
 main {
-	background: white;
+	background: var(--color-main);
 }
 
 .anchor {
@@ -39,63 +40,6 @@ item-header
 }
 
 /*==========================
-add-to-favorites
-==========================*/
-
-.btn-add-to-favorites {
-	display: flex;
-	margin-left: 15px;
-	justify-content: end;
-	align-items: center;
-	cursor: pointer;
-}
-
-.add-to-favorites-label {
-	padding-left: 10px;
-	text-decoration: underline;
-	font-weight: 600;
-	user-select: none;
-}
-
-.add-to-favorites {
-	width: 30px;
-	height: 25px;
-
-	min-width: 30px;
-	fill: none;
-	stroke: #222222;
-}
-
-.btn-add-to-favorites:hover .add-to-favorites {
-	fill: red;
-	stroke: none;
-}
-
-.favoriteActive {
-	fill: red;
-	stroke: none;
-	animation: like .3s forwards;
-	transform-origin: center;
-}
-
-.removedFromFavorites {
-	fill: none !important;
-	stroke: #222222 !important;
-}
-
-@keyframes like {
-	0% {
-		transform: scale(1);
-	}
-	50% {
-		transform: scale(1.2);
-	}
-	100% {
-		transform: scale(1);
-	}
-}
-
-/*==========================
 item-main
 ==========================*/
 
@@ -123,7 +67,7 @@ item-main-sidebar
 	width: 100%;
 	flex: 1;
 	cursor: pointer;
-	padding: 30px 0;
+	border-radius: 10px;
 }
 
 .images-other {
@@ -132,9 +76,10 @@ item-main-sidebar
 }
 
 .other-image {
-	padding: 10px;
+	margin: 10px;
 	max-height: 50px;
 	cursor: pointer;
+	border-radius: 10px;
 }
 
 /*==========================
@@ -154,13 +99,13 @@ scroll-menu
 	align-items: center;
 	padding: 15px;
 	transition: .4s;
-	color: black;
 	text-decoration: none;
 	cursor: pointer;
+	user-select: none;
 }
 
 .scroll-menu-item:hover {
-	background-color: #eee;
+	background-color: var(--color-secondary);
 	transition: .1s;
 }
 
@@ -192,17 +137,17 @@ item-main-header
 	margin-right: 15px;
 }
 
-.item-main-tags {
+.item-tags {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 }
 
-.item-main-tag {
-	padding: 10px;
+.item-tag {
+	padding: 8px;
 	margin: 5px;
 	border-radius: 20px;
-	border: 1px solid #333;
+	border: 1px solid var(--color-outline);
 }
 
 .item-main-short-desc-text {
@@ -246,13 +191,11 @@ item-reviews
 .buy-reviews {
 	display: flex;
 	align-items: center;
-	color: inherit;
-	text-decoration: none;
 	cursor: pointer;
 }
 
 .star-icon {
-	fill: #FF791E;
+	fill: var(--color-accent);
 	width: 25px;
 	height: 25px
 }
@@ -278,11 +221,12 @@ item-reviews
 	height: 40px;
 	width: 100%;
 	background: #FF791E;
+	background: var(--color-accent);
 	border-radius: 10px;
 	justify-content: center;
 	align-items: center;
 	text-decoration: none;
-	color: #fff;
+	color: #ffffff;
 	user-select: none;
 }
 
@@ -394,7 +338,7 @@ item-reviews
 }
 
 .item-review-date {
-	color: #7d7d7d;
+	color: var(--color-font-secondary);
 	font-size: 14px;
 }
 
@@ -451,6 +395,7 @@ similar-item
 	height: 130px;
 	width: 130px;
 	margin: 10px;
+	border-radius: 10px;
 }
 
 .similar-item-body-section {
