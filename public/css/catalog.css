@@ -74,7 +74,7 @@ sort
 	flex-direction: row;
 	align-items: center;
 	height: 50px;
-	margin: 10px 0 20px;
+	margin: 10px 0 30px;
 }
 
 .item-sorting-box-title {
@@ -83,6 +83,7 @@ sort
 
 .item-sorting-button {
 	display: flex;
+	align-items: center;
 	margin: 5px;
 	padding: 10px;
 	border-radius: 15px;
@@ -90,6 +91,11 @@ sort
 	background: var(--color-main);
 	line-height: 1;
 	cursor: pointer;
+}
+
+.sort-direction {
+	font-family: sans-serif;
+	margin-left: 5px;
 }
 
 .item-sorting-button.active {

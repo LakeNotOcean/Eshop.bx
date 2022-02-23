@@ -121,6 +121,7 @@ nav-bar
 	height: var(--nav-height);
 	padding: 0 20px;
 	border-bottom: inset 0 0 var(--color-accent);
+	text-align: center;
 	transition: .1s;
 }
 
