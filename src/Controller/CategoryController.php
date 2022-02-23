@@ -23,8 +23,9 @@ class CategoryController
 	 * @param \Up\Service\SpecificationService\SpecificationsService $specificationsService
 	 * @param \Up\Service\UserService\UserService $specificationsService
 	 */
-	public function __construct(MainLayoutManager 			   $mainLayoutManager,
-								SpecificationsServiceInterface $specificationsService
+	public function __construct(
+		MainLayoutManager 			   $mainLayoutManager,
+		SpecificationsServiceInterface $specificationsService
 	)
 	{
 		$this->specificationsService = $specificationsService;

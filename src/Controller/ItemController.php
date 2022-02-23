@@ -25,7 +25,7 @@ use Up\Service\UserService\UserServiceInterface;
 
 class ItemController
 {
-	protected $templateProcessor; //TODO remove
+	protected $templateProcessor;
 	protected $mainLayoutManager;
 	protected $itemService;
 	protected $imageService;

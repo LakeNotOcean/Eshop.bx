@@ -5,13 +5,13 @@ namespace Up\LayoutManager;
 use Up\Core\Message\Request;
 use Up\Core\TemplateProcessorInterface;
 
-class MainLayoutManager implements LayoutManagerInterface
+class OrderLayoutManager  implements LayoutManagerInterface
 {
 
 	protected $templateProcessor;
 	protected $request;
-	protected $query = '';
-	protected const path = 'layout/main.php';
+	protected $orderItems = [];
+	protected const path = 'layout/order.php';
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
@@ -31,17 +31,25 @@ class MainLayoutManager implements LayoutManagerInterface
 	protected function getLayoutParams(): array
 	{
 		return [
-			'isAuthenticated' => $this->request->isAuthenticated(),
-			'isAdmin' => $this->request->isAdmin(),
-			'query' => $this->query,
-			'userName' => $this->request->getUser()->getName()
+			'cost' => $this->calculateTotalCost($this->orderItems),
+			'orderSize' => count($this->orderItems)
 		];
 	}
 
-	public function setQuery(string $query): self
+	public function setOrderItems(array $orderItems): self
 	{
-		$this->query = $query;
+		$this->orderItems = $orderItems;
 		return $this;
+	}
+
+	private function calculateTotalCost(array $items): int
+	{
+		$cost = 0;
+		foreach ($items as $item)
+		{
+			$cost += $item->getPrice();
+		}
+		return $cost;
 	}
 
 }
