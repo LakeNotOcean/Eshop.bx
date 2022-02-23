@@ -16,6 +16,10 @@ interface UserServiceInterface
 
 	public function getUsersInfo(): array;
 
+	public function getUserListByRole(int $id): array;
+
+	public function getUserListByQuery(int $roleId,string $query): array;
+
 	public function registerUser(User $user, string $password): User;
 
 	public function removeUserFromSession(): void;

@@ -60,6 +60,8 @@ $router->post('/admin/deleteItem/{positiveInt:id}', [ItemController::class, 'rea
 $router->post('/admin/fastUpdateItem', [ItemController::class, 'updateCommonInfo'], 'fast-item-update');
 $router->post('/admin/deleteImage/{positiveInt:id}', [ImageController::class, 'deleteImageById'], 'delete-image');
 
+$router->get('/admin/adminList',[UserController::class, 'adminListPage'],'admin-list');
+$router->post('/admin/adminList',[UserController::class, 'removeAdmin'],'admin-list');
 
 $router->get('/admin/editCategory', [CategoryController::class, 'editCategoriesPage'], 'edit-category');
 
