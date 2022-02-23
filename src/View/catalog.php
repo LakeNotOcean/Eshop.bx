@@ -145,34 +145,34 @@ use Up\Entity\Item;
 									<?=htmlspecialchars($item->getShortDescription())?>
 								</div>
 							<?php endif;?>
-							<div class="item-other-footer">
-								<?php if (!$isAdmin): ?>
-									<div class="rating">
-										<svg class="star-icon">
-											<use xlink:href="./img/sprites.svg#star"></use>
-										</svg>
-										<div class="rating-value"><?= (float)random_int(40, 50) / 10 ?></div>
-										<div class="review-count">(<?= random_int(5, 50) ?> отзывов)</div>
-									</div>
-								<?php endif; ?>
-								<?php if ($isAdmin): ?>
-									<input name="item-sort_order" class="input display-order" type="number" value="<?= $item->getSortOrder() ?>">
-									<div class="admin-btn-container">
-										<a class="btn btn-normal" href="<?=URLResolver::resolve('edit-item', ['id' => $item->getId()])?>">Редактировать</a>
-										<input type="submit" style="display: none">
-										<?php if ($item->getIsActive()): ?>
+						</div>
+						<div class="item-other-footer">
+							<?php if (!$isAdmin): ?>
+								<div class="rating">
+									<svg class="star-icon">
+										<use xlink:href="./img/sprites.svg#star"></use>
+									</svg>
+									<div class="rating-value"><?= (float)random_int(40, 50) / 10 ?></div>
+									<div class="review-count">(<?= random_int(5, 50) ?> отзывов)</div>
+								</div>
+							<?php endif; ?>
+							<?php if ($isAdmin): ?>
+								<input name="item-sort_order" class="input display-order" type="number" value="<?= $item->getSortOrder() ?>">
+								<div class="admin-btn-container">
+									<a class="btn btn-normal" href="<?=URLResolver::resolve('edit-item', ['id' => $item->getId()])?>">Редактировать</a>
+									<input type="submit" style="display: none">
+									<?php if ($item->getIsActive()): ?>
 										<a class="btn btn-deactivate">Скрыть</a>
-										<?php else: ?>
+									<?php else: ?>
 										<a class="btn btn-return">Вернуть</a>
-										<?php endif; ?>
-									</div>
-									<input name="item-price" class="input price" type="number" value="<?= htmlspecialchars($item->getPrice()) ?>">₽
-									<input name="item-id" value="<?= $item->getId() ?>" type="hidden" class="input">
-									<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
-								<?php else: ?>
+									<?php endif; ?>
+								</div>
+								<input name="item-price" class="input price" type="number" value="<?= htmlspecialchars($item->getPrice()) ?>">₽
+								<input name="item-id" value="<?= $item->getId() ?>" type="hidden" class="input">
+								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+							<?php else: ?>
 								<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
-								<?php endif;?>
-							</div>
+							<?php endif;?>
 						</div>
 						<?php if(!$item->getIsActive()): ?>
 						<div class="no-active"></div>

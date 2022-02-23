@@ -27,12 +27,12 @@
 }
 
 .btn-delete, .btn-deactivate {
-	color: #DF0310 !important;
+	color: var(--color-delete) !important;
 }
 
 .btn-delete:hover, .btn-deactivate:hover {
-	background: #DF0310;
-	border-color: #DF0310;
+	background: var(--color-delete);
+	border-color: var(--color-delete);
 }
 
 .btn-return {
@@ -47,12 +47,12 @@
 .btn-add {
 	margin-top: 5px;
 	margin-bottom: 20px;
-	color: #009AFF;
+	color: var(--color-add);
 }
 
 .btn-add:hover {
-	background: #009AFF;
-	border-color: #009AFF;
+	background: var(--color-add);
+	border-color: var(--color-add);
 }
 
 .btn-change {

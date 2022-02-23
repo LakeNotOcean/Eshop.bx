@@ -13,7 +13,9 @@
 	--color-outline: #777777;
 	--color-separator: #666666;
 
-	--color-like: #ff0c0c;
+	--color-like: #ee0000;
 
+	--color-add: #1882ff;
+	--color-delete: #eb0d13;
 	--color-change: #14abb2;
 }

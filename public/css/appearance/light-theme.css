@@ -13,7 +13,9 @@
 	--color-outline: #dddddd;
 	--color-separator: #ebebeb;
 
-	--color-like: red;
+	--color-like: #ff0000;
 
+	--color-add: #009AFF;
+	--color-delete: #DF0310;
 	--color-change: #107F84;
 }
