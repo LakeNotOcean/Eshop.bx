@@ -65,12 +65,16 @@ items
 	font-weight: 500;
 }
 
+/*==========================
+sort
+==========================*/
+
 .item-sorting-box {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	height: 50px;
-	margin: 10px;
+	margin: 10px 0 20px;
 }
 
 .item-sorting-box-title {
@@ -82,19 +86,19 @@ items
 	margin: 5px;
 	padding: 10px;
 	border-radius: 15px;
-	border: 1px solid #333;
-	background: #fff;
+	border: 1px solid var(--color-outline);
+	background: var(--color-main);
 	line-height: 1;
 	cursor: pointer;
 }
 
 .item-sorting-button.active {
-	border: 2px solid #F17F42;
+	border: 2px solid var(--color-accent);
 }
 
 .item-sorting-button:hover {
-	background: #F17F42;
-	border-color: #F17F42;
+	background: var(--color-accent);
+	border-color: var(--color-accent);
 	color: #ffffff;
 }
 
