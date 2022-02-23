@@ -8,7 +8,7 @@ use Up\Entity\ItemDetail;
 
 interface ItemDAOInterface
 {
-	public function getItems(int $offset, int $amountItems): array;
+	public function getItems(int $offset, int $amountItems, string $sortingMethod): array;
 
 	public function getItemsByOrderId(int $orderId): array;
 

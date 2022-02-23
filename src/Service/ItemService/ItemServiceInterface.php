@@ -8,7 +8,7 @@ use Up\Entity\ItemDetail;
 
 interface ItemServiceInterface
 {
-	public function getItems(array $limitOffset): array;
+	public function getItems(array $limitOffset,  string $sortingMethod): array;
 
 	public function getItemById(int $id): ItemDetail;
 

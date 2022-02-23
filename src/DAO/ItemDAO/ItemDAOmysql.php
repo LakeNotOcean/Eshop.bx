@@ -31,9 +31,9 @@ class ItemDAOmysql implements ItemDAOInterface
 	 *
 	 * @return array
 	 */
-	public function getItems(int $offset, int $amountItems): array
+	public function getItems(int $offset, int $amountItems, string $sortingMethod): array
 	{
-		$result = $this->DBConnection->query($this->getItemsQuery($offset, $amountItems));
+		$result = $this->DBConnection->query($this->getItemsQuery($offset, $amountItems, $sortingMethod));
 		$items = [];
 		while ($row = $result->fetch())
 		{
@@ -130,7 +130,7 @@ class ItemDAOmysql implements ItemDAOInterface
 		return $price;
 	}
 
-	public function getItemsByFilters(int $offset, int $amountItems,string $query,string $price,array $tags,array $specs): array
+	public function getItemsByFilters(int $offset, int $amountItems,string $query,string $price,array $tags,array $specs, string $sortingMethod): array
 	{
 		$newSpecs = [];
 		foreach ($specs as $spec=>$value)
@@ -147,7 +147,7 @@ class ItemDAOmysql implements ItemDAOInterface
 				$newSpecs[$spec][]=$value;
 			}
 		}
-		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$query,$price,$tags,$newSpecs);
+		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$query,$price,$tags,$newSpecs, $sortingMethod);
 		$result = $this->DBConnection->query($dbQuery);
 		$items = [];
 		while ($row = $result->fetch())
@@ -400,7 +400,7 @@ LIMIT ".$similarAmount." ";
 		return $query;
 	}
 
-	private function getItemsQuery(int $offset, int $amountItems,$searchQuery = ''): string
+	private function getItemsQuery(int $offset, int $amountItems, string $sortingMethod, $searchQuery = ''): string
 	{
 		return "SELECT ui.ID as ui_ID,
 					   TITLE as TITLE,
@@ -418,15 +418,15 @@ LIMIT ".$similarAmount." ";
 						 INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
 				WHERE ui.ID IN (
 					select uiI.ID from (
-										   SELECT ID FROM up_item ui2 WHERE ACTIVE = 1 AND TITLE LIKE '%{$searchQuery}%' ORDER BY ui2.SORT_ORDER desc, ui2.ID LIMIT {$offset}, {$amountItems}
+										   SELECT ID FROM up_item ui2 WHERE ACTIVE = 1 AND TITLE LIKE '%{$searchQuery}%' ORDER BY ui2.{$sortingMethod}, ui2.ID LIMIT {$offset}, {$amountItems}
 		
 									   ) as uiI
 				)
-				ORDER BY ui.SORT_ORDER desc, ui.ID;
+				ORDER BY ui.{$sortingMethod}, ui.ID;
 ";
 	}
 
-	private function getItemsByPriceQuery(): string
+	private function getItemsByPriceQuery(string $sortingMethod): string
 	{
 		$result = "SELECT ui.ID as ui_ID,
                         TITLE as TITLE,
@@ -443,7 +443,7 @@ LIMIT ".$similarAmount." ";
 				INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
 						 INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
 				WHERE ACTIVE = 1 AND PRICE > ? AND PRICE < ?
-				ORDER BY ui.SORT_ORDER";
+				ORDER BY ui.{$sortingMethod}";
 		return $result;
 	}
 
@@ -620,7 +620,7 @@ LIMIT ".$similarAmount." ";
 	}
 
 
-	private function getItemsByFiltersQuery($offset, $amountItems,string $searchQuery,string $price,array $tags,array $newSpecs):string
+	private function getItemsByFiltersQuery($offset, $amountItems,string $searchQuery,string $price,array $tags,array $newSpecs, string $sortingMethod):string
 	{
 		$query = "SELECT ui.ID as ui_ID,
 					   TITLE as TITLE,
@@ -718,11 +718,11 @@ INNER JOIN (select ID as ITEM_ID,
 		}
 		$query .="
 		WHERE ACTIVE = 1 
-		ORDER BY ui.SORT_ORDER, ID
+		ORDER BY ui.{$sortingMethod}, ID
 		LIMIT {$offset}, {$amountItems}";
 		$query.=") as uiI
 				)
-				ORDER BY ui.SORT_ORDER desc, ui.ID;
+				ORDER BY ui.{$sortingMethod}, ui.ID;
 ";
 		return $query;
 	}
@@ -808,14 +808,14 @@ FROM up_item as ui";
 	if (!empty($tags))
 	{
 		$query.= " INNER join (select ITEM_ID,
-    TAG_ID
-FROM
-(select
-	upt.ITEM_ID as ITEM_ID,
-    upt.TAG_ID as TAG_ID,
-    COUNT(TAG_ID) as COUNT
-FROM `up_item-tag` as upt
-where ";
+					TAG_ID
+				FROM
+				(select
+					upt.ITEM_ID as ITEM_ID,
+					upt.TAG_ID as TAG_ID,
+					COUNT(TAG_ID) as COUNT
+				FROM `up_item-tag` as upt
+				where ";
 		$where = [];
 		foreach ($tags as $tag)
 		{
@@ -823,23 +823,23 @@ where ";
 		}
 		$query .= implode(' OR ', $where);
 		$query .= "
-group by ITEM_ID
-) as l
-WHERE COUNT = ";
+				group by ITEM_ID
+				) as l
+				WHERE COUNT = ";
 		$query .= count($tags);
 		$query .= ") as uig on uig.ITEM_ID = ID";
 	}
 	if (!empty($newSpecs))
 	{
 		$query .= "
-INNER JOIN (select
-	ITEM_ID
-FROM
-(select
-	 ITEM_ID as ITEM_ID,
-	 COUNT(VALUE) as COUNT
- FROM `up_item-spec`
- WHERE ";
+				INNER JOIN (select
+					ITEM_ID
+				FROM
+				(select
+					 ITEM_ID as ITEM_ID,
+					 COUNT(VALUE) as COUNT
+				 FROM `up_item-spec`
+				 WHERE ";
 		$where = [];
 		foreach ($newSpecs as $spec=>$values)
 		{
@@ -849,33 +849,32 @@ FROM
 				$inParam .= "'".$value."',";
 			}
 			$inParam = substr($inParam,0,-1);
-			$where[]="(SPEC_TYPE_ID = " . $spec. " AND VALUE IN (".$inParam."))";
+			$where[] = "(SPEC_TYPE_ID = " . $spec. " AND VALUE IN (".$inParam."))";
 		}
 		$query .= implode(' OR ', $where);
-		$query .= " GROUP BY ITEM_ID) as ls
-WHERE COUNT =";
+		$query .= " GROUP BY ITEM_ID) as ls WHERE COUNT =";
 		$query .= count($newSpecs);
 		$query .= ") as uis on uis.ITEM_ID = ID";
 	}
 	if (!($price === ""))
-
 	{
 		$query .="
-INNER JOIN (select ID as ITEM_ID,
-                   PRICE as PRICE
-            FROM up_item
-            WHERE ";
-		$minMaxPrice = explode('-',$price);
+				INNER JOIN (select ID as ITEM_ID,
+								   PRICE as PRICE
+							FROM up_item
+							WHERE ";
+		$minMaxPrice = explode('-', $price);
 		$query .= 'PRICE > '. $minMaxPrice[0] . ' AND PRICE < ' . $minMaxPrice[1];
 		$query .= ") as uip on uip.ITEM_ID = ID";
 	}
+
 	if (!($searchQuery === ""))
 	{
 		$query .="
-INNER JOIN (select ID as ITEM_ID,
-                   TITLE as TITLE
-            FROM up_item
-            WHERE TITLE LIKE '%";
+			INNER JOIN (select ID as ITEM_ID,
+							   TITLE as TITLE
+						FROM up_item
+						WHERE TITLE LIKE '%";
 		$query .= $searchQuery;
 		$query .= "%') as uit on uit.ITEM_ID = ID";
 	}

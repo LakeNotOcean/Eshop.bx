@@ -6,9 +6,10 @@ let searchField = document.getElementsByClassName('search-field');
 
 for (let filterCheckbox of filterCheckboxes)
 {
-	let param = filterCheckbox.name;
+	let param = filterCheckbox.name + '[]';
 	let value = filterCheckbox.value;
 	let query = (param + '=' + value + '&');
+	console.log(query)
 	if (currentLocation.indexOf(query) !== -1)
 	{
 		filterCheckbox.checked = true

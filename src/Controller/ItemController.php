@@ -56,24 +56,39 @@ class ItemController
 
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
 		$currentPage = $currentPage > 0 ? $currentPage : 1;
+
+		$sortBy = $request->containsQuery('sorting') ? $request->getQueriesByName('sorting') : 'sort_order';
+		if ($sortBy === 'sort_order')
+		{
+			$sortingMethod = 'SORT_ORDER';
+		}
+		elseif ($sortBy === 'price')
+		{
+			$sortingMethod = 'PRICE';
+		}
+		elseif ($sortBy === 'name')
+		{
+			$sortingMethod = 'TITLE';
+		}
+
 		if ($request->containsQuery('price') || $request->containsQuery('tag') || $request->containsQuery('spec'))
 		{
 			$query = $request->containsQuery('query') ? $request->getQueriesByName('query') : '';
 			$price = $request->containsQuery('price') ? $request->getQueriesByName('price') : '';
 			$tags = $request->containsQuery('tag') ? $request->getQueriesByName('tag') : [];
 			$specs = $request->containsQuery('spec') ? $request->getQueriesByName('spec') : [];
-			$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query,$price,$tags,$specs);
-			$itemsAmount = $this->itemService->getItemsAmountByFilters($query,$price,$tags,$specs);
+			$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $sortingMethod, $query, $price, $tags, $specs);
+			$itemsAmount = $this->itemService->getItemsAmountByFilters($query, $price, $tags, $specs);
 		}
 		elseif ($request->containsQuery('query'))
 		{
 			$query = $request->getQueriesByName('query');
-			$items = $this->itemService->getItemsByQuery(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query);
+			$items = $this->itemService->getItemsByQuery(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $query, $sortingMethod);
 			$itemsAmount = $this->itemService->getItemsAmount($query);
 		}
 		else
 		{
-			$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage));
+			$items = $this->itemService->getItems(Paginator::getLimitOffset($currentPage, $this->itemsInPage), $sortingMethod);
 			$itemsAmount = $this->itemService->getItemsAmount();
 			$query = '';
 		}

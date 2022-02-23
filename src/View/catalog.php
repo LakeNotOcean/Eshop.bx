@@ -80,7 +80,7 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 					<div class="tag-list">
 						<?php foreach ($tags as $tag):?>
 						<div class="tag">
-							<input type="checkbox" class="category_tag_checkbox category_checkbox" value="<?= $tag->getID() ?>" form="filter-form">
+							<input type="checkbox" class="category_tag_checkbox category_checkbox" value="<?= $tag->getID() ?>" name="tag" form="filter-form">
 							<label><?= htmlspecialchars($tag->getName()) ?></label>
 						</div>
 						<?php endforeach; ?>
@@ -98,10 +98,17 @@ $pageHref = $isAdmin ? '/admin/' : '/';
 			<div class="message-no-results">
 				По вашему запросу не найдено ни одного товара. Попробуйте изменить условия поиска.
 			</div>
+			<?php else: ?>
+			<div class="item-sorting-box">
+				<div class="item-sorting-box-title">Сортировка товаров:</div>
+				<div class="item-sorting-button sorting-button" id="sort_order">По популярности</div>
+				<div class="item-sorting-button sorting-button" id="price">По цене</div>
+				<div class="item-sorting-button sorting-button" id="name">По названию</div>
+			</div>
 			<?php endif; ?>
 
 			<?php
-			foreach ($items as $item) : ?>
+			foreach ($items as $item): ?>
 
 				<<?= $isAdmin ? 'form enctype="multipart/form-data" action="' . URLResolver::resolve('fast-item-update') . '" name="fast-update" method="post"' : "a href=\"" . URLResolver::resolve('item-detail', ['id' => $item->getId()]) . "\"" ?> class="item card card-hover">
 					<picture>

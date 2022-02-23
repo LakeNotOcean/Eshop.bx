@@ -29,19 +29,19 @@ class ItemService implements ItemServiceInterface
 	}
 
 
-	public function getItems(array $limitOffset): array
+	public function getItems(array $limitOffset, string $sortingMethod): array
 	{
-		return $this->itemDAO->getItems($limitOffset['offset'], $limitOffset['amountItems']);
+		return $this->itemDAO->getItems($limitOffset['offset'], $limitOffset['amountItems'], $sortingMethod);
 	}
 
-	public function getItemsByQuery(array $limitOffset, string $searchQuery): array
+	public function getItemsByQuery(array $limitOffset, string $searchQuery, string $sortingMethod): array
 	{
-		return $this->itemDAO->getItemsByQuery($limitOffset['offset'], $limitOffset['amountItems'], $searchQuery);
+		return $this->itemDAO->getItemsByQuery($limitOffset['offset'], $limitOffset['amountItems'], $searchQuery, $sortingMethod);
 	}
 
-	public function getItemsByFilters(array $limitOffset,string $query = '',string $price = '',array $tags = [],array $specs = []): array
+	public function getItemsByFilters(array $limitOffset, string $sortingMethod, string $query = '', string $price = '', array $tags = [], array $specs = []): array
 	{
-		return $this->itemDAO->getItemsByFilters($limitOffset['offset'], $limitOffset['amountItems'],$query, $price, $tags,$specs);
+		return $this->itemDAO->getItemsByFilters($limitOffset['offset'], $limitOffset['amountItems'], $query, $price, $tags, $specs, $sortingMethod);
 	}
 
 	public function getItemsMinMaxPrice(): array

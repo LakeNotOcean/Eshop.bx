@@ -4,13 +4,28 @@ for (let pageButton of pageButtons)
 {
 	pageButton.addEventListener('click', (e) => {
 		let searchParams = new URLSearchParams(location.search.toString())
-		searchParams.set('page',pageButton.id)
+		searchParams.set('page', pageButton.id)
 		let finalQuery = searchParams.toString()
 		finalQuery = prepareQuery(finalQuery)
 		localStorage.setItem('query',finalQuery)
 		window.location = decodeURIComponent(finalQuery);
 	});
 }
+
+
+let sortingButtons = document.getElementsByClassName('sorting-button');
+for (let sortingButton of sortingButtons)
+{
+	sortingButton.addEventListener('click', (e) => {
+		let searchParams = new URLSearchParams(location.search.toString())
+		searchParams.set('sorting', sortingButton.id)
+		let finalQuery = searchParams.toString()
+		finalQuery = prepareQuery(finalQuery)
+		localStorage.setItem('query',finalQuery)
+		window.location = decodeURIComponent(finalQuery);
+	});
+}
+
 
 let filterButtons = document.getElementsByClassName('filter-button');
 for (let filterButton of filterButtons)
