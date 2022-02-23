@@ -9,6 +9,7 @@
 	flex-direction: column;
 	padding: 15px 50px;
 	max-width: 1500px;
+	min-height: calc(100vh - var(--nav-height));
 }
 
 /*==========================
