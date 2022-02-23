@@ -21,7 +21,7 @@ class TypeDAOmysql implements TypeDAOInterface
 	{
 		if ($searchQuery === '')
 		{
-			return [0];
+			return [];
 		}
 		$query = TypeDAOqueries::getTypeIdBySearchQuery();
 		$preparedStatement = $this->DBConnection->prepare($query);
