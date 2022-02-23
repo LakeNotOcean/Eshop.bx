@@ -227,7 +227,7 @@
 <script src="/js/item/open-images.js"></script>
 <script src="/js/item/scroll-similar-items.js"></script>
 
-<script src="/js/lib/showPopup.js" type="module"></script>
+<script src="/js/lib/showPopup.js"></script>
 <script src="/js/add-to-favorites.js"></script>
 
 <script src="/js/csrf.js" type="module"></script>

@@ -122,6 +122,7 @@ nav-bar
 	padding: 0 20px;
 	border-bottom: inset 0 0 var(--color-accent);
 	text-align: center;
+	cursor: default;
 	transition: .1s;
 }
 
