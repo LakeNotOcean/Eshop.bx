@@ -176,7 +176,7 @@ main {
 	min-height: calc(100vh - var(--nav-height));
 	top: var(--nav-height);
 	z-index: -1;
-	background: var(--color-secondary);
+	background: var(--color-background);
 }
 
 .center {

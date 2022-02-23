@@ -80,9 +80,9 @@
 
 			<div class="item-main-header">
 				<div class="item-main-short-desc">
-					<div class="item-main-tags">
+					<div class="item-tags">
 						<?php foreach ($item->getTags() as $tag): ?>
-							<div class="item-main-tag"><?= $tag->getName() ?></div>
+							<div class="item-tag"><?= $tag->getName() ?></div>
 						<?php endforeach; ?>
 					</div>
 					<div class="item-main-short-desc-text">

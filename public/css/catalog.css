@@ -8,7 +8,6 @@
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	background: var(--color-secondary);
 	max-width: 1500px;
 	min-height: calc(100vh - var(--nav-height));
 	padding: 0 50px;
@@ -240,14 +239,14 @@ filters price category
 	flex: 1;
 	padding: 0 6px;
 	border-radius: 10px;
-	border: 2px solid var(--color-placeholder);
+	border: 2px solid var(--color-outline);
 }
 
 .range-dash {
 	width: 15px;
 	height: 3px;
 	margin: 5px;
-	background: #C4C4C4;
+	background: var(--color-outline);
 }
 
 .price-label {
@@ -336,7 +335,7 @@ btn-expand
 }
 
 .spec-filter-section:first-child {
-	border-top: 1px solid #ebebeb;
+	border-top: 1px solid var(--color-separator);
 }
 
 .spec-value {
@@ -368,7 +367,7 @@ filters tag category
 .tag label {
 	display: block;
 	position: relative;
-	border: 2px solid var(--color-icon);
+	border: 2px solid var(--color-outline);
 	border-radius: 1in;
 	padding: 5px;
 }

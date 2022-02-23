@@ -14,5 +14,5 @@
 .card-outline {
 	border-radius: 10px;
 	box-shadow: 0 4px 10px 2px #0000001A;
-	border: 1px solid var(--color-icon);
+	border: 1px solid var(--color-outline);
 }

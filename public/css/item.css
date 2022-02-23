@@ -137,17 +137,17 @@ item-main-header
 	margin-right: 15px;
 }
 
-.item-main-tags {
+.item-tags {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 }
 
-.item-main-tag {
-	padding: 10px;
+.item-tag {
+	padding: 8px;
 	margin: 5px;
 	border-radius: 20px;
-	border: 1px solid #333;
+	border: 1px solid var(--color-outline);
 }
 
 .item-main-short-desc-text {

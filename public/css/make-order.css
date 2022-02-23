@@ -71,8 +71,3 @@ customer-data
 	display: flex;
 	flex-wrap: wrap;
 }
-
-.order-comment {
-	line-height: 15px;
-	padding: 10px;
-}

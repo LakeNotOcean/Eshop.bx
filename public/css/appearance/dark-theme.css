@@ -2,14 +2,16 @@
 :root {
 	--color-main: #333333;
 	--color-secondary: #555555;
+	--color-background: #444444;
 	--color-footer: #222222;
 	--color-accent: #F17F42;
 	--color-icon: #afafaf;
 	--color-font: #ffffff;
 	--color-font-secondary: #7D7D7D;
-	--color-blocked: #999999;
+	--color-blocked: #888888;
 	--color-placeholder: #bbbbbb;
-	--color-separator: #ebebeb;
+	--color-outline: #777777;
+	--color-separator: #666666;
 
 	--color-like: #ff0c0c;
 

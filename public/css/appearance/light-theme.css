@@ -2,6 +2,7 @@
 :root {
 	--color-main: #ffffff;
 	--color-secondary: #f7f7f7;
+	--color-background: #f6f6f6;
 	--color-footer: #333333;
 	--color-accent: #f17f42;
 	--color-icon: #afafaf;
@@ -9,6 +10,7 @@
 	--color-font-secondary: #7D7D7D;
 	--color-blocked: #dddddd;
 	--color-placeholder: #bbbbbb;
+	--color-outline: #dddddd;
 	--color-separator: #ebebeb;
 
 	--color-like: red;
