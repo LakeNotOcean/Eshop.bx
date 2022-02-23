@@ -9,12 +9,10 @@
 		<div class="main-fields-and-images">
 			<div class="main-fields">
 				<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
-				<?php
-				if (isset($item)): ?>
+				<?php if (isset($item)):?>
 					<input type="hidden" name="item-id" value="<?= $item->getId() ?> ">
 					<input type="hidden" name="item-type" value="<?= $item->getItemType()->getId() ?>">
-				<?php
-				endif; ?>
+				<?php endif;?>
 				<?php if (isset($item)): ?>
 					<label for="item-is-active" class="field">
 						<span class="label-title">Изменить отображение в каталоге</span>
@@ -29,41 +27,43 @@
 				<label for="item-title" class="field">
 					<span class="label-title">Название товара</span>
 					<input type="text" id="item-title" name="item-title" placeholder="Ввести название товара"
-						   value="<?= isset($item) ? htmlspecialchars($item->getTitle()) : '' ?>" class="input">
+						   value="<?= isset($item) ? htmlspecialchars($item->getTitle()) : '' ?>" class="input"
+						   autocomplete="off">
 				</label>
 
 				<label for="item-price" class="field">
 					<span class="label-title">Стоимость товара</span>
 					<input type="number" id="item-price" name="item-price" placeholder="Ввести стоимость товара"
-						   value="<?= isset($item) ? $item->getPrice() : '' ?>" class="input">
+						   value="<?= isset($item) ? $item->getPrice() : '' ?>" class="input"
+						   autocomplete="off">
 				</label>
 
 				<label for="item-short-description" class="field">
 					<span class="label-title">Краткое описание</span>
 					<input type="text" id="item-short-description" name="item-short-description" placeholder="Ввести краткое описание товара"
-						   value="<?= isset($item) ? htmlspecialchars($item->getShortDescription()) : '' ?>" class="input">
+						   value="<?= isset($item) ? htmlspecialchars($item->getShortDescription()) : '' ?>" class="input"
+						   autocomplete="off">
 				</label>
 
 				<label for="item-full-description" class="field">
 					<span class="label-title">Описание</span>
 					<input type="text" id="item-full-description" name="item-full-description" placeholder="Ввести полное описание товара"
-						   value="<?= isset($item) ? htmlspecialchars($item->getFullDescription()) : '' ?>" class="input">
+						   value="<?= isset($item) ? htmlspecialchars($item->getFullDescription()) : '' ?>" class="input"
+						   autocomplete="off">
 				</label>
 				<label for="item-tags" class="field">
 					<span class="label-title">Теги</span>
 					<input type="text" id="item-tags" name="item-tags" placeholder="Ввести теги через запятую"
-						   value="<?= isset($item) ? implode(
-							',',
-							array_map(function(\Up\Entity\ItemsTag $tag) {
-								return $tag->getName();
-							}, $item->getTags())
-						) : '' ?>" class="input">
+						   value="<?= isset($item) ? implode(',', array_map(function(\Up\Entity\ItemsTag $tag) {
+								return $tag->getName();}, $item->getTags())) : '' ?>" class="input"
+						   autocomplete="off">
 				</label>
 
 				<label for="item-sort_order" class="field">
 					<span class="label-title">Порядок сортировки</span>
 					<input type="number" id="item-sort_order" name="item-sort_order" placeholder="Ввести порядок сортировки"
-						   value="<?= isset($item) ? $item->getSortOrder() : '' ?>" class="input">
+						   value="<?= isset($item) ? $item->getSortOrder() : '' ?>" class="input"
+						   autocomplete="off">
 				</label>
 			</div>
 

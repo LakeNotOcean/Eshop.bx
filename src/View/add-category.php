@@ -8,12 +8,13 @@
 	<form action="/admin/addCategory" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="category" class="field">
 			<span class="label-title">Категория</span>
-			<input type="text" id="category" name="category" placeholder="Введите название категории" class="input">
+			<input type="text" id="category" name="category" placeholder="Введите название категории" class="input"
+				   autocomplete="off">
 		</label>
 		<label for="category-order" class="field">
 			<span class="label-title">Порядок отображения</span>
 			<input type="number" id="category-order" name="category-order" placeholder="Введите порядок отображения" value="0"
-				   class="input">
+				   class="input" autocomplete="off">
 		</label>
 		<input type="submit" value="Сохранить категорию в базу данных" class="btn btn-normal input">
 		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>

@@ -32,7 +32,6 @@ items
 	flex: 1;
 	min-height: 150px;
 	margin: 0 5px 30px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 	border-radius: 10px;
 	text-decoration: none;
 	color: inherit;
@@ -59,11 +58,6 @@ items
 [name=fast-update]:hover .no-active {
 	opacity: 0;
 	pointer-events: none;
-}
-
-.item:hover {
-	box-shadow: 0 8px 6px rgba(0, 0, 0, 0.3);
-	transition: .3s;
 }
 
 .message-no-results {
@@ -202,7 +196,6 @@ filters main
 .filters {
 	width: 270px;
 	border-radius: 10px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 	padding: 15px;
 
 	--filters-height: calc(100vh - var(--nav-height) - 140px);

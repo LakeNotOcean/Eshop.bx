@@ -1,6 +1,6 @@
 .card {
 	background: var(--color-main);
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 4px 6px var(--color-shadow);
 	border-radius: 10px;
 	transition: .3s;
 
@@ -8,11 +8,11 @@
 }
 
 .card-hover:hover {
-	box-shadow: 0 8px 6px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 8px 6px var(--color-shadow);
 }
 
 .card-outline {
 	border-radius: 10px;
-	box-shadow: 0 4px 10px 2px #0000001A;
+	box-shadow: 0 4px 10px 2px var(--color-shadow);
 	border: 1px solid var(--color-outline);
 }

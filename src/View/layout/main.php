@@ -49,7 +49,8 @@ $darkMode = true;
 		</svg>
 	</a>
 	<div class="search">
-		<input type="text" id="query" name="query" class="search-field" placeholder="Поиск по сайту" value="<?= $query ?>">
+		<input type="text" id="query" name="query" class="search-field" placeholder="Поиск по сайту" value="<?= $query ?>"
+			   autocomplete="off">
 		<div class="search-icon">
 			<div></div>
 		</div>
