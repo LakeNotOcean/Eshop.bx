@@ -71,27 +71,8 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 	public function getItemsByTypeID(int $offset,int $amountItems, int $typeID): array
 	{
 		$dbQuery = $this->getItemsByTypeIDQuery($offset,$amountItems,$typeID);
-		$result = $this->dbConnection->prepare($dbQuery);
-		$result->execute();
-		$items = [];
-		while ($row = $result->fetch())
-		{$itemId = (int)$row['ui_ID'];
-			if (!array_key_exists($itemId, $items))
-			{
-				$item = new Item();
-				$this->mapItemCommonInfo($item, $row);
-				$image = new ItemsImage();
-				$this->mapItemsImageInfo($image, $row);
-				$item->setMainImage($image);
-				$items[$itemId] = $item;
-			}
-			else
-			{
-				$this->mapItemsImageInfo($items[$itemId]->getMainImage(), $row);
-			}
-		}
-
-		return $items;
+		$result = $this->dbConnection->query($dbQuery);
+		return $this->mapItems($result);
 	}
 
 	public function getItemsByQuery(int $offset, int $amountItems, string $searchQuery): array
@@ -137,42 +118,35 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 	{
 		$dbQuery = $this->getItemsMinMaxPriceQuery();
 		$result = $this->dbConnection->query($dbQuery);
-		$minPrice = 0;
-		$maxPrice = 900000;
-		foreach ($result as $prices)
-		{
-			$minPrice = $prices['MINPRICE'];
-			$maxPrice = $prices['MAXPRICE'];
-		}
-		$price = [
+		$result->fetch();
+
+		$minPrice = $result['MINPRICE'];
+		$maxPrice = $result['MAXPRICE'];
+
+		return [
 			'minPrice' => $minPrice,
 			'maxPrice' => $maxPrice,
 		];
-
-		return $price;
 	}
 
 	public function getItemsMinMaxPriceByItemTypes(array $typeIds): array
 	{
 		$dbQuery = $this->getItemsMinMaxPriceByItemTypesQuery($typeIds);
-		$result = $this->dbConnection->query($dbQuery);
-		$minPrice = 0;
-		$maxPrice = 900000;
-		foreach ($result as $prices)
+		$preparedQuery = $this->dbConnection->prepare($dbQuery);
+		foreach ($typeIds as $typeId)
 		{
-			(int) $minPrice = $prices['MINPRICE'];
-			(int) $maxPrice = $prices['MAXPRICE'];
+			$preparedParam[] = $typeId;
 		}
-		$price = [
+		$preparedQuery->execute($preparedParam);
+		$result = $preparedQuery->fetch();
+		$minPrice = $result['MINPRICE'];
+		$maxPrice = $result['MAXPRICE'];
+
+		return [
 			'minPrice' => $minPrice,
 			'maxPrice' => $maxPrice,
 		];
-		return $price;
 	}
-
-
-
-
 
 
 	public function getItemsByFilters(
@@ -791,7 +765,7 @@ LIMIT "
 		$where = [];
 		foreach ($typeIds as $typeId)
 		{
-			$where = [" ITEM_TYPE_ID = ".(int) $typeId." "];
+			$where[] = " ITEM_TYPE_ID = ? ";
 		}
 		$query .= " WHERE ".implode(' OR ', $where);
 		return $query;

@@ -85,7 +85,7 @@ use Up\Entity\Item;
 					<div class="tag-list">
 						<?php foreach ($tags as $tag):?>
 						<div class="tag">
-							<input type="checkbox" class="category_tag_checkbox category_checkbox" value="<?= $tag->getID() ?>" form="filter-form">
+							<input type="checkbox" class="category_tag_checkbox category_checkbox" name="tag" value="<?= $tag->getID() ?>" form="filter-form">
 							<label><?= htmlspecialchars($tag->getName()) ?></label>
 						</div>
 						<?php endforeach; ?>
