@@ -833,7 +833,7 @@ LIMIT "
 		MAX(PRICE) AS MAXPRICE
 		FROM up_item
 		 ";
-		if ($typeIds[0] === 0 || empty($typeIds))
+		if (empty($typeIds))
 		{
 			return $query;
 		}
