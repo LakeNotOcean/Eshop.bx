@@ -107,8 +107,10 @@ use Up\Entity\Item;
 			<div class="item-sorting-box">
 				<div class="item-sorting-box-title">Сортировка товаров:</div>
 				<div class="item-sorting-button sorting-button" id="sort_order">По популярности</div>
-				<div class="item-sorting-button sorting-button" id="price">По цене</div>
-				<div class="item-sorting-button sorting-button" id="name">По названию</div>
+				<div class="item-sorting-button sorting-button" id="price">По цене (возр.)</div>
+				<div class="item-sorting-button sorting-button" id="price_desc">По цене (убыв.)</div>
+				<div class="item-sorting-button sorting-button" id="name">По названию (возр.)</div>
+				<div class="item-sorting-button sorting-button" id="name_desc">По названию (убыв.)</div>
 			</div>
 			<?php endif; ?>
 

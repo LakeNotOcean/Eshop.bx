@@ -57,33 +57,15 @@ class ItemController
 		$isAdmin = $request->isAdmin();
 
 		$deactivate = $request->containsQuery('deactivate_include') && $isAdmin;
-		$query = $request->getQueriesOrDefaultList(['page'=> '1', 'query' => '', 'tag' => [], 'spec' => [], 'price' => '']);
+		$query = $request->getQueriesOrDefaultList(['page'=> '1', 'query' => '', 'tag' => [], 'spec' => [], 'price' => '', 'sorting' => 'sort_order']);
 
 		$currentPage = $query['page'] > 0 ? (int)$query['page'] : 1;
-
-		$typeIds = $this->itemService->getTypeIdByQuery($query['query']);
-
-		if (empty($typeIds))
-		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
 		$currentPage = $currentPage > 0 ? $currentPage : 1;
 
-		$sortBy = $request->containsQuery('sorting') ? $request->getQueriesByName('sorting') : 'sort_order';
-		if ($sortBy === 'sort_order')
-		{
-			$sortingMethod = 'SORT_ORDER';
-		}
-		elseif ($sortBy === 'price')
-		{
-			$sortingMethod = 'PRICE';
-		}
-		elseif ($sortBy === 'name')
-		{
-			$sortingMethod = 'TITLE';
-		}
+		$sortingMethods = ['sort_order' => 'SORT_ORDER', 'price' => 'PRICE', 'price_desc' => 'PRICE DESC', 'name' => 'TITLE', 'name_desc' => 'TITLE DESC'];
+		$sortingMethod = $sortingMethods[$query['sorting']];
 
 		$typeIds = $this->itemService->getTypeIdByQuery($query['query']);
-
-
 		if (empty($typeIds))
 		{
 			$queryTypeId = 1;    //1 - значение передаваемое через ручки.
@@ -98,7 +80,7 @@ class ItemController
 		}
 
 		$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage),
-			$query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate);
+			$query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate, $sortingMethod);
 
 		$price = $this->itemService->getItemsMinMaxPriceByItemTypes($typeIds);
 		$itemsAmount = $this->itemService->getItemsAmountByFilters($query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate);

@@ -158,11 +158,12 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		array $tags,
 		array $newSpecs,
 		int $typeId,
-		bool $deactivate_include
+		bool $deactivate_include,
+		string $sortingMethod
 	): array
 	{
 
-		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$price,$typeId, $query,  $tags, $newSpecs,$deactivate_include);
+		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$price,$typeId, $query,  $tags, $newSpecs,$deactivate_include, $sortingMethod);
 		$preparedQuery = $this->dbConnection->prepare($dbQuery);
 
 		$executeParam = [];
@@ -760,7 +761,8 @@ LIMIT "
 		string $searchQuery,
 		array $tags,
 		array $newSpecs,
-		bool $deactivate_include
+		bool $deactivate_include,
+		string $sortingMethod
 	): string
 	{
 		$query = "SELECT ui.ID as ui_ID,
@@ -864,11 +866,11 @@ INNER JOIN (select ID as ITEM_ID,
 		{
 			$query .= " AND ITEM_TYPE_ID = {$typeId} ";
 		}
-		$query .= " ORDER BY ui.SORT_ORDER, ID
+		$query .= " ORDER BY ui.{$sortingMethod}, ID
 		LIMIT {$offset}, {$amountItems}";
 		$query .= ") as uiI
 				)
-				ORDER BY ui.SORT_ORDER desc, ui.ID;
+				ORDER BY ui.{$sortingMethod}, ui.ID;
 ";
 
 		return $query;

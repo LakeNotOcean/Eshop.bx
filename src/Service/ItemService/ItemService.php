@@ -111,9 +111,9 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItemsByQuery($limitOffset['offset'], $limitOffset['amountItems'], $searchQuery);
 	}
 
-	public function getItemsByFilters(array $limitOffset,string $query,string $price,array $tags,array $specs,int $typeId, bool $deactivateInclude): array
+	public function getItemsByFilters(array $limitOffset,string $query,string $price,array $tags,array $specs,int $typeId, bool $deactivateInclude, string $sortingMethod): array
 	{
-		return $this->itemDAO->getItemsByFilters($limitOffset['offset'], $limitOffset['amountItems'],$query, $price, $tags,$specs,$typeId,$deactivateInclude);
+		return $this->itemDAO->getItemsByFilters($limitOffset['offset'], $limitOffset['amountItems'], $query, $price, $tags, $specs, $typeId, $deactivateInclude, $sortingMethod);
 	}
 
 	public function getItemsMinMaxPriceByItemTypes(array $typeIds): array
