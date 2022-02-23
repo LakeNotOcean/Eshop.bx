@@ -167,7 +167,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 						</div>
 						<div class="item-review-data">
 							<div class="item-review-name"><?= htmlspecialchars($review->getUser()->getName()) ?></div>
-							<div class="item-review-date"><?= DateFormatterRu::format($review->getDate()) ?></div>
+							<div class="item-review-date"><?= DateFormatterRu::format($review->getDate())  ?></div>
 						</div>
 						<div class="item-review-text">
 							<?= htmlspecialchars($review->getComment()) ?>
