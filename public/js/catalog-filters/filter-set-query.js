@@ -25,7 +25,6 @@ for (let param of params)
 	if (param[0] === "tag[]")
 	{
 		let checkbox = document.querySelector(`[name='tag'][value="${param[1]}"]`)
-		alert(checkbox)
 		checkbox.checked = true;
 	}
 }
