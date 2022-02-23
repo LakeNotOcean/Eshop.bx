@@ -62,12 +62,15 @@ class ItemController
 		$isAdmin = $request->isAdmin();
 
 		$deactivate = $request->containsQuery('deactivate_include') && $isAdmin;
-		$query = $request->getQueriesOrDefaultList(['page'=> '1', 'query' => '', 'tag' => [], 'spec' => [], 'price' => '']);
+		$query = $request->getQueriesOrDefaultList(['page'=> '1', 'query' => '', 'tag' => [], 'spec' => [], 'price' => '', 'sorting' => 'sort_order']);
 
 		$currentPage = $query['page'] > 0 ? (int)$query['page'] : 1;
+		$currentPage = $currentPage > 0 ? $currentPage : 1;
+
+		$sortingMethods = ['sort_order' => 'SORT_ORDER', 'price' => 'PRICE', 'price_desc' => 'PRICE DESC', 'name' => 'TITLE', 'name_desc' => 'TITLE DESC'];
+		$sortingMethod = $sortingMethods[$query['sorting']];
 
 		$typeIds = $this->itemService->getTypeIdByQuery($query['query']);
-
 		if (empty($typeIds))
 		{
 			$queryTypeId = 1;    //1 - значение передаваемое через ручки.
@@ -82,7 +85,7 @@ class ItemController
 		}
 
 		$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage),
-			$query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate);
+			$query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate, $sortingMethod);
 
 		$price = $this->itemService->getItemsMinMaxPriceByItemTypes($typeIds);
 		$itemsAmount = $this->itemService->getItemsAmountByFilters($query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate);
@@ -102,7 +105,8 @@ class ItemController
 			'price'=> $price,
 			'tags' => $this->tagService->getTagsByItemType($queryTypeId),
 			'categories' => $this->itemService->getItemsCategoriesByItemType($queryTypeId),
-			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false
+			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false,
+			'sortingMethod' => $query['sorting']
 		], 'layout/main.php', [
 			'isAuthenticated' => $isAuthenticated,
 			'isAdmin' => $isAdmin,
@@ -181,17 +185,17 @@ class ItemController
 		$page = $this->templateProcessor->render('item.php', [
 			'item' => $this->itemService->mapItemDetailToUserItem($userId, $item),
 			'similarItems' => $itemsSimilar,
-			'isItemAdded' => $this->cartService->isItemInCart($item->getId())
 		], 'layout/main.php', [
 			'isAuthenticated' => $request->isAuthenticated(),
 			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName(),
+			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
 	}
 
 	/**
+	 * @throws NoSuchQueryParameterException
 	 */
 	public function addItem(Request $request, int $id = 0): Response
 	{

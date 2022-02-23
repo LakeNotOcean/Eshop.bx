@@ -94,27 +94,8 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 	public function getItemsByTypeID(int $offset,int $amountItems, int $typeID): array
 	{
 		$dbQuery = $this->getItemsByTypeIDQuery($offset,$amountItems,$typeID);
-		$result = $this->dbConnection->prepare($dbQuery);
-		$result->execute();
-		$items = [];
-		while ($row = $result->fetch())
-		{$itemId = (int)$row['ui_ID'];
-			if (!array_key_exists($itemId, $items))
-			{
-				$item = new Item();
-				$this->mapItemCommonInfo($item, $row);
-				$image = new ItemsImage();
-				$this->mapItemsImageInfo($image, $row);
-				$item->setMainImage($image);
-				$items[$itemId] = $item;
-			}
-			else
-			{
-				$this->mapItemsImageInfo($items[$itemId]->getMainImage(), $row);
-			}
-		}
-
-		return $items;
+		$result = $this->dbConnection->query($dbQuery);
+		return $this->mapItems($result);
 	}
 
 	public function getItemsByQuery(int $offset, int $amountItems, string $searchQuery): array
@@ -160,38 +141,37 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 	{
 		$dbQuery = $this->getItemsMinMaxPriceQuery();
 		$result = $this->dbConnection->query($dbQuery);
-		$minPrice = 0;
-		$maxPrice = 900000;
-		foreach ($result as $prices)
-		{
-			$minPrice = $prices['MINPRICE'];
-			$maxPrice = $prices['MAXPRICE'];
-		}
-		$price = [
+		$result->fetch();
+
+		$minPrice = $result['MINPRICE'];
+		$maxPrice = $result['MAXPRICE'];
+
+		return [
 			'minPrice' => $minPrice,
 			'maxPrice' => $maxPrice,
 		];
-
-		return $price;
 	}
 
 	public function getItemsMinMaxPriceByItemTypes(array $typeIds): array
 	{
 		$dbQuery = $this->getItemsMinMaxPriceByItemTypesQuery($typeIds);
-		$result = $this->dbConnection->query($dbQuery);
-		$minPrice = 0;
-		$maxPrice = 900000;
-		foreach ($result as $prices)
+		$preparedQuery = $this->dbConnection->prepare($dbQuery);
+		$preparedParam = [];
+		foreach ($typeIds as $typeId)
 		{
-			(int) $minPrice = $prices['MINPRICE'];
-			(int) $maxPrice = $prices['MAXPRICE'];
+			$preparedParam[] = $typeId;
 		}
-		$price = [
+		$preparedQuery->execute($preparedParam);
+		$result = $preparedQuery->fetch();
+		$minPrice = $result['MINPRICE'];
+		$maxPrice = $result['MAXPRICE'];
+
+		return [
 			'minPrice' => $minPrice,
 			'maxPrice' => $maxPrice,
 		];
-		return $price;
 	}
+
 
 	public function getItemsByFilters(
 		int $offset,
@@ -201,11 +181,12 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		array $tags,
 		array $newSpecs,
 		int $typeId,
-		bool $deactivate_include
+		bool $deactivate_include,
+		string $sortingMethod
 	): array
 	{
 
-		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$price,$typeId, $query,  $tags, $newSpecs,$deactivate_include);
+		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$price,$typeId, $query,  $tags, $newSpecs,$deactivate_include, $sortingMethod);
 		$preparedQuery = $this->dbConnection->prepare($dbQuery);
 
 		$executeParam = [];
@@ -494,6 +475,8 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		return $result->fetch()['num_items'];
 	}
 
+
+
 	public function deactivateItem(int $id): void
 	{
 		$this->dbConnection->query("UPDATE up_item SET ACTIVE = 0 WHERE ID={$id}");
@@ -573,12 +556,15 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		return $preparedQuery->fetch()['num_items'];
 	}
 
+
 	private function getItemsByTypeIDQuery(int $offset, int $amountItems, int $typeID): string
 	{
 		$query = "SELECT ID AS ID FROM up_item WHERE ITEM_TYPE_ID = ".$typeID . " LIMIT {$offset}, {$amountItems}";
 		$query = $this->getQueryGetItemsById($query);
 		return $query;
 	}
+
+
 
 	private function getSimilarItemByIdQuery(int $itemID, int $similarAmount): string
 	{
@@ -813,7 +799,7 @@ LIMIT "
 		$where = [];
 		foreach ($typeIds as $typeId)
 		{
-			$where = [" ITEM_TYPE_ID = ".(int) $typeId." "];
+			$where[] = " ITEM_TYPE_ID = ? ";
 		}
 		$query .= " WHERE ".implode(' OR ', $where);
 		return $query;
@@ -836,7 +822,8 @@ LIMIT "
 		string $searchQuery,
 		array $tags,
 		array $newSpecs,
-		bool $deactivate_include
+		bool $deactivate_include,
+		string $sortingMethod
 	): string
 	{
 		$query = "SELECT ui.ID as ui_ID,
@@ -940,11 +927,11 @@ INNER JOIN (select ID as ITEM_ID,
 		{
 			$query .= " AND ITEM_TYPE_ID = {$typeId} ";
 		}
-		$query .= " ORDER BY ui.SORT_ORDER, ID
+		$query .= " ORDER BY ui.{$sortingMethod}, ID
 		LIMIT {$offset}, {$amountItems}";
 		$query .= ") as uiI
 				)
-				ORDER BY ui.SORT_ORDER desc, ui.ID;
+				ORDER BY ui.{$sortingMethod}, ui.ID;
 ";
 
 		return $query;

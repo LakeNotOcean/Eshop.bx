@@ -130,12 +130,14 @@
 				foreach ($item->getSpecificationCategoriesList() as $category): ?>
 					<div class="spec-category"><?= htmlspecialchars($category->getName()) ?></div>
 					<?php
-					foreach ($category->getSpecifications() as $spec): ?>
+					foreach ($category->getSpecifications() as $spec):
+						if ($spec->getValue()):
+						?>
 						<div class="item-spec">
 							<div class="item-spec-name"><?= htmlspecialchars($spec->getName()) ?></div>
 							<div class="item-spec-value"><?= htmlspecialchars($spec->getValue()) ?></div>
 						</div>
-					<?php
+					<?php endif;
 					endforeach; ?>
 				<?php
 				endforeach; ?>

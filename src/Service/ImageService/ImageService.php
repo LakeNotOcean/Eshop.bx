@@ -159,7 +159,6 @@ class ImageService implements ImageServiceInterface
 
 			if ($width > $sizeValue || $height > $sizeValue)
 			{
-				// TODO отрефактори этот момент. Продумай названия переменных и т.д.
 				$this->resizeImage($sizedImagePath, $sizeValue, mime_content_type($originalFilePath), static::SIZED_IMAGE_FIRST_MIME);
 			}
 			$sizedImagePaths[$sizeName] = $sizedImagePath;
