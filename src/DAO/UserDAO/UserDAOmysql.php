@@ -95,10 +95,71 @@ class UserDAOmysql implements UserDAOInterface
 		$this->changeRole($login, 2);
 	}
 
+	public function giveUserAdministratorRoleByLogin(string $login): void
+	{
+		$this->changeRole($login, 1);
+	}
+
+
 	public function getUsersInfo(): array
 	{
 		return $this->getUsersList();
 	}
+
+	/**
+	 * @throws \ReflectionException
+	 * @throws \Up\Core\Enum\EnumException
+	 */
+	public function getUserListByRole($roleId): array
+	{
+		$query = "SELECT
+            uu.ID as USER_ID,
+			uu.LOGIN as USER_LOGIN,
+            uu.PASSWORD as USER_PASSWORD,
+            uu.PHONE as USER_PHONE,
+            uu.EMAIL as USER_EMAIL,
+            ur.ID as ROLE_ID,
+            ur.NAME as ROLE_NAME,
+            uu.FIRST_NAME as USER_FIRST_NAME,
+            uu.SECOND_NAME as USER_SECOND_NAME
+		FROM up_user uu
+		LEFT JOIN up_role ur on ur.ID = uu.ROLE_ID
+		WHERE ROLE_ID = {$roleId}";
+		$query = $this->DBConnection->query($query);
+		$resultList = [];
+		while ($row = $query->fetch())
+		{
+			$resultList[$row['USER_LOGIN']] = $this->createUserByRow($row);
+		}
+		return $resultList;
+	}
+
+
+	public function getUserListByQuery(int $roleId,string $querySearch):array
+	{
+		$query = "SELECT
+            uu.ID as USER_ID,
+			uu.LOGIN as USER_LOGIN,
+            uu.PASSWORD as USER_PASSWORD,
+            uu.PHONE as USER_PHONE,
+            uu.EMAIL as USER_EMAIL,
+            ur.ID as ROLE_ID,
+            ur.NAME as ROLE_NAME,
+            uu.FIRST_NAME as USER_FIRST_NAME,
+            uu.SECOND_NAME as USER_SECOND_NAME
+		FROM up_user uu
+		LEFT JOIN up_role ur on ur.ID = uu.ROLE_ID
+		WHERE ROLE_ID = {$roleId} AND (LOGIN LIKE ? OR EMAIL LIKE ? OR FIRST_NAME LIKE ? OR SECOND_NAME LIKE ?) ";
+		$preparedQuery = $this->DBConnection->prepare($query);
+		$preparedQuery->execute(["%{$querySearch}%","%{$querySearch}%","%{$querySearch}%","%{$querySearch}%"]);
+		$resultList = [];
+		while ($row = $preparedQuery->fetch())
+		{
+			$resultList[$row['USER_LOGIN']] = $this->createUserByRow($row);
+		}
+		return $resultList;
+	}
+
 
 	private function getUsersList(string $login = ''): array
 	{
