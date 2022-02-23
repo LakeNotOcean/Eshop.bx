@@ -56,7 +56,7 @@
 }
 
 .btn-change {
-	color: #107F84;
+	color: var(--color-change);
 	font-weight: 500;
 	cursor: pointer;
 	user-select: none;
