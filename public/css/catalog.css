@@ -79,6 +79,7 @@ sort
 
 .item-sorting-box-title {
 	padding: 10px;
+	white-space: nowrap;
 }
 
 .item-sorting-button {
