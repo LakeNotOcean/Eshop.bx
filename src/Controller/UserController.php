@@ -161,6 +161,69 @@ class UserController
 	}
 
 	/**
+	 * @throws UserServiceException
+	 */
+	public function adminListPage(Request $request): Response
+	{
+		if ($request->containsQuery("query"))
+		{
+			$login = $request->getQueriesByName("query");
+			$adminList = $this->userService->getUserListByQuery('1',$login);
+		}
+		else
+		{
+			$adminList = $this->userService->getUserListByRole('1');
+		}
+		$currentPage = 1;
+		$pagesAmount= 1;
+		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
+			'currentPage' => $currentPage,
+			'pagesAmount' => $pagesAmount,
+		]);
+
+
+		$page = $this->templateProcessor->render('add-admins.php', [
+			'paginator' => $paginator,
+			'admins' => $adminList,
+		], 'layout/main.php', [
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
+		]);
+
+		return (new Response())->withBodyHTML($page);
+	}
+
+
+	public function removeAdmin(Request $request): Response
+	{
+		if ($request->containsPost("deleteAdmin"))
+		{
+			$login = $request->getPostParametersByName("deleteAdmin");
+			$this->userService->removeUserModeratorRights($login);
+		}
+		$adminList = $this->userService->getUserListByRole('1');
+		$currentPage = 1;
+		$pagesAmount= 1;
+		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
+			'currentPage' => $currentPage,
+			'pagesAmount' => $pagesAmount,
+		]);
+
+
+		$page = $this->templateProcessor->render('add-admins.php', [
+			'paginator' => $paginator,
+			'admins' => $adminList,
+		], 'layout/main.php', [
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName()
+		]);
+
+		return (new Response())->withBodyHTML($page);
+	}
+
+	/**
 	 * @throws ResolveException
 	 */
 	public function logout(Request $request)

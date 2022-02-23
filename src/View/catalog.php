@@ -108,11 +108,21 @@ use Up\Lib\Wordprocessor\WordProcessor;
 			<?php else: ?>
 			<div class="item-sorting-box">
 				<div class="item-sorting-box-title">Сортировка товаров:</div>
-				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'sort_order' ? 'active' : '' ?>" id="sort_order">По популярности</div>
-				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'price' ? 'active' : '' ?>" id="price">По цене (возр.)</div>
-				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'price_desc' ? 'active' : '' ?>" id="price_desc">По цене (убыв.)</div>
-				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'name' ? 'active' : '' ?>" id="name">По названию (возр.)</div>
-				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'name_desc' ? 'active' : '' ?>" id="name_desc">По названию (убыв.)</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'sort_order' ? 'active' : '' ?>" id="sort_order">
+					По популярности
+				</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'price' ? 'active' : '' ?>" id="price">
+					По цене <div class="sort-direction">↑</div>
+				</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'price_desc' ? 'active' : '' ?>" id="price_desc">
+					По цене <div class="sort-direction">↓</div>
+				</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'name' ? 'active' : '' ?>" id="name">
+					По названию<div class="sort-direction">↑</div>
+				</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'name_desc' ? 'active' : '' ?>" id="name_desc">
+					По названию <div class="sort-direction">↓</div>
+				</div>
 			</div>
 			<?php endif; ?>
 
