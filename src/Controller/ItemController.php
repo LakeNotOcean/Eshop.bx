@@ -57,8 +57,7 @@ class ItemController
 		ImageServiceInterface      $imageService,
 		TagServiceInterface        $tagService,
 		ReviewServiceInterface     $reviewService,
-		OrderServiceInterface      $orderService
-		TagServiceInterface        $tagService,
+		OrderServiceInterface      $orderService,
 		CartServiceInterface       $cartService
 	)
 	{
@@ -195,8 +194,6 @@ class ItemController
 		$reviewIsWritten = $this->reviewService->existReviewByUserAndItemIds($userId, $id);
 		$itemsSimilar = $this->itemService->getItemsSimilarById($id,5);
 		$reviews = $this->reviewService->getReviewsByItemId(Paginator::getLimitOffset(1, 3), $id);
-		$page = $this->templateProcessor->render('item.php', [
-
 		$page = $this->mainLayoutManager->render('item.php', [
 			'item' => $this->itemService->mapItemDetailToUserItem($userId, $item),
 			'similarItems' => $itemsSimilar,
@@ -204,10 +201,6 @@ class ItemController
 			'itemIsPurchased' => $itemIsPurchased,
 			'reviewIsWritten' => $reviewIsWritten,
 			'isAuthenticated' => $request->isAuthenticated()
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);

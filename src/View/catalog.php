@@ -168,7 +168,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 								</div>
 							<?php endif;?>
 							<div class="item-other-footer">
-
+								<?php if(!$isAdmin): ?>
 								<div class="rating">
 									<svg class="star-icon">
 										<use xlink:href="./img/sprites.svg#star"></use>
@@ -184,6 +184,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 											: 'Отзывов пока нет.' ?>
 									</div>
 								</div>
+								<?php endif; ?>
 								<?php if ($isAdmin): ?>
 								<input name="item-sort_order" class="input display-order" type="number" value="<?= $item->getSortOrder() ?>">
 								<div class="admin-btn-container">

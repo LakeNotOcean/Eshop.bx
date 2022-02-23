@@ -628,16 +628,24 @@ LIMIT "
 					   uoi.PATH as ORIGINAL_IMAGE_PATH,
 					   uoi.IS_MAIN as ORIGINAL_IMAGE_IS_MAIN,
 					   uiws.PATH as IMAGE_WITH_SIZE_PATH,
-					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE
+					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE,
+                       COUNT(ur.ID) as REVIEWS_COUNT,
+                       IFNULL(AVG(ur.SCORE), 0) as AVG_RATING
 				FROM up_item ui
 						 INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
 						 INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
+						 LEFT JOIN up_review ur on ui.ID = ur.ITEM_ID
 				';
 		if ($elementsCount === 0)
 		{
-			return $this->dbConnection->prepare($query . 'where ui.ID = -1');
+			$query .= 'where ui.ID = -1';
 		}
-		return $this->dbConnection->prepare($query . 'WHERE ui.ID IN'. $this->getPreparedGroup($elementsCount));
+		else
+		{
+			$query .= 'WHERE ui.ID IN'. $this->getPreparedGroup($elementsCount);
+		}
+		$query .= "\nGROUP BY ui.ID, TITLE, PRICE, SORT_ORDER, SHORT_DESC, ACTIVE, uoi.ID, uoi.PATH, uoi.IS_MAIN, uiws.PATH, uiws.SIZE";
+		return $this->dbConnection->prepare($query);
 	}
 
 	private function getFavoriteItemsQuery(int $userId, int $offset, int $amountItems): string
