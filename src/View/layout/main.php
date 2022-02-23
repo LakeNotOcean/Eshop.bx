@@ -5,6 +5,7 @@
 /** @var string $userName */
 /** @var bool $isAdmin */
 /** @var bool $isAuthenticated */
+/** @var bool $darkMode */
 
 use Up\Core\Router\URLResolver;
 
@@ -13,7 +14,7 @@ if (!isset($query))
 	$query = '';
 }
 
-$darkMode = true;
+$darkMode = false;
 
 ?>
 

@@ -2,17 +2,20 @@
 
 namespace Up\Core\Message;
 
-
 use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
 
+/**
+ * @initMethod createFromGlobals
+ */
 class Request
 {
+	private static $instance;
+
 	private $queries = [];
 	private $post = [];
 	private $cookies = [];
 	private $files = [];
-	//private $session = [];
 	private $method = '';
 	private $headers = [];
 	private $requestUrl = '';
@@ -20,17 +23,18 @@ class Request
 
 	private $user;
 
-	/**
-	 * @return Request
-	 */
 	public static function createFromGlobals(): Request
 	{
-		$request = new Request();
+		if (isset(static::$instance))
+		{
+			return static::$instance;
+		}
+		static::$instance = new static();
+		$request = static::$instance;
 		$request->queries = $_GET;
 		$request->post = $_POST;
 		$request->cookies = $_COOKIE;
 		$request->files = $_FILES;
-		//$request->session = $_SESSION;
 		$request->method = $_SERVER['REQUEST_METHOD'];
 		$request->requestUrl = $_SERVER['REQUEST_URI'];
 		$headersLines = getallheaders(); //apache only
