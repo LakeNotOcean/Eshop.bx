@@ -197,26 +197,12 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		string $query,
 		string $price,
 		array $tags,
-		array $specs,
+		array $newSpecs,
 		int $typeId,
 		bool $deactivate_include
 	): array
 	{
-		$newSpecs = [];
-		foreach ($specs as $spec => $value)
-		{
-			$param = explode('=', $value);
-			$spec = $param[0];
-			$value = $param[1];
-			if (!array_key_exists($spec, $newSpecs))
-			{
-				$newSpecs[$spec][] = $value;
-			}
-			else
-			{
-				$newSpecs[$spec][] = $value;
-			}
-		}
+
 		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$price,$typeId, $query,  $tags, $newSpecs,$deactivate_include);
 		$preparedQuery = $this->dbConnection->prepare($dbQuery);
 
@@ -548,23 +534,8 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				WHERE ID=?";
 	}
 
-	public function getItemsAmountByFilters(string $query, string $price, array $tags, array $specs,int $typeId,bool $deactivate_include = false)
+	public function getItemsAmountByFilters(string $query, string $price, array $tags, array $newSpecs,int $typeId,bool $deactivate_include = false)
 	{
-		$newSpecs = [];
-		foreach ($specs as $spec => $value)
-		{
-			$param = explode('=', $value);
-			$spec = $param[0];
-			$value = $param[1];
-			if (!array_key_exists($spec, $newSpecs))
-			{
-				$newSpecs[$spec][] = $value;
-			}
-			else
-			{
-				$newSpecs[$spec][] = $value;
-			}
-		}
 		$dbQuery = $this->getItemsAmountByFiltersQuery($query, $price, $tags, $newSpecs,$typeId ,$deactivate_include);
 		$preparedQuery = $this->dbConnection->prepare($dbQuery);
 
@@ -927,8 +898,9 @@ FROM
 				$inParam = '';
 				foreach ($values as $value)
 				{
-					$inParam .= " ? ";
+					$inParam .= " ?,";
 				}
+				$inParam = substr($inParam,0,-1);
 				$where[] = "(SPEC_TYPE_ID = " . "?" . " AND VALUE IN (" . $inParam . "))";
 			}
 			$query .= implode(' OR ', $where);
@@ -1065,8 +1037,9 @@ FROM
 				$inParam = '';
 				foreach ($values as $value)
 				{
-					$inParam .= " ? ";
+					$inParam .= " ?,";
 				}
+				$inParam = substr($inParam,0,-1);
 				$where[] = "(SPEC_TYPE_ID = " . "?" . " AND VALUE IN (" . $inParam . "))";
 			}
 			$query .= implode(' OR ', $where);

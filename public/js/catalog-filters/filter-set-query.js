@@ -16,7 +16,7 @@ let params = new URLSearchParams(window.location.search);
 
 for (let param of params)
 {
-	let checkboxName = param[0].slice(5,-1);
+	let checkboxName = param[0].slice(5,-3);
 	let checkbox = document.querySelector(`[name="${checkboxName}"][value="${param[1]}"]`)
 	if (checkbox !== null)
 	{
