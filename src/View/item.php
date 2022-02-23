@@ -4,7 +4,6 @@
 ?>
 
 <link rel="stylesheet" href="/css/item.css">
-<link rel="stylesheet" href="/lib/lightbox/css/lightbox.css">
 
 <?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 <div class="opened-images" style="display: none;">
