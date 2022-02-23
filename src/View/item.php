@@ -1,17 +1,17 @@
 <?php
 /** @var \Up\Entity\UserItem $item */
 /** @var array<UP\Entity\Item> $similarItems */
-//$itemImages = ['/img/2_big.webp', '/img/2-1_big.webp', '/img/2-2_big.webp'];
 ?>
 
 <link rel="stylesheet" href="/css/item.css">
 
+<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 <div class="opened-images" style="display: none;">
 	<div class="open-images-container">
 		<div class="open-images-header">
 			<div class="btn-back"></div>
-			<div class="btn-add-to-favorites">
-				<svg class="add-to-favorites">
+			<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
+				<svg class="add-to-favorites <?= $item->getIsFavorite() ? "favoriteActive" : ""?>">
 					<use xlink:href="/img/sprites.svg#heart"></use>
 				</svg>
 				<div class="add-to-favorites-label">В избранное</div>
@@ -33,7 +33,6 @@
 	<a class="anchor" id="main"></a>
 	<div class="item-header">
 		<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 		<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
 			<svg class="add-to-favorites <?= $item->getIsFavorite() ? "favoriteActive" : ""?>">
 				<use xlink:href="/img/sprites.svg#heart"></use>
