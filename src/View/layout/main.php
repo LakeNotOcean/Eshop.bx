@@ -76,7 +76,7 @@ if (!isset($query))
 
 	<?php if ($isAuthenticated): ?>
 		<div class="nav-item" id="userMenu">
-			<div class="nav-item-label"><?= $userName?></div>
+			<div class="nav-item-label"><?= $userName ?></div>
 			<div class="menu-container profile">
 				<div class="menu">
 					<a class="menu-item" href="<?= URLResolver::resolve('user-favorites') ?>">Избранное</a>

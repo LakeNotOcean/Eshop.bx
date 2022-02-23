@@ -43,7 +43,7 @@ interface ItemServiceInterface
 
 	public function save(ItemDetail $item): ItemDetail;
 
-
+	public function isItemAvailable(int $itemId): bool;
 
 	public function deactivateItem(int $id): void;
 

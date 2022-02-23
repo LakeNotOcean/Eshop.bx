@@ -276,6 +276,7 @@ item-reviews
 	display: flex;
 	margin-top: 20px;
 	height: 40px;
+	width: 100%;
 	background: #FF791E;
 	border-radius: 10px;
 	justify-content: center;
@@ -283,6 +284,10 @@ item-reviews
 	text-decoration: none;
 	color: #fff;
 	user-select: none;
+}
+
+.btn-item-added {
+	background: #aaa;
 }
 
 /*==========================

@@ -36,6 +36,27 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		return $this->mapItems($result);
 	}
 
+	/**
+	 * @param int[] $itemIds
+	 *
+	 * @return array<Item>
+	 */
+	public function getItemsWithIds(array $itemIds): array
+	{
+		foreach ($itemIds as $index => $itemId)
+		{
+			if (!is_numeric($itemId))
+			{
+				$type = gettype($itemId);
+				throw new \InvalidArgumentException("Item id must be int or numeric. Now: {$type}");
+			}
+		}
+
+		$statement = $this->prepareItemWhereIdInRange(count($itemIds));
+		$statement->execute($itemIds);
+		return $this->mapItems($statement);
+	}
+
 	public function getFavoriteItems(int $userId, int $offset, int $amountItems): array
 	{
 		$query = $this->getFavoriteItemsQuery($userId, $offset, $amountItems);
@@ -169,11 +190,6 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		];
 		return $price;
 	}
-
-
-
-
-
 
 	public function getItemsByFilters(
 		int $offset,
@@ -490,8 +506,6 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		return $result->fetch()['num_items'];
 	}
 
-
-
 	public function deactivateItem(int $id): void
 	{
 		$this->dbConnection->query("UPDATE up_item SET ACTIVE = 0 WHERE ID={$id}");
@@ -586,15 +600,12 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		return $preparedQuery->fetch()['num_items'];
 	}
 
-
 	private function getItemsByTypeIDQuery(int $offset, int $amountItems, int $typeID): string
 	{
 		$query = "SELECT ID AS ID FROM up_item WHERE ITEM_TYPE_ID = ".$typeID . " LIMIT {$offset}, {$amountItems}";
 		$query = $this->getQueryGetItemsById($query);
 		return $query;
 	}
-
-
 
 	private function getSimilarItemByIdQuery(int $itemID, int $similarAmount): string
 	{
@@ -639,6 +650,31 @@ LIMIT "
 									   ) as uiI
 				)
 				ORDER BY ui.SORT_ORDER desc, ui.ID;";
+	}
+
+	private function prepareItemWhereIdInRange(int $elementsCount): PDOStatement
+	{
+		$query = '
+			SELECT ui.ID as ui_ID,
+					   TITLE as TITLE,
+					   PRICE as PRICE,
+					   SORT_ORDER as SORT_ORDER,
+					   SHORT_DESC as SHORT_DESC,
+					   ACTIVE as ACTIVE,
+					   uoi.ID as ORIGINAL_IMAGE_ID,
+					   uoi.PATH as ORIGINAL_IMAGE_PATH,
+					   uoi.IS_MAIN as ORIGINAL_IMAGE_IS_MAIN,
+					   uiws.PATH as IMAGE_WITH_SIZE_PATH,
+					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE
+				FROM up_item ui
+						 INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
+						 INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
+				';
+		if ($elementsCount === 0)
+		{
+			return $this->dbConnection->prepare($query . 'where ui.ID = -1');
+		}
+		return $this->dbConnection->prepare($query . 'WHERE ui.ID IN'. $this->getPreparedGroup($elementsCount));
 	}
 
 	private function getFavoriteItemsQuery(int $userId, int $offset, int $amountItems): string
@@ -776,6 +812,19 @@ LIMIT "
 		$image->setOriginalImagePath($row['ORIGINAL_PATH']);
 
 		return $image;
+	}
+
+	public function isItemActive(int $itemId): bool
+	{
+		$query = "select ACTIVE from up_item where ID = {$itemId}";
+
+		$result = $this->dbConnection->query($query)->fetch($this->dbConnection::FETCH_ASSOC);
+		if ($result === false)
+		{
+			return false;
+		}
+
+		return $result['ACTIVE'];
 	}
 
 	private function getItemsMinMaxPriceByItemTypesQuery(array $typeIds) :string

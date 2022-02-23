@@ -50,8 +50,14 @@ interface ItemDAOInterface
 
 	public function updateCommonInfo(Item $item): Item;
 
+	public function isItemActive(int $itemId): bool;
 
+	/**
+	 * @param int[] $itemIds
+	 *
+	 * @return array
+	 */
+	public function getItemsWithIds(array $itemIds): array;
 
 	public function deleteItem(int $id): void;
-
 }

@@ -38,6 +38,11 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItems($limitOffset['offset'], $limitOffset['amountItems']);
 	}
 
+	public function isItemAvailable(int $itemId): bool
+	{
+		return $this->itemDAO->isItemActive($itemId);
+	}
+
 	public function getFavoriteItems(int $userId, array $limitOffset = ['offset' => -1, 'amountItems' => 0]): array
 	{
 		return $this->itemDAO->getFavoriteItems($userId, $limitOffset['offset'], $limitOffset['amountItems']);

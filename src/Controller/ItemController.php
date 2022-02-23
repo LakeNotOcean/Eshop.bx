@@ -15,6 +15,7 @@ use Up\Entity\SpecificationCategory;
 use Up\Entity\User\UserEnum;
 use Up\Lib\Paginator\Paginator;
 use Up\Lib\Redirect;
+use Up\Service\CartService\CartServiceInterface;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\TagService\TagServiceInterface;
@@ -27,6 +28,7 @@ class ItemController
 	protected $itemService;
 	protected $imageService;
 	protected $tagService;
+	protected $cartService;
 	protected $itemsInPage = 10;
 
 	/**
@@ -34,18 +36,21 @@ class ItemController
 	 * @param \Up\Service\ItemService\ItemService $itemService
 	 * @param \Up\Service\ImageService\ImageService $imageService
 	 * @param \Up\Service\TagService\TagService $tagService
+	 * @param \Up\Service\CartService\CartService $cartService
 	 */
 	public function __construct(
 		TemplateProcessorInterface $templateProcessor,
 		ItemServiceInterface       $itemService,
 		ImageServiceInterface      $imageService,
-		TagServiceInterface        $tagService
+		TagServiceInterface        $tagService,
+		CartServiceInterface       $cartService
 	)
 	{
 		$this->templateProcessor = $templateProcessor;
 		$this->itemService = $itemService;
 		$this->imageService = $imageService;
 		$this->tagService = $tagService;
+		$this->cartService = $cartService;
 	}
 
 	/**
@@ -168,17 +173,17 @@ class ItemController
 		$page = $this->templateProcessor->render('item.php', [
 			'item' => $this->itemService->mapItemDetailToUserItem($userId, $item),
 			'similarItems' => $itemsSimilar,
+			'isItemAdded' => $this->cartService->isItemInCart($item->getId())
 		], 'layout/main.php', [
 			'isAuthenticated' => $request->isAuthenticated(),
 			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
+			'userName' => $request->getUser()->getName(),
 		]);
 
 		return (new Response())->withBodyHTML($page);
 	}
 
 	/**
-	 * @throws NoSuchQueryParameterException
 	 */
 	public function addItem(Request $request, int $id = 0): Response
 	{

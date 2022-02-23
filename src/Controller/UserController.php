@@ -12,6 +12,7 @@ use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
 use Up\Entity\User\UserRole;
 use Up\Lib\Redirect;
+use Up\Lib\URLHelper;
 use Up\Service\UserService\Error\UserServiceException;
 use Up\Validator\DataTypes;
 use Up\Validator\Validator;
@@ -110,6 +111,15 @@ class UserController
 			$response = $response->withStatus(409);
 
 			return $response->withBodyHTML($page);
+		}
+
+		if ($request->containsQuery(static::nextUrlQueryKeyword))
+		{
+			$next = $request->getQueriesByName(static::nextUrlQueryKeyword);
+			if (URLHelper::isValidUrl($next))
+			{
+				return Redirect::createResponseByURL($next);
+			}
 		}
 
 		return Redirect::createResponseByURLName('home');
