@@ -100,7 +100,8 @@ class ItemController
 			'price'=> $price,
 			'tags' => $this->tagService->getTagsByItemType($queryTypeId),
 			'categories' => $this->itemService->getItemsCategoriesByItemType($queryTypeId),
-			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false
+			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false,
+			'sortingMethod' => $query['sorting']
 		], 'layout/main.php', [
 			'isAuthenticated' => $isAuthenticated,
 			'isAdmin' => $isAdmin,

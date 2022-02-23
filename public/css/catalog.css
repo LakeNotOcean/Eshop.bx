@@ -95,6 +95,10 @@ items
 	cursor: pointer;
 }
 
+.item-sorting-button.active {
+	border: 2px solid #F17F42;
+}
+
 .item-sorting-button:hover {
 	background: #F17F42;
 	border-color: #F17F42;

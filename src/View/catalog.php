@@ -6,6 +6,7 @@
 /** @var int $result_count */
 /** @var int $itemsAmount */
 /** @var string $query */
+/** @var string $sortingMethod */
 /** @var bool $isAdmin */
 
 /** @var $paginator */
@@ -106,11 +107,11 @@ use Up\Entity\Item;
 			<?php else: ?>
 			<div class="item-sorting-box">
 				<div class="item-sorting-box-title">Сортировка товаров:</div>
-				<div class="item-sorting-button sorting-button" id="sort_order">По популярности</div>
-				<div class="item-sorting-button sorting-button" id="price">По цене (возр.)</div>
-				<div class="item-sorting-button sorting-button" id="price_desc">По цене (убыв.)</div>
-				<div class="item-sorting-button sorting-button" id="name">По названию (возр.)</div>
-				<div class="item-sorting-button sorting-button" id="name_desc">По названию (убыв.)</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'sort_order' ? 'active' : '' ?>" id="sort_order">По популярности</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'price' ? 'active' : '' ?>" id="price">По цене (возр.)</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'price_desc' ? 'active' : '' ?>" id="price_desc">По цене (убыв.)</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'name' ? 'active' : '' ?>" id="name">По названию (возр.)</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'name_desc' ? 'active' : '' ?>" id="name_desc">По названию (убыв.)</div>
 			</div>
 			<?php endif; ?>
 
