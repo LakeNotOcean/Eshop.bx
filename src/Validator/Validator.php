@@ -105,7 +105,7 @@ class Validator
 
 	private static function minMaxValueInt(int $data, int $minValue, int $maxValue): string
 	{
-		if ($data >= $maxValue && $data <= $maxValue)
+		if ($data > $maxValue && $data < $maxValue)
 		{
 			return "the number is not in the range ";
 		}

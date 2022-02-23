@@ -174,6 +174,9 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 						</div>
 					</div>
 					<?php endforeach; ?>
+					<?php if($item->getAmountReviews() > 3): ?>
+					<a href="">Посмотреть больше отзывов</a>
+					<?php endif; ?>
 				</div>
 			</div>
 			<div class="review-send-section">

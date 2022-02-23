@@ -42,7 +42,7 @@ class ReviewService implements ReviewServiceInterface
 		$itemIsPurchased = $this->orderService->checkThatUserBoughtItem($userId, $itemId);
 		$reviewIsWritten = $this->existReviewByUserAndItemIds($userId, $itemId);
 
-		if ($itemIsPurchased || $reviewIsWritten)
+		if (!$itemIsPurchased || $reviewIsWritten)
 		{
 			throw new ReviewException('Вы еще не купили товар или уже писали отзыв на этот товар');
 		}
