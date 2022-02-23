@@ -36,6 +36,29 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		return $this->mapItems($result);
 	}
 
+	/**
+	 * @param int[] $itemIds
+	 *
+	 * @return array<Item>
+	 */
+	public function getItemsWithIds(array $itemIds): array
+	{
+		$resultItemIds = [];
+		foreach ($itemIds as $index => $itemId)
+		{
+			if (!is_numeric($itemId))
+			{
+				$type = gettype($itemId);
+				throw new \InvalidArgumentException("Item id must be int or numeric. Now: {$type}");
+			}
+			$resultItemIds[] = $itemId;
+		}
+
+		$statement = $this->prepareItemWhereIdInRange(count($itemIds));
+		$statement->execute($resultItemIds);
+		return $this->mapItems($statement);
+	}
+
 	public function getFavoriteItems(int $userId, int $offset, int $amountItems): array
 	{
 		$query = $this->getFavoriteItemsQuery($userId, $offset, $amountItems);
@@ -71,27 +94,8 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 	public function getItemsByTypeID(int $offset,int $amountItems, int $typeID): array
 	{
 		$dbQuery = $this->getItemsByTypeIDQuery($offset,$amountItems,$typeID);
-		$result = $this->dbConnection->prepare($dbQuery);
-		$result->execute();
-		$items = [];
-		while ($row = $result->fetch())
-		{$itemId = (int)$row['ui_ID'];
-			if (!array_key_exists($itemId, $items))
-			{
-				$item = new Item();
-				$this->mapItemCommonInfo($item, $row);
-				$image = new ItemsImage();
-				$this->mapItemsImageInfo($image, $row);
-				$item->setMainImage($image);
-				$items[$itemId] = $item;
-			}
-			else
-			{
-				$this->mapItemsImageInfo($items[$itemId]->getMainImage(), $row);
-			}
-		}
-
-		return $items;
+		$result = $this->dbConnection->query($dbQuery);
+		return $this->mapItems($result);
 	}
 
 	public function getItemsByQuery(int $offset, int $amountItems, string $searchQuery): array
@@ -137,42 +141,36 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 	{
 		$dbQuery = $this->getItemsMinMaxPriceQuery();
 		$result = $this->dbConnection->query($dbQuery);
-		$minPrice = 0;
-		$maxPrice = 900000;
-		foreach ($result as $prices)
-		{
-			$minPrice = $prices['MINPRICE'];
-			$maxPrice = $prices['MAXPRICE'];
-		}
-		$price = [
+		$result->fetch();
+
+		$minPrice = $result['MINPRICE'];
+		$maxPrice = $result['MAXPRICE'];
+
+		return [
 			'minPrice' => $minPrice,
 			'maxPrice' => $maxPrice,
 		];
-
-		return $price;
 	}
 
 	public function getItemsMinMaxPriceByItemTypes(array $typeIds): array
 	{
 		$dbQuery = $this->getItemsMinMaxPriceByItemTypesQuery($typeIds);
-		$result = $this->dbConnection->query($dbQuery);
-		$minPrice = 0;
-		$maxPrice = 900000;
-		foreach ($result as $prices)
+		$preparedQuery = $this->dbConnection->prepare($dbQuery);
+		$preparedParam = [];
+		foreach ($typeIds as $typeId)
 		{
-			(int) $minPrice = $prices['MINPRICE'];
-			(int) $maxPrice = $prices['MAXPRICE'];
+			$preparedParam[] = $typeId;
 		}
-		$price = [
+		$preparedQuery->execute($preparedParam);
+		$result = $preparedQuery->fetch();
+		$minPrice = $result['MINPRICE'];
+		$maxPrice = $result['MAXPRICE'];
+
+		return [
 			'minPrice' => $minPrice,
 			'maxPrice' => $maxPrice,
 		];
-		return $price;
 	}
-
-
-
-
 
 
 	public function getItemsByFilters(
@@ -181,27 +179,14 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		string $query,
 		string $price,
 		array $tags,
-		array $specs,
+		array $newSpecs,
 		int $typeId,
-		bool $deactivate_include
+		bool $deactivate_include,
+		string $sortingMethod
 	): array
 	{
-		$newSpecs = [];
-		foreach ($specs as $spec => $value)
-		{
-			$param = explode('=', $value);
-			$spec = $param[0];
-			$value = $param[1];
-			if (!array_key_exists($spec, $newSpecs))
-			{
-				$newSpecs[$spec][] = $value;
-			}
-			else
-			{
-				$newSpecs[$spec][] = $value;
-			}
-		}
-		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$price,$typeId, $query,  $tags, $newSpecs,$deactivate_include);
+
+		$dbQuery = $this->getItemsByFiltersQuery($offset, $amountItems,$price,$typeId, $query,  $tags, $newSpecs,$deactivate_include, $sortingMethod);
 		$preparedQuery = $this->dbConnection->prepare($dbQuery);
 
 		$executeParam = [];
@@ -534,23 +519,8 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				WHERE ID=?";
 	}
 
-	public function getItemsAmountByFilters(string $query, string $price, array $tags, array $specs,int $typeId,bool $deactivate_include = false)
+	public function getItemsAmountByFilters(string $query, string $price, array $tags, array $newSpecs,int $typeId,bool $deactivate_include = false)
 	{
-		$newSpecs = [];
-		foreach ($specs as $spec => $value)
-		{
-			$param = explode('=', $value);
-			$spec = $param[0];
-			$value = $param[1];
-			if (!array_key_exists($spec, $newSpecs))
-			{
-				$newSpecs[$spec][] = $value;
-			}
-			else
-			{
-				$newSpecs[$spec][] = $value;
-			}
-		}
 		$dbQuery = $this->getItemsAmountByFiltersQuery($query, $price, $tags, $newSpecs,$typeId ,$deactivate_include);
 		$preparedQuery = $this->dbConnection->prepare($dbQuery);
 
@@ -643,6 +613,31 @@ LIMIT "
 				)
 				GROUP BY ui.ID, TITLE, PRICE, SORT_ORDER, SHORT_DESC, ACTIVE, uoi.ID, uoi.PATH, uoi.IS_MAIN, uiws.PATH, uiws.SIZE
 				ORDER BY ui.SORT_ORDER desc, ui.ID;";
+	}
+
+	private function prepareItemWhereIdInRange(int $elementsCount): PDOStatement
+	{
+		$query = '
+			SELECT ui.ID as ui_ID,
+					   TITLE as TITLE,
+					   PRICE as PRICE,
+					   SORT_ORDER as SORT_ORDER,
+					   SHORT_DESC as SHORT_DESC,
+					   ACTIVE as ACTIVE,
+					   uoi.ID as ORIGINAL_IMAGE_ID,
+					   uoi.PATH as ORIGINAL_IMAGE_PATH,
+					   uoi.IS_MAIN as ORIGINAL_IMAGE_IS_MAIN,
+					   uiws.PATH as IMAGE_WITH_SIZE_PATH,
+					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE
+				FROM up_item ui
+						 INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
+						 INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
+				';
+		if ($elementsCount === 0)
+		{
+			return $this->dbConnection->prepare($query . 'where ui.ID = -1');
+		}
+		return $this->dbConnection->prepare($query . 'WHERE ui.ID IN'. $this->getPreparedGroup($elementsCount));
 	}
 
 	private function getFavoriteItemsQuery(int $userId, int $offset, int $amountItems): string
@@ -794,20 +789,33 @@ LIMIT "
 		return $image;
 	}
 
+	public function isItemActive(int $itemId): bool
+	{
+		$query = "select ACTIVE from up_item where ID = {$itemId}";
+
+		$result = $this->dbConnection->query($query)->fetch($this->dbConnection::FETCH_ASSOC);
+		if ($result === false)
+		{
+			return false;
+		}
+
+		return $result['ACTIVE'];
+	}
+
 	private function getItemsMinMaxPriceByItemTypesQuery(array $typeIds) :string
 	{
 		$query = "SELECT MIN(PRICE) AS MINPRICE,
 		MAX(PRICE) AS MAXPRICE
 		FROM up_item
 		 ";
-		if ($typeIds[0] === 0 || empty($typeIds))
+		if (empty($typeIds))
 		{
 			return $query;
 		}
 		$where = [];
 		foreach ($typeIds as $typeId)
 		{
-			$where = [" ITEM_TYPE_ID = ".(int) $typeId." "];
+			$where[] = " ITEM_TYPE_ID = ? ";
 		}
 		$query .= " WHERE ".implode(' OR ', $where);
 		return $query;
@@ -830,7 +838,8 @@ LIMIT "
 		string $searchQuery,
 		array $tags,
 		array $newSpecs,
-		bool $deactivate_include
+		bool $deactivate_include,
+		string $sortingMethod
 	): string
 	{
 		$query = "SELECT ui.ID as ui_ID,
@@ -897,8 +906,9 @@ FROM
 				$inParam = '';
 				foreach ($values as $value)
 				{
-					$inParam .= " ? ";
+					$inParam .= " ?,";
 				}
+				$inParam = substr($inParam,0,-1);
 				$where[] = "(SPEC_TYPE_ID = " . "?" . " AND VALUE IN (" . $inParam . "))";
 			}
 			$query .= implode(' OR ', $where);
@@ -936,12 +946,12 @@ INNER JOIN (select ID as ITEM_ID,
 		{
 			$query .= " AND ITEM_TYPE_ID = {$typeId} ";
 		}
-		$query .= " ORDER BY ui.SORT_ORDER, ID
+		$query .= " ORDER BY ui.{$sortingMethod}, ID
 		LIMIT {$offset}, {$amountItems}";
 		$query .= ") as uiI
 				)
 				GROUP BY ui.ID, TITLE, PRICE, SORT_ORDER, SHORT_DESC, ACTIVE, uoi.ID, uoi.PATH, uoi.IS_MAIN, uiws.PATH, uiws.SIZE
-				ORDER BY ui.SORT_ORDER desc, ui.ID;
+				ORDER BY ui.{$sortingMethod}, ui.ID;
 ";
 
 		return $query;
@@ -1040,8 +1050,9 @@ FROM
 				$inParam = '';
 				foreach ($values as $value)
 				{
-					$inParam .= " ? ";
+					$inParam .= " ?,";
 				}
+				$inParam = substr($inParam,0,-1);
 				$where[] = "(SPEC_TYPE_ID = " . "?" . " AND VALUE IN (" . $inParam . "))";
 			}
 			$query .= implode(' OR ', $where);

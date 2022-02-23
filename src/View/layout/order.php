@@ -1,8 +1,11 @@
 <?php
 /** @var string $content */
+/** @var bool $darkMode */
 
 /** @var int $orderSize */
 /** @var int $cost */
+
+use Up\Lib\Wordprocessor\WordProcessor;
 
 ?>
 
@@ -20,6 +23,13 @@
 	<link rel="mask-icon" href="/img/logo/safari-pinned-tab.svg" color="#5bbad5">
 	<meta name="msapplication-TileColor" content="#da532c">
 	<meta name="theme-color" content="#ffffff">
+
+	<?php if ($darkMode):?>
+		<link rel="stylesheet" href="/css/appearance/dark-theme.css">
+	<?php else:?>
+		<link rel="stylesheet" href="/css/appearance/light-theme.css">
+	<?php endif;?>
+
 	<link rel="stylesheet" href="/css/order.css">
 </head>
 <body>
@@ -30,7 +40,11 @@
 			<use xlink:href="/img/sprites.svg#logo"></use>
 		</svg>
 	</a>
-	<div class="order-info-message">Покупка <?= $orderSize ?> товара за <?= $cost ?> ₽</div>
+	<?php if ($cost > 0): ?>
+	<div class="order-info-message">Оформление заказа: <?= $orderSize ?> <?= WordProcessor::formatWord($orderSize, 'товар') ?> за <?= $cost ?> ₽</div>
+	<?php else: ?>
+	<div class="order-info-message">Ваша корзина пуста!</div>
+	<?php endif; ?>
 </nav>
 
 <main>

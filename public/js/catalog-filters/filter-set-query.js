@@ -1,4 +1,4 @@
-let filterCheckboxes = document.querySelectorAll('.category_checkbox');
+
 let priceInputs = document.querySelectorAll('.price-input input');
 let paramsQuery = (new URL(document.location)).searchParams;
 let currentLocation= decodeURI(location.search.toString());
@@ -12,15 +12,20 @@ if(deactivateCheckbox !== null)
 	}
 }
 
+let params = new URLSearchParams(window.location.search);
 
-for (let filterCheckbox of filterCheckboxes)
+for (let param of params)
 {
-	let param = filterCheckbox.name;
-	let value = filterCheckbox.value;
-	let query = (param + '=' + value + '&');
-	if (currentLocation.indexOf(query) !== -1)
+	let checkboxName = param[0].slice(5,-3);
+	let checkbox = document.querySelector(`[name="${checkboxName}"][value="${param[1]}"]`)
+	if (checkbox !== null)
 	{
-		filterCheckbox.checked = true
+		checkbox.checked = true;
+	}
+	if (param[0] === "tag[]")
+	{
+		let checkbox = document.querySelector(`[name='tag'][value="${param[1]}"]`)
+		checkbox.checked = true;
 	}
 }
 

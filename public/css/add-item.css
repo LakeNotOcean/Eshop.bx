@@ -4,17 +4,16 @@
 
 .form-container {
 	flex: 1;
-	display: flex;
+	box-sizing: border-box;
 	flex-direction: column;
-	justify-content: space-between;
 	padding: 30px 50px;
 	max-width: 1300px;
+	min-height: calc(100vh - var(--nav-height));
 }
 
 .form-add {
 	display: flex;
 	flex-direction: column;
-	background: #F6F6F6;
 	padding: 20px 50px;
 }
 

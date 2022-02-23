@@ -44,11 +44,11 @@ class CSRFMiddleware extends AbstractMiddleware
 		{
 			$expected = CSRF::getToken();
 			$now = $request->getPostParametersByName('tokenFieldName');
-			throw new CSRFException("CSRF token failed validation. Expected: {$expected}, now: {$now}");
+			throw new CSRFException("CSRF token failed validation. Expected: {$expected}, now: {$now}", 0, $e);
 		}
 		catch (NoSuchQueryParameterException $e)
 		{
-			throw new CSRFException("For does not contains CSRF token field. Use CSRF::getFormField()");
+			throw new CSRFException("For does not contains CSRF token field. Use CSRF::getFormField()", 0, $e);
 		}
 		return call_user_func($this->getResponse, $request, ...$params);
 	}

@@ -44,6 +44,10 @@
 					<div class="order-label">Почта покупателя:</div>
 					<div class="order-value"><?= htmlspecialchars($order->getEmail())?></div>
 				</div>
+				<div class="order-line">
+					<div class="order-label">Дата заказа:</div>
+					<div class="order-value"><?= htmlspecialchars($order->getDateCreate())?></div>
+				</div>
 				<div class="order-items">
 					<div class="order-line">
 						<div class="order-label">Товары:</div>

@@ -72,6 +72,23 @@ class UserService implements UserServiceInterface
 		return $_SESSION[self::UserSessionKey];
 	}
 
+	/**
+	 * @throws UserServiceException
+	 */
+	public function getUserListByRole(int $roleId): array
+	{
+		$this->checkIsAdmin();
+		return $this->userDAO->getUserListByRole($roleId);
+	}
+
+
+	public function getUserListByQuery(int $roleId,string $query):array
+	{
+		$this->checkIsAdmin();
+		return $this->userDAO->getUserListByQuery($roleId, $query);
+	}
+
+
 	public function registerUser(user $user, string $password): User
 	{
 		$newUser = $this->userDAO->addUser($user, $password);

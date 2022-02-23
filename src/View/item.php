@@ -16,12 +16,13 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 <link rel="stylesheet" href="/css/lib/fontawesome-all.css">
 <link rel="stylesheet" href="/css/rating.css">
 
+<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 <div class="opened-images" style="display: none;">
 	<div class="open-images-container">
 		<div class="open-images-header">
 			<div class="btn-back"></div>
-			<div class="btn-add-to-favorites">
-				<svg class="add-to-favorites">
+			<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
+				<svg class="add-to-favorites <?= $item->getIsFavorite() ? "favoriteActive" : ""?>">
 					<use xlink:href="/img/sprites.svg#heart"></use>
 				</svg>
 				<div class="add-to-favorites-label">В избранное</div>
@@ -43,7 +44,6 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 	<a class="anchor" id="main"></a>
 	<div class="item-header">
 		<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 		<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
 			<svg class="add-to-favorites <?= $item->getIsFavorite() ? "favoriteActive" : ""?>">
 				<use xlink:href="/img/sprites.svg#heart"></use>
@@ -79,7 +79,10 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				<a class="scroll-menu-item" title="specs">Характеристики</a>
 				<a class="scroll-menu-item" title="description">Описание</a>
 				<a class="scroll-menu-item" title="reviews">Отзывы</a>
+				<?php
+				if (!empty($similarItems)){?>
 				<a class="scroll-menu-item" title="similar">Похожие товары</a>
+				<?}?>
 			</div>
 		</div>
 
@@ -87,9 +90,9 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 
 			<div class="item-main-header">
 				<div class="item-main-short-desc">
-					<div class="item-main-tags">
+					<div class="item-tags">
 						<?php foreach ($item->getTags() as $tag): ?>
-							<div class="item-main-tag"><?= $tag->getName() ?></div>
+							<div class="item-tag"><?= $tag->getName() ?></div>
 						<?php endforeach; ?>
 					</div>
 					<div class="item-main-short-desc-text">
@@ -117,7 +120,21 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 							</div>
 						</a>
 					</div>
-					<a class="btn-buy" href="/makeOrder/<?= $item->getId() ?>">Купить</a>
+					<div id="item-cart-container">
+						<?php if (!isset($isItemAdded) || !$isItemAdded): ?>
+							<div id="cart-add-item">
+								<input class="item-id" type="hidden" name="item-id" value="<?= $item->getId() ?>">
+								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+								<div id="send-item-id" class="btn-buy">Добавить товар в корзину</div>
+							</div>
+						<?php else: ?>
+							<div id="cart-item-added">
+								<input class="item-id" type="hidden" name="item-id" value="<?= $item->getId() ?>">
+								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+								<div id="send-item-id" class="btn-buy btn-item-added">Удалить товар из корзины</div>
+							</div>
+						<?php endif; ?>
+					</div>
 				</div>
 			</div>
 
@@ -128,12 +145,14 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				foreach ($item->getSpecificationCategoriesList() as $category): ?>
 					<div class="spec-category"><?= htmlspecialchars($category->getName()) ?></div>
 					<?php
-					foreach ($category->getSpecifications() as $spec): ?>
+					foreach ($category->getSpecifications() as $spec):
+						if ($spec->getValue()):
+						?>
 						<div class="item-spec">
 							<div class="item-spec-name"><?= htmlspecialchars($spec->getName()) ?></div>
 							<div class="item-spec-value"><?= htmlspecialchars($spec->getValue()) ?></div>
 						</div>
-					<?php
+					<?php endif;
 					endforeach; ?>
 				<?php
 				endforeach; ?>
@@ -221,6 +240,8 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				</form>
 				<?php endif; ?>
 			</div>
+			<?php
+			if (!empty($similarItems)){?>
 			<div class="similar-item-section">
 				<a class="anchor" id="similar"></a>
 				<div class="item-section-title">Похожие товары</div>
@@ -229,7 +250,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 					<div class="slider-wrapper">
 					<div class="similar-item-cards-section">
 					<?php
-					foreach (array_values($similarItems) as $index=>$similarItem): ?>
+					foreach (array_values($similarItems) as $index => $similarItem): ?>
 						<a href="/item/<?=$similarItem->getId()?>" class="similar-item-card card-outline">
 							<div class="similar-item-image-section">
 								<picture>
@@ -238,7 +259,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 								</picture>
 							</div>
 							<div class="similar-item-body-section">
-								<div class="similar-item-body-title"><?=htmlspecialchars($similarItem->getTitle())?></div>
+								<div class="similar-item-body-title"><?= htmlspecialchars($similarItem->getTitle()) ?></div>
 								<div class="similar-item-body-price"><?= htmlspecialchars($similarItem->getPrice()) ?> ₽</div>
 							</div>
 						</a>
@@ -248,6 +269,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 					<div class="btn-back similar-item-cards-right-arrow"></div>
 				</div>
 			</div>
+			<?}?>
 		</div>
 	</div>
 </div>
@@ -263,3 +285,6 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 <script src="/js/add-to-favorites.js"></script>
 
 <script src="/js/review/send-review.js"></script>
+
+<script src="/js/csrf.js" type="module"></script>
+<script src="/js/cart/add-item.js" type="module"></script>

@@ -8,7 +8,8 @@
 	<form action="/admin/addItemType" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="item-type" class="field">
 			<span class="label-title">Тип товара</span>
-			<input type="text" id="item-type" name="item-type" placeholder="Введите название типа товара" class="input">
+			<input type="text" id="item-type" name="item-type" placeholder="Введите название типа товара" class="input"
+				   autocomplete="off">
 		</label>
 		<div class="specifications">
 			<div class="specifications-title">Характеристики</div>

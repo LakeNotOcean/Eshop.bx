@@ -65,9 +65,14 @@ abstract class AbstractDAO
 	{
 		$this->checkEmptyColumns($columns);
 		$preparedQuery = "UPDATE {$tableName} SET "
-			. implode(', ', array_map(function(string $column){return "{$column}=?";}, $columns))
+			. implode(', ', array_map(static function(string $column){return "{$column}=?";}, $columns))
 			. " WHERE {$idColumnName}=?";
 		return $this->dbConnection->prepare($preparedQuery . ';');
+	}
+
+	protected function getPreparedGroup(int $preparedElementsCount)
+	{
+		return '(' . implode(', ', array_fill(0, $preparedElementsCount, '?')) . ')';
 	}
 
 	private function checkEmptyColumns(array $columns): void

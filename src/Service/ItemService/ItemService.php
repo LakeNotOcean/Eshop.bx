@@ -38,6 +38,11 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItems($limitOffset['offset'], $limitOffset['amountItems']);
 	}
 
+	public function isItemAvailable(int $itemId): bool
+	{
+		return $this->itemDAO->isItemActive($itemId);
+	}
+
 	public function getFavoriteItems(int $userId, array $limitOffset = ['offset' => -1, 'amountItems' => 0]): array
 	{
 		return $this->itemDAO->getFavoriteItems($userId, $limitOffset['offset'], $limitOffset['amountItems']);
@@ -111,9 +116,9 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItemsByQuery($limitOffset['offset'], $limitOffset['amountItems'], $searchQuery);
 	}
 
-	public function getItemsByFilters(array $limitOffset,string $query,string $price,array $tags,array $specs,int $typeId, bool $deactivateInclude): array
+	public function getItemsByFilters(array $limitOffset,string $query,string $price,array $tags,array $specs,int $typeId, bool $deactivateInclude, string $sortingMethod): array
 	{
-		return $this->itemDAO->getItemsByFilters($limitOffset['offset'], $limitOffset['amountItems'],$query, $price, $tags,$specs,$typeId,$deactivateInclude);
+		return $this->itemDAO->getItemsByFilters($limitOffset['offset'], $limitOffset['amountItems'], $query, $price, $tags, $specs, $typeId, $deactivateInclude, $sortingMethod);
 	}
 
 	public function getItemsMinMaxPriceByItemTypes(array $typeIds): array
@@ -165,9 +170,9 @@ class ItemService implements ItemServiceInterface
 	}
 
 
-	public function getItemsCategoriesByItemType(array $typeIds): array
+	public function getItemsCategoriesByItemType(int $queryTypeId): array
 	{
-		return $this->specificationDAO->getCategoriesWithValueByItemTypeId($typeIds);
+		return $this->specificationDAO->getCategoriesWithValueByItemTypeId($queryTypeId);
 	}
 
 

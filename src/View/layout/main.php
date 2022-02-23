@@ -1,7 +1,8 @@
 <?php
 /** @var string $content */
-/** @var string $query */
+/** @var bool $darkMode */
 
+/** @var string $query */
 /** @var string $userName */
 /** @var bool $isAdmin */
 /** @var bool $isAuthenticated */
@@ -28,7 +29,14 @@ if (!isset($query))
 	<link rel="manifest" href="/img/logo/site.webmanifest">
 	<link rel="mask-icon" href="/img/logo/safari-pinned-tab.svg" color="#5bbad5">
 	<meta name="msapplication-TileColor" content="#da532c">
-	<meta name="theme-color" content="#ffffff">
+	<meta name="theme-color" content="#333333">
+
+	<?php if ($darkMode):?>
+		<link rel="stylesheet" href="/css/appearance/dark-theme.css" id="appearance" class="appearance-dark">
+	<?php else:?>
+		<link rel="stylesheet" href="/css/appearance/light-theme.css" id="appearance" class="appearance-light">
+	<?php endif;?>
+
 	<link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -40,7 +48,8 @@ if (!isset($query))
 		</svg>
 	</a>
 	<div class="search">
-		<input type="text" id="query" name="query" class="search-field" placeholder="Поиск по сайту" value="<?= $query ?>">
+		<input type="text" id="query" name="query" class="search-field" placeholder="Поиск по сайту" value="<?= $query ?>"
+			   autocomplete="off">
 		<div class="search-icon">
 			<div></div>
 		</div>
@@ -70,24 +79,46 @@ if (!isset($query))
 					</div>
 				</div>
 			</div>
+			<div class="nav-item">
+				<div class="nav-item-label">Администрирование</div>
+				<div class="menu-container">
+					<div class="menu">
+						<a class="menu-item" href="/admin/adminList">Список администраторов</a>
+					</div>
+				</div>
+			</div>
 			<script src="/js/admin-menu.js"></script>
 		</div>
 	<?php endif;?>
 
 	<?php if ($isAuthenticated): ?>
 		<div class="nav-item" id="userMenu">
-			<div class="nav-item-label"><?= $userName?></div>
+			<a href="<?= URLResolver::resolve('make-order') ?>">
+				<svg class="cart">
+					<use xlink:href="/img/sprites.svg#cart"></use>
+				</svg>
+				Корзина
+			</a>
+		</div>
+
+		<div class="nav-item" id="userMenu">
+			<div class="nav-item-label"><?= $userName ?></div>
 			<div class="menu-container profile">
 				<div class="menu">
 					<a class="menu-item" href="<?= URLResolver::resolve('user-favorites') ?>">Избранное</a>
 					<a class="menu-item" href="<?= URLResolver::resolve('user-profile') ?>">Личный кабинет</a>
-					<a href="<?= URLResolver::resolve('logout-user') ?>">
+					<a href="<?= URLResolver::resolve('logout-user') ?>" class="menu-item-btn">
 						<div class="btn btn-normal sign-in">Выйти</div>
 					</a>
 				</div>
 			</div>
 		</div>
 	<?php else: ?>
+		<a href="<?= URLResolver::resolve('make-order') ?>">
+			<svg class="cart">
+				<use xlink:href="/img/sprites.svg#cart"></use>
+			</svg>
+		</a>
 		<a href="<?= URLResolver::resolve('login-user') ?>">
 			<div class="btn btn-normal sign-in">Войти</div>
 		</a>
@@ -95,6 +126,16 @@ if (!isset($query))
 			<div class="btn btn-normal sign-in">Зарегистрироваться</div>
 		</a>
 	<?php endif; ?>
+	<div title="Переключить тему">
+		<svg class="btn-theme">
+			<?php if ($darkMode):?>
+				<use xlink:href="/img/sprites.svg#sun"></use>
+			<?php else:?>
+				<use xlink:href="/img/sprites.svg#moon"></use>
+			<?php endif;?>
+		</svg>
+	</div>
+	<script src="/js/change-theme.js"></script>
 </nav>
 
 <main>
@@ -102,10 +143,9 @@ if (!isset($query))
 		<?= $content ?>
 	</div>
 
-
-		<div class="footer">
-			© 2022, EShop Inc. · <a href="/">Главная страница</a> · <a href="/">Помощь</a> · <a href="/">Поддержка</a>
-		</div>
+	<div class="footer">
+		© 2022, EShop Inc. · <a href="/">Главная страница</a> · <a href="/">Помощь</a> · <a href="/">Поддержка</a>
+	</div>
 </main>
 
 </body>

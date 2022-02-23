@@ -1,5 +1,6 @@
 <?php
 
+use Up\Controller\CartController;
 use Up\Controller\CoreController;
 use Up\Controller\ImageController;
 use Up\Controller\ItemController;
@@ -17,8 +18,11 @@ $router->get('/404', [CoreController::class, 'get404'], '404');
 //User
 $router->get('/', [ItemController::class, 'getItems'], 'home');
 $router->get('/item/{positiveInt:id}', [ItemController::class, 'getItem'], 'item-detail');
-$router->get('/makeOrder/{positiveInt:id}', [OrderController::class, 'makeOrder'], 'make-order');
 $router->post('/finishOrder', [OrderController::class, 'finishOrder'], 'finish-order');
+$router->post('/addItemToCart', [CartController::class, 'addItemToCart'], 'add-item-to-cart');
+$router->post('/deleteItemFromCart', [CartController::class, 'deleteItemFromCart'], 'delete-item-from-cart');
+$router->get('/makeOrder', [OrderController::class, 'makeOrder'], 'make-order');
+
 $router->get('/register', [UserController::class, 'registerUserPage'], 'register-user');
 $router->get('/login', [UserController::class, 'loginUserPage'], 'login-user');
 $router->post('/register', [UserController::class, 'registerUser'], 'register-user');
@@ -62,6 +66,8 @@ $router->post('/admin/deleteItem/{positiveInt:id}', [ItemController::class, 'rea
 $router->post('/admin/fastUpdateItem', [ItemController::class, 'updateCommonInfo'], 'fast-item-update');
 $router->post('/admin/deleteImage/{positiveInt:id}', [ImageController::class, 'deleteImageById'], 'delete-image');
 
+$router->get('/admin/adminList',[UserController::class, 'adminListPage'],'admin-list');
+$router->post('/admin/adminList',[UserController::class, 'removeAdmin'],'admin-list');
 
 $router->get('/admin/editCategory', [CategoryController::class, 'editCategoriesPage'], 'edit-category');
 

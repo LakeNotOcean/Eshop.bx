@@ -22,7 +22,7 @@ interface ItemDAOInterface
 
 	public function getItemsMinMaxPriceByItemTypes(array $typeIds): array;
 
-	public function getItemsByFilters(int $offset, int $amountItems, string $query, string $price, array $tags, array $specs, int $typeId, bool $deactivate_include): array;
+	public function getItemsByFilters(int $offset, int $amountItems, string $query, string $price, array $tags, array $specs, int $typeId, bool $deactivate_include, string $sortingMethod): array;
 
 	public function getFavoriteItems(int $userId, int $offset, int $amountItems): array;
 
@@ -50,8 +50,14 @@ interface ItemDAOInterface
 
 	public function updateCommonInfo(Item $item): Item;
 
+	public function isItemActive(int $itemId): bool;
 
+	/**
+	 * @param int[] $itemIds
+	 *
+	 * @return Item[]
+	 */
+	public function getItemsWithIds(array $itemIds): array;
 
 	public function deleteItem(int $id): void;
-
 }

@@ -6,6 +6,7 @@
 /** @var int $result_count */
 /** @var int $itemsAmount */
 /** @var string $query */
+/** @var string $sortingMethod */
 /** @var bool $isAdmin */
 
 /** @var $paginator */
@@ -38,14 +39,14 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 						<div class="price-box">
 							<label for="min-price" class="price-label">мин. цена</label>
 							<div class="price-input">
-								₽<input type=text id="min-price" name="min-price" placeholder="<?= $price['minPrice']?>" class="input">
+								₽<input type="number" id="min-price" name="min-price"  placeholder="<?= $price['minPrice']?>" class="input">
 							</div>
 						</div>
 						<div class="range-dash"></div>
 						<div class="price-box">
 							<label for="max-price" class="price-label">макс. цена</label>
 							<div class="price-input">
-								₽<input type=text id="max-price" name="max-price" placeholder="<?= $price['maxPrice']?>" class="input">
+								₽<input type="number" id="max-price" name="max-price"  placeholder="<?= $price['maxPrice']?>" class="input">
 							</div>
 						</div>
 					</div>
@@ -87,7 +88,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 					<div class="tag-list">
 						<?php foreach ($tags as $tag):?>
 						<div class="tag">
-							<input type="checkbox" class="category_tag_checkbox category_checkbox" value="<?= $tag->getID() ?>" form="filter-form">
+							<input type="checkbox" class="category_tag_checkbox category_checkbox" name="tag" value="<?= $tag->getID() ?>" form="filter-form">
 							<label><?= htmlspecialchars($tag->getName()) ?></label>
 						</div>
 						<?php endforeach; ?>
@@ -105,10 +106,29 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 			<div class="message-no-results">
 				По вашему запросу не найдено ни одного товара. Попробуйте изменить условия поиска.
 			</div>
+			<?php else: ?>
+			<div class="item-sorting-box">
+				<div class="item-sorting-box-title">Сортировка товаров:</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'sort_order' ? 'active' : '' ?>" id="sort_order">
+					По популярности
+				</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'price' ? 'active' : '' ?>" id="price">
+					По цене <div class="sort-direction">↑</div>
+				</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'price_desc' ? 'active' : '' ?>" id="price_desc">
+					По цене <div class="sort-direction">↓</div>
+				</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'name' ? 'active' : '' ?>" id="name">
+					По названию<div class="sort-direction">↑</div>
+				</div>
+				<div class="item-sorting-button sorting-button <?= $sortingMethod === 'name_desc' ? 'active' : '' ?>" id="name_desc">
+					По названию <div class="sort-direction">↓</div>
+				</div>
+			</div>
 			<?php endif; ?>
 
 			<?php
-			foreach ($items as $item) : ?>
+			foreach ($items as $item): ?>
 
 				<?php if ($isAdmin):?>
 				<form enctype="multipart/form-data" action="/admin/fastUpdateItem" name="fast-update" method="post" class="item card card-hover">
@@ -164,7 +184,6 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 											: 'Отзывов пока нет.' ?>
 									</div>
 								</div>
-
 								<?php if ($isAdmin): ?>
 								<input name="item-sort_order" class="input display-order" type="number" value="<?= $item->getSortOrder() ?>">
 								<div class="admin-btn-container">
