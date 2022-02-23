@@ -15,6 +15,7 @@ $pref = '_big';
 
 use Up\Core\Router\URLResolver;
 use Up\Entity\Item;
+use Up\Lib\Wordprocessor\WordProcessor;
 
 ?>
 
@@ -173,7 +174,7 @@ use Up\Entity\Item;
 										<use xlink:href="./img/sprites.svg#star"></use>
 									</svg>
 									<div class="rating-value"><?= (float)random_int(40, 50) / 10 ?></div>
-									<div class="review-count">(<?= random_int(5, 50) ?> отзывов)</div>
+									<div class="review-count">(<?php $reviewCount = random_int(5, 50); echo $reviewCount ?> <?= WordProcessor::formatWord($reviewCount, 'отзыв') ?>)</div>
 								</div>
 							<?php endif; ?>
 							<?php if ($isAdmin): ?>

@@ -25,7 +25,7 @@ class OrderLayoutManager  implements LayoutManagerInterface
 
 	public function render(string $viewPath, array $viewParams): string
 	{
-		return $this->templateProcessor->render($viewPath, $viewParams, $this::path, $this->getLayoutParams());
+		return $this->templateProcessor->render($viewPath, array_merge($viewParams, $this->getLayoutParams()), $this::path, $this->getLayoutParams());
 	}
 
 	protected function getLayoutParams(): array

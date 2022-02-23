@@ -5,6 +5,8 @@
 /** @var int $orderSize */
 /** @var int $cost */
 
+use Up\Lib\Wordprocessor\WordProcessor;
+
 ?>
 
 <!doctype html>
@@ -38,7 +40,11 @@
 			<use xlink:href="/img/sprites.svg#logo"></use>
 		</svg>
 	</a>
-	<div class="order-info-message">Покупка <?= $orderSize ?> товара за <?= $cost ?> ₽</div>
+	<?php if ($cost > 0): ?>
+	<div class="order-info-message">Оформление заказа: <?= $orderSize ?> <?= WordProcessor::formatWord($orderSize, 'товар') ?> за <?= $cost ?> ₽</div>
+	<?php else: ?>
+	<div class="order-info-message">Ваша корзина пуста!</div>
+	<?php endif; ?>
 </nav>
 
 <main>
