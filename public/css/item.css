@@ -98,7 +98,7 @@ scroll-menu
 	display: flex;
 	align-items: center;
 	padding: 15px;
-	transition: .4s;
+	transition: .2s;
 	text-decoration: none;
 	cursor: pointer;
 	user-select: none;
@@ -106,7 +106,6 @@ scroll-menu
 
 .scroll-menu-item:hover {
 	background-color: var(--color-secondary);
-	transition: .1s;
 }
 
 /*==========================
