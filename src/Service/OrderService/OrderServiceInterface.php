@@ -19,4 +19,6 @@ interface OrderServiceInterface
 
 	public function deleteOrder(int $orderId): void;
 
+	public function checkThatUserBoughtItem(int $userId, int $itemId): bool;
+
 }

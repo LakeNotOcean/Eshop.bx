@@ -56,4 +56,8 @@ class OrderService implements OrderServiceInterface
 		$this->orderDAO->deleteOrder($orderId);
 	}
 
+	public function checkThatUserBoughtItem(int $userId, int $itemId): bool
+	{
+		return $this->orderDAO->existUsersFinishedOrderByItemId($userId, $itemId);
+	}
 }

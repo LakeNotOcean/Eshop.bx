@@ -11,4 +11,6 @@ class DataTypes extends Enum
 	const login='login';
 	const password='password';
 	const names='names';
+	const rating='rating';
+	const reviewText='reviewText';
 }

@@ -40,6 +40,7 @@ class ReviewController
 		$review->setComment($text);
 		$review->setUser($request->getUser());
 		$review->setItem($item);
+		$review->setDate(new \DateTime());
 		$this->reviewService->save($review);
 		return Redirect::createResponseByURLName('item-detail', [], ['id' => $itemId]);
 	}

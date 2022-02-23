@@ -1,4 +1,6 @@
 let formReview = document.querySelector('.review-send');
-formReview.querySelector('.btn-add').addEventListener('click', (e) =>{
-	formReview.submit();
-});
+if(formReview !== null){
+	formReview.querySelector('.btn-add').addEventListener('click', (e) =>{
+		formReview.submit();
+	});
+}

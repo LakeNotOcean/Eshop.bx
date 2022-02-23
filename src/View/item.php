@@ -2,7 +2,13 @@
 /** @var \Up\Entity\UserItem $item */
 /** @var array<UP\Entity\Item> $similarItems */
 /** @var array<\Up\Entity\Review> $reviews */
-//$itemImages = ['/img/2_big.webp', '/img/2-1_big.webp', '/img/2-2_big.webp'];
+/** @var bool $itemIsPurchased */
+/** @var bool $reviewIsWritten */
+/** @var bool $isAuthenticated */
+
+use Up\Lib\FormatHelper\DateFormatterRu;
+use Up\Lib\FormatHelper\NumberFormatter;
+use Up\Lib\FormatHelper\WordEndingResolver;
 ?>
 
 <link rel="stylesheet" href="/css/item.css">
@@ -101,9 +107,13 @@
 								<use xlink:href="/img/sprites.svg#star"></use>
 							</svg>
 							<div class="buy-reviews-label">
-								<div class="buy-rating">4.8</div>
+								<div class="buy-rating"><?= ($item->getAmountReviews() > 0) ? NumberFormatter::ratingFormat($item->getRating()) : '—' ?></div>
 								<div class="buy-reviews-separator">·</div>
-								<div class="buy-reviews-count">6 отзывов</div>
+								<div class="buy-reviews-count"><?= ($item->getAmountReviews() > 0) ?
+										"({$item->getAmountReviews()} "
+										. WordEndingResolver::resolve($item->getAmountReviews(), array('отзыв','отзыва','отзывов'))
+										. ')'
+										: 'нет отзывов' ?></div>
 							</div>
 						</a>
 					</div>
@@ -141,9 +151,13 @@
 							<use xlink:href="/img/sprites.svg#star"></use>
 						</svg>
 						<div class="reviews-label">
-							<div class="rating">4.8</div>
+							<div class="rating"><?= ($item->getAmountReviews() > 0) ? NumberFormatter::ratingFormat($item->getRating()) : '—' ?></div>
 							<div class="reviews-separator">·</div>
-							<div class="reviews-count">6 отзывов</div>
+							<div class="reviews-count"><?= ($item->getAmountReviews() > 0) ?
+									"({$item->getAmountReviews()} "
+									. WordEndingResolver::resolve($item->getAmountReviews(), array('отзыв','отзыва','отзывов'))
+									. ')'
+									: 'нет отзывов' ?></div>
 						</div>
 					</div>
 					<?php foreach ($reviews as $review): ?>
@@ -152,17 +166,24 @@
 							<img src="/img/person.jpg" alt="person">
 						</div>
 						<div class="item-review-data">
-							<div class="item-review-name"><?= $review->getUser()->getName() ?></div>
-							<div class="item-review-date">11 января 2022 г.</div>
+							<div class="item-review-name"><?= htmlspecialchars($review->getUser()->getName()) ?></div>
+							<div class="item-review-date"><?= DateFormatterRu::format($review->getDate()) ?></div>
 						</div>
 						<div class="item-review-text">
-							<?= $review->getComment() ?>
+							<?= htmlspecialchars($review->getComment()) ?>
 						</div>
 					</div>
 					<?php endforeach; ?>
 				</div>
 			</div>
 			<div class="review-send-section">
+				<?php if(!$isAuthenticated): ?>
+				<div>Оставлять отзывы могут только авторизированные пользователи</div>
+				<?php elseif (!$itemIsPurchased): ?>
+				<div>Вам сначала нужно купить этот товар, прежде чем оставить отзыв</div>
+				<?php elseif ($reviewIsWritten): ?>
+				<div>Вы уже оставляли отзыв к этому товару</div>
+				<?php else: ?>
 				<form class="review-send" action="<?= \Up\Core\Router\URLResolver::resolve('add-review') ?>" method="post">
 					<div class="rating-container">
 						<div class="review_stars_wrap">
@@ -195,6 +216,7 @@
 					<input name="item_id" type="hidden" value="<?= $item->getId() ?>">
 					<div class="btn btn-add">Отправить отзыв</div>
 				</form>
+				<?php endif; ?>
 			</div>
 			<div class="similar-item-section">
 				<a class="anchor" id="similar"></a>

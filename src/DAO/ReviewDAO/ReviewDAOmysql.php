@@ -24,8 +24,8 @@ class ReviewDAOmysql extends AbstractDAO implements ReviewDAOInterface
 
 	public function save(Review $reviewDetail): Review
 	{
-		$this->getInsertPrepareStatement('up_review', ['USER_ID', 'ITEM_ID', 'SCORE', 'COMMENT'])
-			->execute([$reviewDetail->getUser()->getId(), $reviewDetail->getItem()->getId(), $reviewDetail->getRating(), $reviewDetail->getComment()]);
+		$this->getInsertPrepareStatement('up_review', ['USER_ID', 'ITEM_ID', 'SCORE', 'COMMENT', 'DATE_CREATE'])
+			->execute([$reviewDetail->getUser()->getId(), $reviewDetail->getItem()->getId(), $reviewDetail->getRating(), $reviewDetail->getComment(), $reviewDetail->getDate()->format('Y-m-d')]);
 		$id = $this->dbConnection->lastInsertId();
 		$reviewDetail->setId($id);
 		return $reviewDetail;
@@ -94,6 +94,7 @@ class ReviewDAOmysql extends AbstractDAO implements ReviewDAOInterface
 		$review->setComment($row['r_comment']);
 		$review->setRating($row['r_score']);
 		$review->setUser($this->mapUser($row));
+		$review->setDate(\DateTime::createFromFormat('Y-m-d', $row['r_date']));
 		return $review;
 	}
 
@@ -141,6 +142,7 @@ class ReviewDAOmysql extends AbstractDAO implements ReviewDAOInterface
                   ur.USER_ID u_id, 
                   ur.COMMENT r_comment, 
                   ur.SCORE r_score,
+                  ur.DATE_CREATE r_date,
                   ui.ACTIVE i_active,
                   ui.SORT_ORDER i_sort_order,
                   ui.SHORT_DESC i_short_desc,

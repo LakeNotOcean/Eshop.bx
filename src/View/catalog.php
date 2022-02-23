@@ -14,6 +14,8 @@ $pref = '_big';
 
 use Up\Core\Router\URLResolver;
 use Up\Entity\Item;
+use Up\Lib\FormatHelper\NumberFormatter;
+use Up\Lib\FormatHelper\WordEndingResolver;
 
 ?>
 
@@ -146,13 +148,23 @@ use Up\Entity\Item;
 								</div>
 							<?php endif;?>
 							<div class="item-other-footer">
+
 								<div class="rating">
 									<svg class="star-icon">
 										<use xlink:href="./img/sprites.svg#star"></use>
 									</svg>
-									<div class="rating-value"><?= (float)random_int(40, 50) / 10 ?></div>
-									<div class="review-count">(<?= random_int(5, 50) ?> отзывов)</div>
+									<div class="rating-value">
+										<?= ($item->getAmountReviews() > 0) ? NumberFormatter::ratingFormat($item->getRating()) : '—' ?>
+									</div>
+									<div class="review-count">
+										<?= ($item->getAmountReviews() > 0) ?
+											"({$item->getAmountReviews()} "
+											. WordEndingResolver::resolve($item->getAmountReviews(), array('отзыв','отзыва','отзывов'))
+											. ')'
+											: 'Отзывов пока нет.' ?>
+									</div>
 								</div>
+
 								<?php if ($isAdmin): ?>
 								<input name="item-sort_order" class="input display-order" type="number" value="<?= $item->getSortOrder() ?>">
 								<div class="admin-btn-container">

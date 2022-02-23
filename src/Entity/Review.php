@@ -16,6 +16,10 @@ class Review extends Entity
 	 * @var Item
 	 */
 	protected $item;
+	/**
+	 * @var \DateTimeInterface
+	 */
+	protected $date;
 
 
 	/**
@@ -85,5 +89,21 @@ class Review extends Entity
 	public function issetItem(): bool
 	{
 		return isset($this->item);
+	}
+
+	/**
+	 * @return \DateTimeInterface
+	 */
+	public function getDate(): \DateTimeInterface
+	{
+		return $this->date;
+	}
+
+	/**
+	 * @param \DateTimeInterface $date
+	 */
+	public function setDate(\DateTimeInterface $date): void
+	{
+		$this->date = $date;
 	}
 }
