@@ -1,3 +1,6 @@
+@import "lib/input.css";
+@import "lib/btn.css";
+
 .container {
 	flex: 1;
 	display: flex;
@@ -29,6 +32,7 @@ order-items
 	width: 130px;
 	height: 130px;
 	object-fit: contain;
+	border-radius: 10px;
 }
 
 .item-info {
@@ -68,41 +72,7 @@ customer-data
 	flex-wrap: wrap;
 }
 
-label {
-	display: flex;
-	flex: 1;
-	min-width: 300px;
-}
-
-input, textarea {
-	flex: 1;
-	line-height: 40px;
-	padding: 0 10px;
-	margin: 5px 10px 5px 0;
-
-	border-radius: 10px;
-	border: 2px solid #D9D9D9;
-	outline: none;
-	background: #ffffff;
-
-	font-size: 15px;
-	font-family: 'Montserrat', sans-serif;
-	color: #333333;
-}
-
 .order-comment {
 	line-height: 15px;
 	padding: 10px;
-}
-
-.btn-confirm {
-	width: 300px;
-	margin: 20px auto;
-}
-
-.btn-confirm:hover {
-	background: #F17F42;
-	border-color: #F17F42;
-	color: #ffffff;
-	font-weight: 500;
 }
