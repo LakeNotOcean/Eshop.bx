@@ -2,6 +2,10 @@
 @import "lib/btn.css";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
+* {
+	transition: background-color .5s, box-shadow .5s;
+}
+
 body {
 	font-family: 'Montserrat', sans-serif;
 	font-size: 15px;
@@ -164,6 +168,17 @@ menu
 
 .menu-item:hover {
 	background: var(--color-secondary);
+}
+
+/*==========================
+btn-theme
+==========================*/
+
+.btn-theme {
+	flex: 0;
+	min-width: 30px;
+	width: 30px;
+	height: 30px;
 }
 
 /*==========================

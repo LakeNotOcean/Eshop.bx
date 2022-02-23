@@ -32,9 +32,9 @@ if (!isset($query))
 	<meta name="theme-color" content="#333333">
 
 	<?php if ($darkMode):?>
-		<link rel="stylesheet" href="/css/appearance/dark-theme.css">
+		<link rel="stylesheet" href="/css/appearance/dark-theme.css" id="appearance" class="appearance-dark">
 	<?php else:?>
-		<link rel="stylesheet" href="/css/appearance/light-theme.css">
+		<link rel="stylesheet" href="/css/appearance/light-theme.css" id="appearance" class="appearance-light">
 	<?php endif;?>
 
 	<link rel="stylesheet" href="/css/main.css">
@@ -112,6 +112,14 @@ if (!isset($query))
 			<div class="btn btn-normal sign-in">Зарегистрироваться</div>
 		</a>
 	<?php endif; ?>
+	<svg class="btn-theme">
+		<?php if ($darkMode):?>
+			<use xlink:href="/img/sprites.svg#sun"></use>
+		<?php else:?>
+			<use xlink:href="/img/sprites.svg#moon"></use>
+		<?php endif;?>
+	</svg>
+	<script src="/js/change-theme.js"></script>
 </nav>
 
 <main>
