@@ -172,6 +172,57 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		];
 	}
 
+	public function getPurchasedItems(int $userId, int $offset, int $amount): array
+	{
+		$statement = $this->getSelectPurchasedItemsStatement($this->getIdsPurchasedItemsQuery($offset, $amount));
+		$statement->execute([$userId, $userId]);
+		return $this->mapItems($statement);
+	}
+
+	public function getAmountPurchasedItems(int $userId): int
+	{
+		$statement = $this->dbConnection->prepare("SELECT COUNT(*) as COUNT
+														 FROM up_item ui
+														 INNER JOIN `up_order-item` `uo-i` on ui.ID = `uo-i`.ITEM_ID
+														 INNER JOIN up_order uo on `uo-i`.ORDER_ID = uo.ID AND uo.USER_ID=?;");
+		$statement->execute([$userId]);
+		return $statement->fetch()['COUNT'];
+	}
+
+	private function getSelectPurchasedItemsStatement(string $ids): PDOStatement
+	{
+		$query = "SELECT ui.ID as ui_ID,
+					   TITLE as TITLE,
+					   PRICE as PRICE,
+					   SORT_ORDER as SORT_ORDER,
+					   SHORT_DESC as SHORT_DESC,
+					   ACTIVE as ACTIVE,
+					   uoi.ID as ORIGINAL_IMAGE_ID,
+					   uoi.PATH as ORIGINAL_IMAGE_PATH,
+					   uoi.IS_MAIN as ORIGINAL_IMAGE_IS_MAIN,
+					   uiws.PATH as IMAGE_WITH_SIZE_PATH,
+					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE,
+                       COUNT(ur.ID) as REVIEWS_COUNT,
+                       IFNULL(AVG(ur.SCORE), 0) as AVG_RATING
+				  FROM up_order uo
+				  INNER JOIN `up_order-item` `uo-i` on uo.ID = `uo-i`.ORDER_ID AND `uo-i`.ITEM_ID IN ({$ids})
+				  INNER JOIN up_item ui on `uo-i`.ITEM_ID = ui.ID
+				  INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
+				  INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
+				  LEFT JOIN up_review ur on ui.ID = ur.ITEM_ID
+				  WHERE uo.USER_ID = ?
+				  GROUP BY ui.ID, TITLE, PRICE, SORT_ORDER, SHORT_DESC, ACTIVE, uoi.ID, uoi.PATH, uoi.IS_MAIN, uiws.PATH, uiws.SIZE";
+		return $this->dbConnection->prepare($query);
+	}
+
+	private function getIdsPurchasedItemsQuery(int $offset, int $amount): string
+	{
+		return "SELECT * FROM (SELECT DISTINCT ui.ID FROM up_item ui
+                INNER JOIN `up_order-item` `uo-i` on ui.ID = `uo-i`.ITEM_ID
+                INNER JOIN up_order uo on `uo-i`.ORDER_ID = uo.ID AND uo.USER_ID=? AND uo.STATUS='DONE'
+				ORDER BY uo.DATE_UPDATE DESC 
+                LIMIT {$offset}, {$amount}) ids";
+	}
 
 	public function getItemsByFilters(
 		int $offset,

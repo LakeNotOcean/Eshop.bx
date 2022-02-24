@@ -5,6 +5,7 @@
 /** @var bool $itemIsPurchased */
 /** @var bool $reviewIsWritten */
 /** @var bool $isAuthenticated */
+/** @var \Up\Entity\User\User $user */
 
 use Up\Lib\FormatHelper\DateFormatterRu;
 use Up\Lib\FormatHelper\NumberFormatter;
@@ -12,9 +13,10 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 ?>
 
 <link rel="stylesheet" href="/css/item.css">
-<link rel="stylesheet" href="/lib/lightbox/css/lightbox.css">
 <link rel="stylesheet" href="/css/lib/fontawesome-all.css">
 <link rel="stylesheet" href="/css/rating.css">
+<link rel="stylesheet" href="/css/more-reviews.css">
+<link rel="stylesheet" href="/css/catalog.css">
 
 <?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 <div class="opened-images" style="display: none;">
@@ -191,10 +193,17 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 						<div class="item-review-text">
 							<?= htmlspecialchars($review->getComment()) ?>
 						</div>
+						<?php if($review->getUser()->getId() == $user->getId()): ?>
+							<div class="your-review-msg">Это ваш отзыв</div>
+						<?php endif; ?>
+						<?php if($review->getUser()->getId() == $user->getId() || $user->getRole()->getName() == \Up\Entity\User\UserEnum::Admin()): ?>
+							<div class="review-remove-btn"></div>
+							<input type="hidden" name="review_id" value="<?= $review->getId() ?>">
+						<?php endif; ?>
 					</div>
 					<?php endforeach; ?>
 					<?php if($item->getAmountReviews() > 3): ?>
-					<a href="">Посмотреть больше отзывов</a>
+					<a href="<?= \Up\Core\Router\URLResolver::resolve('more-reviews', ['id' => $item->getId()]) ?>">Посмотреть больше отзывов</a>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -285,6 +294,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 <script src="/js/add-to-favorites.js"></script>
 
 <script src="/js/review/send-review.js"></script>
+<script src="/js/review/delete-review.js"></script>
 
 <script src="/js/csrf.js" type="module"></script>
 <script src="/js/cart/add-item.js" type="module"></script>

@@ -6,6 +6,8 @@ use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
 use Up\Entity\Review;
+use Up\LayoutManager\MainLayoutManager;
+use Up\Lib\Paginator\Paginator;
 use Up\Lib\Redirect;
 use Up\Service\ItemService\ItemService;
 use Up\Service\ItemService\ItemServiceInterface;
@@ -16,17 +18,23 @@ class ReviewController
 	protected $templateProcessor;
 	protected $reviewService;
 	protected $itemService;
+	protected $mainLayoutManager;
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
 	 * @param \Up\Service\ReviewService\ReviewService $reviewService
 	 * @param \Up\Service\ItemService\ItemService $itemService
+	 * @param \Up\LayoutManager\MainLayoutManager $mainLayoutManager
 	 */
-	public function __construct(TemplateProcessorInterface $templateProcessor, ReviewServiceInterface $reviewService, ItemServiceInterface $itemService)
+	public function __construct(TemplateProcessorInterface $templateProcessor,
+								ReviewServiceInterface     $reviewService,
+								ItemServiceInterface       $itemService,
+								MainLayoutManager          $mainLayoutManager)
 	{
 		$this->templateProcessor = $templateProcessor;
 		$this->reviewService = $reviewService;
 		$this->itemService = $itemService;
+		$this->mainLayoutManager = $mainLayoutManager;
 	}
 
 	public function saveReview(Request $request): Response
@@ -43,6 +51,12 @@ class ReviewController
 		$review->setDate(new \DateTime());
 		$this->reviewService->save($review);
 		return Redirect::createResponseByURLName('item-detail', [], ['id' => $itemId]);
+	}
+
+	public function deleteReview(Request $request, int $id): Response
+	{
+		$this->reviewService->deleteById($id, $request->getUser());
+		return (new Response())->withBodyHTML('');
 	}
 
 	public function test(Request $request): Response

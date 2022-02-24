@@ -18,6 +18,8 @@ $router->get('/404', [CoreController::class, 'get404'], '404');
 //User
 $router->get('/', [ItemController::class, 'getItems'], 'home');
 $router->get('/item/{positiveInt:id}', [ItemController::class, 'getItem'], 'item-detail');
+$router->get('/item/{positiveInt:id}/reviews', [ItemController::class, 'moreReviews'], 'more-reviews');
+$router->post('/reviewDelete/{positiveInt:id}', [ReviewController::class, 'deleteReview'], 'delete-review');
 $router->post('/finishOrder', [OrderController::class, 'finishOrder'], 'finish-order');
 $router->post('/addItemToCart', [CartController::class, 'addItemToCart'], 'add-item-to-cart');
 $router->post('/deleteItemFromCart', [CartController::class, 'deleteItemFromCart'], 'delete-item-from-cart');
@@ -34,6 +36,7 @@ $router->post('/addReview', [ReviewController::class, 'saveReview'], 'add-review
 
 $router->get('/profile', [UserController::class, 'getProfilePage'], 'user-profile');
 $router->post('/updateUser', [UserController::class, 'updateUser'], 'update-user');
+$router->get('/myPurchased', [ItemController::class, 'myPurchased'], 'my-purchased');
 
 $router->get('/favorites', [ItemController::class, 'getFavoriteItems'], 'user-favorites');
 $router->post('/addToFavorites', [ItemController::class, 'addToFavorites'], 'add-to-favorites');
