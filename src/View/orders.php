@@ -54,11 +54,13 @@
 					</div>
 					<?php
 					$i = 1;
-					foreach ($order->getItems() as $item):?>
+					foreach ($order->getItems() as $itemCount => $item):?>
 						<div class="order-item">
 							<div class="item-number"><?= $i ?>.</div>
 							<div class="item-title"><?= htmlspecialchars($item->getTitle()) ?></div>
+							<div class="item-count"><?= $itemCount . ' штук' ?></div>
 							<div class="item-price"><?= $item->getPrice() ?> ₽</div>
+							<div class="item-cost"><?= $itemCount * $item->getPrice() ?> ₽</div>
 						</div>
 						<?php
 						$i++;

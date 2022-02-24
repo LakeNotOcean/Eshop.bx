@@ -250,7 +250,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 			$item->setId($row['ID']);
 			$item->setTitle($row['TITLE']);
 			$item->setPrice($row['PRICE']);
-			$items[] = $item;
+			$items[$row['COUNT']] = $item;
 		}
 
 		return $items;
