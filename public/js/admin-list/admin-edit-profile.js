@@ -1,6 +1,6 @@
 
 let userInfos = document.querySelectorAll('.user-info');
-let userId = userInfos.querySelector('.user-id')
+let userId = document.querySelector('.user-id')
 for (let userInfo of userInfos)
 {
 	let btnChange = userInfo.querySelector('.btn-change');
@@ -15,11 +15,18 @@ for (let userInfo of userInfos)
 	let btnSave = userInfo.querySelector('.btn-save');
 	btnSave.addEventListener('click', () => {
 		let postBody = new FormData();
-
-		let id = userId.value;
+		let id = userId.id;
 		let token = document.querySelector('.token');
 		postBody.append(token.name, token.value);
-		let inputs = userInfo.querySelectorAll('input');
+		let inputs = []
+		if (btnSave.classList.contains('btn-save-role'))
+		{
+			inputs = userInfo.querySelectorAll('select');
+		}
+		else
+		{
+			inputs = userInfo.querySelectorAll('input');
+		}
 		for (let input of inputs) {
 			postBody.append(input.id, input.value);
 		}
@@ -31,7 +38,7 @@ for (let userInfo of userInfos)
 			if (r.ok) {
 				showPopup('Профиль изменён');
 				closeUserInfoEditor(userInfo)
-				updateInterface(postBody);
+				location.reload();
 			} else {
 				showPopup('Профиль изменить не удалось')
 			}
@@ -39,16 +46,7 @@ for (let userInfo of userInfos)
 	})
 }
 
-function updateInterface(postBody)
-{
-	for (let pair of postBody.entries()) {
-		let userInfoValue = document.querySelector('.' + pair[0]);
-		if (userInfoValue)
-		{
-			userInfoValue.innerText = pair[1] + " ";
-		}
-	}
-}
+
 
 function openUserInfoEditor(userInfo)
 {

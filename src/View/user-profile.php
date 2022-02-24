@@ -2,6 +2,7 @@
 
 /** @var \Up\Entity\User\User $user */
 /** @var bool $fromUserList */
+/** @var array $roles */
 ?>
 
 <script src="/js/user/user-menu.js"></script>
@@ -11,30 +12,8 @@
 <div class="container">
 	<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 	<div class="main-title">Личная информация<? if ($fromUserList === true){?> пользователя <?= $user->getLogin()?></div>
-	<div class="user-info">
-		<div class="user-info-header">
-			<div class="user-info-name">ID</div>
-		</div>
-		<div class="user-info-value">
-			<div class="user-id"><?= $user->getId()?> </div>
-		</div>
-	</div>
-	<div class="user-info">
-		<div class="user-info-header">
-			<div class="user-info-name">Login</div>
-			<div class="btn-change">Редактировать</div>
-		</div>
-		<div class="user-info-value">
-			<div class="user-login"><?= $user->getLogin()?> </div>
-		</div>
-		<div class="user-info-change gone">
-			<label>
-				<input id="user-login" type="text" class="input" placeholder="Логин" value="<?= $user->getLogin() ?>">
-			</label>
-			<div class="btn btn-normal btn-save">Сохранить</div>
-		</div>
-	</div><?} else echo "</div> "?>
-	<div class="user-info">
+	<?} else echo "</div> "?>
+	<div class="user-info user-id" id=<?=$user->getId()?>>
 		<div class="user-info-header">
 			<div class="user-info-name">Имя</div>
 			<div class="btn-change">Редактировать</div>
@@ -87,10 +66,19 @@
 		</div>
 		<div class="user-info-value user-role"><?= $user->getRole()->getName()?></div>
 		<div class="user-info-change gone">
+			<!--<label>
+				<input id="user-role" type="text" class="input" placeholder="Права" value="<?/*= $user->getRole()->getName()*/?>">
+
+			</label>-->
 			<label>
-				<input id="user-role" type="text" class="input" placeholder="Права" value="<?= $user->getRole()->getName()?>">
+				<select id="user-role">
+					<option disabled>Выберите роль</option>
+					<? foreach ($roles as $role){?>
+					<option <?if ($user->getRole()->getName() === $role->getName()){ echo"selected";}?> value=<?=$role->getId()?>><?=$role->getName()?></option>
+					<?}?>
+				</select>
 			</label>
-			<div class="btn btn-normal btn-save">Сохранить</div>
+			<div class="btn btn-normal btn-save btn-save-role">Сохранить</div>
 		</div>
 	</div>
 	<?}?>

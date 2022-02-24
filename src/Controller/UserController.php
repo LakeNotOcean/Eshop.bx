@@ -204,9 +204,11 @@ class UserController
 	public function userInfoPage(Request $request,int $id):Response
 	{
 		$user = $this->userService->getUserInfoById($id);
+		$roles = $this->userService->getAllRoles();
 		$page = $this->templateProcessor->render('user-profile.php', [
 			'user' => $user,
 			'fromUserList' => true,
+			'roles' => $roles,
 		], 'layout/main.php', [
 			'isAuthenticated' => $request->isAuthenticated(),
 			'isAdmin' => $request->isAdmin(),
@@ -221,6 +223,7 @@ class UserController
 	 * @throws \ReflectionException
 	 * @throws \Up\Core\Enum\EnumException
 	 * @throws UserServiceException
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
 	 */
 	public function adminUpdateUser(Request $request, int $id):Response
 	{
@@ -245,10 +248,10 @@ class UserController
 			$email = $request->getPostParametersByName('user-email');
 			$user->setEmail($email);
 		}
-		if ($request->containsPost('user-email'))
+		if ($request->containsPost('user-role'))
 		{
-			$email = $request->getPostParametersByName('user-email');
-			$user->setEmail($email);
+			$role = $request->getPostParametersByName('user-role');
+			$this->userService->changeUserRoleByLogin($user->getLogin(),$role);
 		}
 
 		$this->userService->updateUser($user);

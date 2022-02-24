@@ -95,6 +95,11 @@ class UserDAOmysql implements UserDAOInterface
 		$this->changeRole($login, 2);
 	}
 
+	public function changeUserRoleByLogin(string $login,int $roleId):void
+	{
+		$this->changeRole($login,$roleId);
+	}
+
 	public function giveUserAdministratorRoleByLogin(string $login): void
 	{
 		$this->changeRole($login, 1);
@@ -105,6 +110,20 @@ class UserDAOmysql implements UserDAOInterface
 	{
 		return $this->getUsersList();
 	}
+
+
+	public function getAllRoles(): array
+	{
+		$query = "SELECT * FROM up_role";
+		$result = $this->DBConnection->query($query);
+		$roles = [];
+		while ($row = $result->fetch())
+		{
+			$roles[] = new UserRole(new UserEnum($row["NAME"]));
+		}
+		return $roles;
+	}
+
 
 	/**
 	 * @throws \Up\Core\Enum\EnumException

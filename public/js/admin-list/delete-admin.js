@@ -34,6 +34,7 @@ for (let adminCard of adminCards)
 		{
 			const id = adminCard.id;
 			deleteAdminById(id);
+			adminCard.remove();
 		}
 		isdeleteSection = false;
 		})
@@ -51,7 +52,6 @@ function deleteAdminById(id)
 		}).then((r) => {
 			if (r.ok) {
 				showPopup('Администратор снят с должности');
-				location.reload();
 			} else {
 				showPopup('Не удалось снять администратора с должности')
 			}

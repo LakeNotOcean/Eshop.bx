@@ -70,7 +70,11 @@ class UserService implements UserServiceInterface
 		$this->userDAO->removeUserModeratorRoleByLogin($login);
 	}
 
-
+	public function changeUserRoleByLogin(string $login, int $roleId)
+	{
+		$this->checkIsAdmin();
+		$this->userDAO->changeUserRoleByLogin($login,$roleId);
+	}
 
 	/**
 	 * @throws UserServiceException
@@ -97,6 +101,11 @@ class UserService implements UserServiceInterface
 		return $this->userDAO->getUserListByQuery($limitOffset['offset'], $limitOffset['amountItems'],$roleId, $query);
 	}
 
+	public function getAllRoles(): array
+	{
+		$this->checkIsAdmin();
+		return $this->userDAO->getAllRoles();
+	}
 
 	public function registerUser(user $user, string $password): User
 	{
