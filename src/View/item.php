@@ -239,8 +239,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				</form>
 				<?php endif; ?>
 			</div>
-			<?php
-			if (!empty($similarItems)){?>
+			<?php if (!empty($similarItems)):?>
 			<div class="similar-item-section">
 				<a class="anchor" id="similar"></a>
 				<div class="item-section-title">Похожие товары</div>
@@ -268,7 +267,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 					<div class="btn-back similar-item-cards-right-arrow"></div>
 				</div>
 			</div>
-			<?}?>
+			<?php endif;?>
 		</div>
 	</div>
 </div>
