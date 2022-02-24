@@ -1,6 +1,25 @@
 
-function alertDialog(message) {
+function alertDialog(title, message) {
+	if (document.querySelector('.alert-dialog')) {
+		return;
+	}
+	const body = document.querySelector('body');
+	const dialog = document.createElement('div');
+	dialog.classList.add('alert-dialog', 'card', 'card-outline');
+	dialog.innerHTML = `
+		<div class="dialog-title">${title}</div>
+		<div class="dialog-message">${message}</div>
+		<div class="dialog-buttons">
+			<div class="btn btn-cancel">Ок</div>
+		</div>
+	`;
 
+	const buttonOk = dialog.querySelector('.btn');
+	buttonOk.addEventListener('click', () => {
+		dialog.remove();
+	});
+
+	body.append(dialog)
 }
 
 function alertDialogDelete(title, message, action) {
