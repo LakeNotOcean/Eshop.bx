@@ -19,7 +19,7 @@
 	</div>
 	<div class="admin-list">
 		<? foreach ($admins as $admin){
-			if ($admin->getLogin() !== 'admin' && $admin->getLogin() !== $login){?>
+			if ($admin->getLogin() !== $login){?>
 
 			<div class="admin  card-outline" draggable="true" id=<?=$admin->getLogin()?>>
 				<div class="admin-body">
@@ -50,12 +50,14 @@
 	<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 	<div class="delete-section card-outline">
 		<div class="delete-section-text">
-			Перетащи сюда чтобы удалить
+			Перетащи сюда чтобы забрать права администратора
 		</div>
 	</div>
 	<?= $paginator?>
 </div>
 <div class="token"></div>
 
-<script src="/js/admin-list/delete-admin.js"></script>
 <script src="/js/lib/showPopup.js"></script>
+<script src="/js/lib/alert-dialog.js"></script>
+<script src="/js/admin-list/delete-admin.js"></script>
+<script src="/js/admin-list/get-search.js"></script>

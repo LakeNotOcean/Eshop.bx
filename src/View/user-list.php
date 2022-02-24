@@ -4,6 +4,9 @@
 /** @var string $paginator */
 /** @var string $query */
 /** @var int $userAmount */
+
+use Up\Core\Router\URLResolver;
+
 ?>
 <link rel="stylesheet" href="/css/users-list.css">
 
@@ -11,10 +14,9 @@
 
 	<div class="user-line">
 		<div class="search-count">
-			Найдено пользователей<? if ($query !== ''){?> по запросу "<?=$query?>"
-			<?}?>: <?=htmlspecialchars($userAmount)?>
+			Найдено пользователей<?= $query !== '' ?  'по запросу' . $query : ''?>: <?= htmlspecialchars($userAmount)?>
 		</div>
-		<form action="/admin/userList" method="get" enctype="multipart/form-data" class="search">
+		<form action="<?= URLResolver::resolve('user-list')?>" method="get" enctype="multipart/form-data" class="search">
 			<input type="text" id="query" name="query" class="search-field" placeholder="Поиск пользователей"
 				   value="<?= htmlspecialchars($query) ?>">
 			<div class="search-icon">
@@ -45,9 +47,11 @@
 				</div>
 				<?if ($user->getRole()->getId() !== 1){?>
 				<div class="delete-button-section">
-					<div class="btn btn-normal add-admin" id=<?=htmlspecialchars($user->getLogin())?>>
-						Сделать администратором
-					</div>
+					<a class="btn btn-normal edit-button" href="<?= \Up\Core\Router\URLResolver::resolve('user-info',["id"=>$user->getId()]) ?>"  id=<?=htmlspecialchars($user->getLogin())?>>
+						<svg class="pencil">
+							<use xlink:href="/img/sprites.svg#pencil"></use>
+						</svg>
+					</a>
 				</div>
 				<?}?>
 			</div>
@@ -58,5 +62,7 @@
 	<?= $paginator ?>
 </div>
 <div class="token"></div>
-<script src="/js/admin-list/add-admin.js"></script>
+
+<script src="/js/lib/alert-dialog.js"></script>
 <script src="/js/lib/showPopup.js"></script>
+<script src="/js/admin-list/get-search.js"></script>

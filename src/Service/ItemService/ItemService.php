@@ -51,6 +51,16 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getFavoriteItems($userId, $limitOffset['offset'], $limitOffset['amountItems']);
 	}
 
+	public function mapItemToUserItem(int $userId, Item $item): UserItem
+	{
+		$favoriteItems = $this->getFavoriteItems($userId);
+		$userItem = new UserItem();
+		$userItem->setItem($item);
+		$isFavorite = array_key_exists($userItem->getId(), $favoriteItems);
+		$userItem->setIsFavorite($isFavorite);
+		return $userItem;
+	}
+
 	public function mapItemsToUserItems(int $userId, array $items): array
 	{
 		$favoriteItems = $this->getFavoriteItems($userId);
@@ -61,7 +71,7 @@ class ItemService implements ItemServiceInterface
 			$userItem->setItem($item);
 			$isFavorite = array_key_exists($userItem->getId(), $favoriteItems);
 			$userItem->setIsFavorite($isFavorite);
-			$userItems[] = $userItem;
+			$userItems[$userItem->getId()] = $userItem;
 		}
 		return $userItems;
 	}
@@ -76,7 +86,7 @@ class ItemService implements ItemServiceInterface
 			$userItem->setItemDetail($itemDetail);
 			$isFavorite = array_key_exists($userItem->getId(), $favoriteItems);
 			$userItem->setIsFavorite($isFavorite);
-			$userItems[] = $userItem;
+			$userItems[$userItem->getId()] = $userItem;
 		}
 		return $userItems;
 	}
@@ -204,4 +214,13 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->updateCommonInfo($item);
 	}
 
+	public function getPurchasedItems(int $userId, array $limitOffset): array
+	{
+		return $this->itemDAO->getPurchasedItems($userId, $limitOffset['offset'], $limitOffset['amountItems']);
+	}
+
+	public function getAmountPurchasedItems(int $userId): int
+	{
+		return $this->itemDAO->getAmountPurchasedItems($userId);
+	}
 }

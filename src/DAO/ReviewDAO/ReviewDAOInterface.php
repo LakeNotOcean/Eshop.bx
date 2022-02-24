@@ -11,6 +11,14 @@ interface ReviewDAOInterface
 	public function deleteById(int $id): void;
 
 	/**
+	 * @param int $userId
+	 * @param array<int> $itemIds
+	 *
+	 * @return array<int,Review>
+	 */
+	public function getUsersReviewsByItemIds(int $userId, array $itemIds): array;
+
+	/**
 	 * @param int $itemId
 	 * @param int $offset
 	 * @param int $amount
@@ -29,4 +37,8 @@ interface ReviewDAOInterface
 	public function getReviewsByUserId(int $userId, int $offset, int $amount): array;
 
 	public function existReviewByUserAndItemIds(int $userId, int $itemId): bool;
+
+	public function getAmountReviewsByUserId(int $userId): int;
+
+	public function getReviewById(int $id): Review;
 }

@@ -52,3 +52,9 @@
 		transform: scale(1);
 	}
 }
+
+@media screen and (max-width: 900px)  {
+	.add-to-favorites-label {
+		display: none;
+	}
+}

@@ -23,7 +23,7 @@ class Review extends Entity
 
 
 	/**
-	 * @return Item
+	 * @return Item|UserItem
 	 */
 	public function getItem(): Item
 	{
@@ -31,7 +31,7 @@ class Review extends Entity
 	}
 
 	/**
-	 * @param Item $item
+	 * @param Item|UserItem $item
 	 */
 	public function setItem(Item $item): void
 	{

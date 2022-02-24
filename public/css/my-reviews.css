@@ -1,0 +1,25 @@
+.card.item-card-my-reviews{
+	margin: 15px 0;
+}
+
+.item.item-my-reviews{
+	margin-bottom: 0;
+}
+
+.delimiter{
+	height: 1px;
+	background: black;
+	margin: 0 100px 0 100px;
+}
+
+.review.review-my-reviews{
+	position: relative;
+}
+
+.title-my-reviews{
+	display: flex;
+	font-size: 22px;
+	font-weight: bold;
+	justify-content: center;
+	margin: 20px 0;
+}

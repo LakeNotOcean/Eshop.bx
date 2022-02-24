@@ -53,6 +53,15 @@ interface ItemDAOInterface
 	public function isItemActive(int $itemId): bool;
 
 	/**
+	 * @param int $userId
+	 *
+	 * @return array<Item>
+	 */
+	public function getPurchasedItems(int $userId, int $offset, int $amount): array;
+
+	public function getAmountPurchasedItems(int $userId): int;
+
+	/**
 	 * @param int[] $itemIds
 	 *
 	 * @return Item[]

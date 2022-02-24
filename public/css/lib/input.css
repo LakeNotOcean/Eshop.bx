@@ -50,3 +50,9 @@ input::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
+
+@media screen and (max-width: 500px)  {
+	.label-title {
+		width: 50%;
+	}
+}

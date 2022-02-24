@@ -2,7 +2,7 @@
 @import "lib/card.css";
 @import "lib/input.css";
 @import "lib/popup.css";
-
+@import "lib/alert-dialog.css";
 
 .container {
 	flex: 1;
@@ -101,14 +101,11 @@
 }
 
 .delete-section{
+	margin-top: 40px;
 	display: flex;
 	height: 150px;
 	width: 100%;
 	align-content: center;
 	justify-content: center;
 	align-items: center;
-}
-.delete-section-text{
-
-
 }

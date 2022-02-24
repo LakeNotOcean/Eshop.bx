@@ -39,6 +39,11 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		return $orders;
 	}
 
+	// public function getOrdersByUserId(int $offset, int $amountItems, int $userId): array
+	// {
+	//
+	// }
+
 	public function existUsersFinishedOrderByItemId(int $userId, int $itemId): bool
 	{
 		$statement = $this->dbConnection->prepare("SELECT 1 FROM up_order 

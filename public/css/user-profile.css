@@ -53,6 +53,17 @@ user-info
 	margin-top: 5px;
 }
 
+.btn-change-role {
+	color: var(--color-change);
+	font-weight: 500;
+	cursor: pointer;
+	user-select: none;
+}
+
+.btn-change-role:hover {
+	text-decoration: underline;
+}
+
 label {
 	flex: 1;
 	display: flex;
@@ -68,4 +79,14 @@ label {
 
 .gone {
 	display: none;
+}
+
+@media screen and (max-width: 500px)  {
+	.user-info-change {
+		flex-direction: column;
+	}
+	.container {
+		width: 100%;
+		padding: 20px;
+	}
 }

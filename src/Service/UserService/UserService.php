@@ -70,15 +70,10 @@ class UserService implements UserServiceInterface
 		$this->userDAO->removeUserModeratorRoleByLogin($login);
 	}
 
-	public function getUserInfo(): User
+	public function changeUserRoleByLogin(string $login, int $roleId)
 	{
-		$this->startSessionIfNotExists();
-		if (!isset($_SESSION[self::UserSessionKey]))
-		{
-			$_SESSION[self::UserSessionKey] = new User(0,'', new UserRole());
-		}
-
-		return $_SESSION[self::UserSessionKey];
+		$this->checkIsAdmin();
+		$this->userDAO->changeUserRoleByLogin($login,$roleId);
 	}
 
 	/**
@@ -106,6 +101,11 @@ class UserService implements UserServiceInterface
 		return $this->userDAO->getUserListByQuery($limitOffset['offset'], $limitOffset['amountItems'],$roleId, $query);
 	}
 
+	public function getAllRoles(): array
+	{
+		$this->checkIsAdmin();
+		return $this->userDAO->getAllRoles();
+	}
 
 	public function registerUser(user $user, string $password): User
 	{
@@ -140,6 +140,17 @@ class UserService implements UserServiceInterface
 		return $this->getUserInfo()->getRole()->getName() != UserEnum::Guest();
 	}
 
+	public function getUserInfo(): User
+	{
+		$this->startSessionIfNotExists();
+		if (!isset($_SESSION[self::UserSessionKey]))
+		{
+			$_SESSION[self::UserSessionKey] = new User(0,'', new UserRole());
+		}
+
+		return $_SESSION[self::UserSessionKey];
+	}
+
 	public function getUsersInfo(): array
 	{
 		if ($this->getUserInfo()->getRole()->getName() != UserEnum::Admin())
@@ -150,7 +161,20 @@ class UserService implements UserServiceInterface
 		return [];
 	}
 
-	public function hasPermission(UserEnum $role)
+	/**
+	 * @param int $id
+	 * @return User
+	 * @throws UserServiceException
+	 * @throws \ReflectionException
+	 * @throws \Up\Core\Enum\EnumException
+	 */
+	public function getUserInfoById(int $id): User
+	{
+		$this->checkIsAdmin();
+		return $this->userDAO->getUserInfoById($id);
+	}
+
+	public function hasPermission(UserEnum $role): bool
 	{
 		$userRole = $this->getUserInfo()->getRole()->getName();
 		return in_array($role->getValue(), static::userPermission[$userRole->getValue()], true);
