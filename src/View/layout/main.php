@@ -153,4 +153,6 @@ if (!isset($query))
 </main>
 
 </body>
+<script src="/js/catalog-filters/queryPush.js"></script>
+<script src="/js/catalog-filters/get-search-query.js"></script>
 </html>

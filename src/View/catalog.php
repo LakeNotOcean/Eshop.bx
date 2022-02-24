@@ -227,9 +227,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 
 <script src="/js/catalog-filters/btn-quick-apply-filters.js"></script>
 <script src="/js/catalog-filters/filter-reset.js"></script>
-<script src="/js/catalog-filters/get-search-query.js"></script>
 <script src="/js/catalog-filters/filter-get-query.js"></script>
-<script src="/js/catalog-filters/queryPush.js"></script>
 <script src="/js/catalog-filters/filter-set-query.js"></script>
 
 <script src="/js/lib/showPopup.js"></script>

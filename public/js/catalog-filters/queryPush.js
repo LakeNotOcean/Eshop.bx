@@ -27,12 +27,10 @@ for (let filterButton of filterButtons)
 	});
 }
 
-let searchButton = document.querySelector('.search-field')
-searchButton.addEventListener("keydown",(e)=>{
+let searchButton = document.querySelector('.search-field');
+let searchButtonIcon = document.querySelector('.search-icon');
 
-	if (e.keyCode === 13)
-	{
-
+function searchListener(e) {
 		let searchQuery = getSearchQuery();
 
 		let pageQuery = "&page=1";
@@ -41,8 +39,15 @@ searchButton.addEventListener("keydown",(e)=>{
 
 		localStorage.setItem('query',finalQuery)
 		window.location = finalQuery;
+
+}
+searchButton.addEventListener("keydown", (e)=>{
+	if (e.keyCode === 13)
+	{
+		searchListener(e)
 	}
-})
+});
+searchButtonIcon.addEventListener("click", searchListener);
 
 function prepareQuery(finalQuery)
 {
@@ -60,7 +65,7 @@ function prepareQuery(finalQuery)
 	}
 	else
 	{
-		finalQuery = '?' + finalQuery;
+		finalQuery = '/?' + finalQuery;
 	}
 	return finalQuery;
 }
