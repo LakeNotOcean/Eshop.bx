@@ -66,15 +66,11 @@
 		</div>
 		<div class="user-info-value user-role"><?= $user->getRole()->getName()?></div>
 		<div class="user-info-change gone">
-			<!--<label>
-				<input id="user-role" type="text" class="input" placeholder="Права" value="<?/*= $user->getRole()->getName()*/?>">
-
-			</label>-->
 			<label>
 				<select id="user-role">
 					<option disabled>Выберите роль</option>
 					<? foreach ($roles as $role){?>
-					<option <?if ($user->getRole()->getName() === $role->getName()){ echo"selected";}?> value=<?=$role->getId()?>><?=$role->getName()?></option>
+					<option <?if ($user->getRole()->getName() == $role->getName()){ echo"selected";}?> value=<?=$role->getId()?>><?=$role->getName()?></option>
 					<?}?>
 				</select>
 			</label>

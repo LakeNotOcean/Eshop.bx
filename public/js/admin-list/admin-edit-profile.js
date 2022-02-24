@@ -38,7 +38,7 @@ for (let userInfo of userInfos)
 			if (r.ok) {
 				showPopup('Профиль изменён');
 				closeUserInfoEditor(userInfo)
-				location.reload();
+				updateInterface(postBody);
 			} else {
 				showPopup('Профиль изменить не удалось')
 			}
@@ -46,7 +46,23 @@ for (let userInfo of userInfos)
 	})
 }
 
-
+function updateInterface(postBody)
+{
+	for (let pair of postBody.entries()) {
+		let userInfoValue = document.querySelector('.' + pair[0]);
+		if (userInfoValue)
+		{
+			userInfoValue.innerText = pair[1] + " ";
+		}
+	}
+	const roleSelect = document.getElementById('user-role');
+	const role = document.querySelector('.user-role');
+	roleSelect.childNodes.forEach(option => {
+		if (option.value === roleSelect.value) {
+			role.innerText = option.innerText;
+		}
+	})
+}
 
 function openUserInfoEditor(userInfo)
 {

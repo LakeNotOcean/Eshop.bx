@@ -179,16 +179,11 @@ class UserController
 		]);
 
 
-		$page = $this->templateProcessor->render('user-list.php', [
+		$page = $this->mainLayoutManager->render('user-list.php', [
 			'userAmount' => $itemsAmount,
 			'paginator' => $paginator,
 			'users' => $userList,
 			'query' => $search,
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName(),
-
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -205,19 +200,17 @@ class UserController
 	{
 		$user = $this->userService->getUserInfoById($id);
 		$roles = $this->userService->getAllRoles();
-		$page = $this->templateProcessor->render('user-profile.php', [
+		$page = $this->mainLayoutManager->render('user-profile.php', [
 			'user' => $user,
 			'fromUserList' => true,
 			'roles' => $roles,
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName(),
-
 		]);
 
 		return (new Response())->withBodyHTML($page);
 	}
+
+
+
 
 	/**
 	 * @throws \ReflectionException
@@ -279,15 +272,11 @@ class UserController
 		]);
 
 
-		$page = $this->templateProcessor->render('admins-list.php', [
+		$page = $this->mainLayoutManager->render('admins-list.php', [
 			'paginator' => $paginator,
 			'admins' => $adminList,
 			'query' => $search,
 			'login' => $request->getUser()->getLogin(),
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
