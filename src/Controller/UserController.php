@@ -28,7 +28,7 @@ class UserController
 	protected $userService;
 	public const nextUrlQueryKeyword = 'next';
 	protected $adminsInPage = 10;
-	protected $usersInPage = 20;
+	protected $usersInPage = 9;
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
@@ -189,6 +189,69 @@ class UserController
 		return (new Response())->withBodyHTML($page);
 	}
 
+
+
+	/**
+	 * @throws \ReflectionException
+	 * @throws \Up\Core\Enum\EnumException
+	 * @throws UserServiceException
+	 */
+	public function userInfoPage(Request $request,int $id):Response
+	{
+		$user = $this->userService->getUserInfoById($id);
+		$roles = $this->userService->getAllRoles();
+		$page = $this->mainLayoutManager->render('user-profile.php', [
+			'user' => $user,
+			'fromUserList' => true,
+			'roles' => $roles,
+		]);
+
+		return (new Response())->withBodyHTML($page);
+	}
+
+
+
+
+	/**
+	 * @throws \ReflectionException
+	 * @throws \Up\Core\Enum\EnumException
+	 * @throws UserServiceException
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 */
+	public function adminUpdateUser(Request $request, int $id):Response
+	{
+		$user = $this->userService->getUserInfoById($id);
+		if ($request->containsPost('user-first-name'))
+		{
+			$firstName = $request->getPostParametersByName('user-first-name');
+			$user->setFirstName($firstName);
+		}
+		if ($request->containsPost('user-second-name'))
+		{
+			$secondName = $request->getPostParametersByName('user-second-name');
+			$user->setSecondName($secondName);
+		}
+		if ($request->containsPost('user-phone'))
+		{
+			$phone = $request->getPostParametersByName('user-phone');
+			$user->setPhone($phone);
+		}
+		if ($request->containsPost('user-email'))
+		{
+			$email = $request->getPostParametersByName('user-email');
+			$user->setEmail($email);
+		}
+		if ($request->containsPost('user-role'))
+		{
+			$role = $request->getPostParametersByName('user-role');
+			$this->userService->changeUserRoleByLogin($user->getLogin(),$role);
+		}
+
+		$this->userService->updateUser($user);
+
+		return (new Response())->withBodyHTML('');
+
+	}
 
 	/**
 	 * @throws UserServiceException

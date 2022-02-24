@@ -47,9 +47,11 @@ use Up\Core\Router\URLResolver;
 				</div>
 				<?if ($user->getRole()->getId() !== 1){?>
 				<div class="delete-button-section">
-					<div class="btn btn-normal add-admin" id=<?=htmlspecialchars($user->getLogin())?>>
-						Сделать администратором
-					</div>
+					<a class="btn btn-normal edit-button" href="<?= \Up\Core\Router\URLResolver::resolve('user-info',["id"=>$user->getId()]) ?>"  id=<?=htmlspecialchars($user->getLogin())?>>
+						<svg class="pencil">
+							<use xlink:href="/img/sprites.svg#pencil"></use>
+						</svg>
+					</a>
 				</div>
 				<?}?>
 			</div>
@@ -63,4 +65,4 @@ use Up\Core\Router\URLResolver;
 
 <script src="/js/lib/alert-dialog.js"></script>
 <script src="/js/lib/showPopup.js"></script>
-<script src="/js/admin-list/add-admin.js"></script>
+<script src="/js/admin-list/get-search.js"></script>

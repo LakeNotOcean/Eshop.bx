@@ -1,16 +1,9 @@
 
 let isDeleteSection = false;
-let deleteButtons = document.querySelectorAll(".trash");
 let adminCards = document.querySelectorAll('.admin');
 let deleteSection = document.querySelector(".delete-section")
 
-for (let deleteButton of deleteButtons)
-{
-	deleteButton.addEventListener('click', (e)=> {
-	const id = deleteButton.id;
-	deleteAdminById(id);
-	})
-}
+
 
 deleteSection.addEventListener('dragover', (e) => {
 	e.preventDefault();
@@ -24,6 +17,11 @@ deleteSection.addEventListener("drop", (e,ui)=>
 
 for (let adminCard of adminCards)
 {
+	let deleteButton = adminCard.querySelector('.trash')
+	deleteButton.addEventListener('click', (e)=> {
+		const id = deleteButton.id;
+		deleteAdminById(id,adminCard);
+	})
 	adminCard.addEventListener('drag', (e) =>{
 		adminCard.style.borderColor = 'red'
 	})
@@ -31,13 +29,13 @@ for (let adminCard of adminCards)
 		if (isDeleteSection === true)
 		{
 			const id = adminCard.id;
-			deleteAdminById(id);
+			deleteAdminById(id,adminCard);
 		}
 		isDeleteSection = false;
 	})
 }
 
-function deleteAdminById(id)
+function deleteAdminById(id,adminCard)
 {
 	alertDialogDelete(
 		'Удаление администратора',
@@ -53,10 +51,11 @@ function deleteAdminById(id)
 			}).then((r) => {
 				if (r.ok) {
 					showPopup('Администратор снят с должности');
-					location.reload();
+					adminCard.remove();
 				} else {
 					showPopup('Не удалось снять администратора с должности')
 				}
 			});
 		})
 }
+

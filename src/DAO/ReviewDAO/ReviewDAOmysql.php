@@ -13,7 +13,6 @@ use Up\Entity\User\UserRole;
 
 class ReviewDAOmysql extends AbstractDAO implements ReviewDAOInterface
 {
-
 	/**
 	 * @param \Up\Core\Database\DefaultDatabase $dbConnection
 	 */
@@ -36,6 +35,19 @@ class ReviewDAOmysql extends AbstractDAO implements ReviewDAOInterface
 		$this->dbConnection->query("DELETE FROM up_review WHERE ID={$id}");
 	}
 
+	public function getUsersReviewsByItemIds(int $userId, array $itemIds): array
+	{
+		if (count($itemIds) === 0)
+		{
+			return [];
+		}
+		$statement = $this->getSelectByUserAndItemIdsStatement($this->getPreparedGroup(count($itemIds)));
+		$preparedArray = $itemIds;
+		$preparedArray[] = $userId;
+		$statement->execute($preparedArray);
+		return $this->mapReviews($statement);
+	}
+
 	public function getReviewsByItemId(int $itemId, int $offset, int $amount): array
 	{
 		$statement = $this->getSelectByItemIdStatement($offset, $amount);
@@ -50,11 +62,25 @@ class ReviewDAOmysql extends AbstractDAO implements ReviewDAOInterface
 		return $this->mapReviews($statement);
 	}
 
+	public function getReviewById(int $id): Review
+	{
+		$statement = $this->getSelectByStatement('?');
+		$statement->execute([$id]);
+		return $this->mapReviews($statement)[$id];
+	}
+
 	public function existReviewByUserAndItemIds(int $userId, int $itemId): bool
 	{
 		$statement = $this->dbConnection->prepare("SELECT 1 FROM up_review WHERE USER_ID=? AND ITEM_ID=? LIMIT 1");
 		$statement->execute([$userId, $itemId]);
 		return (bool)$statement->fetch();
+	}
+
+	public function getAmountReviewsByUserId(int $userId): int
+	{
+		$statement = $this->dbConnection->prepare("SELECT COUNT(*) as COUNT FROM up_review WHERE USER_ID=?");
+		$statement->execute([$userId]);
+		return $statement->fetch()['COUNT'];
 	}
 
 	/**
@@ -71,18 +97,7 @@ class ReviewDAOmysql extends AbstractDAO implements ReviewDAOInterface
 				$reviews[$row['r_id']] = $this->mapReviewCommonInfo($row);
 			}
 			$review = $reviews[$row['r_id']];
-			if(!$review->issetItem())
-			{
-				$review->setItem($this->mapItemCommonInfo($row));
-			}
-			if(!$review->getItem()->isSetMainImage())
-			{
-				$review->getItem()->setMainImage($this->mapImageCommonInfo($row));
-			}
-			if(!$review->getItem()->getMainImage()->hasSize($row['img_size']))
-			{
-				$review->getItem()->getMainImage()->setPath($row['img_size'], $row['img_size_path']);
-			}
+			$this->mapReviewOtherInfo($review, $row);
 		}
 		return $reviews;
 	}
@@ -96,6 +111,22 @@ class ReviewDAOmysql extends AbstractDAO implements ReviewDAOInterface
 		$review->setUser($this->mapUser($row));
 		$review->setDate(\DateTime::createFromFormat('Y-m-d', $row['r_date']));
 		return $review;
+	}
+
+	private function mapReviewOtherInfo(Review $review, $row): void
+	{
+		if(!$review->issetItem())
+		{
+			$review->setItem($this->mapItemCommonInfo($row));
+		}
+		if(!$review->getItem()->isSetMainImage())
+		{
+			$review->getItem()->setMainImage($this->mapImageCommonInfo($row));
+		}
+		if(!$review->getItem()->getMainImage()->hasSize($row['img_size']))
+		{
+			$review->getItem()->getMainImage()->setPath($row['img_size'], $row['img_size_path']);
+		}
 	}
 
 	private function mapUser($row): User
@@ -135,6 +166,41 @@ class ReviewDAOmysql extends AbstractDAO implements ReviewDAOInterface
 		return $this->getSelectByStatement($this->getIdsReviewByUserIdQuery($offset, $amount));
 	}
 
+	private function getSelectByUserAndItemIdsStatement(string $itemIdsIn): \PDOStatement
+	{
+		$query = "SELECT ur.ID r_id, 
+                  ur.ITEM_ID i_id, 
+                  ur.USER_ID u_id, 
+                  ur.COMMENT r_comment, 
+                  ur.SCORE r_score,
+                  ur.DATE_CREATE r_date,
+                  ui.ACTIVE i_active,
+                  ui.SORT_ORDER i_sort_order,
+                  ui.SHORT_DESC i_short_desc,
+                  ui.PRICE i_price,
+                  ui.TITLE i_title,
+                  uoi.ID img_id,
+                  uoi.IS_MAIN img_is_main,
+                  uoi.PATH img_orig_path,
+                  uiws.PATH img_size_path,
+                  uiws.SIZE img_size,
+                  uu.EMAIL u_email,
+                  uu.FIRST_NAME u_first_name,
+                  uu.LOGIN u_login,
+                  uu.PHONE u_phone,
+                  uu.SECOND_NAME u_second_name,
+                  u.ID role_id,
+                  u.NAME role_name
+				  FROM up_review ur
+				  INNER JOIN up_item ui on ur.ITEM_ID = ui.ID AND ur.ITEM_ID IN {$itemIdsIn} AND ur.USER_ID=?
+				  INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
+				  INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID 
+				  INNER JOIN up_user uu on ur.USER_ID = uu.ID
+				  INNER JOIN up_role u on uu.ROLE_ID = u.ID
+				  LEFT JOIN `up_user-favorite_item` `uu-fi` on ui.ID = `uu-fi`.FAVORITE_ITEM_ID";
+		return $this->dbConnection->prepare($query);
+	}
+
 	private function getSelectByStatement(string $ids): \PDOStatement
 	{
 		$query = "SELECT ur.ID r_id, 
@@ -165,7 +231,8 @@ class ReviewDAOmysql extends AbstractDAO implements ReviewDAOInterface
 				  INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
 				  INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID 
 				  INNER JOIN up_user uu on ur.USER_ID = uu.ID
-				  INNER JOIN up_role u on uu.ROLE_ID = u.ID";
+				  INNER JOIN up_role u on uu.ROLE_ID = u.ID
+				  LEFT JOIN `up_user-favorite_item` `uu-fi` on ui.ID = `uu-fi`.FAVORITE_ITEM_ID";
 		return $this->dbConnection->prepare($query);
 	}
 

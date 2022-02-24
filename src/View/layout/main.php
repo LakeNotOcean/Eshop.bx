@@ -108,6 +108,7 @@ if (!isset($query))
 				<div class="menu">
 					<a class="menu-item" href="<?= URLResolver::resolve('user-favorites') ?>">Избранное</a>
 					<a class="menu-item" href="<?= URLResolver::resolve('user-profile') ?>">Личный кабинет</a>
+					<a class="menu-item" href="<?= URLResolver::resolve('my-purchased') ?>">Купленные товары</a>
 					<a href="<?= URLResolver::resolve('logout-user') ?>" class="menu-item-btn">
 						<div class="btn btn-normal sign-in">Выйти</div>
 					</a>

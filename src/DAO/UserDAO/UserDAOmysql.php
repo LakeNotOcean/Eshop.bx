@@ -95,6 +95,11 @@ class UserDAOmysql implements UserDAOInterface
 		$this->changeRole($login, 2);
 	}
 
+	public function changeUserRoleByLogin(string $login,int $roleId):void
+	{
+		$this->changeRole($login,$roleId);
+	}
+
 	public function giveUserAdministratorRoleByLogin(string $login): void
 	{
 		$this->changeRole($login, 1);
@@ -104,6 +109,44 @@ class UserDAOmysql implements UserDAOInterface
 	public function getUsersInfo(): array
 	{
 		return $this->getUsersList();
+	}
+
+
+	public function getAllRoles(): array
+	{
+		$query = "SELECT * FROM up_role";
+		$result = $this->DBConnection->query($query);
+		$roles = [];
+		while ($row = $result->fetch())
+		{
+			$roles[] = new UserRole(new UserEnum($row["NAME"]));
+		}
+		return $roles;
+	}
+
+
+	/**
+	 * @throws \Up\Core\Enum\EnumException
+	 * @throws \ReflectionException
+	 */
+	public function getUserInfoById(int $id): User
+	{
+		$query = "SELECT
+            uu.ID as USER_ID,
+			uu.LOGIN as USER_LOGIN,
+            uu.PASSWORD as USER_PASSWORD,
+            uu.PHONE as USER_PHONE,
+            uu.EMAIL as USER_EMAIL,
+            ur.ID as ROLE_ID,
+            ur.NAME as ROLE_NAME,
+            uu.FIRST_NAME as USER_FIRST_NAME,
+            uu.SECOND_NAME as USER_SECOND_NAME
+		FROM up_user uu
+		LEFT JOIN up_role ur on ur.ID = uu.ROLE_ID
+		WHERE uu.ID = {$id}";
+		$query = $this->DBConnection->query($query);
+		$row = $query->fetch();
+		return $this->createUserByRow($row);
 	}
 
 	/**

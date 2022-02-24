@@ -403,6 +403,7 @@ item-reviews
 	display: flex;
 	padding: 15px 0;
 	justify-content: center;
+	position: relative;
 }
 
 .item-review-photo {

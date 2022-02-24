@@ -18,6 +18,8 @@ $router->get('/404', [CoreController::class, 'get404'], '404');
 //User
 $router->get('/', [ItemController::class, 'getItems'], 'home');
 $router->get('/item/{positiveInt:id}', [ItemController::class, 'getItem'], 'item-detail');
+$router->get('/item/{positiveInt:id}/reviews', [ItemController::class, 'moreReviews'], 'more-reviews');
+$router->post('/reviewDelete/{positiveInt:id}', [ReviewController::class, 'deleteReview'], 'delete-review');
 $router->post('/finishOrder', [OrderController::class, 'finishOrder'], 'finish-order');
 $router->post('/addItemToCart', [CartController::class, 'addItemToCart'], 'add-item-to-cart');
 $router->post('/deleteItemFromCart', [CartController::class, 'deleteItemFromCart'], 'delete-item-from-cart');
@@ -34,6 +36,7 @@ $router->post('/addReview', [ReviewController::class, 'saveReview'], 'add-review
 
 $router->get('/profile', [UserController::class, 'getProfilePage'], 'user-profile');
 $router->post('/updateUser', [UserController::class, 'updateUser'], 'update-user');
+$router->get('/myPurchased', [ItemController::class, 'myPurchased'], 'my-purchased');
 
 $router->get('/favorites', [ItemController::class, 'getFavoriteItems'], 'user-favorites');
 $router->post('/addToFavorites', [ItemController::class, 'addToFavorites'], 'add-to-favorites');
@@ -66,9 +69,11 @@ $router->post('/admin/fastUpdateItem', [ItemController::class, 'updateCommonInfo
 $router->post('/admin/deleteImage/{positiveInt:id}', [ImageController::class, 'deleteImageById'], 'delete-image');
 
 $router->get('/admin/adminList',[UserController::class, 'adminListPage'],'admin-list');
-$router->post('/admin/adminList',[UserController::class, 'removeAdmin'],'admin-list');
+$router->post('/admin/adminList',[UserController::class, 'removeAdmin'],'remove-admin');
 $router->get('/admin/userList',[UserController::class, 'userListPage'],'user-list');
-$router->post('/admin/userList',[UserController::class, 'addAdmin'],'user-list');
+$router->post('/admin/adminUpdateUser/{positiveInt:id}',[UserController::class, 'adminUpdateUser'],'admin-update-user');
+$router->get('/admin/userList/{positiveInt:id}',[UserController::class, 'userInfoPage'],'user-info');
+
 
 $router->get('/admin/editCategory', [CategoryController::class, 'editCategoriesPage'], 'edit-category');
 
