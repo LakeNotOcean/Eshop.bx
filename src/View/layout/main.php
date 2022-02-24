@@ -98,7 +98,7 @@ if (!isset($query))
 				<svg class="cart">
 					<use xlink:href="/img/sprites.svg#cart"></use>
 				</svg>
-				Корзина
+				<span class="nav-cart">Корзина</span>
 			</a>
 		</div>
 

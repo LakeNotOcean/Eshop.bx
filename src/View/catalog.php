@@ -24,9 +24,9 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 <div class="container">
 	<div class="search_result_count">
 		<?php if ($query === ''): ?>
-		Видеокарты: найдено <?= $itemsAmount ?> товаров
+		Видеокарты: <?= $itemsAmount ?> <?= WordEndingResolver::resolve($itemsAmount, array('товар','товара','товаров')) ?>
 		<?php else: ?>
-		Результаты поиска по запросу "<?= $query ?>": найдено <?= $itemsAmount ?> товаров
+		Результаты поиска по запросу "<?= $query ?>": <?= $itemsAmount ?> <?= WordEndingResolver::resolve($itemsAmount, array('товар','товара','товаров')) ?>
 		<?php endif; ?>
 	</div>
 
