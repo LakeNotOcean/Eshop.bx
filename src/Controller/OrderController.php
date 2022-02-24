@@ -35,12 +35,12 @@ class OrderController
 	 * @param \Up\Service\OrderService\OrderService $orderService
 	 */
 	public function __construct(
-		TemplateProcessorInterface $templateProcessor,
-		MainLayoutManager		   $mainLayoutManager,
-		OrderLayoutManager 		   $orderLayoutManager,
-		CartServiceInterface $cartService,
-		ItemServiceInterface $itemService,
-		OrderServiceInterface $orderService)
+		TemplateProcessorInterface	$templateProcessor,
+		MainLayoutManager			$mainLayoutManager,
+		OrderLayoutManager			$orderLayoutManager,
+		CartServiceInterface		$cartService,
+		ItemServiceInterface		$itemService,
+		OrderServiceInterface		$orderService)
 	{
 		$this->templateProcessor = $templateProcessor;
 		$this->cartService = $cartService;

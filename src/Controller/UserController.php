@@ -173,22 +173,17 @@ class UserController
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->usersInPage);
 		$currentPage = ($currentPage > $pagesAmount) ? $pagesAmount : $currentPage;
 		$userList = $this->userService->getUserListByQuery(Paginator::getLimitOffset($currentPage,$this->usersInPage),0,$search);
+
 		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
 			'currentPage' => $currentPage,
 			'pagesAmount' => $pagesAmount,
 		]);
 
-
-		$page = $this->templateProcessor->render('user-list.php', [
+		$page = $this->mainLayoutManager->render('user-list.php', [
 			'userAmount' => $itemsAmount,
 			'paginator' => $paginator,
 			'users' => $userList,
 			'query' => $search,
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName(),
-
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -208,21 +203,17 @@ class UserController
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->adminsInPage);
 		$currentPage = ($currentPage > $pagesAmount) ? $pagesAmount : $currentPage;
 		$adminList = $this->userService->getUserListByQuery(Paginator::getLimitOffset($currentPage,$this->adminsInPage),1,$search);
+
 		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
 			'currentPage' => $currentPage,
 			'pagesAmount' => $pagesAmount,
 		]);
 
-
-		$page = $this->templateProcessor->render('admins-list.php', [
+		$page = $this->mainLayoutManager->render('admins-list.php', [
 			'paginator' => $paginator,
 			'admins' => $adminList,
 			'query' => $search,
 			'login' => $request->getUser()->getLogin(),
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
 		]);
 
 		return (new Response())->withBodyHTML($page);
