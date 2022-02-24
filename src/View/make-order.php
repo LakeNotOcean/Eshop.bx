@@ -8,7 +8,7 @@
 use Up\Entity\Item;
 use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
-use Up\Lib\Wordprocessor\WordProcessor;
+use Up\Lib\WordProcessor\WordProcessor;
 
 $firstName = "";
 $secondName = "";

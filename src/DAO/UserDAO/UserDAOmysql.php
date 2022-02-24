@@ -135,8 +135,29 @@ class UserDAOmysql implements UserDAOInterface
 	}
 
 
-	public function getUserListByQuery(int $roleId,string $querySearch):array
+	public function getAmountUserByQuery(int $roleId,string $querySearch): int
 	{
+		$query = "SELECT
+		COUNT(1) as COUNT
+		FROM up_user
+		LEFT JOIN up_role ur on ur.ID = ROLE_ID
+		WHERE (LOGIN LIKE ? OR EMAIL LIKE ? OR FIRST_NAME LIKE ? OR SECOND_NAME LIKE ?)";
+		if ($roleId !== 0)
+		{
+			$query .= " AND ROLE_ID = {$roleId} ";
+		}
+		$preparedQuery = $this->DBConnection->prepare($query);
+		$preparedQuery->execute(["%{$querySearch}%","%{$querySearch}%","%{$querySearch}%","%{$querySearch}%"]);
+		$row = $preparedQuery->fetch();
+		return $row["COUNT"];
+	}
+
+	public function getUserListByQuery(int $offset, int $amountItems,int $roleId,string $querySearch):array
+	{
+		if ($offset < 0)
+			{
+				return [];
+			}
 		$query = "SELECT
             uu.ID as USER_ID,
 			uu.LOGIN as USER_LOGIN,
@@ -149,7 +170,13 @@ class UserDAOmysql implements UserDAOInterface
             uu.SECOND_NAME as USER_SECOND_NAME
 		FROM up_user uu
 		LEFT JOIN up_role ur on ur.ID = uu.ROLE_ID
-		WHERE ROLE_ID = {$roleId} AND (LOGIN LIKE ? OR EMAIL LIKE ? OR FIRST_NAME LIKE ? OR SECOND_NAME LIKE ?) ";
+		WHERE (LOGIN LIKE ? OR EMAIL LIKE ? OR FIRST_NAME LIKE ? OR SECOND_NAME LIKE ?)";
+		if ($roleId !== 0)
+		{
+			$query .= " AND ROLE_ID = {$roleId} ";
+		}
+		$query .= "ORDER BY ROLE_ID DESC
+		 LIMIT {$offset}, {$amountItems} ";
 		$preparedQuery = $this->DBConnection->prepare($query);
 		$preparedQuery->execute(["%{$querySearch}%","%{$querySearch}%","%{$querySearch}%","%{$querySearch}%"]);
 		$resultList = [];

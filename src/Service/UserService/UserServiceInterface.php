@@ -10,15 +10,19 @@ interface UserServiceInterface
 
 	public function giveUserModeratorRights(string $login);
 
+	public function giveUserAdministratorRoleByLogin(string $login);
+
 	public function removeUserModeratorRights(string $login);
 
 	public function getUserInfo(): User;
 
 	public function getUsersInfo(): array;
 
-	public function getUserListByRole(int $id): array;
+	public function getUserListByRole(int $roleId): array;
 
-	public function getUserListByQuery(int $roleId,string $query): array;
+	public function getAmountUserByQuery(int $roleId,string $query): int;
+
+	public function getUserListByQuery(array $limitOffset, int $roleId,string $query): array;
 
 	public function registerUser(User $user, string $password): User;
 

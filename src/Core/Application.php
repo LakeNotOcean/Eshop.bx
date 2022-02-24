@@ -40,7 +40,6 @@ class Application
 		if ($isDev === true)
 		{
 			$migration = new MigrationManager(DefaultDatabase::getInstance());
-
 			try
 			{
 				$migration->updateDatabase();

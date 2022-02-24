@@ -27,6 +27,6 @@
 			echo "</div>";
 		}
 		?>
-		<input class="btn btn-normal input" type="submit">
+		<input class="btn btn-normal input" type="submit" value="Сохранить">
 	</form>
 </div>

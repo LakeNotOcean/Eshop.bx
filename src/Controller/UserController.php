@@ -12,6 +12,7 @@ use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
 use Up\Entity\User\UserRole;
 use Up\LayoutManager\MainLayoutManager;
+use Up\Lib\Paginator\Paginator;
 use Up\Lib\Redirect;
 use Up\Lib\URLHelper;
 use Up\Service\UserService\Error\UserServiceException;
@@ -26,6 +27,8 @@ class UserController
 	protected $mainLayoutManager;
 	protected $userService;
 	public const nextUrlQueryKeyword = 'next';
+	protected $adminsInPage = 10;
+	protected $usersInPage = 20;
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
@@ -160,41 +163,66 @@ class UserController
 		return (new Response())->withBodyHTML($page);
 	}
 
-	/**
-	 * @throws UserServiceException
-	 */
-	public function adminListPage(Request $request): Response
+	public function userListPage(Request $request): Response
 	{
-		if ($request->containsQuery("query"))
-		{
-			$login = $request->getQueriesByName("query");
-			$adminList = $this->userService->getUserListByQuery('1',$login);
-		}
-		else
-		{
-			$adminList = $this->userService->getUserListByRole('1');
-		}
-		$currentPage = 1;
-		$pagesAmount= 1;
+		$currentPage = ($request->containsQuery('page')) ? $request->getQueriesByName('page') : 1;
+		$currentPage = ($currentPage > 0) ? $currentPage : 1;
+		$query = $request->getQueriesOrDefaultList(['query'=>'']);
+		$search = $query['query'];
+		$itemsAmount = $this->userService->getAmountUserByQuery(0,$search);
+		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->usersInPage);
+		$currentPage = ($currentPage > $pagesAmount) ? $pagesAmount : $currentPage;
+		$userList = $this->userService->getUserListByQuery(Paginator::getLimitOffset($currentPage,$this->usersInPage),0,$search);
+
 		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
 			'currentPage' => $currentPage,
 			'pagesAmount' => $pagesAmount,
 		]);
 
-
-		$page = $this->templateProcessor->render('add-admins.php', [
+		$page = $this->mainLayoutManager->render('user-list.php', [
+			'userAmount' => $itemsAmount,
 			'paginator' => $paginator,
-			'admins' => $adminList,
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
+			'users' => $userList,
+			'query' => $search,
 		]);
 
 		return (new Response())->withBodyHTML($page);
 	}
 
 
+	/**
+	 * @throws UserServiceException
+	 */
+	public function adminListPage(Request $request): Response
+	{
+		$currentPage = ($request->containsQuery('page')) ? $request->getQueriesByName('page') : 1;
+		$currentPage = ($currentPage > 0) ? $currentPage : 1;
+		$query = $request->getQueriesOrDefaultList(['query'=>'']);
+		$search = $query['query'];
+		$itemsAmount = $this->userService->getAmountUserByQuery(1,$search);
+		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->adminsInPage);
+		$currentPage = ($currentPage > $pagesAmount) ? $pagesAmount : $currentPage;
+		$adminList = $this->userService->getUserListByQuery(Paginator::getLimitOffset($currentPage,$this->adminsInPage),1,$search);
+
+		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
+			'currentPage' => $currentPage,
+			'pagesAmount' => $pagesAmount,
+		]);
+
+		$page = $this->mainLayoutManager->render('admins-list.php', [
+			'paginator' => $paginator,
+			'admins' => $adminList,
+			'query' => $search,
+			'login' => $request->getUser()->getLogin(),
+		]);
+
+		return (new Response())->withBodyHTML($page);
+	}
+
+	/**
+	 * @throws UserServiceException
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 */
 	public function removeAdmin(Request $request): Response
 	{
 		if ($request->containsPost("deleteAdmin"))
@@ -202,24 +230,23 @@ class UserController
 			$login = $request->getPostParametersByName("deleteAdmin");
 			$this->userService->removeUserModeratorRights($login);
 		}
-		$adminList = $this->userService->getUserListByRole('1');
-		$currentPage = 1;
-		$pagesAmount= 1;
-		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
-			'currentPage' => $currentPage,
-			'pagesAmount' => $pagesAmount,
-		]);
+		$page = 'true';
 
+		return (new Response())->withBodyHTML($page);
+	}
 
-		$page = $this->templateProcessor->render('add-admins.php', [
-			'paginator' => $paginator,
-			'admins' => $adminList,
-		], 'layout/main.php', [
-			'isAuthenticated' => $request->isAuthenticated(),
-			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
-		]);
-
+	/**
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 * @throws UserServiceException
+	 */
+	public function addAdmin(Request $request):Response
+	{
+		if ($request->containsPost("addAdmin"))
+		{
+			$login = $request->getPostParametersByName("addAdmin");
+			$this->userService->giveUserAdministratorRoleByLogin($login);
+		}
+		$page = 'true';
 		return (new Response())->withBodyHTML($page);
 	}
 

@@ -69,3 +69,13 @@ label {
 .gone {
 	display: none;
 }
+
+@media screen and (max-width: 500px)  {
+	.user-info-change {
+		flex-direction: column;
+	}
+	.container {
+		width: 100%;
+		padding: 20px;
+	}
+}

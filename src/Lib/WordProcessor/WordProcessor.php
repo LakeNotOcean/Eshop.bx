@@ -1,6 +1,6 @@
 <?php
 
-namespace Up\Lib\Wordprocessor;
+namespace Up\Lib\WordProcessor;
 
 class WordProcessor
 {

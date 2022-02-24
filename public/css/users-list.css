@@ -2,7 +2,7 @@
 @import "lib/card.css";
 @import "lib/input.css";
 @import "lib/popup.css";
-
+@import "lib/alert-dialog.css";
 
 .container {
 	flex: 1;
@@ -14,13 +14,17 @@
 	align-items: center;
 }
 
-.admin-line {
+.user-line {
 	margin: 5px;
 	display: flex;
 	align-items: center;
 	width: 50%;
 }
 
+.search-count
+{
+	margin-right: 20px;
+}
 
 .search {
 	display: flex;
@@ -32,24 +36,9 @@
 	border: 2px solid #D9D9D9;
 }
 
-.btn-normal:hover
-{
-	background: none;
-}
 
-.trash-icon {
-	width: 30px;
-	height: 25px;
-	min-width: 30px;
-	fill: black;
-	stroke: #222222;
-	cursor: pointer;
-	margin-top: 5px;
 
-}
-.trash-icon:hover {
-	fill: red;
-}
+
 
 .btn-normal{
 	margin: 0;
@@ -72,31 +61,37 @@
 	color: #333333;
 }
 
-.admin-list{
+.user-list{
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
 }
 
-.admin{
+.user{
 	display: flex;
-	flex-direction: column;
+	flex-wrap: wrap;
+	flex-direction: row;
 	padding: 10px;
-	min-width: 320px;
-	margin: 30px 10px 30px 10px;
+	margin: 10px;
+	max-width: 1300px;
+	width: 100%;
+	justify-content: space-between;
+
+
 }
 
-.admin-info{
+.user-body{
+	flex-wrap: wrap;
+	display: flex;
+	flex-direction: row;
+}
+
+.user-info{
 	margin: 5px;
 	white-space: nowrap;
 }
 
-.delete-button-section
-{
-
+label{
+	font-weight: bold;
 }
 
-.delete-section{
-	height: 150px;
-	width: 100%;
-}

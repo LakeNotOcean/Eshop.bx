@@ -216,6 +216,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				<div>Вы уже оставляли отзыв к этому товару</div>
 				<?php else: ?>
 				<form class="review-send" action="<?= \Up\Core\Router\URLResolver::resolve('add-review') ?>" method="post">
+					<div class="rating-title">Оставьте отзыв о товаре:</div>
 					<div class="rating-container">
 						<div class="review_stars_wrap">
 							<div id="review_stars">
@@ -249,8 +250,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				</form>
 				<?php endif; ?>
 			</div>
-			<?php
-			if (!empty($similarItems)){?>
+			<?php if (!empty($similarItems)):?>
 			<div class="similar-item-section">
 				<a class="anchor" id="similar"></a>
 				<div class="item-section-title">Похожие товары</div>
@@ -278,7 +278,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 					<div class="btn-back similar-item-cards-right-arrow"></div>
 				</div>
 			</div>
-			<?}?>
+			<?php endif;?>
 		</div>
 	</div>
 </div>

@@ -18,3 +18,11 @@
 .hidden {
 	opacity: 0;
 }
+
+@media screen and (max-width: 500px)  {
+	.popup {
+		height: auto;
+		line-height: 1.2;
+		padding: 10px;
+	}
+}

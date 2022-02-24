@@ -84,6 +84,7 @@ if (!isset($query))
 				<div class="menu-container">
 					<div class="menu">
 						<a class="menu-item" href="/admin/adminList">Список администраторов</a>
+						<a class="menu-item" href="/admin/userList">Список пользователей</a>
 					</div>
 				</div>
 			</div>
@@ -97,7 +98,7 @@ if (!isset($query))
 				<svg class="cart">
 					<use xlink:href="/img/sprites.svg#cart"></use>
 				</svg>
-				Корзина
+				<span class="nav-cart">Корзина</span>
 			</a>
 		</div>
 
@@ -115,16 +116,19 @@ if (!isset($query))
 			</div>
 		</div>
 	<?php else: ?>
-		<a href="<?= URLResolver::resolve('make-order') ?>">
-			<svg class="cart">
-				<use xlink:href="/img/sprites.svg#cart"></use>
-			</svg>
-		</a>
+		<div class="nav-item" id="userMenu">
+			<a href="<?= URLResolver::resolve('make-order') ?>">
+				<svg class="cart">
+					<use xlink:href="/img/sprites.svg#cart"></use>
+				</svg>
+				<span class="nav-cart">Корзина</span>
+			</a>
+		</div>
 		<a href="<?= URLResolver::resolve('login-user') ?>">
 			<div class="btn btn-normal sign-in">Войти</div>
 		</a>
 		<a href="<?= URLResolver::resolve('register-user') ?>">
-			<div class="btn btn-normal sign-in">Зарегистрироваться</div>
+			<div class="btn btn-normal sign-in sign-up">Зарегистрироваться</div>
 		</a>
 	<?php endif; ?>
 	<div title="Переключить тему">
@@ -150,4 +154,6 @@ if (!isset($query))
 </main>
 
 </body>
+<script src="/js/catalog-filters/queryPush.js"></script>
+<script src="/js/catalog-filters/get-search-query.js"></script>
 </html>

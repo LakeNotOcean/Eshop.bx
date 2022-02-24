@@ -1,5 +1,5 @@
 
-let isdeleteSection = false;
+let isDeleteSection = false;
 let deleteButtons = document.querySelectorAll(".trash");
 let adminCards = document.querySelectorAll('.admin');
 let deleteSection = document.querySelector(".delete-section")
@@ -12,8 +12,6 @@ for (let deleteButton of deleteButtons)
 	})
 }
 
-
-
 deleteSection.addEventListener('dragover', (e) => {
 	e.preventDefault();
 })
@@ -21,37 +19,44 @@ deleteSection.addEventListener('dragover', (e) => {
 deleteSection.addEventListener("drop", (e,ui)=>
 {
 	e.preventDefault();
-	isdeleteSection = true;
-
+	isDeleteSection = true;
 })
+
 for (let adminCard of adminCards)
 {
+	adminCard.addEventListener('drag', (e) =>{
+		adminCard.style.borderColor = 'red'
+	})
 	adminCard.addEventListener('dragend', (e) =>{
-		if (isdeleteSection === true)
+		if (isDeleteSection === true)
 		{
 			const id = adminCard.id;
 			deleteAdminById(id);
 		}
-		isdeleteSection = false;
-		})
+		isDeleteSection = false;
+	})
 }
 
 function deleteAdminById(id)
 {
-		let postBody = new FormData();
-		postBody.append('deleteAdmin', id);
-		let token = document.querySelector('.token');
-		postBody.append(token.name, token.value);
-		fetch('/admin/adminList', {
-			method: 'post',
-			body: postBody
-		}).then((r) => {
-			if (r.ok) {
-				showPopup('Администратор снят с должности');
-				location.reload();
-			} else {
-				showPopup('Не удалось снять администратора с должности')
-			}
-		});
+	alertDialogDelete(
+		'Удаление администратора',
+		'Вы уверены, что хотите удалить этого пользователя из списка администраторов?',
+		() => {
+			let postBody = new FormData();
+			postBody.append('deleteAdmin', id);
+			let token = document.querySelector('.token');
+			postBody.append(token.name, token.value);
+			fetch('/admin/adminList', {
+				method: 'post',
+				body: postBody
+			}).then((r) => {
+				if (r.ok) {
+					showPopup('Администратор снят с должности');
+					location.reload();
+				} else {
+					showPopup('Не удалось снять администратора с должности')
+				}
+			});
+		})
 }
-

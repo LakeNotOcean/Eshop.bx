@@ -71,6 +71,8 @@ $router->post('/admin/deleteImage/{positiveInt:id}', [ImageController::class, 'd
 
 $router->get('/admin/adminList',[UserController::class, 'adminListPage'],'admin-list');
 $router->post('/admin/adminList',[UserController::class, 'removeAdmin'],'admin-list');
+$router->get('/admin/userList',[UserController::class, 'userListPage'],'user-list');
+$router->post('/admin/userList',[UserController::class, 'addAdmin'],'user-list');
 
 $router->get('/admin/editCategory', [CategoryController::class, 'editCategoriesPage'], 'edit-category');
 

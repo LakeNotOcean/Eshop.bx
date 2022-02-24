@@ -1,6 +1,7 @@
 @import "lib/btn.css";
 @import "lib/input.css";
 @import "lib/popup.css";
+@import "lib/alert-dialog.css";
 
 .form-container {
 	flex: 1;
