@@ -15,6 +15,8 @@ class UserItem extends ItemDetail
 		$this->sortOrder = $item->sortOrder;
 		$this->isActive = $item->isActive;
 		$this->mainImage = $item->mainImage;
+		$this->amountReviews = $item->amountReviews;
+		$this->rating = $item->rating;
 	}
 
 	public function setItemDetail(ItemDetail $itemDetail): void

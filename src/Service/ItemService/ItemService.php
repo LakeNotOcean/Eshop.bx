@@ -10,7 +10,7 @@ use Up\Entity\EntityArray;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\UserItem;
-
+use Up\Service\ImageService\ImageServiceInterface;
 
 class ItemService implements ItemServiceInterface
 {
@@ -18,19 +18,22 @@ class ItemService implements ItemServiceInterface
 	protected $specificationDAO;
 	protected $tagDAO;
 	protected $typeDAO;
+	protected $imageService;
 
 	/**
 	 * @param \Up\DAO\ItemDAO\ItemDAOmysql $itemDAO
 	 * @param \Up\DAO\SpecificationDAO\SpecificationDAOmysql $specificationDAO
 	 * @param \Up\DAO\TagDAO\TagDAOmysql $tagDAO
 	 * @param \Up\DAO\TypeDAO\TypeDAOmysql $typeDAO
+	 * @param \Up\Service\ImageService\ImageService $imageService
 	 */
-	public function __construct(ItemDAOInterface $itemDAO, SpecificationDAOInterface $specificationDAO, TagDAOInterface $tagDAO, TypeDAOInterface $typeDAO)
+	public function __construct(ItemDAOInterface $itemDAO, SpecificationDAOInterface $specificationDAO, TagDAOInterface $tagDAO, TypeDAOInterface $typeDAO, ImageServiceInterface $imageService)
 	{
 		$this->itemDAO = $itemDAO;
 		$this->specificationDAO = $specificationDAO;
 		$this->tagDAO = $tagDAO;
 		$this->typeDAO = $typeDAO;
+		$this->imageService = $imageService;
 	}
 
 	public function getItems(array $limitOffset): array
@@ -165,8 +168,7 @@ class ItemService implements ItemServiceInterface
 
 	public function getItemsTags(): array
 	{
-		$tags = $this->tagDAO->getAllTags();
-		return $tags->getEntitiesArray();
+		return $this->tagDAO->getAllTags();
 	}
 
 

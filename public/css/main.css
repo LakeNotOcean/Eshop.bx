@@ -3,7 +3,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
 * {
-	transition: background-color .5s, box-shadow .5s;
+	transition: background-color .5s, fill .1s, box-shadow .5s,
+	border-top-color .5s, border-right-color .5s, border-bottom-color .5s, border-left-color .5s;
 }
 
 body {
@@ -102,7 +103,7 @@ search-icon
 }
 
 .sign-in {
-	margin: 10px 10px 0 !important;
+	margin: 0 10px !important;
 }
 
 /*==========================
@@ -165,6 +166,7 @@ menu
 	line-height: 40px;
 	text-align: left;
 	user-select: none;
+	transition: .1s;
 }
 
 .menu-item-btn {
@@ -182,9 +184,9 @@ btn-theme
 .btn-theme {
 	flex: 0;
 	min-width: 30px;
-	width: 30px;
-	height: 30px;
-	margin-left: 30px;
+	width: 26px;
+	height: 26px;
+	margin-left: 25px;
 	cursor: pointer;
 }
 
@@ -237,7 +239,8 @@ footer
 }
 
 .cart {
-	margin: auto 6px;
+	margin-right: 10px;
 	width: 26px;
 	height: 26px;
+	fill: var(--color-font);
 }

@@ -21,4 +21,6 @@ interface OrderDAOInterface
 
 	public function deleteOrder(int $orderId): void;
 
+	public function existUsersFinishedOrderByItemId(int $userId, int $itemId): bool;
+
 }

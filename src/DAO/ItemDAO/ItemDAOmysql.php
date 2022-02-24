@@ -598,16 +598,20 @@ LIMIT "
 					   uoi.PATH as ORIGINAL_IMAGE_PATH,
 					   uoi.IS_MAIN as ORIGINAL_IMAGE_IS_MAIN,
 					   uiws.PATH as IMAGE_WITH_SIZE_PATH,
-					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE
+					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE,
+                       COUNT(ur.ID) as REVIEWS_COUNT,
+                       IFNULL(AVG(ur.SCORE), 0) as AVG_RATING
 				FROM up_item ui
 						 INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
 						 INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
+						 LEFT JOIN up_review ur on ui.ID = ur.ITEM_ID
 				WHERE ui.ID IN (
 					select uiI.ID from (
 										   SELECT ID FROM up_item ui2 WHERE ACTIVE = 1 AND TITLE LIKE '%{$searchQuery}%' ORDER BY ui2.SORT_ORDER desc, ui2.ID LIMIT {$offset}, {$amountItems}
 		
 									   ) as uiI
 				)
+				GROUP BY ui.ID, TITLE, PRICE, SORT_ORDER, SHORT_DESC, ACTIVE, uoi.ID, uoi.PATH, uoi.IS_MAIN, uiws.PATH, uiws.SIZE
 				ORDER BY ui.SORT_ORDER desc, ui.ID;";
 	}
 
@@ -624,16 +628,24 @@ LIMIT "
 					   uoi.PATH as ORIGINAL_IMAGE_PATH,
 					   uoi.IS_MAIN as ORIGINAL_IMAGE_IS_MAIN,
 					   uiws.PATH as IMAGE_WITH_SIZE_PATH,
-					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE
+					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE,
+                       COUNT(ur.ID) as REVIEWS_COUNT,
+                       IFNULL(AVG(ur.SCORE), 0) as AVG_RATING
 				FROM up_item ui
 						 INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
 						 INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
+						 LEFT JOIN up_review ur on ui.ID = ur.ITEM_ID
 				';
 		if ($elementsCount === 0)
 		{
-			return $this->dbConnection->prepare($query . 'where ui.ID = -1');
+			$query .= 'where ui.ID = -1';
 		}
-		return $this->dbConnection->prepare($query . 'WHERE ui.ID IN'. $this->getPreparedGroup($elementsCount));
+		else
+		{
+			$query .= 'WHERE ui.ID IN'. $this->getPreparedGroup($elementsCount);
+		}
+		$query .= "\nGROUP BY ui.ID, TITLE, PRICE, SORT_ORDER, SHORT_DESC, ACTIVE, uoi.ID, uoi.PATH, uoi.IS_MAIN, uiws.PATH, uiws.SIZE";
+		return $this->dbConnection->prepare($query);
 	}
 
 	private function getFavoriteItemsQuery(int $userId, int $offset, int $amountItems): string
@@ -649,15 +661,19 @@ LIMIT "
 			uoi.PATH as ORIGINAL_IMAGE_PATH,
 			uoi.IS_MAIN as ORIGINAL_IMAGE_IS_MAIN,
 			uiws.PATH as IMAGE_WITH_SIZE_PATH,
-			uiws.SIZE as IMAGE_WITH_SIZE_SIZE
+			uiws.SIZE as IMAGE_WITH_SIZE_SIZE,
+            COUNT(ur.ID) as REVIEWS_COUNT,
+            IFNULL(AVG(ur.SCORE), 0) as AVG_RATING
 		FROM up_item ui
 		INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
 		INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
+		LEFT JOIN up_review ur on ui.ID = ur.ITEM_ID
 		WHERE ui.ID IN (
 			select ufi.ID from (
 				SELECT FAVORITE_ITEM_ID as ID FROM `up_user-favorite_item`
 				WHERE USER_ID = $userId
 				" . ($offset >= 0 ? "LIMIT $offset, $amountItems" : "") . ") as ufi)
+		GROUP BY ui.ID, TITLE, PRICE, SORT_ORDER, SHORT_DESC, ACTIVE, uoi.ID, uoi.PATH, uoi.IS_MAIN, uiws.PATH, uiws.SIZE
 		ORDER BY ui.SORT_ORDER desc, ui.ID;";
 	}
 
@@ -680,7 +696,8 @@ LIMIT "
 					   FULL_DESC as FULL_DESC,
 					   ACTIVE as ACTIVE, ui.ITEM_TYPE_ID as ITEM_TYPE_ID, uit.NAME as TYPE_NAME,
 					   uis.SPEC_TYPE_ID as SPEC_TYPE_ID, uis.VALUE as VALUE, ust.NAME as ust_NAME, ust.DISPLAY_ORDER as ust_DISPLAY_ORDER, usc.ID as usc_ID,
-						usc.NAME as usc_NAME, usc.DISPLAY_ORDER as usc_DISPLAY_ORDER, u.ID as u_ID, u.IS_MAIN as IS_MAIN, u.PATH as ORIGINAL_PATH, uiws.PATH as SIZE_PATH, uiws.SIZE as SIZE
+						usc.NAME as usc_NAME, usc.DISPLAY_ORDER as usc_DISPLAY_ORDER, u.ID as u_ID, u.IS_MAIN as IS_MAIN, u.PATH as ORIGINAL_PATH, uiws.PATH as SIZE_PATH, uiws.SIZE as SIZE,
+                        COUNT(ur.ID) as REVIEWS_COUNT, IFNULL(AVG(ur.SCORE), 0) as AVG_RATING
 				FROM up_item ui inner join up_item_type uit on ui.ITEM_TYPE_ID = uit.ID AND ui.ID={$id}
                 LEFT JOIN `up_item-tag` ut on ut.ITEM_ID = ui.ID
                 LEFT JOIN up_tag on up_tag.ID=ut.TAG_ID
@@ -688,7 +705,12 @@ LIMIT "
                 INNER JOIN up_spec_type ust on uis.SPEC_TYPE_ID = ust.ID
                 INNER JOIN up_spec_category usc on ust.SPEC_CATEGORY_ID = usc.ID
                 INNER JOIN up_original_image u on ui.ID = u.ITEM_ID
-				INNER JOIN up_image_with_size uiws on u.ID = uiws.ORIGINAL_IMAGE_ID;";
+				INNER JOIN up_image_with_size uiws on u.ID = uiws.ORIGINAL_IMAGE_ID
+				LEFT JOIN up_review ur on ui.ID = ur.ITEM_ID
+				GROUP BY ui.ID, ui.TITLE, PRICE, up_tag.ID, up_tag.TITLE, SORT_ORDER,
+				         SHORT_DESC, FULL_DESC, ACTIVE, ui.ITEM_TYPE_ID, uit.NAME, uis.SPEC_TYPE_ID,
+				         uis.VALUE, ust.NAME, ust.DISPLAY_ORDER, usc.ID, usc.NAME, usc.DISPLAY_ORDER,
+				         u.ID, u.IS_MAIN, u.PATH, uiws.PATH, uiws.SIZE;";
 	}
 
 	private function getDeleteWhereAndWhereInQuery(int $id, array $ids, array $table): string
@@ -737,6 +759,8 @@ LIMIT "
 		$item->setShortDescription($row['SHORT_DESC']);
 		$item->setSortOrder($row['SORT_ORDER']);
 		$item->setIsActive($row['ACTIVE']);
+		$item->setRating($row['AVG_RATING']);
+		$item->setAmountReviews($row['REVIEWS_COUNT']);
 	}
 
 	private function mapDetailItemInfo(ItemDetail $item, array $row)
@@ -836,10 +860,13 @@ LIMIT "
 					   uoi.PATH as ORIGINAL_IMAGE_PATH,
 					   uoi.IS_MAIN as ORIGINAL_IMAGE_IS_MAIN,
 					   uiws.PATH as IMAGE_WITH_SIZE_PATH,
-					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE
+					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE,
+                       COUNT(ur.ID) as REVIEWS_COUNT,
+                       IFNULL(AVG(ur.SCORE), 0) as AVG_RATING
 				FROM up_item ui
 						 INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
 						 INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
+						 LEFT JOIN up_review ur on ui.ID = ur.ITEM_ID
 				WHERE ui.ID IN (
 					select uiI.ID from (";
 		$query .= "
@@ -931,6 +958,7 @@ INNER JOIN (select ID as ITEM_ID,
 		LIMIT {$offset}, {$amountItems}";
 		$query .= ") as uiI
 				)
+				GROUP BY ui.ID, TITLE, PRICE, SORT_ORDER, SHORT_DESC, ACTIVE, uoi.ID, uoi.PATH, uoi.IS_MAIN, uiws.PATH, uiws.SIZE
 				ORDER BY ui.{$sortingMethod}, ui.ID;
 ";
 
@@ -949,16 +977,20 @@ INNER JOIN (select ID as ITEM_ID,
 					   uoi.PATH as ORIGINAL_IMAGE_PATH,
 					   uoi.IS_MAIN as ORIGINAL_IMAGE_IS_MAIN,
 					   uiws.PATH as IMAGE_WITH_SIZE_PATH,
-					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE
+					   uiws.SIZE as IMAGE_WITH_SIZE_SIZE,
+                       COUNT(ur.ID) as REVIEWS_COUNT,
+                       IFNULL(AVG(ur.SCORE), 0) as AVG_RATING
 				FROM up_item ui
 						 INNER JOIN up_original_image uoi on ui.ID = uoi.ITEM_ID AND uoi.IS_MAIN = 1
 						 INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID
+						 LEFT JOIN up_review ur on ui.ID = ur.ITEM_ID
 				WHERE ui.ID IN (
 	select uiI.ID from (";
 
 		$query .= $queryId;
 		$query .= ") as uiI
 				)
+				GROUP BY ui.ID, TITLE, PRICE, SORT_ORDER, SHORT_DESC, ACTIVE, uoi.ID, uoi.PATH, uoi.IS_MAIN, uiws.PATH, uiws.SIZE
 				ORDER BY ui.SORT_ORDER desc, ui.ID;";
 
 		return $query;

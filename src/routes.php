@@ -5,6 +5,7 @@ use Up\Controller\CoreController;
 use Up\Controller\ImageController;
 use Up\Controller\ItemController;
 use Up\Controller\OrderController;
+use Up\Controller\ReviewController;
 use Up\Controller\UserController;
 use \Up\Controller\CategoryController;
 
@@ -29,6 +30,7 @@ $router->post('/login', [UserController::class, 'loginUser'], 'login-user');
 $router->get('/logout', [UserController::class, 'logout'], 'logout-user');
 $router->get('/passwordChange', [UserController::class, 'changePasswordPage'], 'change-password');
 $router->post('/passwordChange', [UserController::class, 'changePassword'], 'change-password');
+$router->post('/addReview', [ReviewController::class, 'saveReview'], 'add-review');
 
 $router->get('/profile', [UserController::class, 'getProfilePage'], 'user-profile');
 $router->post('/updateUser', [UserController::class, 'updateUser'], 'update-user');
@@ -41,14 +43,14 @@ $router->get('/removeFromFavorites', [ItemController::class, 'removeFromFavorite
 //Admin
 $router->get('/admin/addItem', [ItemController::class, 'addItem'], 'add-item');
 $router->get('/admin/updateItem',[ItemController::class, 'updateItemPage'],'update-item');
-$router->post('/admin/addItem', [ItemController::class, 'createNewItem'], 'add-item-db');
+$router->post('/admin/addItem', [ItemController::class, 'createNewItem'], 'add-item');
 $router->get('/admin/chooseItemType', [CategoryController::class, 'chooseItemType'], 'choose-item-type');
 $router->get('/admin/addItemType', [CategoryController::class, 'addItemType'], 'add-item-type');
-$router->post('/admin/addItemType', [CategoryController::class, 'addItemTypeAndSaveToDB'], 'add-item-type-db');
+$router->post('/admin/addItemType', [CategoryController::class, 'addItemTypeAndSaveToDB'], 'add-item-type');
 $router->get('/admin/addCategory', [CategoryController::class, 'addCategory'], 'add-category');
-$router->post('/admin/addCategory', [CategoryController::class, 'addCategoryAndSaveToDB'], 'add-category-db');
+$router->post('/admin/addCategory', [CategoryController::class, 'addCategoryAndSaveToDB'], 'add-category');
 $router->get('/admin/addSpecification', [CategoryController::class, 'addSpecification'], 'add-specification');
-$router->post('/admin/addSpecification', [CategoryController::class, 'addSpecificationAndSaveToDB'], 'add-specification-db');
+$router->post('/admin/addSpecification', [CategoryController::class, 'addSpecificationAndSaveToDB'], 'add-specification');
 
 $router->get('/admin/', [ItemController::class, 'getItems'], 'home-admin');
 $router->get('/admin/deleteCategory', [CategoryController::class, 'deleteCategoryPage'], 'delete-category');
@@ -81,3 +83,5 @@ $router->get('/api/v1/category/detail', [CategoryController::class, 'getCategori
 $router->get('/api/v1/categories', [CategoryController::class, 'getCategoriesJSON'], 'cat');
 $router->get('/api/v1/categoriesByType', [CategoryController::class, 'getCategoriesByItemTypeIdJSON'], 'categories-by-type');
 $router->get('/api/v1/categoriesByItem/{positiveInt:id}', [CategoryController::class, 'getCategoriesByItemIdJSON'], 'categories-by-item');
+
+$router->post('/test', [ReviewController::class, 'test'], 'test');

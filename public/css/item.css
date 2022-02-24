@@ -98,15 +98,14 @@ scroll-menu
 	display: flex;
 	align-items: center;
 	padding: 15px;
-	transition: .4s;
 	text-decoration: none;
 	cursor: pointer;
 	user-select: none;
+	transition: .1s;
 }
 
 .scroll-menu-item:hover {
 	background-color: var(--color-secondary);
-	transition: .1s;
 }
 
 /*==========================
@@ -233,6 +232,17 @@ item-reviews
 
 .btn-item-added {
 	background: #aaa;
+}
+
+.review-send{
+	display: flex;
+	flex-direction: column;
+}
+
+.review-send-text{
+	resize: none;
+	min-height: 100px;
+	margin: 10px 0 10px 0;
 }
 
 /*==========================

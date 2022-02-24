@@ -10,7 +10,41 @@ class Item extends Entity
 	protected $shortDescription = '';
 	protected $sortOrder = 0;
 	protected $isActive = 0;
+	protected $rating = 0.0;
+	protected $amountReviews = 0;
 	protected $mainImage;
+
+	/**
+	 * @return float
+	 */
+	public function getRating(): float
+	{
+		return $this->rating;
+	}
+
+	/**
+	 * @param float $rating
+	 */
+	public function setRating(float $rating): void
+	{
+		$this->rating = $rating;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getAmountReviews(): int
+	{
+		return $this->amountReviews;
+	}
+
+	/**
+	 * @param int $amountReviews
+	 */
+	public function setAmountReviews(int $amountReviews): void
+	{
+		$this->amountReviews = $amountReviews;
+	}
 
 	/**
 	 * @return string

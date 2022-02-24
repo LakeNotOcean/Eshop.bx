@@ -93,6 +93,7 @@ sort
 	line-height: 1;
 	cursor: pointer;
 	user-select: none;
+	transition: 0s;
 }
 
 .sort-direction {
@@ -408,6 +409,7 @@ filters tag category
 	border: 2px solid var(--color-outline);
 	border-radius: 1in;
 	padding: 5px;
+	transition: 0s;
 }
 
 .tag input {

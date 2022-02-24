@@ -7,6 +7,7 @@ use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
+use Up\DAO\OrderDAO\OrderDAOInterface;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\ItemType;
@@ -20,6 +21,9 @@ use Up\Lib\Redirect;
 use Up\Service\CartService\CartServiceInterface;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
+use Up\Service\OrderService\OrderServiceInterface;
+use Up\Service\ReviewService\ReviewService;
+use Up\Service\ReviewService\ReviewServiceInterface;
 use Up\Service\TagService\TagServiceInterface;
 use Up\Service\UserService\UserServiceInterface;
 
@@ -31,6 +35,8 @@ class ItemController
 	protected $itemService;
 	protected $imageService;
 	protected $tagService;
+	protected $reviewService;
+	protected $orderService;
 	protected $cartService;
 	protected $itemsInPage = 10;
 
@@ -40,6 +46,8 @@ class ItemController
 	 * @param \Up\Service\ItemService\ItemService $itemService
 	 * @param \Up\Service\ImageService\ImageService $imageService
 	 * @param \Up\Service\TagService\TagService $tagService
+	 * @param \Up\Service\ReviewService\ReviewService $reviewService
+	 * @param \Up\Service\OrderService\OrderService $orderService
 	 * @param \Up\Service\CartService\CartService $cartService
 	 */
 	public function __construct(
@@ -48,6 +56,8 @@ class ItemController
 		ItemServiceInterface       $itemService,
 		ImageServiceInterface      $imageService,
 		TagServiceInterface        $tagService,
+		ReviewServiceInterface     $reviewService,
+		OrderServiceInterface      $orderService,
 		CartServiceInterface       $cartService
 	)
 	{
@@ -56,6 +66,8 @@ class ItemController
 		$this->itemService = $itemService;
 		$this->imageService = $imageService;
 		$this->tagService = $tagService;
+		$this->reviewService = $reviewService;
+		$this->orderService = $orderService;
 		$this->cartService = $cartService;
 	}
 
@@ -178,11 +190,17 @@ class ItemController
 	{
 		$userId = $request->getUser()->getId();
 		$item = $this->itemService->getItemById($id);
+		$itemIsPurchased = $this->orderService->checkThatUserBoughtItem($userId, $id);
+		$reviewIsWritten = $this->reviewService->existReviewByUserAndItemIds($userId, $id);
 		$itemsSimilar = $this->itemService->getItemsSimilarById($id,5);
-
+		$reviews = $this->reviewService->getReviewsByItemId(Paginator::getLimitOffset(1, 3), $id);
 		$page = $this->mainLayoutManager->render('item.php', [
 			'item' => $this->itemService->mapItemDetailToUserItem($userId, $item),
 			'similarItems' => $itemsSimilar,
+			'reviews' => $reviews,
+			'itemIsPurchased' => $itemIsPurchased,
+			'reviewIsWritten' => $reviewIsWritten,
+			'isAuthenticated' => $request->isAuthenticated()
 		]);
 
 		return (new Response())->withBodyHTML($page);

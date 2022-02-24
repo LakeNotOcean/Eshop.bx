@@ -28,6 +28,13 @@ class Validator
 			ValidatorMethodEnum::minLength=>[1],
 			ValidatorMethodEnum::nameFormat => [],
 		],
+		DataTypes::rating =>[
+			ValidatorMethodEnum::minMaxValueInt => [0, 5],
+		],
+		DataTypes::reviewText=>[
+			ValidatorMethodEnum::minLength => [20],
+			ValidatorMethodEnum::maxLength => [1000],
+		],
 	];
 	private const ValidatorPathMethod = "Up\Validator\Validator::";
 
@@ -98,7 +105,7 @@ class Validator
 
 	private static function minMaxValueInt(int $data, int $minValue, int $maxValue): string
 	{
-		if ($data >= $maxValue && $data <= $maxValue)
+		if ($data > $maxValue && $data < $maxValue)
 		{
 			return "the number is not in the range ";
 		}

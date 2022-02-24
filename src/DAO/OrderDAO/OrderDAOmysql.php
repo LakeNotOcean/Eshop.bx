@@ -39,6 +39,15 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		return $orders;
 	}
 
+	public function existUsersFinishedOrderByItemId(int $userId, int $itemId): bool
+	{
+		$statement = $this->dbConnection->prepare("SELECT 1 FROM up_order 
+                                                         INNER JOIN `up_order-item` `uo-i` on up_order.ID = `uo-i`.ORDER_ID 
+														 WHERE USER_ID=? AND ITEM_ID=? AND STATUS='DONE' LIMIT 1");
+		$statement->execute([$userId, $itemId]);
+		return (bool)$statement->fetch();
+	}
+
 	private function getOrdersQuery(int $offset, int $amountItems): string
 	{
 		return "SELECT * FROM up_order 
@@ -126,5 +135,4 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 
 		return $result;
 	}
-
 }
