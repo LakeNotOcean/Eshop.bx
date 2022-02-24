@@ -63,4 +63,4 @@
 
 <script src="/js/lib/alert-dialog.js"></script>
 <script src="/js/lib/showPopup.js"></script>
-<script src="/js/admin-list/add-admin.js"></script>
+<script src="/js/admin-list/get-search.js"></script>

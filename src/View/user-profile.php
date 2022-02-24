@@ -11,7 +11,7 @@
 
 <div class="container">
 	<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
-	<div class="main-title">Личная информация<? if ($fromUserList === true){?> пользователя <?= $user->getLogin()?></div>
+	<div class="main-title">Личная информация<? if (isset($fromUserList)){?> пользователя <?= $user->getLogin()?></div>
 	<?} else echo "</div> "?>
 	<div class="user-info user-id" id=<?=$user->getId()?>>
 		<div class="user-info-header">
@@ -58,7 +58,7 @@
 			<div class="btn btn-normal btn-save">Сохранить</div>
 		</div>
 	</div>
-	<? if ($fromUserList === true){?>
+	<? if (isset($fromUserList)){?>
 	<div class="user-info">
 		<div class="user-info-header">
 			<div class="user-info-name">Права</div>
@@ -82,7 +82,7 @@
 </div>
 
 <script src="/js/lib/showPopup.js"></script>
-<? if ($fromUserList === true){?>
+<? if (isset($fromUserList)){?>
 <?="<script src='/js/admin-list/admin-edit-profile.js'></script>"?>
 <?}else{?>
 <?="<script src='/js/user/edit-profile.js'></script>"?>
