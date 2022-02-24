@@ -206,6 +206,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				<div>Вы уже оставляли отзыв к этому товару</div>
 				<?php else: ?>
 				<form class="review-send" action="<?= \Up\Core\Router\URLResolver::resolve('add-review') ?>" method="post">
+					<div class="rating-title">Оставьте отзыв о товаре:</div>
 					<div class="rating-container">
 						<div class="review_stars_wrap">
 							<div id="review_stars">

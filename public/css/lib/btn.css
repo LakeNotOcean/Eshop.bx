@@ -117,4 +117,13 @@ btn-back
 	transform: rotateZ(-45deg);
 }
 
+@media screen and (max-width: 500px)  {
+	.btn-back::before {
+		left: 7px;
+	}
+	.btn-back::after {
+		right: 6px;
+	}
+}
+
 

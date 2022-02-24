@@ -76,6 +76,12 @@ items
 	font-weight: 500;
 }
 
+@media screen and (max-width: 500px)  {
+	.item-list {
+		padding: 10px;
+	}
+}
+
 /*==========================
 sort
 ==========================*/
