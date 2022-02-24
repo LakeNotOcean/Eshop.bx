@@ -282,15 +282,6 @@ class ItemController
 		return Redirect::createResponseByURLName('edit-item', [], ['id' => $item->getId()]);
 	}
 
-	public function acceptDeletion(Request $request, int $id): Response
-	{
-		$item = $this->itemService->getItemById($id);
-		$page = $this->mainLayoutManager->render('accept-deletion-item.php', [
-			'item' => $item
-		]);
-		return (new Response())->withBodyHTML($page);
-	}
-
 	public function realDeleteItem(Request $request, int $id): Response
 	{
 		$this->itemService->realDeleteItem($id);

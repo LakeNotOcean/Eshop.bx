@@ -121,7 +121,7 @@
 
 		<input type="submit" value="Сохранить товар в базу данных" class="btn btn-normal input">
 		<?php if (isset($item)): ?>
-		<a class="btn btn-delete btn-delete-item" href="<?= \Up\Core\Router\URLResolver::resolve('accept-deletion-item', ['id' => $item->getId()]) ?>">Удалить товар</a>
+		<div class="btn btn-delete btn-delete-item">Удалить товар</div>
 		<?php endif; ?>
 	</form>
 </div>

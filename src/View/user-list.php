@@ -4,6 +4,9 @@
 /** @var string $paginator */
 /** @var string $query */
 /** @var int $userAmount */
+
+use Up\Core\Router\URLResolver;
+
 ?>
 <link rel="stylesheet" href="/css/users-list.css">
 
@@ -11,10 +14,9 @@
 
 	<div class="user-line">
 		<div class="search-count">
-			Найдено пользователей<? if ($query !== ''){?> по запросу "<?=$query?>"
-			<?}?>: <?=htmlspecialchars($userAmount)?>
+			Найдено пользователей<?= $query !== '' ?  'по запросу' . $query : ''?>: <?= htmlspecialchars($userAmount)?>
 		</div>
-		<form action="/admin/userList" method="get" enctype="multipart/form-data" class="search">
+		<form action="<?= URLResolver::resolve('user-list')?>" method="get" enctype="multipart/form-data" class="search">
 			<input type="text" id="query" name="query" class="search-field" placeholder="Поиск пользователей"
 				   value="<?= htmlspecialchars($query) ?>">
 			<div class="search-icon">

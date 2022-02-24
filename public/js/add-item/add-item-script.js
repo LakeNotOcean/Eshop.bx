@@ -2,6 +2,27 @@ createTemplate().then();
 
 createItemTemplate();
 
+document.querySelector('.btn-delete-item').addEventListener('click', () => {
+	alertDialogDelete('Удаление товара', 'Вы точно хотите удалить этот товар?', () => {
+		let postBody = new FormData();
+		let token = document.querySelector('.token');
+		postBody.append(token.name, token.value);
+
+		let idInput = document.querySelector('[name=item-id]');
+		let itemId = idInput.value;
+		fetch('/admin/deleteItem/' + itemId, {
+			method: 'post',
+			body: postBody
+		}).then((r) => {
+			if (r.ok) {
+				window.location = r.url;
+			} else {
+				showPopup('Не удалось удалить товар')
+			}
+		});
+	});
+});
+
 async function createItemTemplate()
 {
 	let idInput = document.querySelector('[name=item-id]');
