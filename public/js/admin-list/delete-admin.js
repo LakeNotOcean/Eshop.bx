@@ -26,6 +26,9 @@ deleteSection.addEventListener("drop", (e,ui)=>
 })
 for (let adminCard of adminCards)
 {
+	adminCard.addEventListener('drag', (e) =>{
+		adminCard.style.borderColor = 'red'
+	})
 	adminCard.addEventListener('dragend', (e) =>{
 		if (isdeleteSection === true)
 		{

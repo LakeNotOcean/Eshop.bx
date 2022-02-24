@@ -91,12 +91,24 @@
 	white-space: nowrap;
 }
 
+.admin-info label{
+	font-weight: bold;
+}
+
 .delete-button-section
 {
 
 }
 
 .delete-section{
+	display: flex;
 	height: 150px;
 	width: 100%;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
+}
+.delete-section-text{
+
+
 }

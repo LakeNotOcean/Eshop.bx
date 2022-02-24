@@ -55,6 +55,15 @@ class UserService implements UserServiceInterface
 	/**
 	 * @throws UserServiceException
 	 */
+	public function giveUserAdministratorRoleByLogin(string $login)
+	{
+		$this->checkIsAdmin();
+		$this->userDAO->giveUserAdministratorRoleByLogin($login);
+	}
+
+	/**
+	 * @throws UserServiceException
+	 */
 	public function removeUserModeratorRights(string $login)
 	{
 		$this->checkIsAdmin();
@@ -81,11 +90,20 @@ class UserService implements UserServiceInterface
 		return $this->userDAO->getUserListByRole($roleId);
 	}
 
-
-	public function getUserListByQuery(int $roleId,string $query):array
+	/**
+	 * @throws UserServiceException
+	 */
+	public function getAmountUserByQuery(int $roleId,string $query): int
 	{
 		$this->checkIsAdmin();
-		return $this->userDAO->getUserListByQuery($roleId, $query);
+		return $this->userDAO->getAmountUserByQuery($roleId,$query);
+	}
+
+
+	public function getUserListByQuery(array $limitOffset,int $roleId,string $query):array
+	{
+		$this->checkIsAdmin();
+		return $this->userDAO->getUserListByQuery($limitOffset['offset'], $limitOffset['amountItems'],$roleId, $query);
 	}
 
 

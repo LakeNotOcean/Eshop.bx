@@ -84,6 +84,7 @@ if (!isset($query))
 				<div class="menu-container">
 					<div class="menu">
 						<a class="menu-item" href="/admin/adminList">Список администраторов</a>
+						<a class="menu-item" href="/admin/userList">Список пользователей</a>
 					</div>
 				</div>
 			</div>

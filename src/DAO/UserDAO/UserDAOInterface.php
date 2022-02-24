@@ -18,6 +18,8 @@ interface UserDAOInterface
 
 	public function removeUserModeratorRoleByLogin(string $login): void;
 
+	public function giveUserAdministratorRoleByLogin(string $login): void;
+
 	public function getUsersInfo(): array;
 
 	public function updateUser(User $user): void;
