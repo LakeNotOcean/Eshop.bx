@@ -33,6 +33,10 @@ use Up\Core\Router\URLResolver;
 		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 		<input type="submit" id="submit" value="Войти" class="btn btn-normal input">
 	</form>
+	<div class="sign-in-title">Нет аккаунта?</div>
+	<a href="<?= URLResolver::resolve('register-user') ?>">
+		<div class="btn btn-normal sign-in">Зарегистрироваться</div>
+	</a>
 </div>
 
 <script src="/js/user/help-user.js" type="module"></script>

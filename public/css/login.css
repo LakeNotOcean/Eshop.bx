@@ -10,6 +10,7 @@
 	align-items: center;
 	justify-content: center;
 	max-width: 700px;
+	padding: 20px;
 }
 
 .register-fields {
@@ -26,7 +27,7 @@
 }
 
 .label-title {
-	width: 100px;
+	width: 50%;
 }
 
 .input-error {
@@ -50,7 +51,7 @@
 .sign-in-title {
 	font-size: 18px;
 	font-weight: 600;
-	margin-top: 30px;
+	margin: 15px 0;
 }
 
 .btn:active {
@@ -88,4 +89,13 @@
 	text-align: center;
 	font-weight: 500;
 	transition: .1s;
+}
+
+@media screen and (max-width: 500px)  {
+	.container {
+		max-width: 100%;
+	}
+	.register-fields {
+		padding: 20px;
+	}
 }

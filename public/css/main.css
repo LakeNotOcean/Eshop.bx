@@ -139,6 +139,15 @@ search-icon
 	margin: 0 10px !important;
 }
 
+@media screen and (max-width: 900px)  {
+	.sign-up {
+		display: none;
+	}
+	.sign-in {
+		margin: 0 5px !important;
+	}
+}
+
 /*==========================
 nav-bar
 ==========================*/
