@@ -398,9 +398,8 @@ filters tag category
 }
 
 .tag {
-	height: 20px;
 	position: relative;
-	margin: 5px;
+	margin: 2px;
 }
 
 .tag label {
