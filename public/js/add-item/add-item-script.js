@@ -99,8 +99,8 @@ document.querySelector('.form-add').addEventListener('submit', (e) => {
 			}
 		});
 	}
-	catch (e){
-		alert(e.message);
+	catch (e) {
+		alertDialog('Внимание', e.message)
 	}
 });
 

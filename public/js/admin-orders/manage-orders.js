@@ -31,23 +31,26 @@ let deleteButtons = document.querySelectorAll('.btn-delete');
 for (let btnDelete of deleteButtons)
 {
 	btnDelete.addEventListener('click', () => {
-		const id = btnDelete.id.match(/\d+/)[0];
-		let postBody = new FormData();
-		postBody.append('order-id', id);
+		alertDialogDelete('Удаление заказа', 'Вы уверены, что хотите удалить заказ?', () => {
+			const id = btnDelete.id.match(/\d+/)[0];
+			let postBody = new FormData();
+			postBody.append('order-id', id);
 
-		let token = document.querySelector('.token');
-		postBody.append(token.name, token.value);
+			let token = document.querySelector('.token');
+			postBody.append(token.name, token.value);
 
-		fetch('/admin/deleteOrder', {
-			method: 'post',
-			body: postBody
-		}).then((r) => {
-			if (r.ok) {
-				showPopup('Заказ удалён');
-				btnDelete.parentNode.parentNode.remove();
-			} else {
-				showPopup('Не удалось удалить заказ')
-			}
-		});
+			fetch('/admin/deleteOrder', {
+				method: 'post',
+				body: postBody
+			}).then((r) => {
+				if (r.ok) {
+					showPopup('Заказ удалён');
+					btnDelete.parentNode.parentNode.remove();
+				} else {
+					showPopup('Не удалось удалить заказ')
+				}
+			});
+		})
+
 	})
 }

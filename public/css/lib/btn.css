@@ -57,6 +57,16 @@
 	border-color: var(--color-add);
 }
 
+.btn-cancel {
+	margin-left: 10px;
+}
+
+.btn-cancel:hover {
+	color: var(--color-main) !important;
+	background: var(--color-font);
+	border-color: var(--color-font);
+}
+
 .btn-change {
 	color: var(--color-change);
 	font-weight: 500;
@@ -106,6 +116,15 @@ btn-back
 	right: 7px;
 	transform-origin: right;
 	transform: rotateZ(-45deg);
+}
+
+@media screen and (max-width: 500px)  {
+	.btn-back::before {
+		left: 7px;
+	}
+	.btn-back::after {
+		right: 6px;
+	}
 }
 
 

@@ -92,5 +92,6 @@
 </div>
 
 <script src="/js/lib/showPopup.js"></script>
+<script src="/js/lib/alert-dialog.js"></script>
 <script src="/js/admin-orders/change-status.js"></script>
 <script src="/js/admin-orders/manage-orders.js"></script>

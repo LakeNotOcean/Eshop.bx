@@ -41,3 +41,15 @@
 	background-color: var(--color-font);
 	color: var(--color-main);
 }
+
+
+@media screen and (max-width: 1150px)  {
+	.navigation {
+		margin: 10px;
+	}
+
+	.navigation-page {
+		margin: 0 5px;
+		font-size: 14px;
+	}
+}

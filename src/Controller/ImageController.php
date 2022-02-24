@@ -14,7 +14,7 @@ class ImageController
 	/**
 	 * @param \Up\Service\ImageService\ImageService $imageService
 	 */
-	public function __construct(ImageServiceInterface          $imageService)
+	public function __construct(ImageServiceInterface $imageService)
 	{
 		$this->imageService = $imageService;
 	}
