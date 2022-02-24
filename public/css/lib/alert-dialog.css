@@ -1,0 +1,23 @@
+.alert-dialog {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+}
+
+.dialog-title {
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.dialog-message {
+	margin: 20px 0 25px;
+}
+
+.dialog-buttons {
+	display: flex;
+	justify-content: flex-end;
+}

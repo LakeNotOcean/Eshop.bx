@@ -2,6 +2,7 @@
 @import "lib/input.css";
 @import "lib/pagination.css";
 @import "lib/popup.css";
+@import "lib/alert-dialog.css";
 
 .container {
 	flex: 1;

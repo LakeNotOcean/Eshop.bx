@@ -57,6 +57,15 @@
 	border-color: var(--color-add);
 }
 
+.btn-cancel {
+	margin-left: 10px;
+}
+
+.btn-cancel:hover {
+	background: var(--color-font);
+	border-color: var(--color-font);
+}
+
 .btn-change {
 	color: var(--color-change);
 	font-weight: 500;
