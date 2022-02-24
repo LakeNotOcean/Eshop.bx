@@ -27,7 +27,6 @@ use Up\Service\ReviewService\ReviewServiceInterface;
 use Up\Service\TagService\TagServiceInterface;
 use Up\Service\UserService\UserServiceInterface;
 
-
 class ItemController
 {
 	protected $templateProcessor;
@@ -38,7 +37,10 @@ class ItemController
 	protected $reviewService;
 	protected $orderService;
 	protected $cartService;
+
 	protected $itemsInPage = 10;
+	protected $reviewsInMorePage = 10;
+	protected $reviewsInItemPage = 3;
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
@@ -52,7 +54,7 @@ class ItemController
 	 */
 	public function __construct(
 		TemplateProcessorInterface $templateProcessor,
-		MainLayoutManager		   $mainLayoutManager,
+		MainLayoutManager          $mainLayoutManager,
 		ItemServiceInterface       $itemService,
 		ImageServiceInterface      $imageService,
 		TagServiceInterface        $tagService,
@@ -79,12 +81,19 @@ class ItemController
 		$isAdmin = $request->isAdmin();
 
 		$deactivate = $request->containsQuery('deactivate_include') && $isAdmin;
-		$query = $request->getQueriesOrDefaultList(['page'=> '1', 'query' => '', 'tag' => [], 'spec' => [], 'price' => '', 'sorting' => 'sort_order']);
+		$query = $request->getQueriesOrDefaultList(
+			['page' => '1', 'query' => '', 'tag' => [], 'spec' => [], 'price' => '', 'sorting' => 'sort_order']
+		);
 
 		$currentPage = $query['page'] > 0 ? (int)$query['page'] : 1;
-		$currentPage = $currentPage > 0 ? $currentPage : 1;
 
-		$sortingMethods = ['sort_order' => 'SORT_ORDER', 'price' => 'PRICE', 'price_desc' => 'PRICE DESC', 'name' => 'TITLE', 'name_desc' => 'TITLE DESC'];
+		$sortingMethods = [
+			'sort_order' => 'SORT_ORDER',
+			'price' => 'PRICE',
+			'price_desc' => 'PRICE DESC',
+			'name' => 'TITLE',
+			'name_desc' => 'TITLE DESC',
+		];
 		$sortingMethod = $sortingMethods[$query['sorting']];
 
 		$typeIds = $this->itemService->getTypeIdByQuery($query['query']);
@@ -101,11 +110,26 @@ class ItemController
 			$queryTypeId = 0;
 		}
 
-		$items = $this->itemService->getItemsByFilters(Paginator::getLimitOffset($currentPage, $this->itemsInPage),
-			$query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate, $sortingMethod);
+		$items = $this->itemService->getItemsByFilters(
+			Paginator::getLimitOffset($currentPage, $this->itemsInPage),
+			$query['query'],
+			$query['price'],
+			$query['tag'],
+			$query['spec'],
+			$queryTypeId,
+			$deactivate,
+			$sortingMethod
+		);
 
 		$price = $this->itemService->getItemsMinMaxPriceByItemTypes($typeIds);
-		$itemsAmount = $this->itemService->getItemsAmountByFilters($query['query'], $query['price'], $query['tag'], $query['spec'], $queryTypeId, $deactivate);
+		$itemsAmount = $this->itemService->getItemsAmountByFilters(
+			$query['query'],
+			$query['price'],
+			$query['tag'],
+			$query['spec'],
+			$queryTypeId,
+			$deactivate
+		);
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
 		$userId = $request->getUser()->getId();
 
@@ -114,19 +138,17 @@ class ItemController
 			'pagesAmount' => $pagesAmount,
 		]);
 
-		$page = $this->mainLayoutManager
-			->setQuery($query['query'])
-			->render('catalog.php', [
-			'items' => $this->itemService->mapItemsToUserItems($userId, $items),
-			'itemsAmount' => $itemsAmount,
-			'paginator' => $paginator,
-			'query' => $query['query'],
-			'price'=> $price,
-			'tags' => $this->tagService->getTagsByItemType($queryTypeId),
-			'categories' => $this->itemService->getItemsCategoriesByItemType($queryTypeId),
-			'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false,
-			'sortingMethod' => $query['sorting']
-		]);
+		$page = $this->mainLayoutManager->setQuery($query['query'])->render('catalog.php', [
+				'items' => $this->itemService->mapItemsToUserItems($userId, $items),
+				'itemsAmount' => $itemsAmount,
+				'paginator' => $paginator,
+				'query' => $query['query'],
+				'price' => $price,
+				'tags' => $this->tagService->getTagsByItemType($queryTypeId),
+				'categories' => $this->itemService->getItemsCategoriesByItemType($queryTypeId),
+				'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false,
+				'sortingMethod' => $query['sorting'],
+			]);
 
 		return (new Response())->withBodyHTML($page);
 	}
@@ -136,7 +158,13 @@ class ItemController
 		$userId = $request->getUser()->getId();
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
 		$currentPage = $currentPage > 0 ? $currentPage : 1;
-		$favoriteItems = $this->itemService->getFavoriteItems($userId, Paginator::getLimitOffset($currentPage, $this->itemsInPage));
+		$favoriteItems = $this->itemService->getFavoriteItems(
+			$userId,
+			Paginator::getLimitOffset(
+				$currentPage,
+				$this->itemsInPage
+			)
+		);
 
 		$itemsAmount = $this->itemService->getFavoriteItemsAmount($userId);
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
@@ -148,7 +176,7 @@ class ItemController
 
 		$page = $this->mainLayoutManager->render('favorites.php', [
 			'favoriteItems' => $this->itemService->mapItemsToUserItems($userId, $favoriteItems),
-			'paginator' => $paginator
+			'paginator' => $paginator,
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -183,7 +211,61 @@ class ItemController
 		}
 		$favoriteItemId = $request->getPostParametersByName('favorite-item-id');
 		$this->itemService->removeFromFavorites($userId, $favoriteItemId);
+
 		return (new Response())->withBodyHTML('');
+	}
+
+	public function moreReviews(Request $request, int $id): Response
+	{
+		$query = $request->getQueriesOrDefaultList(['page' => '1', 'query' => '']);
+		$currentPage = $query['page'] > 0 ? (int)$query['page'] : 1;
+		$reviews = $this->reviewService->getReviewsByItemId(
+			Paginator::getLimitOffset($currentPage, $this->reviewsInMorePage),
+			$id
+		);
+		$item = $this->itemService->getItemById($id);
+		$currentUser = $request->getUser();
+		$item = $this->itemService->mapItemDetailToUserItem($currentUser->getId(), $item);
+
+		$reviewsAmount = $item->getAmountReviews();
+		$pagesAmount = Paginator::getPageCount($reviewsAmount, $this->reviewsInMorePage);
+		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
+			'currentPage' => $currentPage,
+			'pagesAmount' => $pagesAmount,
+		]);
+
+		$page = $this->mainLayoutManager->setQuery($query['query'])
+			->render('more-reviews.php', [
+				'paginator' => $paginator,
+				'item' => $item,
+				'user' => $currentUser,
+				'reviews' => $reviews
+			]);
+		return (new Response())->withBodyHTML($page);
+	}
+
+	public function myPurchased(Request $request): Response
+	{
+		$query = $request->getQueriesOrDefaultList(['page' => '1', 'query' => '']);
+		$currentPage = $query['page'] > 0 ? (int)$query['page'] : 1;
+		$userId = $request->getUser()->getId();
+		$itemsAmount = $this->itemService->getAmountPurchasedItems($userId);
+		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->itemsInPage);
+		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
+			'currentPage' => $currentPage,
+			'pagesAmount' => $pagesAmount,
+		]);
+
+		$items = $this->itemService->getPurchasedItems($userId, Paginator::getLimitOffset($currentPage, $itemsAmount));
+		$items = $this->itemService->mapItemsToUserItems($userId, $items);
+		$itemsIds = array_values(array_map(function(Item $item){return $item->getId();}, $items));
+		$reviews = $this->reviewService->getUsersReviewsByItemIds($userId, $itemsIds);
+		$page = $this->mainLayoutManager->setQuery($query['query'])->render('my-purchased.php', [
+			'paginator' => $paginator,
+			'reviews' => $reviews,
+			'items' => $items
+		]);
+		return (new Response())->withBodyHTML($page);
 	}
 
 	public function getItem(Request $request, int $id): Response
@@ -192,15 +274,16 @@ class ItemController
 		$item = $this->itemService->getItemById($id);
 		$itemIsPurchased = $this->orderService->checkThatUserBoughtItem($userId, $id);
 		$reviewIsWritten = $this->reviewService->existReviewByUserAndItemIds($userId, $id);
-		$itemsSimilar = $this->itemService->getItemsSimilarById($id,5);
-		$reviews = $this->reviewService->getReviewsByItemId(Paginator::getLimitOffset(1, 3), $id);
+		$itemsSimilar = $this->itemService->getItemsSimilarById($id, 5);
+		$reviews = $this->reviewService->getReviewsByItemId(Paginator::getLimitOffset(1, $this->reviewsInItemPage), $id);
 		$page = $this->mainLayoutManager->render('item.php', [
 			'item' => $this->itemService->mapItemDetailToUserItem($userId, $item),
 			'similarItems' => $itemsSimilar,
 			'reviews' => $reviews,
 			'itemIsPurchased' => $itemIsPurchased,
 			'reviewIsWritten' => $reviewIsWritten,
-			'isAuthenticated' => $request->isAuthenticated()
+			'isAuthenticated' => $request->isAuthenticated(),
+			'user' => $request->getUser()
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -212,7 +295,7 @@ class ItemController
 	public function addItem(Request $request, int $id = 0): Response
 	{
 		$page = $this->mainLayoutManager->render('add-item.php', [
-			'item' => $id === 0 ? null : $this->itemService->getItemById($id)
+			'item' => $id === 0 ? null : $this->itemService->getItemById($id),
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -222,7 +305,7 @@ class ItemController
 	{
 		$item = $this->itemService->getItemById($id);
 		$page = $this->mainLayoutManager->render('add-item.php', [
-			'item' => $item
+			'item' => $item,
 		]);
 
 		$response = new Response();
@@ -256,25 +339,35 @@ class ItemController
 			$item->setSpecificationCategory($category);
 		}
 		$imagesInfo = [];
-		if($request->containsFile('main-image'))
+		if ($request->containsFile('main-image'))
 		{
 			$mainImage = $request->getFilesByName('main-image');
-			$imagesInfo[] = ['name' => $mainImage['name'], 'type' => $mainImage['type'], 'tmp_name' => $mainImage['tmp_name'], 'is_main' => true];
+			$imagesInfo[] = [
+				'name' => $mainImage['name'],
+				'type' => $mainImage['type'],
+				'tmp_name' => $mainImage['tmp_name'],
+				'is_main' => true,
+			];
 		}
 		$countOtherImages = 0;
-		if($request->containsFile('other-images'))
+		if ($request->containsFile('other-images'))
 		{
 			$otherImages = $request->getFilesByName('other-images');
 			$countOtherImages = count($otherImages['name']);
 		}
 
-		for($i = 0; $i < $countOtherImages; $i++)
+		for ($i = 0; $i < $countOtherImages; $i++)
 		{
-			$imagesInfo[] = ['name' => $otherImages['name'][$i], 'type' => $otherImages['type'][$i], 'tmp_name' => $otherImages['tmp_name'][$i], 'is_main' => false];
+			$imagesInfo[] = [
+				'name' => $otherImages['name'][$i],
+				'type' => $otherImages['type'][$i],
+				'tmp_name' => $otherImages['tmp_name'][$i],
+				'is_main' => false,
+			];
 		}
 
 		$item = $this->itemService->save($item);
-		if(!empty($imagesInfo))
+		if (!empty($imagesInfo))
 		{
 			$this->imageService->addImages($imagesInfo, $item);
 		}
@@ -286,26 +379,30 @@ class ItemController
 	{
 		$item = $this->itemService->getItemById($id);
 		$page = $this->mainLayoutManager->render('accept-deletion-item.php', [
-			'item' => $item
+			'item' => $item,
 		]);
+
 		return (new Response())->withBodyHTML($page);
 	}
 
 	public function realDeleteItem(Request $request, int $id): Response
 	{
 		$this->itemService->realDeleteItem($id);
+
 		return Redirect::createResponseByURLName('home-admin');
 	}
 
 	public function deactivateItem(Request $request, int $id): Response
 	{
 		$this->itemService->deactivateItem($id);
+
 		return (new Response())->withBodyHTML('');
 	}
 
 	public function activateItem(Request $request, int $id): Response
 	{
 		$this->itemService->activateItem($id);
+
 		return (new Response())->withBodyHTML('');
 	}
 
@@ -319,6 +416,7 @@ class ItemController
 		$item->setTitle($request->getPostParametersByName('item-title'));
 		$this->itemService->updateCommonInfo($item);
 		$response = new Response();
+
 		return $response->withBodyHTML('');
 	}
 

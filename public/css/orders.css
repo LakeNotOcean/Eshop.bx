@@ -93,9 +93,18 @@ order-items
 	margin: 0 10px;
 }
 
+.item-count {
+	margin: 0 15px 0 10px;
+}
+
 .item-price {
-	flex: 1;
 	white-space: nowrap;
+	margin-right: 15px;
+}
+
+.item-cost {
+	flex: 1;
+	font-weight: 600;
 }
 
 .order-total {

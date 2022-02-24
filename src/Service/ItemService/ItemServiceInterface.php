@@ -15,6 +15,8 @@ interface ItemServiceInterface
 
 	public function getFavoriteItems(int $userId, array $limitOffset): array;
 
+	public function mapItemToUserItem(int $userId, Item $item): UserItem;
+
 	public function mapItemsToUserItems(int $userId, array $items): array;
 
 	public function mapItemDetailToUserItem(int $userId, ItemDetail $itemDetail): UserItem;
@@ -53,4 +55,12 @@ interface ItemServiceInterface
 
 	public function realDeleteItem(int $id): void;
 
+	/**
+	 * @param int $userId
+	 * @param array $limitOffset
+	 *
+	 * @return array<Item>
+	 */
+	public function getPurchasedItems(int $userId, array $limitOffset): array;
+	public function getAmountPurchasedItems(int $userId): int;
 }
