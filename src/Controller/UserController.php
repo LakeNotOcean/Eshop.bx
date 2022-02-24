@@ -28,7 +28,7 @@ class UserController
 	protected $userService;
 	public const nextUrlQueryKeyword = 'next';
 	protected $adminsInPage = 10;
-	protected $usersInPage = 20;
+	protected $usersInPage = 9;
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor

@@ -45,7 +45,7 @@
 				</div>
 				<?if ($user->getRole()->getId() !== 1){?>
 				<div class="delete-button-section">
-					<a class="btn btn-normal add-admin" href="<?= \Up\Core\Router\URLResolver::resolve('user-info',["id"=>$user->getId()]) ?>"  id=<?=htmlspecialchars($user->getLogin())?>>
+					<a class="btn btn-normal edit-button" href="<?= \Up\Core\Router\URLResolver::resolve('user-info',["id"=>$user->getId()]) ?>"  id=<?=htmlspecialchars($user->getLogin())?>>
 						<svg class="pencil">
 							<use xlink:href="/img/sprites.svg#pencil"></use>
 						</svg>
