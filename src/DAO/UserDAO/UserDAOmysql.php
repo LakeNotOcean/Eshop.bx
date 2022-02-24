@@ -107,6 +107,30 @@ class UserDAOmysql implements UserDAOInterface
 	}
 
 	/**
+	 * @throws \Up\Core\Enum\EnumException
+	 * @throws \ReflectionException
+	 */
+	public function getUserInfoById(int $id): User
+	{
+		$query = "SELECT
+            uu.ID as USER_ID,
+			uu.LOGIN as USER_LOGIN,
+            uu.PASSWORD as USER_PASSWORD,
+            uu.PHONE as USER_PHONE,
+            uu.EMAIL as USER_EMAIL,
+            ur.ID as ROLE_ID,
+            ur.NAME as ROLE_NAME,
+            uu.FIRST_NAME as USER_FIRST_NAME,
+            uu.SECOND_NAME as USER_SECOND_NAME
+		FROM up_user uu
+		LEFT JOIN up_role ur on ur.ID = uu.ROLE_ID
+		WHERE uu.ID = {$id}";
+		$query = $this->DBConnection->query($query);
+		$row = $query->fetch();
+		return $this->createUserByRow($row);
+	}
+
+	/**
 	 * @throws \ReflectionException
 	 * @throws \Up\Core\Enum\EnumException
 	 */

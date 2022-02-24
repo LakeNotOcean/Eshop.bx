@@ -18,6 +18,8 @@ interface UserServiceInterface
 
 	public function getUsersInfo(): array;
 
+	public function getUserInfoById(int $id): User;
+
 	public function getUserListByRole(int $roleId): array;
 
 	public function getAmountUserByQuery(int $roleId,string $query): int;

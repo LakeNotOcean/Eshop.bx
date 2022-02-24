@@ -195,6 +195,68 @@ class UserController
 	}
 
 
+
+	/**
+	 * @throws \ReflectionException
+	 * @throws \Up\Core\Enum\EnumException
+	 * @throws UserServiceException
+	 */
+	public function userInfoPage(Request $request,int $id):Response
+	{
+		$user = $this->userService->getUserInfoById($id);
+		$page = $this->templateProcessor->render('user-profile.php', [
+			'user' => $user,
+			'fromUserList' => true,
+		], 'layout/main.php', [
+			'isAuthenticated' => $request->isAuthenticated(),
+			'isAdmin' => $request->isAdmin(),
+			'userName' => $request->getUser()->getName(),
+
+		]);
+
+		return (new Response())->withBodyHTML($page);
+	}
+
+	/**
+	 * @throws \ReflectionException
+	 * @throws \Up\Core\Enum\EnumException
+	 * @throws UserServiceException
+	 */
+	public function adminUpdateUser(Request $request, int $id):Response
+	{
+		$user = $this->userService->getUserInfoById($id);
+		if ($request->containsPost('user-first-name'))
+		{
+			$firstName = $request->getPostParametersByName('user-first-name');
+			$user->setFirstName($firstName);
+		}
+		if ($request->containsPost('user-second-name'))
+		{
+			$secondName = $request->getPostParametersByName('user-second-name');
+			$user->setSecondName($secondName);
+		}
+		if ($request->containsPost('user-phone'))
+		{
+			$phone = $request->getPostParametersByName('user-phone');
+			$user->setPhone($phone);
+		}
+		if ($request->containsPost('user-email'))
+		{
+			$email = $request->getPostParametersByName('user-email');
+			$user->setEmail($email);
+		}
+		if ($request->containsPost('user-email'))
+		{
+			$email = $request->getPostParametersByName('user-email');
+			$user->setEmail($email);
+		}
+
+		$this->userService->updateUser($user);
+
+		return (new Response())->withBodyHTML('');
+
+	}
+
 	/**
 	 * @throws UserServiceException
 	 */

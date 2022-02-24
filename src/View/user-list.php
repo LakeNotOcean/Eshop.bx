@@ -45,9 +45,11 @@
 				</div>
 				<?if ($user->getRole()->getId() !== 1){?>
 				<div class="delete-button-section">
-					<div class="btn btn-normal add-admin" id=<?=htmlspecialchars($user->getLogin())?>>
-						Сделать администратором
-					</div>
+					<a class="btn btn-normal add-admin" href="<?= \Up\Core\Router\URLResolver::resolve('user-info',["id"=>$user->getId()]) ?>"  id=<?=htmlspecialchars($user->getLogin())?>>
+						<svg class="pencil">
+							<use xlink:href="/img/sprites.svg#pencil"></use>
+						</svg>
+					</a>
 				</div>
 				<?}?>
 			</div>
