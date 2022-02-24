@@ -3,6 +3,7 @@
 /** @var array $admins */
 /** @var string $paginator */
 /** @var string $query */
+/** @var string $login */
 ?>
 <link rel="stylesheet" href="/css/admin-list.css">
 
@@ -17,7 +18,9 @@
 		</form>
 	</div>
 	<div class="admin-list">
-		<? foreach ($admins as $admin){?>
+		<? foreach ($admins as $admin){
+			if ($admin->getLogin() !== 'admin' && $admin->getLogin() !== $login){?>
+
 			<div class="admin  card-outline" draggable="true" id=<?=$admin->getLogin()?>>
 				<div class="admin-body">
 					<div class="admin-info">
@@ -42,7 +45,7 @@
 				</div>
 
 			</div>
-		<?}?>
+		<?}}?>
 	</div>
 	<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 	<div class="delete-section card-outline">

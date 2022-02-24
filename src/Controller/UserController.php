@@ -187,7 +187,8 @@ class UserController
 		], 'layout/main.php', [
 			'isAuthenticated' => $request->isAuthenticated(),
 			'isAdmin' => $request->isAdmin(),
-			'userName' => $request->getUser()->getName()
+			'userName' => $request->getUser()->getName(),
+
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -217,6 +218,7 @@ class UserController
 			'paginator' => $paginator,
 			'admins' => $adminList,
 			'query' => $search,
+			'login' => $request->getUser()->getLogin(),
 		], 'layout/main.php', [
 			'isAuthenticated' => $request->isAuthenticated(),
 			'isAdmin' => $request->isAdmin(),
