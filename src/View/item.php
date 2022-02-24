@@ -35,7 +35,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				<?php foreach ($item->getImages() as $itemImage):?>
 				<picture>
 					<source srcset="<?='/' . $itemImage->getPath('big', 'webp') ?>" type="image/webp">
-					<img src="<?='/' . $itemImage->getPath('big', 'jpeg')?>" alt="item-main-image" class="item-image">
+					<img src="<?='/' . $itemImage->getPath('big', 'jpeg')?>" alt="item-main-image" class="opened-image">
 				</picture>
 				<?php endforeach;?>
 			</div>

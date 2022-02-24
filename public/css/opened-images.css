@@ -90,7 +90,7 @@ opened-images
 	flex-wrap: wrap;
 }
 
-.item-image {
+.opened-image {
 	object-fit: none;
 	margin: 30px;
 	border-radius: 15px;
