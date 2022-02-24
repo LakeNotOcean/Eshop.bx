@@ -1,6 +1,6 @@
 
 
-let sortingButtons = document.getElementsByClassName('sorting-button');
+let sortingButtons = document.querySelectorAll('.sorting-button');
 for (let sortingButton of sortingButtons)
 {
 	sortingButton.addEventListener('click', (e) => {
@@ -13,11 +13,10 @@ for (let sortingButton of sortingButtons)
 	});
 }
 
-
-let filterButtons = document.getElementsByClassName('filter-button');
+let filterButtons = document.querySelectorAll('.filter-button');
 for (let filterButton of filterButtons)
 {
-	filterButton.addEventListener('click',(e) => {
+	filterButton.addEventListener('click',() => {
 		let filterQuery = getFilterQuery();
 		let searchQuery = getSearchQuery();
 		let pageQuery = "&page=1"
@@ -28,7 +27,7 @@ for (let filterButton of filterButtons)
 	});
 }
 
-let searchButton = document.querySelector(".search-field")
+let searchButton = document.querySelector('.search-field')
 searchButton.addEventListener("keydown",(e)=>{
 
 	if (e.keyCode === 13)

@@ -235,6 +235,7 @@ filters main
 }
 
 .filters-column {
+	position: relative;
 	width: 300px;
 	margin-right: 50px;
 }
@@ -447,4 +448,14 @@ filter-buttons
 	display: none;
 	position: absolute;
 	left: 360px;
+}
+
+.btn-quick-apply {
+	--btn-apply-width: 100px;
+	position: absolute;
+	width: var(--btn-apply-width);
+	margin: 0;
+	padding: 0;
+	top: 0;
+	right: calc(-1 * (var(--btn-apply-width) + 10px));
 }
