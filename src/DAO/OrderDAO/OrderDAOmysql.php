@@ -71,13 +71,19 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 			WHERE STATUS = ? and CUSTOMER_NAME like ?";
 	}
 
-	public function addOrder(Order $order): void
+	/**
+	 * @param Order $order
+	 *
+	 * @return int
+	 */
+	public function addOrder(Order $order): int
 	{
 		$preparedStatement = $this->getInsertPrepareStatement(
 			'up_order',
 			['CUSTOMER_NAME', 'PHONE', 'EMAIL', 'COMMENT', 'STATUS', 'DATE_CREATE', 'DATE_UPDATE', 'USER_ID']
 		);
 		$preparedStatement->execute($this->prepareOrder($order));
+		return $this->dbConnection->lastInsertId();
 	}
 
 	private function prepareOrder(Order $order): array

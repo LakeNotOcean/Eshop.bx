@@ -7,6 +7,8 @@ class WordEndingResolver
 	/**
 	 * @param int $number
 	 * @param array<string> $titles
+	 *
+	 * @return string
 	 */
 	public static function resolve(int $number, array $titles): string
 	{

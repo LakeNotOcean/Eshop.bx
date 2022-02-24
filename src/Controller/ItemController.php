@@ -198,6 +198,7 @@ class ItemController
 			'item' => $this->itemService->mapItemDetailToUserItem($userId, $item),
 			'similarItems' => $itemsSimilar,
 			'reviews' => $reviews,
+			'isItemAdded' => $this->cartService->isItemInCart($item->getId()),
 			'itemIsPurchased' => $itemIsPurchased,
 			'reviewIsWritten' => $reviewIsWritten,
 			'isAuthenticated' => $request->isAuthenticated()
