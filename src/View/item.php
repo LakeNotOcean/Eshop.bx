@@ -12,7 +12,6 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 ?>
 
 <link rel="stylesheet" href="/css/item.css">
-<link rel="stylesheet" href="/lib/lightbox/css/lightbox.css">
 <link rel="stylesheet" href="/css/lib/fontawesome-all.css">
 <link rel="stylesheet" href="/css/rating.css">
 
