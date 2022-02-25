@@ -3,20 +3,32 @@
 namespace Up\DAO\TagDAO;
 
 use Up\Core\Database\DefaultDatabase;
+use Up\DAO\AbstractDAO;
 use Up\Entity\EntityArray;
 use Up\Entity\ItemsTag;
 
 
-class TagDAOmysql implements TagDAOInterface
+class TagDAOmysql extends AbstractDAO implements TagDAOInterface
 {
-	private $DBConnection;
 
 	/**
-	 * @param \Up\Core\Database\DefaultDatabase $DBConnection
+	 * @param \Up\Core\Database\DefaultDatabase $dbConnection
 	 */
-	public function __construct(DefaultDatabase $DBConnection)
+	public function __construct(DefaultDatabase $dbConnection)
 	{
-		$this->DBConnection = $DBConnection;
+		$this->dbConnection = $dbConnection;
+	}
+
+	protected function arrayContainsTag(array $tags, ItemsTag $newTag): bool
+	{
+		foreach ($tags as $tag)
+		{
+			if ($tag->getName() === $newTag->getName() && $tag->getTypeId() === $newTag->getTypeId())
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -24,21 +36,33 @@ class TagDAOmysql implements TagDAOInterface
 	 *
 	 * @return array<int,ItemsTag>
 	 */
-	public function save(array $tags): array
+	public function save(array $tags, int $itemType): array
 	{
 		$names = array_map(function(ItemsTag $tag) {
 			return $tag->getName();
 		}, $tags);
 		$addedTags = $this->getTagsByNames($names);
-		$toAdd = array_diff(
-			$names,
-			array_map(function(ItemsTag $tag) {
-				return $tag->getName();
-			}, $addedTags)
-		);
+
+		$toAdd = [];
+		foreach ($tags as $tag)
+		{
+			if (!$this->arrayContainsTag($addedTags, $tag))
+			{
+				$toAdd[] = $tag;
+			}
+		}
+
 		if (!empty($toAdd))
 		{
-			$result = $this->DBConnection->query($this->getInsertQuery($toAdd));
+			$tagsCount = count($toAdd);
+			$prepareStatement = $this->getInsertPrepareStatement(
+				'up_tag', ['TITLE', 'ITEM_TYPE_ID'], $tagsCount);
+			$tagsAndItemTypes = [];
+			foreach ($toAdd as $tag) {
+				$tagsAndItemTypes[] = $tag->getName();
+				$tagsAndItemTypes[] = $itemType;
+			}
+			$prepareStatement->execute($tagsAndItemTypes);
 		}
 
 		return $this->getTagsByNames($names);
@@ -52,23 +76,21 @@ class TagDAOmysql implements TagDAOInterface
 	public function getTagsByNames(array $names): array
 	{
 		$tags = [];
-		$result = $this->DBConnection->prepare($this->getTagsByNamesQuery($names));
-		$result->execute();
+		$result = $this->dbConnection->query($this->getTagsByNamesQuery($names));
 		while ($row = $result->fetch())
 		{
-			$tags[$row['ID']] = new ItemsTag($row['ID'], $row['TITLE']);
+			$tags[$row['ID']] = new ItemsTag($row['ID'], $row['TITLE'], $row['ITEM_TYPE_ID']);
 		}
 
 		return $tags;
 	}
 
 	public function getAllTags(): array
-	{;
-		$result = $this->DBConnection->prepare($this->getAllTagsQuery());
-		$result->execute();
+	{
+		$result = $this->dbConnection->query($this->getAllTagsQuery());
 		while ($row = $result->fetch())
 		{
-			$tags[] = new ItemsTag($row['ID'], $row['TITLE']);
+			$tags[] = new ItemsTag($row['ID'], $row['TITLE'], $row['ITEM_TYPE_ID']);
 		}
 
 		return $tags;
@@ -80,7 +102,7 @@ class TagDAOmysql implements TagDAOInterface
 		{
 			return [];
 		}*/
-		$result = $this->DBConnection->prepare($this->getTagsByItemTypeQuery($queryTypeId));
+		$result = $this->dbConnection->prepare($this->getTagsByItemTypeQuery($queryTypeId));
 		$result->execute();
 		$tags = [];
 		while ($row = $result->fetch())
@@ -95,16 +117,6 @@ class TagDAOmysql implements TagDAOInterface
 		return "SELECT * FROM up_tag";
 	}
 
-	private function getInsertQuery(array $names)
-	{
-		$names = array_map(function($name) {
-			return "('{$name}')";
-		}, $names);
-		$in = implode(',', $names);
-
-		return "INSERT INTO up_tag (TITLE) VALUES {$in};";
-	}
-
 	private function getTagsByNamesQuery(array $names): string
 	{
 		$names = array_map(function(string $name) {
@@ -112,12 +124,12 @@ class TagDAOmysql implements TagDAOInterface
 		}, $names);
 		$in = implode(',', $names);
 
-		return "SELECT ID, TITLE FROM up_tag WHERE TITLE IN ({$in})";
+		return "SELECT ID, TITLE, ITEM_TYPE_ID FROM up_tag WHERE TITLE IN ({$in})";
 	}
 
 	private function getTagsByItemTypeQuery(int $typeId): string
 	{
-		$query = "SELECT ID, TITLE FROM up_tag WHERE ITEM_TYPE_ID = " . $typeId;
+		$query = "SELECT ID, TITLE, ITEM_TYPE_ID FROM up_tag WHERE ITEM_TYPE_ID = " . $typeId;
 		return $query;
 	}
 

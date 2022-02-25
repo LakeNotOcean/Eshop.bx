@@ -491,6 +491,7 @@ filters tag category
 
 .tag input:checked ~ label {
 	font-weight: 500;
+	padding: 5px 4px;
 	color: var(--color-main);
 	background: var(--color-font);
 	border-color: var(--color-font);

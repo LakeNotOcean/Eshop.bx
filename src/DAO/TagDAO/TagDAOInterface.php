@@ -12,7 +12,7 @@ interface TagDAOInterface
 	 *
 	 * @return array<int,ItemsTag>
 	 */
-	public function save(array $tags): array;
+	public function save(array $tags, int $itemType): array;
 
 	/**
 	 * @param array<string> $names
