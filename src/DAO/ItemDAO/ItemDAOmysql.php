@@ -106,6 +106,14 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		return $this->mapItems($result);
 	}
 
+	public function getFirstItemByTypeId(int $typeId): Item
+	{
+		$firstItemId = "SELECT ID FROM up_item WHERE ITEM_TYPE_ID = $typeId LIMIT 1";
+		$dbQuery = $this->getQueryGetItemsById($firstItemId);
+		$result = $this->dbConnection->query($dbQuery);
+		return array_values($this->mapItems($result))[0];
+	}
+
 	public function getSimilarItemById(int $id, int $similarAmount): array
 	{
 		$dbQuery = $this->getSimilarItemByIdQuery($id,$similarAmount);
@@ -616,15 +624,12 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		return $preparedQuery->fetch()['num_items'];
 	}
 
-
 	private function getItemsByTypeIDQuery(int $offset, int $amountItems, int $typeID): string
 	{
 		$query = "SELECT ID AS ID FROM up_item WHERE ITEM_TYPE_ID = ".$typeID . " LIMIT {$offset}, {$amountItems}";
 		$query = $this->getQueryGetItemsById($query);
 		return $query;
 	}
-
-
 
 	private function getSimilarItemByIdQuery(int $itemID, int $similarAmount): string
 	{
