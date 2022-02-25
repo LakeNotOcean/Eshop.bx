@@ -19,6 +19,18 @@ class TagDAOmysql extends AbstractDAO implements TagDAOInterface
 		$this->dbConnection = $dbConnection;
 	}
 
+	protected function arrayContainsTag(array $tags, ItemsTag $newTag): bool
+	{
+		foreach ($tags as $tag)
+		{
+			if ($tag->getName() === $newTag->getName() && $tag->getTypeId() === $newTag->getTypeId())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * @param array $tags
 	 *
@@ -30,12 +42,16 @@ class TagDAOmysql extends AbstractDAO implements TagDAOInterface
 			return $tag->getName();
 		}, $tags);
 		$addedTags = $this->getTagsByNames($names);
-		$toAdd = array_diff(
-			$names,
-			array_map(function(ItemsTag $tag) {
-				return $tag->getName();
-			}, $addedTags)
-		);
+
+		$toAdd = [];
+		foreach ($tags as $tag)
+		{
+			if (!$this->arrayContainsTag($addedTags, $tag))
+			{
+				$toAdd[] = $tag;
+			}
+		}
+
 		if (!empty($toAdd))
 		{
 			$tagsCount = count($toAdd);
@@ -43,7 +59,7 @@ class TagDAOmysql extends AbstractDAO implements TagDAOInterface
 				'up_tag', ['TITLE', 'ITEM_TYPE_ID'], $tagsCount);
 			$tagsAndItemTypes = [];
 			foreach ($toAdd as $tag) {
-				$tagsAndItemTypes[] = $tag;
+				$tagsAndItemTypes[] = $tag->getName();
 				$tagsAndItemTypes[] = $itemType;
 			}
 			$prepareStatement->execute($tagsAndItemTypes);
@@ -60,23 +76,21 @@ class TagDAOmysql extends AbstractDAO implements TagDAOInterface
 	public function getTagsByNames(array $names): array
 	{
 		$tags = [];
-		$result = $this->dbConnection->prepare($this->getTagsByNamesQuery($names));
-		$result->execute();
+		$result = $this->dbConnection->query($this->getTagsByNamesQuery($names));
 		while ($row = $result->fetch())
 		{
-			$tags[$row['ID']] = new ItemsTag($row['ID'], $row['TITLE']);
+			$tags[$row['ID']] = new ItemsTag($row['ID'], $row['TITLE'], $row['ITEM_TYPE_ID']);
 		}
 
 		return $tags;
 	}
 
 	public function getAllTags(): array
-	{;
-		$result = $this->dbConnection->prepare($this->getAllTagsQuery());
-		$result->execute();
+	{
+		$result = $this->dbConnection->query($this->getAllTagsQuery());
 		while ($row = $result->fetch())
 		{
-			$tags[] = new ItemsTag($row['ID'], $row['TITLE']);
+			$tags[] = new ItemsTag($row['ID'], $row['TITLE'], $row['ITEM_TYPE_ID']);
 		}
 
 		return $tags;
@@ -110,12 +124,12 @@ class TagDAOmysql extends AbstractDAO implements TagDAOInterface
 		}, $names);
 		$in = implode(',', $names);
 
-		return "SELECT ID, TITLE FROM up_tag WHERE TITLE IN ({$in})";
+		return "SELECT ID, TITLE, ITEM_TYPE_ID FROM up_tag WHERE TITLE IN ({$in})";
 	}
 
 	private function getTagsByItemTypeQuery(int $typeId): string
 	{
-		$query = "SELECT ID, TITLE FROM up_tag WHERE ITEM_TYPE_ID = " . $typeId;
+		$query = "SELECT ID, TITLE, ITEM_TYPE_ID FROM up_tag WHERE ITEM_TYPE_ID = " . $typeId;
 		return $query;
 	}
 

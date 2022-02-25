@@ -26,8 +26,8 @@ class TagService implements TagServiceInterface
 	 */
 	public function save(array $tags, int $itemType): array
 	{
-		$tags = array_map(function(string $tag) {
-			return new ItemsTag(0, $tag);
+		$tags = array_map(function(string $tag) use ($itemType) {
+			return new ItemsTag(0, $tag, $itemType);
 		}, $tags);
 
 		return $this->tagDAO->save($tags, $itemType);
