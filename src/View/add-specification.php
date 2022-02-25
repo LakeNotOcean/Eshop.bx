@@ -16,8 +16,7 @@ use Up\Entity\SpecificationCategory;
 				<?php
 				foreach ($categories as $category): ?>
 					<option value="<?= $category->getId() ?>"><?= htmlspecialchars($category->getName()) ?></option>
-				<?php
-				endforeach; ?>
+				<?php endforeach; ?>
 			</select>
 		</label>
 		<label for="spec-name" class="field">

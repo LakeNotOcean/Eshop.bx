@@ -85,10 +85,10 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 					<?= htmlspecialchars($review->getComment()) ?>
 				</div>
 			</div>
-			<?php if($review->getUser()->getId() == $user->getId()): ?>
+			<?php if($review->getUser()->getId() === $user->getId()): ?>
 				<div class="your-review-msg">Это ваш отзыв</div>
 			<?php endif; ?>
-			<?php if($review->getUser()->getId() == $user->getId() || $user->getRole()->getName() == \Up\Entity\User\UserEnum::Admin()): ?>
+			<?php if($review->getUser()->getId() === $user->getId() || $user->getRole()->getName() === \Up\Entity\User\UserEnum::Admin()): ?>
 			<div class="review-remove-btn"></div>
 			<input type="hidden" name="review_id" value="<?= $review->getId() ?>">
 			<?php endif; ?>

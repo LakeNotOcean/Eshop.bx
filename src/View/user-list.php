@@ -14,7 +14,7 @@ use Up\Core\Router\URLResolver;
 
 	<div class="user-line">
 		<div class="search-count">
-			Найдено пользователей<?= $query !== '' ?  'по запросу' . $query : ''?>: <?= htmlspecialchars($userAmount)?>
+			Найдено пользователей <?= $query !== '' ?  'по запросу ' . htmlspecialchars($query) : ''?>: <?= htmlspecialchars($userAmount)?>
 		</div>
 		<form action="<?= URLResolver::resolve('user-list')?>" method="get" enctype="multipart/form-data" class="search">
 			<input type="text" id="query" name="query" class="search-field" placeholder="Поиск пользователей"
