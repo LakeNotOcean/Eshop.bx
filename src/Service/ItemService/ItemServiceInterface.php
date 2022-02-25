@@ -4,6 +4,7 @@ namespace Up\Service\ItemService;
 
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
+use Up\Entity\ItemType;
 use Up\Entity\UserItem;
 
 interface ItemServiceInterface
@@ -14,6 +15,8 @@ interface ItemServiceInterface
 	public function getTypes():array;
 
 	public function getItemsByTypeID(array $limitOffset, int $typeID): array;
+
+	public function getFirstItemOfType(ItemType $itemType): ?Item;
 
 	public function getFavoriteItems(int $userId, array $limitOffset): array;
 

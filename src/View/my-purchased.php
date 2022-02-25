@@ -17,7 +17,6 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 <link rel="stylesheet" href="/css/catalog.css">
 <link rel="stylesheet" href="/css/my-reviews.css">
 
-
 <div class="container">
 	<div class="title-my-reviews">Купленные вами товары:</div>
 	<?php foreach ($items as $item): ?>
@@ -71,7 +70,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 						<?= htmlspecialchars($reviews[$item->getId()]->getComment()) ?>
 					</div>
 				</div>
-				<div class="review-remove-btn"></div>
+				<div class="btn btn-delete review-remove-btn">Удалить</div>
 				<input type="hidden" name="review_id" value="<?= $reviews[$item->getId()]->getId() ?>">
 			</div>
 			<?php else: ?>
@@ -85,5 +84,6 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 	<?= $paginator ?>
 </div>
 <script src="/js/lib/showPopup.js"></script>
+<script src="/js/lib/alert-dialog.js"></script>
 <script src="/js/review/delete-review.js"></script>
 <script src="/js/add-to-favorites.js"></script>

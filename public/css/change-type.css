@@ -1,18 +1,33 @@
 @import "lib/pagination.css";
 @import "lib/card.css";
 
-.container{
+.container {
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
 	width: 100%;
+	padding: 0 50px;
 	max-width: 1300px;
 	min-height: calc(100vh - var(--nav-height));
 }
 
-.types-card{
+.types-card {
+	display: flex;
 	margin-top: 20px;
-	height: 30px;
-	padding: 5px;
-	max-height: 100%;
+	padding: 15px;
+}
+
+.types-card img {
+	width: 130px;
+	height: 130px;
+	object-fit: contain;
+	border-radius: 10px;
+}
+
+.type-name {
+	display: flex;
+	align-items: center;
+	margin-left: 20px;
+	font-size: 22px;
+	font-weight: 700;
 }

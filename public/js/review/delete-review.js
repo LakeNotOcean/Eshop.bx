@@ -5,7 +5,7 @@ async function deleteReview(id, csrf){
 }
 
 document.querySelectorAll('.review-remove-btn').forEach((btn) => {
-	btn.addEventListener('click', (e) => {
+	btn.addEventListener('click', () => {
 		alertDialogDelete('Удаление комментария',
 			'Вы уверены, что хотите удалить этот комментарий?', () => {
 				let review_id = btn.parentElement.querySelector('[name=review_id]').value
