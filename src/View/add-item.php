@@ -1,6 +1,8 @@
 <?php
 /** @var \Up\Entity\ItemDetail $item */
 
+use Up\Entity\ItemsTag;
+
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
@@ -51,12 +53,20 @@
 						   value="<?= isset($item) ? htmlspecialchars($item->getFullDescription()) : '' ?>" class="input"
 						   autocomplete="off">
 				</label>
+
 				<label for="item-tags" class="field">
 					<span class="label-title">Теги</span>
-					<input type="text" id="item-tags" name="item-tags" placeholder="Ввести теги через запятую"
-						   value="<?= isset($item) ? implode(',', array_map(function(\Up\Entity\ItemsTag $tag) {
-								return $tag->getName();}, $item->getTags())) : '' ?>" class="input"
-						   autocomplete="off">
+					<span class="tags-container">
+						<span class="tag">css</span>
+						<span class="tag">js</span>
+						<span class="tag">html</span>
+						<span class="tag">Видеокарта</span>
+						<span class="tag">GTX 10 серии</span>
+						<input type="text" id="item-tags" name="item-tags" placeholder="Ввести теги через запятую"
+							   value="<?= isset($item) ? implode(',', array_map(function(ItemsTag $tag) {
+								   return $tag->getName();}, $item->getTags())) : '' ?>"
+							   autocomplete="off">
+					</span>
 				</label>
 
 				<label for="item-sort_order" class="field">
@@ -129,6 +139,7 @@
 <script src="/js/lib/alert-dialog.js"></script>
 <script src="/js/add-item/preview-images.js"></script>
 <script src="/js/eshop-api.js"></script>
+<script src="/js/add-item/input-tag.js"></script>
 <script src="/js/add-item/build-specs.js"></script>
 <script src="/js/add-item/add-item-script.js"></script>
 <script src="/js/deactivate-item.js"></script>
