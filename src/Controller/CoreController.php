@@ -20,7 +20,7 @@ class CoreController
 
 	public function get404(Request $request)
 	{
-		return (new Response())->withBodyHTML(
+		return (new Response())->withStatus(404)->withBodyHTML(
 			$this->mainLayoutManager->render('404.php', [])
 		);
 	}
