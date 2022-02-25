@@ -24,13 +24,13 @@ class TagService implements TagServiceInterface
 	 *
 	 * @return array<int,ItemsTag>
 	 */
-	public function save(array $tags): array
+	public function save(array $tags, int $itemType): array
 	{
 		$tags = array_map(function(string $tag) {
 			return new ItemsTag(0, $tag);
 		}, $tags);
 
-		return $this->tagDAO->save($tags);
+		return $this->tagDAO->save($tags, $itemType);
 	}
 
 	public function getTagsByItemType(int $queryTypeId): array

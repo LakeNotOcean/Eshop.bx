@@ -323,7 +323,7 @@ class ItemController
 		$this->mapCommonItemInfoFromRequest($item, $request);
 
 		$tagsString = $request->getPostParametersByName('item-tags');
-		$tags = $this->tagService->save(array_map('trim', explode(',', $tagsString)));
+		$tags = $this->tagService->save(array_map('trim', explode(',', $tagsString)), $item->getItemType()->getId());
 		$item->setTags($tags);
 
 		$categoriesArray = $request->getPostParametersByName('specs');
