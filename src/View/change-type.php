@@ -20,7 +20,7 @@
 					</picture>
 				</div>
 				<div class="type-name">
-					<?= $type->getName()?>
+					<?= htmlspecialchars($type->getName())?>
 				</div>
 
 			</div>

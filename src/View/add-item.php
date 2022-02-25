@@ -59,7 +59,7 @@ use Up\Entity\ItemsTag;
 					<span class="tags-container">
 						<?php if (isset($item)):?>
 							<?php foreach ($item->getTags() as $tag):?>
-								<span class="input-tag"><?= $tag->getName()?></span>
+								<span class="input-tag"><?= htmlspecialchars($tag->getName())?></span>
 							<?php endforeach;?>
 						<?php endif;?>
 						<input type="text" id="item-tags" name="item-tags" placeholder="Ввести тег"

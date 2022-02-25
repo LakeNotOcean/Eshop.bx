@@ -94,7 +94,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				<div class="item-main-short-desc">
 					<div class="item-tags">
 						<?php foreach ($item->getTags() as $tag): ?>
-							<div class="item-tag"><?= $tag->getName() ?></div>
+							<div class="item-tag"><?= htmlspecialchars($tag->getName()) ?></div>
 						<?php endforeach; ?>
 					</div>
 					<div class="item-main-short-desc-text">
