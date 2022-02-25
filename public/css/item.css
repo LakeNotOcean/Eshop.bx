@@ -389,7 +389,7 @@ item-review
 
 .item-review {
 	display: flex;
-	margin: 15px 0;
+	margin: 30px 0;
 	justify-content: center;
 	position: relative;
 }
@@ -446,6 +446,15 @@ item-review
 .your-review-msg {
 	white-space: nowrap;
 	margin-right: 10px;
+}
+
+.btn-show-more {
+	font-weight: 500;
+	text-decoration: underline;
+}
+
+.btn-show-more:hover {
+	text-decoration: none;
 }
 
 .review-state-message {

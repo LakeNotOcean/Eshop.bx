@@ -17,7 +17,6 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 
 <link rel="stylesheet" href="/css/item.css">
 <link rel="stylesheet" href="/css/more-reviews.css">
-<link rel="stylesheet" href="/css/catalog.css">
 
 <?= CSRF::getFormField() ?>
 <div class="opened-images" style="display: none;">
@@ -208,7 +207,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 					</div>
 					<?php endforeach; ?>
 					<?php if($item->getAmountReviews() > 3): ?>
-					<a href="<?= URLResolver::resolve('more-reviews', ['id' => $item->getId()]) ?>">Посмотреть больше отзывов</a>
+					<a href="<?= URLResolver::resolve('more-reviews', ['id' => $item->getId()]) ?>" class="btn-show-more">Посмотреть больше отзывов</a>
 					<?php endif; ?>
 				</div>
 			</div>

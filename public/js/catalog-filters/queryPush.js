@@ -1,8 +1,11 @@
 let currentUrl = new URL(window.location.origin + window.location.pathname);
+
 let sortingButtons = document.querySelectorAll('.sorting-button');
 for (let sortingButton of sortingButtons)
 {
 	sortingButton.addEventListener('click', (e) => {
+		getFilterQuery(currentUrl);
+		getSearchQuery(currentUrl);
 		currentUrl.searchParams.set('sorting', sortingButton.id);
 		window.location = currentUrl;
 	});
