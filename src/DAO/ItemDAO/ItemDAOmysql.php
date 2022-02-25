@@ -298,10 +298,14 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		while ($row = $result->fetch())
 		{
 			$item = new Item();
-			$item->setId($row['ID']);
+			$itemId = $row['ID'];
+			$item->setId($itemId);
 			$item->setTitle($row['TITLE']);
 			$item->setPrice($row['PRICE']);
-			$items[$row['COUNT']] = $item;
+			$items[$itemId] = [
+				'count' => $row['COUNT'],
+				'item' => $item
+			];
 		}
 
 		return $items;

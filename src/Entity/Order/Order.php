@@ -92,7 +92,7 @@ class Order extends Entity
 	}
 
 	/**
-	 * @return array{int: ItemDetail}
+	 * @return array<array{count: int, item: ItemDetail}>
 	 */
 	public function getItems(): array
 	{
@@ -100,7 +100,7 @@ class Order extends Entity
 	}
 
 	/**
-	 * @param array{int: ItemDetail} $items
+	 * @param array<array{count: int, item: ItemDetail}> $items
 	 */
 	public function setItems(array $items): void
 	{
@@ -176,7 +176,7 @@ class Order extends Entity
 		$cost = 0;
 		foreach ($this->items as $item)
 		{
-			$cost += $item->getPrice();
+			$cost += $item['item']->getPrice();
 		}
 
 		return $cost;
