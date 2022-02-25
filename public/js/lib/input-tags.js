@@ -1,5 +1,6 @@
 const tagsContainer = document.querySelector('.tags-container');
 const inputTags = tagsContainer.querySelector('input');
+addListenersToExistingTags()
 
 inputTags.addEventListener('keydown', (e) => {
 	if (e.key === "Backspace" && inputTags.value === "") {
@@ -42,4 +43,13 @@ function removeLastTag() {
 	if (createdTags) {
 		createdTags[createdTags.length - 1].remove();
 	}
+}
+
+function addListenersToExistingTags() {
+	const existingTags = document.querySelectorAll('.input-tag');
+	existingTags.forEach(existingTag => {
+		existingTag.addEventListener('click', () => {
+			existingTag.remove();
+		})
+	})
 }
