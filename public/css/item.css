@@ -441,6 +441,7 @@ item-review
 .manage-review {
 	display: flex;
 	align-items: center;
+	padding: 10px;
 }
 
 .your-review-msg {
@@ -459,6 +460,12 @@ item-review
 
 .review-state-message {
 	margin: 15px 0;
+}
+
+@media screen and (max-width: 700px)  {
+	.item-review {
+		flex-direction: column;
+	}
 }
 
 /*==========================
