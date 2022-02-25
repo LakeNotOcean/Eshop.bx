@@ -4,7 +4,7 @@
 /** @var int $pagesAmount */
 
 ?>
-
+<?php if ($pagesAmount > 1): ?>
 <div class="navigation">
 	<div id="<?=$currentPage - 1?>" class="navigation-page navigation-item redirect-button
 				<?= $currentPage === 1 ? 'navigation-blocked' : '' ?>"> < </div>
@@ -50,3 +50,5 @@
 </div>
 
 <script src="/js/lib/paginator.js"></script>
+
+<?php endif;?>
