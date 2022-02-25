@@ -73,6 +73,26 @@ class ItemController
 		$this->cartService = $cartService;
 	}
 
+
+	public function setTypeItem(Request $request): Response
+	{
+		$types = $this->itemService->getTypes();
+		$items = $this->itemService->getFirstItemsWithType();
+		$currentPage = 1;
+		$pagesAmount = 1;
+		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
+			'currentPage' => $currentPage,
+			'pagesAmount' => $pagesAmount,
+		]);
+		$page = $this->mainLayoutManager->render('change-type.php', [
+			'types' => $types,
+			'paginator' => $paginator,
+		]);
+
+		return (new Response())->withBodyHTML($page);
+	}
+
+
 	/**
 	 * @throws NoSuchQueryParameterException
 	 */
@@ -82,7 +102,7 @@ class ItemController
 
 		$deactivate = $request->containsQuery('deactivate_include') && $isAdmin;
 		$query = $request->getQueriesOrDefaultList(
-			['page' => '1', 'query' => '', 'tag' => [], 'spec' => [], 'price' => '', 'sorting' => 'sort_order']
+			['page' => '1', 'query' => '', 'tag' => [], 'spec' => [], 'price' => '', 'sorting' => 'sort_order', 'type' => 0]
 		);
 
 		$currentPage = $query['page'] > 0 ? (int)$query['page'] : 1;
@@ -99,7 +119,7 @@ class ItemController
 		$typeIds = $this->itemService->getTypeIdByQuery($query['query']);
 		if (empty($typeIds))
 		{
-			$queryTypeId = 1;    //1 - значение передаваемое через ручки.
+			$queryTypeId = $query['type'];    //1 - значение передаваемое через ручки.
 		}
 		elseif (count($typeIds) === 1)
 		{

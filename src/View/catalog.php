@@ -83,6 +83,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 					в том числе неактивные
 				</label>
 				<?php endif; ?>
+				<?php if (!empty($tags)):?>
 				<div class="filter-tags">
 					<div class="filter-title">Теги</div>
 					<div class="tag-list">
@@ -94,6 +95,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 						<?php endforeach; ?>
 					</div>
 				</div>
+				<?php endif; ?>
 				<div class="filter-buttons">
 					<div class="btn btn-normal filter-button redirect-button">Отфильтровать</div>
 					<div class="btn btn-normal reset-button">Сбросить</div>

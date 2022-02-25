@@ -1,0 +1,18 @@
+@import "lib/pagination.css";
+@import "lib/card.css";
+
+.container{
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	width: 100%;
+	max-width: 1300px;
+	min-height: calc(100vh - var(--nav-height));
+}
+
+.types-card{
+	margin-top: 20px;
+	height: 30px;
+	padding: 5px;
+	max-height: 100%;
+}
