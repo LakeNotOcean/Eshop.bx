@@ -96,7 +96,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				</div>
 				<div class="filter-buttons">
 					<div class="btn btn-normal filter-button redirect-button">Отфильтровать</div>
-					<div class="btn btn-normal filter-button reset-button">Сбросить</div>
+					<div class="btn btn-normal reset-button">Сбросить</div>
 				</div>
 			</form>
 			<div class="btn btn-normal filter-button btn-quick-apply">Применить</div>

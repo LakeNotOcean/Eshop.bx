@@ -1,13 +1,11 @@
 
-function getSearchQuery()
+function getSearchQuery(currentUrl)
 {
-	let searchInput = document.querySelector(".search-field")
-	let searchQuery = searchInput.value
+	let searchInput = document.querySelector(".search-field");
+	let searchQuery = searchInput.value;
 
 	if (searchQuery!== '')
 	{
-		searchQuery =  "&" + searchInput.id + "=" + searchQuery;
-		return searchQuery;
+		currentUrl.searchParams.append(searchInput.id,searchQuery);
 	}
-	return "";
 }
