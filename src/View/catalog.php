@@ -225,6 +225,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 <script src="/js/lib/fix-node.js"></script>
 <script src="/js/fixed-filters.js"></script>
 
+<script src="/js/catalog-filters/clear-query.js"></script>
 <script src="/js/catalog-filters/btn-quick-apply-filters.js"></script>
 <script src="/js/catalog-filters/filter-reset.js"></script>
 <script src="/js/catalog-filters/filter-get-query.js"></script>

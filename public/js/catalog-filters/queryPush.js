@@ -1,5 +1,4 @@
-
-let currentUrl = new URL(window.location);
+let currentUrl = new URL(window.location.origin + window.location.pathname);
 let sortingButtons = document.querySelectorAll('.sorting-button');
 for (let sortingButton of sortingButtons)
 {
@@ -15,7 +14,7 @@ for (let filterButton of filterButtons)
 	filterButton.addEventListener('click',() => {
 		getFilterQuery(currentUrl);
 		getSearchQuery(currentUrl);
-		currentUrl.searchParams.append("page","1");
+		currentUrl.searchParams.set("page","1");
 		window.location = currentUrl;
 	});
 }
@@ -25,7 +24,7 @@ let searchButtonIcon = document.querySelector('.search-icon');
 
 function searchListener(e) {
 		getSearchQuery(currentUrl);
-		currentUrl.searchParams.append("page","1");
+		currentUrl.searchParams.set("page","1");
 		window.location = currentUrl;
 }
 

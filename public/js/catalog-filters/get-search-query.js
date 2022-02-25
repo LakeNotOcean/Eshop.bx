@@ -6,6 +6,6 @@ function getSearchQuery(currentUrl)
 
 	if (searchQuery!== '')
 	{
-		currentUrl.searchParams.append(searchInput.id,searchQuery);
+		currentUrl.searchParams.set(searchInput.id,searchQuery);
 	}
 }
