@@ -40,6 +40,7 @@ input:-webkit-autofill {
 
 input::placeholder, textarea::placeholder {
 	color: var(--color-placeholder);
+	user-select: none;
 }
 
 input::-webkit-calendar-picker-indicator {
@@ -55,4 +56,43 @@ input::-webkit-inner-spin-button {
 	.label-title {
 		width: 50%;
 	}
+}
+
+/*==========================
+main fields and images
+==========================*/
+
+.tags-container {
+	flex: 1;
+	display: flex;
+	flex-wrap: wrap;
+	margin: 5px 10px 5px 0;
+	border-radius: 10px;
+	border: 2px solid var(--color-outline);
+	background-color: var(--color-main);
+}
+
+.input-tag {
+	padding: 5px;
+	margin: 5px;
+	border-radius: 10px;
+	background: var(--color-secondary);
+	border: 2px solid var(--color-secondary);
+}
+
+.tags-container input {
+	appearance: none;
+	flex: 1;
+	width: 75px;
+	margin: 5px;
+	outline: none;
+	border: none;
+	font-size: 15px;
+	font-family: 'Montserrat', sans-serif;
+	color: var(--color-font);
+	background: var(--color-main);
+}
+
+.tags-container input:focus::placeholder {
+	color: transparent;
 }

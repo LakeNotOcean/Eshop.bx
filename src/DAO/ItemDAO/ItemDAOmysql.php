@@ -257,7 +257,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 				$executeParam[] = $spec;
 				foreach ($values as $value)
 				{
-					$executeParam[] = "$value";
+					$executeParam[] = $value;
 				}
 
 			}

@@ -96,7 +96,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				</div>
 				<div class="filter-buttons">
 					<div class="btn btn-normal filter-button redirect-button">Отфильтровать</div>
-					<div class="btn btn-normal filter-button reset-button">Сбросить</div>
+					<div class="btn btn-normal reset-button">Сбросить</div>
 				</div>
 			</form>
 			<div class="btn btn-normal filter-button btn-quick-apply">Применить</div>
@@ -225,6 +225,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 <script src="/js/lib/fix-node.js"></script>
 <script src="/js/fixed-filters.js"></script>
 
+<script src="/js/catalog-filters/clear-query.js"></script>
 <script src="/js/catalog-filters/btn-quick-apply-filters.js"></script>
 <script src="/js/catalog-filters/filter-reset.js"></script>
 <script src="/js/catalog-filters/filter-get-query.js"></script>

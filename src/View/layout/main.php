@@ -88,7 +88,6 @@ if (!isset($query))
 					</div>
 				</div>
 			</div>
-			<script src="/js/admin-menu.js"></script>
 		</div>
 	<?php endif;?>
 
@@ -108,7 +107,7 @@ if (!isset($query))
 				<div class="menu">
 					<a class="menu-item" href="<?= URLResolver::resolve('user-favorites') ?>">Избранное</a>
 					<a class="menu-item" href="<?= URLResolver::resolve('user-profile') ?>">Личный кабинет</a>
-					<a class="menu-item" href="<?= URLResolver::resolve('my-purchased') ?>">Купленные товары</a>
+					<a class="menu-item" href="<?= URLResolver::resolve('my-purchased') ?>">Мои заказы</a>
 					<a href="<?= URLResolver::resolve('logout-user') ?>" class="menu-item-btn">
 						<div class="btn btn-normal sign-in">Выйти</div>
 					</a>
@@ -140,6 +139,7 @@ if (!isset($query))
 			<?php endif;?>
 		</svg>
 	</div>
+	<script src="/js/admin-menu.js"></script>
 	<script src="/js/change-theme.js"></script>
 </nav>
 

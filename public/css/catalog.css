@@ -513,6 +513,10 @@ filter-buttons
 	margin: 0;
 }
 
+.reset-button{
+	margin: 0;
+}
+
 .filter-button-checkbox {
 	display: none;
 	position: absolute;
