@@ -46,9 +46,9 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				<div class="item-short-description">
 					<?= htmlspecialchars($item->getShortDescription()) ?>
 				</div>
-				<div class="item-other-footer">
-					<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
-				</div>
+			</div>
+			<div class="item-other-footer">
+				<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
 			</div>
 			<?php
 			if (!$item->getIsActive()): ?>
@@ -57,19 +57,18 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 			endif; ?>
 		</div>
 	</div>
-	<div class="rating">
+	<div class="reviews-header">
 		<svg class="star-icon">
 			<use xlink:href="/img/sprites.svg#star"></use>
 		</svg>
-		<div class="rating-value">
-			<?= ($item->getAmountReviews() > 0) ? \Up\Lib\FormatHelper\NumberFormatter::ratingFormat($item->getRating())
-				: '—' ?>
+		<div class="reviews-label">
+			<div class="rating"><?= ($item->getAmountReviews() > 0) ? \Up\Lib\FormatHelper\NumberFormatter::ratingFormat($item->getRating()) : '—' ?></div>
+			<div class="reviews-separator">·</div>
+			<div class="reviews-count"><?= ($item->getAmountReviews() > 0) ?
+					"Всего отзывов: {$item->getAmountReviews()}"
+					: 'нет отзывов' ?></div>
 		</div>
 	</div>
-	<div>
-		Всего отзывов: <?= $item->getAmountReviews() ?>
-	</div>
-
 
 	<?php
 	foreach ($reviews as $review): ?>
