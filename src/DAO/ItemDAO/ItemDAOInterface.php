@@ -18,6 +18,8 @@ interface ItemDAOInterface
 
 	public function getSimilarItemById(int $id,int $similarAmount): array;
 
+	public function getFirstItemsWithType(): array;
+
 	public function getItemsMinMaxPrice(): array;
 
 	public function getItemsMinMaxPriceByItemTypes(array $typeIds): array;

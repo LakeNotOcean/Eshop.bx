@@ -11,6 +11,8 @@ interface ItemServiceInterface
 
 	public function getItems(array $limitOffset): array;
 
+	public function getTypes():array;
+
 	public function getItemsByTypeID(array $limitOffset, int $typeID): array;
 
 	public function getFavoriteItems(int $userId, array $limitOffset): array;
@@ -37,6 +39,8 @@ interface ItemServiceInterface
 
 	public function getItemsSimilarById(int $id,int $similarAmount): array;
 
+	public function getFirstItemsWithType(): array;
+
 	public function getItemsAmount(string $query = ''): int;
 
 	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs, int $typeId, bool $deactivate_include = false): int;
@@ -46,6 +50,7 @@ interface ItemServiceInterface
 	public function save(ItemDetail $item): ItemDetail;
 
 	public function isItemAvailable(int $itemId): bool;
+
 
 	public function deactivateItem(int $id): void;
 
