@@ -30,7 +30,9 @@ for (let adminCard of adminCards)
 		{
 			const id = adminCard.id;
 			deleteAdminById(id,adminCard);
+
 		}
+		adminCard.style.borderColor = 'white'
 		isDeleteSection = false;
 	})
 }

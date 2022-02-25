@@ -1093,7 +1093,7 @@ INNER JOIN (select ID as ITEM_ID,
 
 		$query = "
 	SELECT DISTINCT 
-	count(1) as num_items
+	count(*) as num_items
 FROM up_item as ui";
 		if (!empty($tags))
 		{

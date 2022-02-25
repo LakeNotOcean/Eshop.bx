@@ -22,7 +22,6 @@
 				<div class="type-name">
 					<?= htmlspecialchars($type->getName())?>
 				</div>
-
 			</div>
 		<?php endforeach;?>
 	<?=$paginator?>
