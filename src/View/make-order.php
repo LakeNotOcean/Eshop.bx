@@ -55,7 +55,7 @@ if ($user->getRole()->getName() != UserEnum::Guest())
 		endforeach; ?>
 	</div>
 	<?php if(!empty($items)): ?>
-	<div hidden class="user-data">
+	<div class="user-data">
 		<div class="user-data-title">Контактные данные</div>
 		<div class="user-name">
 			<label for="first-name" class="field">

@@ -4,6 +4,7 @@ namespace Up\Service\CartService;
 
 use InvalidArgumentException;
 use Up\DAO\ItemDAO\ItemDAOInterface;
+use Up\Entity\Item;
 use Up\Service\ItemService\ItemServiceInterface;
 
 class CartService implements CartServiceInterface
@@ -46,7 +47,7 @@ class CartService implements CartServiceInterface
 	{
 		if (in_array($itemId, $_SESSION[static::CART_SESSION_KEY], true))
 		{
-			$key = array_search($itemId, $_SESSION[static::CART_SESSION_KEY]);
+			$key = array_search($itemId, $_SESSION[static::CART_SESSION_KEY], true);
 			unset($_SESSION[static::CART_SESSION_KEY][$key]);
 		}
 	}
@@ -57,7 +58,7 @@ class CartService implements CartServiceInterface
 	}
 
 	/**
-	 * @return \Up\Entity\Item[]
+	 * @return Item[]
 	 */
 	public function getItemsFromCart(): array
 	{
@@ -77,7 +78,7 @@ class CartService implements CartServiceInterface
 		return $_SESSION[static::CART_SESSION_KEY];
 	}
 
-	private function createCartInSession()
+	private function createCartInSession(): void
 	{
 		if (!array_key_exists(static::CART_SESSION_KEY, $_SESSION))
 		{

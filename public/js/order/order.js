@@ -1,5 +1,5 @@
-import {wordEndingResolver} from '../lib/wordProcessor.js';
-import { deleteItemFromCart } from './send-order-data.js';
+import { wordEndingResolver } from '../lib/wordProcessor.js';
+import { deleteItemFromCart, sendOrderData } from './send-order-data.js';
 
 const orderItems = document.querySelectorAll('.order-item');
 
@@ -11,11 +11,13 @@ const ordersPriceText = orderHeaderInfoElement.textContent;
 const numbers = ordersPriceText.match(/\d+/g);
 let [itemsAmount, orderPrice] = numbers.map(num => parseInt(num));
 
+document.querySelector('input[type="submit"]').addEventListener('click', submitOrder);
+
 let itemsInfo = [];
 
 orderItems.forEach(
 	function(itemElement) {
-		let itemId = parseInt(itemElement.getAttribute('value'))
+		let itemId = parseInt(itemElement.getAttribute('value'));
 		let itemInfo = {
 			id: itemId,
 			count: 1,
@@ -23,11 +25,11 @@ orderItems.forEach(
 		};
 		itemElement.querySelector('.item-count-add').addEventListener(
 			'click',
-			getIncreaseItemCountEventHandler(itemInfo, itemElement)
-		)
+			getIncreaseItemCountEventHandler(itemInfo, itemElement),
+		);
 		itemElement.querySelector('.item-count-reduce').addEventListener(
 			'click',
-			getReduceItemCountEventHandler(itemInfo, itemElement)
+			getReduceItemCountEventHandler(itemInfo, itemElement),
 		);
 		itemsInfo.push(itemInfo);
 	},
@@ -39,16 +41,12 @@ orderItems.forEach(
  */
 function getIncreaseItemCountEventHandler(itemInfo, itemElement)
 {
-	return function(event)
-	{
-		itemInfo.count++;
+	return function(event) {
 		orderPrice = orderPrice + itemInfo.price;
 		changeItemCount(itemInfo, 1);
-		updateAggregatedOrderData(itemsAmount++, orderPrice)
-		console.log(itemInfo)
-	}
+		updateAggregatedOrderData(itemsAmount++, orderPrice);
+	};
 }
-
 
 /**
  * @param {{price: number, count: number, id: number}} itemInfo
@@ -59,7 +57,7 @@ function getReduceItemCountEventHandler(itemInfo, itemElement)
 	return async function(event) {
 		if (itemInfo.count === 1)
 		{
-			itemsInfo = itemsInfo.filter(x => x.id !== itemInfo.id)
+			itemsInfo = itemsInfo.filter(x => x.id !== itemInfo.id);
 			deleteItemElement(itemInfo.id);
 			orderPrice = orderPrice - itemInfo.price;
 			updateAggregatedOrderData(--itemsAmount, orderPrice);
@@ -67,16 +65,15 @@ function getReduceItemCountEventHandler(itemInfo, itemElement)
 
 			if (itemsInfo.length === 0)
 			{
-				setEmptyOrderState()
+				setEmptyOrderState();
 			}
 			return;
 		}
-		itemInfo.count--;
 		orderPrice = orderPrice - itemInfo.price;
 		changeItemCount(itemInfo, -1);
-		updateAggregatedOrderData(--itemsAmount, orderPrice)
-		console.log(itemInfo)
-	}
+		updateAggregatedOrderData(--itemsAmount, orderPrice);
+		console.log(itemInfo);
+	};
 }
 
 function setEmptyOrderState()
@@ -95,6 +92,12 @@ function getItemElementById(itemId)
 	return document.querySelector(`.order-item[value='${itemId}']`);
 }
 
+function submitOrder(event)
+{
+	let form = document.querySelector('.user-data');
+	sendOrderData(form, itemsInfo);
+}
+
 function getItemCountElement(itemId)
 {
 	return getItemElementById(itemId).querySelector('.item-count');
@@ -109,7 +112,7 @@ function changeItemCount(itemInfo, delta)
 {
 	let countElement = getItemCountElement(itemInfo.id);
 	itemInfo.count += delta;
-	countElement.textContent = (parseInt(countElement.textContent) + delta).toString()
+	countElement.textContent = (parseInt(countElement.textContent) + delta).toString();
 }
 
 /**

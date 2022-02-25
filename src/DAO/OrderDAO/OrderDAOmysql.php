@@ -4,8 +4,10 @@ namespace Up\DAO\OrderDAO;
 
 use Up\Core\Database\DefaultDatabase;
 use Up\DAO\AbstractDAO;
+use Up\Entity\Item;
 use Up\Entity\Order\Order;
 use Up\Entity\Order\OrderStatus;
+use Up\Lib\ArrayHelper\ArrayHelper;
 
 class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 {
@@ -97,17 +99,21 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 				$order->getStatus(), $order->getDateCreate(), $order->getDateUpdate(), ($id = $order->getUser()->getId()) === 0 ? null : $id];
 	}
 
+	/**
+	 * @param int $orderId
+	 * @param Item[] $items
+	 *
+	 * @return void
+	 */
 	public function addOrderItems(int $orderId, array $items): void
 	{
 		$preparedStatement = $this->getInsertPrepareStatement(
 			'`up_order-item`',
-			['ORDER_ID', 'ITEM_ID', 'COUNT']
+			['ORDER_ID', 'ITEM_ID', 'COUNT'],
+			count(array_unique(array_map(function($item) {return $item->getId();}, $items)))
 		);
 		$data = $this->prepareOrderItems($orderId, $items);
-		foreach ($data as $row)
-		{
-			$preparedStatement->execute($row);
-		}
+		$preparedStatement->execute(ArrayHelper::flatten($data, false));
 	}
 
 	public function updateOrderStatus(int $orderId, string $orderNewStatus): void
@@ -123,6 +129,12 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		$this->dbConnection->query($query);
 	}
 
+	/**
+	 * @param int $orderId
+	 * @param array $items
+	 *
+	 * @return array
+	 */
 	private function prepareOrderItems(int $orderId, array $items): array
 	{
 		$itemsCount = [];
@@ -130,7 +142,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		{
 			if (isset($itemsCount[$item->getId()]))
 			{
-				$itemsCount[$item->getId()]++;
+				++$itemsCount[$item->getId()];
 			}
 			else
 			{

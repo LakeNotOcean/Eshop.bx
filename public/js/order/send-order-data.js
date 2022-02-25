@@ -18,15 +18,15 @@ export async function deleteItemFromCart(itemId, form)
 		'/deleteItemFromCart',
 		{
 			method: 'post',
-			body: formData
-		}
+			body: formData,
+		},
 	).then(
-		response => response.json()
+			response => response.json(),
 		)
 		.then(
 			function(json) {
 				result = json.success;
-			}
+			},
 		);
 
 	return result;
@@ -35,10 +35,43 @@ export async function deleteItemFromCart(itemId, form)
 /**
  *
  * @param {Element} form
- * @param {{price: number, count: number, id: number}[]} itemsInfo
- * @return {Promise<void>}
+ * @param {{count: number, id: number}[]} itemsInfo
  */
 export async function sendOrderData(form, itemsInfo)
 {
+	let formData = new FormData();
 
+	let csrf = getCSRFFromForm(form);
+	formData.append(csrf.name, csrf.value);
+	let firstName = form.querySelector('#first-name').value;
+	formData.append('first-name', firstName);
+
+	let secondName = form.querySelector('#second-name').value;
+	formData.append('second-name', secondName);
+
+	let phone = form.querySelector('#phone').value;
+	formData.append('phone', phone);
+
+	let email = form.querySelector('#email').value;
+	formData.append('email', email);
+
+	let comment = form.querySelector('#comment').value;
+	formData.append('comment', comment);
+
+	formData.append('items', JSON.stringify(itemsInfo));
+
+	await fetch(
+		'/finishOrder',
+		{
+			method: 'post',
+			body: formData
+		},
+	).then(
+		function(response) {
+			if (response.ok)
+			{
+				document.querySelector('body').innerHTML = response.body;
+			}
+		}
+	)
 }
