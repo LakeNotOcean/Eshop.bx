@@ -80,10 +80,14 @@ class ItemController
 
 		$typesWithItems = [];
 		foreach ($types as $type) {
-			$typesWithItems[] = [
-				'item' => $this->itemService->getFirstItemOfType($type),
-				'type' => $type
-			];
+			$item = $this->itemService->getFirstItemOfType($type);
+			if (isset($item))
+			{
+				$typesWithItems[] = [
+					'item' => $item,
+					'type' => $type
+				];
+			}
 		}
 		$currentPage = 1;
 		$pagesAmount = 1;

@@ -106,12 +106,18 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		return $this->mapItems($result);
 	}
 
-	public function getFirstItemByTypeId(int $typeId): Item
+	public function getFirstItemByTypeId(int $typeId): ?Item
 	{
 		$firstItemId = "SELECT ID FROM up_item WHERE ITEM_TYPE_ID = $typeId LIMIT 1";
 		$dbQuery = $this->getQueryGetItemsById($firstItemId);
 		$result = $this->dbConnection->query($dbQuery);
-		return array_values($this->mapItems($result))[0];
+
+		$item = $this->mapItems($result);
+		if (!empty($item))
+		{
+			return array_values($item)[0];
+		}
+		return null;
 	}
 
 	public function getSimilarItemById(int $id, int $similarAmount): array
@@ -150,7 +156,6 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		}
 		return $items;
 	}
-
 
 	public function getItemsMinMaxPrice(): array
 	{

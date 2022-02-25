@@ -127,7 +127,7 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItemsByTypeID($limitOffset['offset'], $limitOffset['amountItems'], $typeID);
 	}
 
-	public function getFirstItemOfType(ItemType $itemType): Item
+	public function getFirstItemOfType(ItemType $itemType): ?Item
 	{
 		return $this->itemDAO->getFirstItemByTypeId($itemType->getId());
 	}
