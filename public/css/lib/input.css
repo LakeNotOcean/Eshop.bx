@@ -72,19 +72,18 @@ main fields and images
 	background-color: var(--color-main);
 }
 
-.tags-container .tag {
+.input-tag {
 	padding: 5px;
 	margin: 5px;
 	border-radius: 10px;
 	background: var(--color-secondary);
 	border: 2px solid var(--color-secondary);
-	white-space: nowrap;
 }
 
 .tags-container input {
 	appearance: none;
 	flex: 1;
-	width: 0;
+	width: 75px;
 	margin: 5px;
 	outline: none;
 	border: none;
@@ -92,4 +91,8 @@ main fields and images
 	font-family: 'Montserrat', sans-serif;
 	color: var(--color-font);
 	background: var(--color-main);
+}
+
+.tags-container input:focus::placeholder {
+	color: transparent;
 }
