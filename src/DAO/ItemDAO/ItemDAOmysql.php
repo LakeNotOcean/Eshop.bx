@@ -113,6 +113,13 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 		return $this->mapItems($result);
 	}
 
+	public function getFirstItemsWithType(): array
+	{
+		$query = $this->getFirstItemsWithTypeQuery();
+		$result = $this->dbConnection->query($query);
+		return $this->mapItems($result);
+	}
+
 	protected function mapItems(PDOStatement $result): array
 	{
 		$items = [];
@@ -638,6 +645,14 @@ LIMIT "
 			. " ";
 		$query = $this->getQueryGetItemsById($getIDquery);
 
+		return $query;
+	}
+
+	private function getFirstItemsWithTypeQuery():string
+	{
+		$query = "SELECT ID FROM up_item
+GROUP BY ITEM_TYPE_ID";
+		$query = $this->getQueryGetItemsById($query);
 		return $query;
 	}
 

@@ -41,6 +41,11 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItems($limitOffset['offset'], $limitOffset['amountItems']);
 	}
 
+	public function getTypes():array
+	{
+		return $this->typeDAO->getTypes();
+	}
+
 	public function isItemAvailable(int $itemId): bool
 	{
 		return $this->itemDAO->isItemActive($itemId);
@@ -158,6 +163,11 @@ class ItemService implements ItemServiceInterface
 	public function getItemsSimilarById(int $id,int $similarAmount): array
 	{
 		return $this->itemDAO->getSimilarItemById($id, $similarAmount);
+	}
+
+	public function getFirstItemsWithType(): array
+	{
+		return $this->itemDAO->getFirstItemsWithType();
 	}
 
 

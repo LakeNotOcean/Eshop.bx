@@ -15,6 +15,7 @@ let filterButtons = document.querySelectorAll('.filter-button');
 for (let filterButton of filterButtons)
 {
 	filterButton.addEventListener('click',() => {
+		getTypeQuery(currentUrl)
 		getFilterQuery(currentUrl);
 		getSearchQuery(currentUrl);
 		currentUrl.searchParams.set("page","1");
