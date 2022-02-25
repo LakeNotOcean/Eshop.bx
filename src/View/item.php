@@ -195,7 +195,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 								<?php if ($review->getUser()->getId() === $user->getId()):?>
 									<div class="your-review-msg">Это ваш отзыв</div>
 								<?php endif;?>
-								<?php if($user->getRole()->getName() === UserEnum::Admin()): ?>
+								<?php if($user->getRole()->getName() == UserEnum::Admin()): ?>
 									<div class="btn btn-delete review-remove-btn">Удалить</div>
 									<input type="hidden" name="review_id" value="<?= $review->getId() ?>">
 								<?php endif; ?>
