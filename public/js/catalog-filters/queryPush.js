@@ -1,15 +1,10 @@
-
-
+let currentUrl = new URL(window.location.origin + window.location.pathname);
 let sortingButtons = document.querySelectorAll('.sorting-button');
 for (let sortingButton of sortingButtons)
 {
 	sortingButton.addEventListener('click', (e) => {
-		let searchParams = new URLSearchParams(location.search.toString())
-		searchParams.set('sorting', sortingButton.id)
-		let finalQuery = searchParams.toString()
-		finalQuery = prepareQuery(finalQuery)
-		localStorage.setItem('query',finalQuery)
-		window.location = decodeURIComponent(finalQuery);
+		currentUrl.searchParams.set('sorting', sortingButton.id);
+		window.location = currentUrl;
 	});
 }
 
@@ -17,13 +12,10 @@ let filterButtons = document.querySelectorAll('.filter-button');
 for (let filterButton of filterButtons)
 {
 	filterButton.addEventListener('click',() => {
-		let filterQuery = getFilterQuery();
-		let searchQuery = getSearchQuery();
-		let pageQuery = "&page=1"
-		let finalQuery = filterQuery + searchQuery + pageQuery;
-		finalQuery = prepareQuery(finalQuery)
-		localStorage.setItem('query', finalQuery);
-		window.location = finalQuery;
+		getFilterQuery(currentUrl);
+		getSearchQuery(currentUrl);
+		currentUrl.searchParams.set("page","1");
+		window.location = currentUrl;
 	});
 }
 
@@ -31,16 +23,11 @@ let searchButton = document.querySelector('.search-field');
 let searchButtonIcon = document.querySelector('.search-icon');
 
 function searchListener(e) {
-		let searchQuery = getSearchQuery();
-
-		let pageQuery = "&page=1";
-		let finalQuery = searchQuery + pageQuery;
-		finalQuery = prepareQuery(finalQuery)
-
-		localStorage.setItem('query',finalQuery)
-		window.location = finalQuery;
-
+		getSearchQuery(currentUrl);
+		currentUrl.searchParams.set("page","1");
+		window.location = currentUrl;
 }
+
 searchButton.addEventListener("keydown", (e)=>{
 	if (e.keyCode === 13)
 	{
@@ -49,23 +36,4 @@ searchButton.addEventListener("keydown", (e)=>{
 });
 searchButtonIcon.addEventListener("click", searchListener);
 
-function prepareQuery(finalQuery)
-{
-	if (finalQuery.slice(0,1)==='&')
-	{
-		finalQuery = finalQuery.slice(1);
-	}
-	if (finalQuery.slice(-1) === "&")
-	{
-		finalQuery = finalQuery.slice(0,-1)
-	}
-	if (finalQuery.length === 1)
-	{
-		finalQuery = "";
-	}
-	else
-	{
-		finalQuery = '/?' + finalQuery;
-	}
-	return finalQuery;
-}
+
