@@ -1,15 +1,12 @@
 
-function getFilterQuery()
+function getFilterQuery(currentUrl)
 {
 	let filterCheckboxes = document.getElementsByClassName('category_spec_checkbox');
-	let finalQuery = '';
 	for (let filterCheckbox of filterCheckboxes)
 	{
 		if (filterCheckbox.checked === true)
 		{
-			let param = filterCheckbox.name;
-			let value = filterCheckbox.value;
-			finalQuery += 'spec['+ param + '][]=' + value + '&'
+			currentUrl.searchParams.append("spec[" + filterCheckbox.name + "][]",filterCheckbox.value)
 		}
 	}
 	let tagCheckboxes = document.getElementsByClassName('category_tag_checkbox');
@@ -17,20 +14,15 @@ function getFilterQuery()
 	{
 		if (tagCheckbox.checked === true)
 		{
-			let value = tagCheckbox.value;
-			finalQuery += 'tag[]=' + value + '&'
+			currentUrl.searchParams.append('tag[]',tagCheckbox.value)
 		}
 	}
 	let deactivate = document.querySelector('.deactivate_include_checkbox');
 	if(deactivate !== null && deactivate .checked)
-		finalQuery += 'deactivate_include=on&';
+		currentUrl.searchParams.set('deactivate_include','on')
 	let minPriceInput = document.getElementById('min-price');
 	let maxPriceInput = document.getElementById('max-price');
-	if (minPriceInput.value==='' && maxPriceInput.value==='')
-	{
-		return finalQuery;
-	}
-	else
+	if (minPriceInput.value !== '' && maxPriceInput.value !== '')
 	{
 		let minPrice;
 		let maxPrice;
@@ -50,9 +42,8 @@ function getFilterQuery()
 		{
 			maxPrice = maxPriceInput.value
 		}
-		finalQuery += "price" + "=" + minPrice + "-" + maxPrice + "&"
+		currentUrl.searchParams.set('price',minPrice + "-" + maxPrice)
 	}
-	return finalQuery;
 }
 
 

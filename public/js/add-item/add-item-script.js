@@ -73,6 +73,19 @@ document.querySelector('.form-add').addEventListener('submit', (e) => {
 	{
 		e.preventDefault();
 		let item = new FormData();
+
+		const tagsContainer = document.querySelector('.tags-container');
+		const tagNodes = tagsContainer.querySelectorAll('.input-tag');
+		let tags = "";
+		for (let tagName of tagNodes) {
+			tags += tagName.innerText + ',';
+		}
+		if (tags.length === 0) {
+			throw new Error('Не добавлены теги товара');
+		}
+		tags = tags.slice(0, -1);
+		item.append('item-tags', tags);
+
 		let catNodes = document.querySelectorAll('.category');
 		catNodes.forEach((el) => {
 			let catId = el.querySelector('.input-category').value;
@@ -89,9 +102,11 @@ document.querySelector('.form-add').addEventListener('submit', (e) => {
 		});
 		let mainFields = document.querySelectorAll('.main-fields input');
 		mainFields.forEach(field => {
-			if(field.value === '')
-				throw new Error('Поле "' + field.previousElementSibling.textContent + '" не заполнено!')
-			item.append(field.name, field.value);
+			if (field.name !== 'item-tags') {
+				if(field.value === '')
+					throw new Error('Поле "' + field.previousElementSibling.textContent + '" не заполнено!')
+				item.append(field.name, field.value);
+			}
 		});
 		if ((new URLSearchParams(document.location.search)).has('item-type'))
 		{
@@ -111,12 +126,10 @@ document.querySelector('.form-add').addEventListener('submit', (e) => {
 		sendPost(item).then((r) => {
 			if (r.redirected)
 			{
-				//location.reload();
 				setTimeout(() => {
 					location.href = r.url;
 				}, 500);
 				showPopup('Товар добавлен');
-				//resetForm(e.target);
 			}
 			else
 			{

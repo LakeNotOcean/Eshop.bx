@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+.stars-group {
+	font-size: 0;
+	unicode-bidi: bidi-override;
+	direction: rtl;
+}
+
+.stars-group * {
+	font-size: 30px;
+}
+
+.stars-group > input {
+	display: none;
+}
+
+.stars-group > input + label {
+	display: inline-block;
+	overflow: hidden;
+	text-indent: 9999px;
+	width: 1em;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+.stars-group > input + label:before {
+	display: inline-block;
+	text-indent: -9999px;
+	content: "☆";
+	color: var(--color-icon);
+}
+
+.stars-group > input:checked ~ label:before, .stars-group > input + label:hover ~ label:before, .stars-group > input + label:hover:before {
+	content: "★";
+	color: var(--color-accent);
+}
+
+.stars-group > .star-cb-clear + label {
+	text-indent: -9999px;
+	width: 0.5em;
+	margin-left: -0.5em;
+}
+
+.stars-group > .star-cb-clear + label:before {
+	width: 0.5em;
+}
+
+.stars-group:hover > input + label:before {
+	content: "☆";
+	color: var(--color-icon);
+}
+
+.stars-group:hover > input + label:hover ~ label:before, .stars-group:hover > input + label:hover:before {
+	content: "★";
+	color: var(--color-accent);
+}

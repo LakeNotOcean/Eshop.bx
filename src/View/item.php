@@ -7,18 +7,18 @@
 /** @var bool $isAuthenticated */
 /** @var \Up\Entity\User\User $user */
 
+use Up\Core\Router\URLResolver;
+use Up\Entity\User\UserEnum;
+use Up\Lib\CSRF\CSRF;
 use Up\Lib\FormatHelper\DateFormatterRu;
 use Up\Lib\FormatHelper\NumberFormatter;
 use Up\Lib\FormatHelper\WordEndingResolver;
 ?>
 
 <link rel="stylesheet" href="/css/item.css">
-<link rel="stylesheet" href="/css/lib/fontawesome-all.css">
-<link rel="stylesheet" href="/css/rating.css">
 <link rel="stylesheet" href="/css/more-reviews.css">
-<link rel="stylesheet" href="/css/catalog.css">
 
-<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+<?= CSRF::getFormField() ?>
 <div class="opened-images" style="display: none;">
 	<div class="open-images-container">
 		<div class="open-images-header">
@@ -126,13 +126,13 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 						<?php if (!isset($isItemAdded) || !$isItemAdded): ?>
 							<div id="cart-add-item">
 								<input class="item-id" type="hidden" name="item-id" value="<?= $item->getId() ?>">
-								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+								<?= CSRF::getFormField() ?>
 								<div id="send-item-id" class="btn-buy">Добавить товар в корзину</div>
 							</div>
 						<?php else: ?>
 							<div id="cart-item-added">
 								<input class="item-id" type="hidden" name="item-id" value="<?= $item->getId() ?>">
-								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+								<?= CSRF::getFormField() ?>
 								<div id="send-item-id" class="btn-buy btn-item-added">Удалить товар из корзины</div>
 							</div>
 						<?php endif; ?>
@@ -183,70 +183,60 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 					</div>
 					<?php foreach ($reviews as $review): ?>
 					<div class="item-review">
-						<div class="item-review-photo">
-							<img src="/img/person.jpg" alt="person">
-						</div>
-						<div class="item-review-data">
-							<div class="item-review-name"><?= htmlspecialchars($review->getUser()->getName()) ?></div>
-							<div class="item-review-date"><?= DateFormatterRu::format($review->getDate())  ?></div>
+						<div class="item-review-left">
+							<div class="item-review-photo">
+								<img src="/img/person.jpg" alt="person">
+								<div class="item-review-data">
+									<div class="item-review-name"><?= htmlspecialchars($review->getUser()->getName()) ?></div>
+									<div class="item-review-date"><?= DateFormatterRu::format($review->getDate())  ?></div>
+								</div>
+							</div>
+							<div class="manage-review">
+								<?php if ($review->getUser()->getId() == $user->getId()):?>
+									<div class="your-review-msg">Это ваш отзыв</div>
+								<?php endif;?>
+								<?php if($user->getRole()->getName() == UserEnum::Admin()): ?>
+									<div class="btn btn-delete review-remove-btn">Удалить</div>
+									<input type="hidden" name="review_id" value="<?= $review->getId() ?>">
+								<?php endif; ?>
+							</div>
 						</div>
 						<div class="item-review-text">
 							<?= htmlspecialchars($review->getComment()) ?>
 						</div>
-						<?php if($review->getUser()->getId() == $user->getId()): ?>
-							<div class="your-review-msg">Это ваш отзыв</div>
-						<?php endif; ?>
-						<?php if($review->getUser()->getId() == $user->getId() || $user->getRole()->getName() == \Up\Entity\User\UserEnum::Admin()): ?>
-							<div class="review-remove-btn"></div>
-							<input type="hidden" name="review_id" value="<?= $review->getId() ?>">
-						<?php endif; ?>
 					</div>
 					<?php endforeach; ?>
 					<?php if($item->getAmountReviews() > 3): ?>
-					<a href="<?= \Up\Core\Router\URLResolver::resolve('more-reviews', ['id' => $item->getId()]) ?>">Посмотреть больше отзывов</a>
+					<a href="<?= URLResolver::resolve('more-reviews', ['id' => $item->getId()]) ?>" class="btn-show-more">Посмотреть больше отзывов</a>
 					<?php endif; ?>
 				</div>
 			</div>
 			<div class="review-send-section">
 				<?php if(!$isAuthenticated): ?>
-				<div>Оставлять отзывы могут только авторизированные пользователи</div>
+				<div class="review-state-message">Оставлять отзывы могут только авторизированные пользователи</div>
 				<?php elseif (!$itemIsPurchased): ?>
-				<div>Вам сначала нужно купить этот товар, прежде чем оставить отзыв</div>
+				<div class="review-state-message">Вам сначала нужно купить этот товар, прежде чем оставить отзыв</div>
 				<?php elseif ($reviewIsWritten): ?>
-				<div>Вы уже оставляли отзыв к этому товару</div>
+				<div class="review-state-message">Вы уже оставляли отзыв к этому товару</div>
 				<?php else: ?>
-				<form class="review-send" action="<?= \Up\Core\Router\URLResolver::resolve('add-review') ?>" method="post">
+				<form class="review-send" action="<?= URLResolver::resolve('add-review') ?>" method="post">
 					<div class="rating-title">Оставьте отзыв о товаре:</div>
 					<div class="rating-container">
 						<div class="review_stars_wrap">
-							<div id="review_stars">
-								<input id="star-4" type="radio" name="rating" value="5"/>
-								<label title="Отлично" for="star-4">
-									<i class="fas fa-star"></i>
-								</label>
-								<input id="star-3" type="radio" name="rating" value="4"/>
-								<label title="Хорошо" for="star-3">
-									<i class="fas fa-star"></i>
-								</label>
-								<input id="star-2" type="radio" name="rating" checked="checked" value="3"/>
-								<label title="Нормально" for="star-2">
-									<i class="fas fa-star"></i>
-								</label>
-								<input id="star-1" type="radio" name="rating" value="2"/>
-								<label title="Плохо" for="star-1">
-									<i class="fas fa-star"></i>
-								</label>
-								<input id="star-0" type="radio" name="rating" value="1"/>
-								<label title="Ужасно" for="star-0">
-									<i class="fas fa-star"></i>
-								</label>
-							</div>
+							<span class="stars-group">
+								<input type="radio" id="rating-5" name="rating" value="5" /><label for="rating-5">5</label>
+								<input type="radio" id="rating-4" name="rating" value="4" checked="checked" /><label for="rating-4">4</label>
+								<input type="radio" id="rating-3" name="rating" value="3" /><label for="rating-3">3</label>
+								<input type="radio" id="rating-2" name="rating" value="2" /><label for="rating-2">2</label>
+								<input type="radio" id="rating-1" name="rating" value="1" /><label for="rating-1">1</label>
+								<input type="radio" id="rating-0" name="rating" value="0" class="star-cb-clear" /><label for="rating-0">0</label>
+							</span>
 						</div>
 					</div>
-					<textarea class="review-send-text" name="text_review" placeholder="Введите свой отзыв..."></textarea>
-					<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+					<textarea class="review-send-text" name="text_review" placeholder="Поделитесь Вашими впечатлениями о товаре"></textarea>
+					<?= CSRF::getFormField() ?>
 					<input name="item_id" type="hidden" value="<?= $item->getId() ?>">
-					<div class="btn btn-add">Отправить отзыв</div>
+					<div class="btn btn-normal btn-send-review">Отправить отзыв</div>
 				</form>
 				<?php endif; ?>
 			</div>
@@ -290,6 +280,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 <script src="/js/item/open-images.js"></script>
 <script src="/js/item/scroll-similar-items.js"></script>
 
+<script src="/js/lib/alert-dialog.js"></script>
 <script src="/js/lib/showPopup.js"></script>
 <script src="/js/add-to-favorites.js"></script>
 

@@ -4,6 +4,7 @@
 /** @var $paginator */
 
 use Up\Core\Router\URLResolver;
+use Up\Lib\CSRF\CSRF;
 use Up\Lib\FormatHelper\WordEndingResolver;
 
 ?>
@@ -38,7 +39,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 						<a href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>" class="item-title">
 							<?= htmlspecialchars($item->getTitle()) ?>
 						</a>
-						<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+						<?= CSRF::getFormField() ?>
 						<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
 							<svg class="add-to-favorites <?= $item->getIsFavorite() ? "favoriteActive" : ""?>">
 								<use xlink:href="/img/sprites.svg#heart"></use>
@@ -55,7 +56,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 							<use xlink:href="./img/sprites.svg#star"></use>
 						</svg>
 						<div class="rating-value">
-							<?= ($item->getAmountReviews() > 0) ? NumberFormatter::ratingFormat($item->getRating()) : '—' ?>
+							<?= ($item->getAmountReviews() > 0) ? \Up\Lib\FormatHelper\NumberFormatter::ratingFormat($item->getRating()) : '—' ?>
 						</div>
 						<div class="review-count">
 							<?= ($item->getAmountReviews() > 0) ?

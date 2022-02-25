@@ -193,7 +193,6 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 														 WHERE USER_ID=? AND ITEM_ID=? AND STATUS='DONE' LIMIT 1"
 		);
 		$statement->execute([$userId, $itemId]);
-
 		return (bool)$statement->fetch();
 	}
 
@@ -238,6 +237,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 
 	private function prepareOrder(Order $order): array
 	{
+		$userId = $order->getUser()->getId();
 		return [
 			$order->getCustomerName(),
 			$order->getPhone(),
@@ -246,7 +246,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 			$order->getStatus(),
 			$order->getDateCreate()->format('Y-m-d H:i:s'),
 			$order->getDateUpdate()->format('Y-m-d H:i:s'),
-			$order->getUser()->getId(),
+			($userId === 0 ? null : $userId),
 		];
 	}
 

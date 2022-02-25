@@ -3,50 +3,17 @@
 @import "lib/pagination.css";
 @import "lib/popup.css";
 
-.review-card{
+.review-card {
 	margin: 20px 0 20px 0;
-	padding: 10px;
-	position: relative;
-}
-.more-reviews-title{
-	font-size: 17px;
-	font-weight: 500;
-	margin: 20px 0 20px 0;
+	padding: 10px 20px;
 }
 
-.card.your-review-card{
+.more-reviews-title {
+	font-size: 18px;
+	font-weight: 600;
+	margin: 30px 0;
+}
+
+.card.your-review-card {
 	background: rgba(255, 233, 177, 0.2);
-}
-
-.review-remove-btn {
-	position: absolute;
-	width: 20px;
-	height: 20px;
-	background: #DF0310;
-	right: 0;
-	top: 0;
-	border-radius: 50%;
-	cursor: pointer;
-	margin: 5px;
-}
-
-.review-remove-btn::before, .review-remove-btn::after {
-	position: absolute;
-	content: '';
-	top: 3px;
-	width: 14px;
-	height: 3px;
-	background: #ffffff;
-}
-
-.review-remove-btn::before {
-	left: 5px;
-	transform-origin: left;
-	transform: rotateZ(45deg);
-}
-
-.review-remove-btn::after {
-	right: 5px;
-	transform-origin: right;
-	transform: rotateZ(-45deg);
 }
