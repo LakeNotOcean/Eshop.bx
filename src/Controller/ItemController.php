@@ -38,6 +38,7 @@ class ItemController
 	protected $orderService;
 	protected $cartService;
 
+	protected $typesInPage = 2;
 	protected $itemsInPage = 10;
 	protected $reviewsInMorePage = 10;
 	protected $reviewsInItemPage = 3;
@@ -76,8 +77,10 @@ class ItemController
 
 	public function setTypeItem(Request $request): Response
 	{
-		$types = $this->itemService->getTypes();
-
+		$query = $request->getQueriesOrDefaultList(
+			['page' => '1']);
+		$currentPage = ($query['page'] > 1) ? $query['page'] : 1;
+		$types = $this->itemService->getTypes(Paginator::getLimitOffset($currentPage,$this->typesInPage));
 		$typesWithItems = [];
 		foreach ($types as $type) {
 			$item = $this->itemService->getFirstItemOfType($type);
@@ -89,8 +92,9 @@ class ItemController
 				];
 			}
 		}
-		$currentPage = 1;
-		$pagesAmount = 1;
+
+		$typesAmount = $this->itemService->getTypesAmount();
+		$pagesAmount = Paginator::getPageCount($typesAmount,$this->typesInPage);
 		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
 			'currentPage' => $currentPage,
 			'pagesAmount' => $pagesAmount,

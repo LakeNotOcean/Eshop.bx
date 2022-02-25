@@ -40,9 +40,9 @@ class TypeDAOmysql implements TypeDAOInterface
 	}
 
 
-	public function getTypes():array
+	public function getTypes(int $offset, int $amountItems):array
 	{
-		$query = "SELECT * FROM up_item_type";
+		$query = $this->getTypesQuery($offset,$amountItems);
 		$result = $this->DBConnection->query($query);
 		$types = [];
 		while ($row = $result->fetch())
@@ -52,13 +52,32 @@ class TypeDAOmysql implements TypeDAOInterface
 		return $types;
 	}
 
+	public function getTypesAmount(): int
+	{
+		$query = $this->getTypesAmountQuery();
+		$result = $this->DBConnection->query($query);
+		$row = $result->fetch();
+		return $row['TYPE_AMOUNT'];
+	}
+
+	private function getTypesQuery(int $offset, int $amountItems): string
+	{
+		$query = "SELECT ID, NAME FROM up_item_type
+		LIMIT {$offset}, {$amountItems} ";
+		return $query;
+	}
 
 
-
-	private function getTypeIdBySearchQuery():string
+	private function getTypeIdBySearchQuery(): string
 	{
 		$query = "SELECT DISTINCT ITEM_TYPE_ID AS ID FROM up_item
 				WHERE TITLE LIKE ?";
+		return $query;
+	}
+
+	private	function getTypesAmountQuery(): string
+	{
+		$query = "SELECT count(*) as TYPE_AMOUNT FROM up_item_type";
 		return $query;
 	}
 }

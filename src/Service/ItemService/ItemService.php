@@ -42,9 +42,9 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItems($limitOffset['offset'], $limitOffset['amountItems']);
 	}
 
-	public function getTypes():array
+	public function getTypes(array $limitOffset):array
 	{
-		return $this->typeDAO->getTypes();
+		return $this->typeDAO->getTypes($limitOffset['offset'], $limitOffset['amountItems']);
 	}
 
 	public function isItemAvailable(int $itemId): bool
@@ -110,6 +110,11 @@ class ItemService implements ItemServiceInterface
 	public function getFavoriteItemsAmount(int $userId): int
 	{
 		return $this->itemDAO->getFavoriteItemsAmount($userId);
+	}
+
+	public function getTypesAmount(): int
+	{
+		return $this->typeDAO->getTypesAmount();
 	}
 
 	public function addToFavorites(int $userId, int $favoriteItemId): void

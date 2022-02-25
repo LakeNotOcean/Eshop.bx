@@ -12,7 +12,7 @@ interface ItemServiceInterface
 
 	public function getItems(array $limitOffset): array;
 
-	public function getTypes():array;
+	public function getTypes(array $limitOffset):array;
 
 	public function getItemsByTypeID(array $limitOffset, int $typeID): array;
 
@@ -29,6 +29,8 @@ interface ItemServiceInterface
 	public function mapItemDetailsToUserItems(int $userId, array $itemDetails): array;
 
 	public function getFavoriteItemsAmount(int $userId): int;
+
+	public function getTypesAmount(): int;
 
 	public function addToFavorites(int $userId, int $favoriteItemId): void;
 
