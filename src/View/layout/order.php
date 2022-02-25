@@ -5,7 +5,7 @@
 /** @var int $orderSize */
 /** @var int $cost */
 
-use Up\Lib\Wordprocessor\WordProcessor;
+use Up\Lib\WordProcessor\WordProcessor;
 
 ?>
 

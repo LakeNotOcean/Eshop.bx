@@ -11,6 +11,7 @@ use Up\Entity\Order\OrderStatus;
 use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
 use Up\Entity\User\UserRole;
+use Up\Lib\ArrayHelper\ArrayHelper;
 
 class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 {
@@ -187,11 +188,9 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 
 	public function existUsersFinishedOrderByItemId(int $userId, int $itemId): bool
 	{
-		$statement = $this->dbConnection->prepare(
-			"SELECT 1 FROM up_order 
+		$statement = $this->dbConnection->prepare("SELECT 1 FROM up_order 
                                                          INNER JOIN `up_order-item` `uo-i` on up_order.ID = `uo-i`.ORDER_ID 
-														 WHERE USER_ID=? AND ITEM_ID=? AND STATUS='DONE' LIMIT 1"
-		);
+														 WHERE USER_ID=? AND ITEM_ID=? AND STATUS='DONE' LIMIT 1");
 		$statement->execute([$userId, $itemId]);
 		return (bool)$statement->fetch();
 	}
@@ -219,20 +218,19 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 			WHERE STATUS = ? and CUSTOMER_NAME like ?";
 	}
 
-	public function addOrder(Order $order): void
+	/**
+	 * @param Order $order
+	 *
+	 * @return int
+	 */
+	public function addOrder(Order $order): int
 	{
-		$preparedStatement = $this->getInsertPrepareStatement('up_order',
-															  [
-																  'CUSTOMER_NAME',
-																  'PHONE',
-																  'EMAIL',
-																  'COMMENT',
-																  'STATUS',
-																  'DATE_CREATE',
-																  'DATE_UPDATE',
-																  'USER_ID',
-															  ]);
+		$preparedStatement = $this->getInsertPrepareStatement(
+			'up_order',
+			['CUSTOMER_NAME', 'PHONE', 'EMAIL', 'COMMENT', 'STATUS', 'DATE_CREATE', 'DATE_UPDATE', 'USER_ID']
+		);
 		$preparedStatement->execute($this->prepareOrder($order));
+		return $this->dbConnection->lastInsertId();
 	}
 
 	private function prepareOrder(Order $order): array
@@ -250,14 +248,21 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		];
 	}
 
+	/**
+	 * @param int $orderId
+	 * @param Item[] $items
+	 *
+	 * @return void
+	 */
 	public function addOrderItems(int $orderId, array $items): void
 	{
-		$preparedStatement = $this->getInsertPrepareStatement('`up_order-item`', ['ORDER_ID', 'ITEM_ID', 'COUNT']);
+		$preparedStatement = $this->getInsertPrepareStatement(
+			'`up_order-item`',
+			['ORDER_ID', 'ITEM_ID', 'COUNT'],
+			count(array_unique(array_map(function($item) {return $item->getId();}, $items)))
+		);
 		$data = $this->prepareOrderItems($orderId, $items);
-		foreach ($data as $row)
-		{
-			$preparedStatement->execute($row);
-		}
+		$preparedStatement->execute(ArrayHelper::flatten($data, false));
 	}
 
 	public function updateOrderStatus(int $orderId, string $orderNewStatus): void
@@ -273,6 +278,12 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		$this->dbConnection->query($query);
 	}
 
+	/**
+	 * @param int $orderId
+	 * @param array $items
+	 *
+	 * @return array
+	 */
 	private function prepareOrderItems(int $orderId, array $items): array
 	{
 		$itemsCount = [];
@@ -280,7 +291,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		{
 			if (isset($itemsCount[$item->getId()]))
 			{
-				$itemsCount[$item->getId()]++;
+				++$itemsCount[$item->getId()];
 			}
 			else
 			{

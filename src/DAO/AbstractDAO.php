@@ -85,10 +85,4 @@ abstract class AbstractDAO
 			);
 		}
 	}
-
-	public function getLastInsertId(): int
-	{
-		return $this->dbConnection->lastInsertId();
-	}
-
 }

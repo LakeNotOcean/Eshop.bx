@@ -54,8 +54,7 @@ class OrderService implements OrderServiceInterface
 
 	public function saveOrder(Order $order): void
 	{
-		$this->orderDAO->addOrder($order);
-		$orderId = $this->orderDAO->getLastInsertId();
+		$orderId = $this->orderDAO->addOrder($order);
 		$this->orderDAO->addOrderItems($orderId, $order->getItems());
 	}
 

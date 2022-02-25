@@ -6,6 +6,7 @@ use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
+use Up\Entity\Item;
 use Up\Entity\Order\Order;
 use Up\Entity\Order\OrderStatus;
 use Up\LayoutManager\MainLayoutManager;
@@ -68,7 +69,36 @@ class OrderController
 	 */
 	public function finishOrder(Request $request): Response
 	{
-		$items = $this->cartService->getItemsFromCart();
+		if (!(
+			$request->containsPost('items') &&
+			$request->containsPost('first-name') &&
+			$request->containsPost('second-name') &&
+			$request->containsPost('phone') &&
+			$request->containsPost('email') &&
+			$request->containsPost('comment')
+		))
+		{
+			return $this->getUnsuccessedResponse();
+		}
+
+		try
+		{
+			$itemsData = json_decode($request->getPostParametersByName('items'), true, 512, JSON_THROW_ON_ERROR);
+		}
+		catch (\JsonException $e)
+		{
+			return $this->getUnsuccessedResponse();
+		}
+
+		$items = [];
+
+		foreach ($itemsData as $itemsDatum)
+		{
+			for ($i = 0; $i < $itemsDatum['count']; $i++)
+			{
+				$items[] = (new Item())->setId($itemsDatum['id']);
+			}
+		}
 
 		$first_name = $request->getPostParametersByName('first-name');
 		$second_name = $request->getPostParametersByName('second-name');
@@ -168,4 +198,12 @@ class OrderController
 		return date('Y-m-d H:i:s');
 	}
 
+	private function getUnsuccessedResponse()
+	{
+		return (new Response())->withStatus(409)->withBodyJSON(
+			[
+				'success' => false
+			]
+		);
+	}
 }

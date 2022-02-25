@@ -50,6 +50,33 @@ order-items
 	text-align: right;
 }
 
+.item-count-info {
+	display: flex;
+	flex-direction: row;
+	align-self: end;
+}
+
+.item-count-btn {
+	height: 19px;
+	width: 21px;
+	border: 0;
+	background: #ebebeb;
+	border-radius: 3px;
+}
+
+.item-count-btn:hover {
+	background: #bdbdbd;
+	transition: 0.5s;
+}
+
+.item-count {
+	margin: auto 12px;
+}
+
+.btn-return-home {
+	width: fit-content;
+}
+
 /*==========================
 customer-data
 ==========================*/

@@ -17,7 +17,7 @@ interface OrderDAOInterface
 
 	public function getItemsAmount(OrderStatus $status, string $searchQuery): int;
 
-	public function addOrder(Order $order): void;
+	public function addOrder(Order $order): int;
 
 	public function addOrderItems(int $orderId, array $items): void;
 
