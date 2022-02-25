@@ -115,7 +115,7 @@ class ItemController
 		$currentPage = $query['page'] > 0 ? (int)$query['page'] : 1;
 
 		$sortingMethods = [
-			'sort_order' => 'SORT_ORDER',
+			'sort_order' => 'SORT_ORDER DESC',
 			'price' => 'PRICE',
 			'price_desc' => 'PRICE DESC',
 			'name' => 'TITLE',

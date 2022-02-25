@@ -79,7 +79,7 @@ use Up\Entity\ItemsTag;
 				<div class="images-title">Фотографии</div>
 				<div class="main-image">
 					<div class="input-image-header">
-						<span class="label-title">Фото обложки</span>
+						<span class="label-title">Основная фотография товара</span>
 						<input type="file" accept="image/*" id="main-image" name="main-image" class="upload-image">
 						<label for="main-image" class="btn-change">Изменить</label>
 					</div>
@@ -99,7 +99,7 @@ use Up\Entity\ItemsTag;
 				</div>
 				<div class="other-images">
 					<div class="input-image-header">
-						<span class="label-title">Порядок фотографий</span>
+						<span class="label-title">Дополнительные фотографии</span>
 						<input type="file" multiple="multiple" accept="image/*" id="other-images" name="other-images" class="upload-image">
 						<label for="other-images" class="btn-change">Изменить</label>
 					</div>
