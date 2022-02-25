@@ -237,7 +237,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 					<textarea class="review-send-text" name="text_review" placeholder="Поделитесь Вашими впечатлениями о товаре"></textarea>
 					<?= CSRF::getFormField() ?>
 					<input name="item_id" type="hidden" value="<?= $item->getId() ?>">
-					<div class="btn btn-normal">Отправить отзыв</div>
+					<div class="btn btn-normal btn-send-review">Отправить отзыв</div>
 				</form>
 				<?php endif; ?>
 			</div>
