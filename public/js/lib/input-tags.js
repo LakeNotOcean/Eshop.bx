@@ -1,14 +1,15 @@
 const tagsContainer = document.querySelector('.tags-container');
-const inputTag = tagsContainer.querySelector('input');
+const inputTags = tagsContainer.querySelector('input');
 
-window.addEventListener('keydown', (e) => {
-	if (e.key === "Backspace" && inputTag.value === "") {
-		removeLastTag()
+inputTags.addEventListener('keydown', (e) => {
+	if (e.key === "Backspace" && inputTags.value === "") {
+		removeLastTag();
 	}
 	if (e.key === "Enter"){
 		e.preventDefault();
-		if(addTag(inputTag.value))
-			inputTag.value = '';
+		if(addTag(inputTags.value)) {
+			inputTags.value = '';
+		}
 		return false;
 	}
 })
@@ -32,11 +33,13 @@ function addTag(tagValue) {
 		tagNode.remove();
 	})
 
-	tagsContainer.insertBefore(tagNode, inputTag);
+	tagsContainer.insertBefore(tagNode, inputTags);
 	return true;
 }
 
 function removeLastTag() {
 	const createdTags = tagsContainer.querySelectorAll('.input-tag');
-	createdTags[createdTags.length - 1].remove();
+	if (createdTags) {
+		createdTags[createdTags.length - 1].remove();
+	}
 }
