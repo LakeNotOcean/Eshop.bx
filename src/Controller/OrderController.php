@@ -12,6 +12,7 @@ use Up\Entity\Order\OrderStatus;
 use Up\LayoutManager\MainLayoutManager;
 use Up\LayoutManager\OrderLayoutManager;
 use Up\Lib\Paginator\Paginator;
+use Up\Lib\Redirect;
 use Up\Service\CartService\CartServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\OrderService\OrderServiceInterface;
@@ -119,13 +120,7 @@ class OrderController
 		$this->orderService->saveOrder($order);
 		$this->cartService->clearCart();
 
-		$page = $this->orderLayoutManager
-			->setOrderItems($items)
-			->render('finish-order.php', [
-			'items' => $items,
-		]);
-
-		return (new Response())->withBodyHTML($page);
+		return Redirect::createResponseByURLName('my-orders');
 	}
 
 	public function getOrders(Request $request): Response
