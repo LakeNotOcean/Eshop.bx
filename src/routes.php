@@ -37,6 +37,7 @@ $router->post('/addReview', [ReviewController::class, 'saveReview'], 'add-review
 $router->get('/profile', [UserController::class, 'getProfilePage'], 'user-profile');
 $router->post('/updateUser', [UserController::class, 'updateUser'], 'update-user');
 $router->get('/myPurchased', [ItemController::class, 'myPurchased'], 'my-purchased');
+$router->get('/myOrders', [OrderController::class, 'getMyOrders'], 'my-orders');
 
 $router->get('/favorites', [ItemController::class, 'getFavoriteItems'], 'user-favorites');
 $router->post('/addToFavorites', [ItemController::class, 'addToFavorites'], 'add-to-favorites');

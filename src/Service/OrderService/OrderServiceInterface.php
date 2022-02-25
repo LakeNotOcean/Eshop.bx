@@ -13,6 +13,10 @@ interface OrderServiceInterface
 
 	public function getOrdersAmount(OrderStatus $status, string $searchQuery): int;
 
+	public function getOrdersByUserId(array $limitOffset, int $userId): array;
+
+	public function getAmountOrdersByUserId(int $userId): int;
+
 	public function saveOrder(Order $order): void;
 
 	public function updateOrderStatus(int $orderId, string $orderNewStatus): void;

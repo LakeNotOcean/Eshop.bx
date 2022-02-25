@@ -3,6 +3,7 @@
 namespace Up\Entity\Order;
 
 use Up\Entity\Entity;
+use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\User\User;
 
@@ -13,7 +14,7 @@ class Order extends Entity
 	protected $phone;
 	protected $email;
 	protected $comment;
-	protected $items;
+	protected $items = [];
 	protected $status;
 	protected $dateCreate;
 	protected $dateUpdate;
@@ -124,33 +125,33 @@ class Order extends Entity
 	}
 
 	/**
-	 * @return string
+	 * @var \DateTimeInterface
 	 */
-	public function getDateCreate(): string
+	public function getDateCreate(): \DateTimeInterface
 	{
 		return $this->dateCreate;
 	}
 
 	/**
-	 * @param string $dateCreate
+	 * @param \DateTimeInterface $dateCreate
 	 */
-	public function setDateCreate(string $dateCreate): void
+	public function setDateCreate(\DateTimeInterface $dateCreate): void
 	{
 		$this->dateCreate = $dateCreate;
 	}
 
 	/**
-	 * @return string
+	 * @return \DateTimeInterface
 	 */
-	public function getDateUpdate(): string
+	public function getDateUpdate(): \DateTimeInterface
 	{
 		return $this->dateUpdate;
 	}
 
 	/**
-	 * @param string $dateUpdate
+	 * @param \DateTimeInterface $dateUpdate
 	 */
-	public function setDateUpdate(string $dateUpdate): void
+	public function setDateUpdate(\DateTimeInterface $dateUpdate): void
 	{
 		$this->dateUpdate = $dateUpdate;
 	}
@@ -176,10 +177,31 @@ class Order extends Entity
 		$cost = 0;
 		foreach ($this->items as $item)
 		{
-			$cost += $item->getPrice();
+			$cost += $item['item']->getPrice();
 		}
 
 		return $cost;
+	}
+
+	public function issetUser(): bool
+	{
+		return isset($this->user);
+	}
+
+	public function hasItem(int $itemId): bool
+	{
+		return array_key_exists($itemId, $this->items);
+	}
+
+	public function addItem(Item $item, int $count): void
+	{
+		$this->items[$item->getId()]['item'] = $item;
+		$this->items[$item->getId()]['count'] = $count;
+	}
+
+	public function getItem(int $itemId): Item
+	{
+		return $this->items[$itemId]['item'];
 	}
 
 }

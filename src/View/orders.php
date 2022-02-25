@@ -46,7 +46,7 @@
 				</div>
 				<div class="order-line">
 					<div class="order-label">Дата заказа:</div>
-					<div class="order-value"><?= htmlspecialchars($order->getDateCreate())?></div>
+					<div class="order-value"><?= htmlspecialchars(\Up\Lib\FormatHelper\DateFormatterRu::format($order->getDateCreate()))?></div>
 				</div>
 				<div class="order-items">
 					<div class="order-line">

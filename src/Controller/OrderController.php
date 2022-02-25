@@ -81,8 +81,8 @@ class OrderController
 		$order = new Order($customerName, $phone, $email, $comment);
 		$order->setStatus(OrderStatus::IN_PROCESSING());
 		$now = $this->getDatetime();
-		$order->setDateCreate($now);
-		$order->setDateUpdate($now);
+		$order->setDateCreate(\DateTime::createFromFormat('Y-m-d H:i:s', $now));
+		$order->setDateUpdate(\DateTime::createFromFormat('Y-m-d H:i:s', $now));
 		$order->setItems($items);
 		$order->setUser($request->getUser());
 
@@ -119,6 +119,26 @@ class OrderController
 			'orders' => $orders,
 			'paginator' => $paginator,
 			'query' => $query,
+		]);
+
+		return (new Response())->withBodyHTML($page);
+	}
+
+	public function getMyOrders(Request $request): Response
+	{
+		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
+		$orders = $this->orderService->getOrdersByUserId(Paginator::getLimitOffset($currentPage, $this->ordersOnPage), $request->getUser()->getId());
+		$ordersAmount = $this->orderService->getAmountOrdersByUserId($request->getUser()->getId());
+		$pagesAmount = Paginator::getPageCount($ordersAmount, $this->ordersOnPage);
+
+		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
+			'currentPage' => $currentPage,
+			'pagesAmount' => $pagesAmount,
+		]);
+
+		$page = $this->mainLayoutManager->render('my-orders.php', [
+			'orders' => $orders,
+			'amount' => $ordersAmount
 		]);
 
 		return (new Response())->withBodyHTML($page);
