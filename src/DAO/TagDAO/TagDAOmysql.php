@@ -98,12 +98,7 @@ class TagDAOmysql extends AbstractDAO implements TagDAOInterface
 
 	public function getTagsByItemType(int $queryTypeId): array
 	{
-		/*if ($queryTypeId === 0)
-		{
-			return [];
-		}*/
-		$result = $this->dbConnection->prepare($this->getTagsByItemTypeQuery($queryTypeId));
-		$result->execute();
+		$result = $this->dbConnection->query($this->getTagsByItemTypeQuery($queryTypeId));
 		$tags = [];
 		while ($row = $result->fetch())
 		{

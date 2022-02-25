@@ -6,7 +6,6 @@ use Up\DAO\ItemDAO\ItemDAOInterface;
 use Up\DAO\SpecificationDAO\SpecificationDAOInterface;
 use Up\DAO\TagDAO\TagDAOInterface;
 use Up\DAO\TypeDAO\TypeDAOInterface;
-use Up\Entity\EntityArray;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\ItemType;
@@ -189,7 +188,7 @@ class ItemService implements ItemServiceInterface
 		return $this->itemDAO->getItemsAmountByTypeId($typeId,$query);
 	}
 
-	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs, int $typeId,bool $deactivate_include = false):int
+	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs, int $typeId,bool $deactivate_include = false): int
 	{
 		return $this->itemDAO->getItemsAmountByFilters($query,$price,$tags,$specs,$typeId,$deactivate_include);
 	}

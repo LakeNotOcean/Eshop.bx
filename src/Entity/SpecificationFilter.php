@@ -6,14 +6,12 @@ class SpecificationFilter extends Entity
 {
 	protected $name = '';
 	protected $value = [];
-	//protected $type = '';
 	protected $displayOrder = 0;
 
 	public function __construct(int $id = 1, string $name = '', int $displayOrder = 0)
 	{
 		$this->id = $id;
 		$this->name = $name;
-		//$this->type = $type;
 		$this->displayOrder = $displayOrder;
 	}
 

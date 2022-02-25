@@ -39,7 +39,7 @@ abstract class Enum implements \JsonSerializable
 		return $this->value;
 	}
 
-	public function getKey()
+	public function getKey(): string
 	{
 		return $this->key;
 	}
@@ -56,12 +56,12 @@ abstract class Enum implements \JsonSerializable
 			&& static::class === \get_class($variable);
 	}
 
-	public static function keys()
+	public static function keys(): array
 	{
 		return \array_keys(static::toArray());
 	}
 
-	public static function values()
+	public static function values(): array
 	{
 		$values = array();
 		foreach (static::toArray() as $key => $value) {
@@ -82,7 +82,7 @@ abstract class Enum implements \JsonSerializable
 		return static::$cache[$class];
 	}
 
-	public static function isValid($value)
+	public static function isValid($value): bool
 	{
 		return \in_array($value, static::toArray(), true);
 	}
@@ -101,7 +101,7 @@ abstract class Enum implements \JsonSerializable
 		return $key;
 	}
 
-	public static function isValidKey($key)
+	public static function isValidKey($key): bool
 	{
 		$array = static::toArray();
 

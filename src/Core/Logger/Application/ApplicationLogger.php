@@ -64,7 +64,7 @@ class ApplicationLogger extends AbstractLogger
 		$this->compressOldLogs();
 	}
 
-	private function getAllowedLogLevels(LogLevel $logLevel)
+	private function getAllowedLogLevels(LogLevel $logLevel): array
 	{
 		$logLevelStartIndex = array_search($logLevel->getValue(), $this->logLeverOrder, true);
 		$result = [];
@@ -80,7 +80,7 @@ class ApplicationLogger extends AbstractLogger
 		return $result;
 	}
 
-	private function createLogFile()
+	private function createLogFile(): string
 	{
 		$filePath = $this::LOGGING_PATH . date($this::FILENAME_FORMAT) . '.' . $this->logFileExtension;
 		if (!file_exists($filePath))
@@ -91,7 +91,7 @@ class ApplicationLogger extends AbstractLogger
 		return $filePath;
 	}
 
-	private function createLogBackupDir()
+	private function createLogBackupDir(): void
 	{
 		if (is_dir($concurrentDirectory = $this->backupDir))
 		{
@@ -103,7 +103,7 @@ class ApplicationLogger extends AbstractLogger
 		}
 	}
 
-	protected function compressOldLogs()
+	protected function compressOldLogs(): void
 	{
 		foreach (new DirectoryIterator($this->baseLogDir) as $file)
 		{
@@ -132,7 +132,7 @@ class ApplicationLogger extends AbstractLogger
 		}
 	}
 
-	protected function compessLog(string $filePath, string $sendTo)
+	protected function compessLog(string $filePath, string $sendTo): void
 	{
 		$zip = new ZipArchive();
 		$zip->open($sendTo, ZipArchive::CREATE);

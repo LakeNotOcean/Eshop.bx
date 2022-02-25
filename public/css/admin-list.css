@@ -72,13 +72,13 @@
 	margin: 0;
 }
 
-.admin-list{
+.admin-list {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
 }
 
-.admin{
+.admin {
 	display: flex;
 	flex-direction: column;
 	padding: 10px;
@@ -86,21 +86,17 @@
 	margin: 30px 10px 30px 10px;
 }
 
-.admin-info{
+.admin-info {
 	margin: 5px;
 	white-space: nowrap;
 }
 
-.admin-info label{
+.admin-info label {
 	font-weight: bold;
 }
 
-.delete-button-section
-{
 
-}
-
-.delete-section{
+.delete-section {
 	margin-top: 40px;
 	display: flex;
 	height: 150px;

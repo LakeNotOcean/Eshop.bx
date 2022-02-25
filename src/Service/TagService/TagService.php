@@ -3,7 +3,6 @@
 namespace Up\Service\TagService;
 
 use Up\DAO\TagDAO\TagDAOInterface;
-use Up\Entity\EntityArray;
 use Up\Entity\ItemsTag;
 
 

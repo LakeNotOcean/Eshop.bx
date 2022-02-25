@@ -9,7 +9,7 @@ class CSRF
 	private const TOKEN_SESSION_KEY = 'CSRF';
 	public const TOKEN_FIELD_NAME = 'csrf_token';
 
-	public static function generateToken()
+	public static function generateToken(): void
 	{
 		$_SESSION[static::TOKEN_SESSION_KEY] = static::generateTokenString();
 	}
@@ -19,7 +19,7 @@ class CSRF
 		return isset($_SESSION[static::TOKEN_SESSION_KEY]);
 	}
 
-	public static function getFormField()
+	public static function getFormField(): string
 	{
 		if (!static::tokenExist())
 		{
@@ -48,7 +48,7 @@ class CSRF
 		return $token === static::getToken();
 	}
 
-	public static function destroyToken()
+	public static function destroyToken(): void
 	{
 		if (static::tokenExist())
 		{
@@ -56,6 +56,9 @@ class CSRF
 		}
 	}
 
+	/**
+	 * @throws \Exception
+	 */
 	private static function generateTokenString(): string
 	{
 		return bin2hex(random_bytes(40));

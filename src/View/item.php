@@ -82,9 +82,9 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				<a class="scroll-menu-item" title="description">Описание</a>
 				<a class="scroll-menu-item" title="reviews">Отзывы</a>
 				<?php
-				if (!empty($similarItems)){?>
+				if (!empty($similarItems)):?>
 				<a class="scroll-menu-item" title="similar">Похожие товары</a>
-				<?}?>
+				<?php endif;?>
 			</div>
 		</div>
 

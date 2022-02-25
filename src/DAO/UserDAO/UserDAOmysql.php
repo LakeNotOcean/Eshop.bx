@@ -38,6 +38,10 @@ class UserDAOmysql implements UserDAOInterface
 		return array_key_exists($login, $resultList) && Password::verifyPassword($password, $resultList[$login]);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 * @throws \Up\Core\Enum\EnumException
+	 */
 	public function getUserByLogin(string $login): User
 	{
 		$userList = $this->getUsersList($login);
@@ -105,7 +109,10 @@ class UserDAOmysql implements UserDAOInterface
 		$this->changeRole($login, 1);
 	}
 
-
+	/**
+	 * @throws \ReflectionException
+	 * @throws \Up\Core\Enum\EnumException
+	 */
 	public function getUsersInfo(): array
 	{
 		return $this->getUsersList();
@@ -114,7 +121,7 @@ class UserDAOmysql implements UserDAOInterface
 
 	public function getAllRoles(): array
 	{
-		$query = "SELECT * FROM up_role";
+		$query = "SELECT NAME FROM up_role";
 		$result = $this->DBConnection->query($query);
 		$roles = [];
 		while ($row = $result->fetch())
@@ -129,21 +136,9 @@ class UserDAOmysql implements UserDAOInterface
 	 * @throws \Up\Core\Enum\EnumException
 	 * @throws \ReflectionException
 	 */
-	public function getUserInfoById(int $id): User
+	public function getUserInfoById(int $userId): User
 	{
-		$query = "SELECT
-            uu.ID as USER_ID,
-			uu.LOGIN as USER_LOGIN,
-            uu.PASSWORD as USER_PASSWORD,
-            uu.PHONE as USER_PHONE,
-            uu.EMAIL as USER_EMAIL,
-            ur.ID as ROLE_ID,
-            ur.NAME as ROLE_NAME,
-            uu.FIRST_NAME as USER_FIRST_NAME,
-            uu.SECOND_NAME as USER_SECOND_NAME
-		FROM up_user uu
-		LEFT JOIN up_role ur on ur.ID = uu.ROLE_ID
-		WHERE uu.ID = {$id}";
+		$query = $this->getUserInfoByIdQuery($userId);
 		$query = $this->DBConnection->query($query);
 		$row = $query->fetch();
 		return $this->createUserByRow($row);
@@ -153,21 +148,9 @@ class UserDAOmysql implements UserDAOInterface
 	 * @throws \ReflectionException
 	 * @throws \Up\Core\Enum\EnumException
 	 */
-	public function getUserListByRole($roleId): array
+	public function getUserListByRole(int $roleId): array
 	{
-		$query = "SELECT
-            uu.ID as USER_ID,
-			uu.LOGIN as USER_LOGIN,
-            uu.PASSWORD as USER_PASSWORD,
-            uu.PHONE as USER_PHONE,
-            uu.EMAIL as USER_EMAIL,
-            ur.ID as ROLE_ID,
-            ur.NAME as ROLE_NAME,
-            uu.FIRST_NAME as USER_FIRST_NAME,
-            uu.SECOND_NAME as USER_SECOND_NAME
-		FROM up_user uu
-		LEFT JOIN up_role ur on ur.ID = uu.ROLE_ID
-		WHERE ROLE_ID = {$roleId}";
+		$query = $this->getUserListByRoleQuery($roleId);
 		$query = $this->DBConnection->query($query);
 		$resultList = [];
 		while ($row = $query->fetch())
@@ -180,46 +163,20 @@ class UserDAOmysql implements UserDAOInterface
 
 	public function getAmountUserByQuery(int $roleId,string $querySearch): int
 	{
-		$query = "SELECT
-		COUNT(1) as COUNT
-		FROM up_user
-		LEFT JOIN up_role ur on ur.ID = ROLE_ID
-		WHERE (LOGIN LIKE ? OR EMAIL LIKE ? OR FIRST_NAME LIKE ? OR SECOND_NAME LIKE ?)";
-		if ($roleId !== 0)
-		{
-			$query .= " AND ROLE_ID = {$roleId} ";
-		}
+		$query = $this->getAmountUsersByQueryQuery($roleId);
 		$preparedQuery = $this->DBConnection->prepare($query);
 		$preparedQuery->execute(["%{$querySearch}%","%{$querySearch}%","%{$querySearch}%","%{$querySearch}%"]);
 		$row = $preparedQuery->fetch();
-		return $row["COUNT"];
+		return $row["USERS_AMOUNT"];
 	}
 
-	public function getUserListByQuery(int $offset, int $amountItems,int $roleId,string $querySearch):array
+	/**
+	 * @throws \ReflectionException
+	 * @throws \Up\Core\Enum\EnumException
+	 */
+	public function getUserListByQuery(int $offset, int $amountItems, int $roleId, string $querySearch):array
 	{
-		if ($offset < 0)
-			{
-				return [];
-			}
-		$query = "SELECT
-            uu.ID as USER_ID,
-			uu.LOGIN as USER_LOGIN,
-            uu.PASSWORD as USER_PASSWORD,
-            uu.PHONE as USER_PHONE,
-            uu.EMAIL as USER_EMAIL,
-            ur.ID as ROLE_ID,
-            ur.NAME as ROLE_NAME,
-            uu.FIRST_NAME as USER_FIRST_NAME,
-            uu.SECOND_NAME as USER_SECOND_NAME
-		FROM up_user uu
-		LEFT JOIN up_role ur on ur.ID = uu.ROLE_ID
-		WHERE (LOGIN LIKE ? OR EMAIL LIKE ? OR FIRST_NAME LIKE ? OR SECOND_NAME LIKE ?)";
-		if ($roleId !== 0)
-		{
-			$query .= " AND ROLE_ID = {$roleId} ";
-		}
-		$query .= "ORDER BY ROLE_ID DESC
-		 LIMIT {$offset}, {$amountItems} ";
+		$query = $this->getUserListByQueryQuery($roleId,$offset, $amountItems);
 		$preparedQuery = $this->DBConnection->prepare($query);
 		$preparedQuery->execute(["%{$querySearch}%","%{$querySearch}%","%{$querySearch}%","%{$querySearch}%"]);
 		$resultList = [];
@@ -230,25 +187,16 @@ class UserDAOmysql implements UserDAOInterface
 		return $resultList;
 	}
 
-
+	/**
+	 * @throws \ReflectionException
+	 * @throws \Up\Core\Enum\EnumException
+	 */
 	private function getUsersList(string $login = ''): array
 	{
-		$query = "SELECT
-            uu.ID as USER_ID,
-			uu.LOGIN as USER_LOGIN,
-            uu.PASSWORD as USER_PASSWORD,
-            uu.PHONE as USER_PHONE,
-            uu.EMAIL as USER_EMAIL,
-            ur.ID as ROLE_ID,
-            ur.NAME as ROLE_NAME,
-            uu.FIRST_NAME as USER_FIRST_NAME,
-            uu.SECOND_NAME as USER_SECOND_NAME
-		FROM up_user uu
-		LEFT JOIN up_role ur on ur.ID = uu.ROLE_ID";
+		$query = $this->getUserListQuery($login);
 		$values=[];
 		if ($login !== '')
 		{
-			$query = $query . " WHERE uu.LOGIN=:login";
 			$values['login']=$login;
 		}
 		$query = $this->DBConnection->prepare($query);
@@ -260,6 +208,24 @@ class UserDAOmysql implements UserDAOInterface
 		}
 
 		return $resultList;
+	}
+
+	public function updateUser(User $user): void
+	{
+		$query = "
+			UPDATE up_user SET FIRST_NAME = ? , SECOND_NAME = ? , PHONE = ? , EMAIL = ?
+			WHERE ID = {$user->getId()}";
+		$preparedStatement = $this->DBConnection->prepare($query);
+		$preparedStatement->execute(
+			[$user->getFirstName(), $user->getSecondName(), $user->getPhone(), $user->getEmail()]);
+	}
+
+	public function updatePassword(User $user, string $newPassword): void
+	{
+		$newPasswordHash = Password::hashPassword($newPassword);
+
+		$query = "UPDATE up_user SET PASSWORD = '{$newPasswordHash}' WHERE ID = {$user->getId()}";
+		$this->DBConnection->query($query);
 	}
 
 	/**
@@ -285,21 +251,73 @@ class UserDAOmysql implements UserDAOInterface
 		$query->execute(['login'=>$login,'roleId'=>$roleId]);
 	}
 
-	public function updateUser(User $user): void
+	private function getUserListQuery(string $login): string
 	{
-		$query = "
-			UPDATE up_user SET FIRST_NAME = ? , SECOND_NAME = ? , PHONE = ? , EMAIL = ?
-			WHERE ID = {$user->getId()}";
-		$preparedStatement = $this->DBConnection->prepare($query);
-		$preparedStatement->execute(
-			[$user->getFirstName(), $user->getSecondName(), $user->getPhone(), $user->getEmail()]);
+		$query = $this->getCommonUserQuery();
+		if ($login !== '')
+		{
+			$query .=" WHERE uu.LOGIN=:login";
+		}
+		return $query;
 	}
 
-	public function updatePassword(User $user, string $newPassword)
+	private function getUserListByQueryQuery(int $roleId, int $offset, int $amountItems):string
 	{
-		$newPasswordHash = Password::hashPassword($newPassword);
-
-		$query = "UPDATE up_user SET PASSWORD = '{$newPasswordHash}' WHERE ID = {$user->getId()}";
-		$this->DBConnection->query($query);
+		$query = "WHERE (LOGIN LIKE ? OR EMAIL LIKE ? OR FIRST_NAME LIKE ? OR SECOND_NAME LIKE ?)";
+		$query = $this->getCommonUserQuery($query);
+		if ($roleId !== 0)
+		{
+			$query .= " AND ROLE_ID = {$roleId} ";
+		}
+		$query .= "ORDER BY ROLE_ID DESC
+		 LIMIT {$offset}, {$amountItems} ";
+		return $query;
 	}
+
+	private function getAmountUsersByQueryQuery(int $roleId): string
+	{
+		$query = "SELECT
+		COUNT(*) as USERS_AMOUNT
+		FROM up_user
+		LEFT JOIN up_role ur on ur.ID = ROLE_ID
+		WHERE (LOGIN LIKE ? OR EMAIL LIKE ? OR FIRST_NAME LIKE ? OR SECOND_NAME LIKE ?)";
+		if ($roleId !== 0)
+		{
+			$query .= " AND ROLE_ID = {$roleId} ";
+		}
+		return $query;
+	}
+
+	private function getUserListByRoleQuery(int $roleId): string
+	{
+		$query = "WHERE ROLE_ID = {$roleId}";
+		$query = $this->getCommonUserQuery($query);
+		return $query;
+	}
+
+	private function getUserInfoByIdQuery(int $userId): string
+	{
+		$query = "WHERE uu.ID = {$userId}";
+		$query = $this->getCommonUserQuery($query);
+		return $query;
+	}
+
+	private function getCommonUserQuery(string $query = ''): string
+	{
+		$newQuery = "SELECT
+            uu.ID as USER_ID,
+			uu.LOGIN as USER_LOGIN,
+            uu.PASSWORD as USER_PASSWORD,
+            uu.PHONE as USER_PHONE,
+            uu.EMAIL as USER_EMAIL,
+            ur.ID as ROLE_ID,
+            ur.NAME as ROLE_NAME,
+            uu.FIRST_NAME as USER_FIRST_NAME,
+            uu.SECOND_NAME as USER_SECOND_NAME
+		FROM up_user uu
+		LEFT JOIN up_role ur on ur.ID = uu.ROLE_ID ";
+		$newQuery .= $query;
+		return $newQuery;
+	}
+
 }

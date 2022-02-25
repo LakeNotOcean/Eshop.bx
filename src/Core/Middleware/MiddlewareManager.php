@@ -53,7 +53,7 @@ class MiddlewareManager
 		return end($registeredMiddlewares)($request, ...$params);
 	}
 
-	public function loadMiddlewares()
+	public function loadMiddlewares(): void
 	{
 		require_once $this->middlewaresLoadingFilePath;
 	}

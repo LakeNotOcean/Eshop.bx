@@ -26,6 +26,16 @@ interface UserDAOInterface
 
 	public function getAllRoles(): array;
 
+	public function getUserInfoById(int $userId): User;
+
+	public function getUserListByRole(int $roleId): array;
+
+	public function getAmountUserByQuery(int $roleId,string $querySearch): int;
+
+	public function getUserListByQuery(int $offset, int $amountItems,int $roleId,string $querySearch):array;
+
 	public function updateUser(User $user): void;
+
+	public function updatePassword(User $user, string $newPassword): void;
 
 }

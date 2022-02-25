@@ -14,7 +14,7 @@ class Header
 		$this->name = $name;
 	}
 
-	public function addValue(...$values)
+	public function addValue(...$values): void
 	{
 		$this->values = array_unique(array_merge($values, $this->values));
 	}

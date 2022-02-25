@@ -39,14 +39,14 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 						<div class="price-box">
 							<label for="min-price" class="price-label">мин. цена</label>
 							<div class="price-input">
-								₽<input type="number" id="min-price" name="min-price"  placeholder="<?= $price['minPrice']?>" class="input">
+								₽<input class="min-price input" type="number" id="min-price" name="min-price"  placeholder="<?= $price['minPrice']?>">
 							</div>
 						</div>
 						<div class="range-dash"></div>
 						<div class="price-box">
 							<label for="max-price" class="price-label">макс. цена</label>
 							<div class="price-input">
-								₽<input type="number" id="max-price" name="max-price"  placeholder="<?= $price['maxPrice']?>" class="input">
+								₽<input class="max-price input" type="number" id="max-price" name="max-price"  placeholder="<?= $price['maxPrice']?>">
 							</div>
 						</div>
 					</div>

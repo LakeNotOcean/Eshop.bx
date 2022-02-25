@@ -7,9 +7,7 @@ use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
 use Up\Entity\Review;
 use Up\LayoutManager\MainLayoutManager;
-use Up\Lib\Paginator\Paginator;
 use Up\Lib\Redirect;
-use Up\Service\ItemService\ItemService;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\ReviewService\ReviewServiceInterface;
 
@@ -37,6 +35,12 @@ class ReviewController
 		$this->mainLayoutManager = $mainLayoutManager;
 	}
 
+	/**
+	 * @throws \Up\Service\ReviewService\Error\ReviewException
+	 * @throws \Up\Core\Router\Error\ResolveException
+	 * @throws \Up\Core\Error\ValidationException
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 */
 	public function saveReview(Request $request): Response
 	{
 		$itemId = $request->getPostParametersByName('item_id');
@@ -53,6 +57,9 @@ class ReviewController
 		return Redirect::createResponseByURLName('item-detail', [], ['id' => $itemId]);
 	}
 
+	/**
+	 * @throws \Up\Service\Error\ForbiddenException
+	 */
 	public function deleteReview(Request $request, int $id): Response
 	{
 		$this->reviewService->deleteById($id, $request->getUser());

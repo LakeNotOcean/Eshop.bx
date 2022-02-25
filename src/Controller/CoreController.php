@@ -18,7 +18,7 @@ class CoreController
 		$this->mainLayoutManager = $mainLayoutManager;
 	}
 
-	public function get404(Request $request)
+	public function get404(Request $request): Response
 	{
 		return (new Response())->withStatus(404)->withBodyHTML(
 			$this->mainLayoutManager->render('404.php', [])

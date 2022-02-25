@@ -32,7 +32,6 @@ class SpecificationsService implements SpecificationsServiceInterface
 
 	public function getCategoriesWithSpecifications(): array
 	{
-		//$this->specificationsSort($categories);
 		return $this->specificationDAO->getCategoriesWithSpecifications();
 	}
 
@@ -43,7 +42,6 @@ class SpecificationsService implements SpecificationsServiceInterface
 
 	public function getItemTemplate(int $templateId): array
 	{
-		//$this->specificationsSort($categories);
 
 		return $this->specificationDAO->getCategoriesByItemTypeId($templateId);
 	}
@@ -113,14 +111,4 @@ class SpecificationsService implements SpecificationsServiceInterface
 		return $this->specificationDAO->getItemCategoriesByItemId($itemId);
 	}
 
-	// public function specificationsSort(array &$categories): void
-	// {
-	// 	usort($categories, function($a, $b) {
-	// 		return $a->getDisplayOrder() <=> $b->getDisplayOrder();
-	// 	});
-	// 	foreach ($categories as $id => &$category)
-	// 	{
-	// 		$category->specificationsSort();
-	// 	}
-	// }
 }

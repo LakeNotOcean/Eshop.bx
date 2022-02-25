@@ -163,6 +163,10 @@ class UserController
 		return (new Response())->withBodyHTML($page);
 	}
 
+	/**
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 * @throws UserServiceException
+	 */
 	public function userListPage(Request $request): Response
 	{
 		$currentPage = ($request->containsQuery('page')) ? $request->getQueriesByName('page') : 1;

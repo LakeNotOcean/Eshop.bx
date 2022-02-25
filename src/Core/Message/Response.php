@@ -137,13 +137,13 @@ class Response
 		echo $this->body;
 	}
 
-	private function setHeader(string $name, string $value)
+	private function setHeader(string $name, string $value): void
 	{
 		$nameLowerCase = strtolower($name);
 		$this->headers[$nameLowerCase] = new Header($name, $value);
 	}
 
-	private function addHeader(string $name, string $value)
+	private function addHeader(string $name, string $value): void
 	{
 		$nameLowerCase = strtolower($name);
 		if (!isset($this->headers[$nameLowerCase]))
@@ -153,7 +153,7 @@ class Response
 		$this->headers[$nameLowerCase]->addValue($value);
 	}
 
-	private function writeHeaders()
+	private function writeHeaders(): void
 	{
 		if ($this->statusCode != 200)
 		{

@@ -14,19 +14,19 @@ function getFilterQuery(currentUrl)
 	{
 		if (tagCheckbox.checked === true)
 		{
-			currentUrl.searchParams.append('tag[]',tagCheckbox.value)
+			currentUrl.searchParams.append('tag[]',tagCheckbox.value);
 		}
 	}
 	let deactivate = document.querySelector('.deactivate_include_checkbox');
-	if(deactivate !== null && deactivate .checked)
+	if (deactivate !== null && deactivate .checked)
 		currentUrl.searchParams.set('deactivate_include','on')
 	let minPriceInput = document.getElementById('min-price');
 	let maxPriceInput = document.getElementById('max-price');
-	if (minPriceInput.value !== '' && maxPriceInput.value !== '')
+	if (minPriceInput.value !== '' || maxPriceInput.value !== '')
 	{
 		let minPrice;
 		let maxPrice;
-		if (minPriceInput.value==='')
+		if (minPriceInput.value === '')
 		{
 			minPrice = minPriceInput.placeholder;
 		}
@@ -34,15 +34,15 @@ function getFilterQuery(currentUrl)
 		{
 			minPrice = minPriceInput.value
 		}
-		if (maxPriceInput.value==='')
+		if (maxPriceInput.value === '')
 		{
 			maxPrice = maxPriceInput.placeholder;
 		}
 		else
 		{
-			maxPrice = maxPriceInput.value
+			maxPrice = maxPriceInput.value;
 		}
-		currentUrl.searchParams.set('price',minPrice + "-" + maxPrice)
+		currentUrl.searchParams.set('price',minPrice + "-" + maxPrice);
 	}
 }
 

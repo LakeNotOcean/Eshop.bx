@@ -80,6 +80,9 @@ class Request
 		);
 	}
 
+	/**
+	 * @throws Error\NoSuchQueryParameterException
+	 */
 	public function getQueriesOrDefaultList(array $keys): array
 		{
 			$finalQuery = [];

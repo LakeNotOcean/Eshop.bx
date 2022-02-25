@@ -327,7 +327,7 @@ class ImageService implements ImageServiceInterface
 		return $resultPath;
 	}
 
-	private function deleteImageFromFileSystem(ItemsImage $image)
+	private function deleteImageFromFileSystem(ItemsImage $image): void
 	{
 		unlink($image->getOriginalImagePath());
 		foreach ($image->getPathArray() as $sizedPath)

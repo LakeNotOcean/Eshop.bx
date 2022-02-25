@@ -5,10 +5,8 @@ namespace Up\Controller;
 use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
-use Up\Core\TemplateProcessorInterface;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
-use Up\Entity\User\UserEnum;
 use Up\LayoutManager\MainLayoutManager;
 use Up\Service\SpecificationService\SpecificationsServiceInterface;
 
@@ -82,6 +80,7 @@ class CategoryController
 
 	/**
 	 * @throws NoSuchQueryParameterException
+	 * @throws \Exception
 	 */
 	public function addCategoryAndSaveToDB(Request $request): Response
 	{
@@ -207,6 +206,9 @@ class CategoryController
 		return (new Response())->withBodyHTML($page);
 	}
 
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
 	public function deleteSpec(Request $request): Response
 	{
 		$specId = $request->getPostParametersByName('specification-id');

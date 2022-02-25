@@ -497,7 +497,7 @@ review-send
 similar-item
 ==========================*/
 
-.similar-item-section{
+.similar-item-section {
 	display: flex;
 	flex-direction: column;
 }

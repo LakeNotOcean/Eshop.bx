@@ -20,4 +20,8 @@ interface TagDAOInterface
 	 * @return array<int,ItemsTag>
 	 */
 	public function getTagsByNames(array $names): array;
+
+	public function getAllTags(): array;
+
+	public function getTagsByItemType(int $queryTypeId): array;
 }

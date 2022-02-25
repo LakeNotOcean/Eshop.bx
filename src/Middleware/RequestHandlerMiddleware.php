@@ -21,6 +21,9 @@ class RequestHandlerMiddleware extends AbstractMiddleware
 		$this->userService = $userService;
 	}
 
+	/**
+	 * @throws \Up\Core\Router\Error\RoutingException
+	 */
 	public function __invoke(Request $request, ...$params): Response
 	{
 		$request->setUser($this->userService->getUserInfo());

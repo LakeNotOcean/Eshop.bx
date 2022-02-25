@@ -2,7 +2,6 @@
 
 namespace Up\Service\UserService;
 
-use Exception;
 use Up\DAO\UserDAO\UserDAOInterface;
 use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
@@ -94,13 +93,18 @@ class UserService implements UserServiceInterface
 		return $this->userDAO->getAmountUserByQuery($roleId,$query);
 	}
 
-
+	/**
+	 * @throws UserServiceException
+	 */
 	public function getUserListByQuery(array $limitOffset,int $roleId,string $query):array
 	{
 		$this->checkIsAdmin();
 		return $this->userDAO->getUserListByQuery($limitOffset['offset'], $limitOffset['amountItems'],$roleId, $query);
 	}
 
+	/**
+	 * @throws UserServiceException
+	 */
 	public function getAllRoles(): array
 	{
 		$this->checkIsAdmin();
@@ -135,7 +139,7 @@ class UserService implements UserServiceInterface
 		$this->sessionDestroy();
 	}
 
-	public function isAuthenticated()
+	public function isAuthenticated(): bool
 	{
 		return $this->getUserInfo()->getRole()->getName() != UserEnum::Guest();
 	}
@@ -180,6 +184,10 @@ class UserService implements UserServiceInterface
 		return in_array($role->getValue(), static::userPermission[$userRole->getValue()], true);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 * @throws \Up\Core\Enum\EnumException
+	 */
 	private function getUsersList(): array
 	{
 		return $this->userDAO->getUsersInfo();
@@ -213,7 +221,7 @@ class UserService implements UserServiceInterface
 		return $this->userDAO->authenticateUser($user->getLogin(), $password);
 	}
 
-	public function updatePassword(string $newPassword, User $user)
+	public function updatePassword(string $newPassword, User $user): void
 	{
 		$this->userDAO->updatePassword($user, $newPassword);
 	}

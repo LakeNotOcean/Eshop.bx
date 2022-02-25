@@ -289,25 +289,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 
 
 		$preparedQuery->execute($executeParam);
-		$items = [];
-		while ($row = $preparedQuery->fetch())
-		{
-			$itemId = (int)$row['ui_ID'];
-			if (!array_key_exists($itemId, $items))
-			{
-				$item = new Item();
-				$this->mapItemCommonInfo($item, $row);
-				$image = new ItemsImage();
-				$this->mapItemsImageInfo($image, $row);
-				$item->setMainImage($image);
-				$items[$itemId] = $item;
-			}
-			else
-			{
-				$this->mapItemsImageInfo($items[$itemId]->getMainImage(), $row);
-			}
-		}
-		return $items;
+		return $this->mapItems($preparedQuery);
 	}
 
 	public function getItemsByOrderId(int $orderId): array

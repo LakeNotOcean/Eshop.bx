@@ -17,7 +17,7 @@ class URLHelper
 		return $path;
 	}
 
-	public static function urlContainsParam(string $url, string $paramKey)
+	public static function urlContainsParam(string $url, string $paramKey): bool
 	{
 		$query = parse_url($url, PHP_URL_QUERY);
 

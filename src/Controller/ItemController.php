@@ -7,14 +7,11 @@ use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\TemplateProcessorInterface;
-use Up\DAO\OrderDAO\OrderDAOInterface;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\ItemType;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
-use Up\Entity\User\UserEnum;
-use Up\LayoutManager\LayoutManagerInterface;
 use Up\LayoutManager\MainLayoutManager;
 use Up\Lib\Paginator\Paginator;
 use Up\Lib\Redirect;
@@ -22,10 +19,8 @@ use Up\Service\CartService\CartServiceInterface;
 use Up\Service\ImageService\ImageServiceInterface;
 use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\OrderService\OrderServiceInterface;
-use Up\Service\ReviewService\ReviewService;
 use Up\Service\ReviewService\ReviewServiceInterface;
 use Up\Service\TagService\TagServiceInterface;
-use Up\Service\UserService\UserServiceInterface;
 
 class ItemController
 {
@@ -144,6 +139,7 @@ class ItemController
 		{
 			$queryTypeId = 0;
 		}
+		$queryTypeId = (is_numeric($queryTypeId)) ? $queryTypeId : 0;
 
 		$items = $this->itemService->getItemsByFilters(
 			Paginator::getLimitOffset($currentPage, $this->itemsInPage),
@@ -325,9 +321,7 @@ class ItemController
 		return (new Response())->withBodyHTML($page);
 	}
 
-	/**
-	 * @throws NoSuchQueryParameterException
-	 */
+
 	public function addItem(Request $request, int $id = 0): Response
 	{
 		$page = $this->mainLayoutManager->render('add-item.php', [
@@ -351,6 +345,8 @@ class ItemController
 
 	/**
 	 * @throws NoSuchQueryParameterException
+	 * @throws \Up\Lib\Mime\Error\MimeTypeException
+	 * @throws \Up\Core\Router\Error\ResolveException
 	 */
 	public function createNewItem(Request $request): Response
 	{
@@ -411,6 +407,9 @@ class ItemController
 		return Redirect::createResponseByURLName('edit-item', [], ['id' => $item->getId()]);
 	}
 
+	/**
+	 * @throws \Up\Core\Router\Error\ResolveException
+	 */
 	public function realDeleteItem(Request $request, int $id): Response
 	{
 		$this->itemService->realDeleteItem($id);
@@ -432,6 +431,9 @@ class ItemController
 		return (new Response())->withBodyHTML('');
 	}
 
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
 	public function updateCommonInfo(Request $request): Response
 	{
 		$item = new Item();
@@ -446,7 +448,10 @@ class ItemController
 		return $response->withBodyHTML('');
 	}
 
-	private function mapCommonItemInfoFromRequest(ItemDetail $item, Request $request)
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
+	private function mapCommonItemInfoFromRequest(ItemDetail $item, Request $request): void
 	{
 		$item->setTitle($request->getPostParametersByName('item-title'));
 		$item->setPrice($request->getPostParametersByName('item-price'));

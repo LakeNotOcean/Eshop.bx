@@ -40,6 +40,8 @@ interface ItemServiceInterface
 
 	public function getItemsByFilters(array $limitOffset, string $query, string $price, array $tags, array $specs, int $typeId, bool $deactivateInclude, string $sortingMethod): array;
 
+	public function getItemsMinMaxPriceByItemTypes(array $typeIds): array;
+
 	public function getItemById(int $id): ItemDetail;
 
 	public function getItemsSimilarById(int $id,int $similarAmount): array;
@@ -48,9 +50,17 @@ interface ItemServiceInterface
 
 	public function getItemsAmount(string $query = ''): int;
 
+	public function getItemsAmountByItemType(int $typeId,string $query = ''): int;
+
 	public function getItemsAmountByFilters(string $query,string $price,array $tags,array $specs, int $typeId, bool $deactivate_include = false): int;
 
 	public function getItemsMinMaxPrice(): array;
+
+	public function getTypeIdByQuery(string $query):array;
+
+	public function getItemsTags(): array;
+
+	public function getItemsCategoriesByItemType(int $queryTypeId): array;
 
 	public function save(ItemDetail $item): ItemDetail;
 

@@ -3,6 +3,7 @@
 namespace Up\Service\UserService;
 
 use Up\Entity\User\User;
+use Up\Entity\User\UserEnum;
 
 interface UserServiceInterface
 {
@@ -22,6 +23,8 @@ interface UserServiceInterface
 
 	public function getUserInfoById(int $id): User;
 
+	public function hasPermission(UserEnum $role): bool;
+
 	public function getUserListByRole(int $roleId): array;
 
 	public function getAmountUserByQuery(int $roleId,string $query): int;
@@ -34,7 +37,13 @@ interface UserServiceInterface
 
 	public function removeUserFromSession(): void;
 
+	public function isAuthenticated(): bool;
+
 	public function updateUser(User $user): void;
 
+	public function checkIsAdmin(): void;
+
 	public function isValidPassword(string $password, User $user): bool;
+
+	public function updatePassword(string $newPassword, User $user): void;
 }

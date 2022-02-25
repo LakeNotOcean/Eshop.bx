@@ -2,9 +2,7 @@
 
 namespace Up\DAO\SpecificationDAO;
 
-use http\Encoding\Stream\Inflate;
 use Up\Core\Database\DefaultDatabase;
-use Up\Entity\EntityArray;
 use Up\Entity\ItemType;
 use Up\Entity\Specification;
 use Up\Entity\SpecificationCategory;
@@ -25,7 +23,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 
 	public function getCategoriesWithValueByItemTypeId(int $queryTypeId): array
 	{
-		$result = $this->DBConnection->query(SpecificationDAOqueries::getCategoriesWithValueByItemTypeIdQuery($queryTypeId));
+		$result = $this->DBConnection->query($this->getCategoriesWithValueByItemTypeIdQuery($queryTypeId));
 		$resultArray = [];
 		while ($row = $result->fetch())
 		{
@@ -60,7 +58,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 	public function getCategoriesByItemTypeId(int $itemTypeId): array
 	{
 
-		$result = $this->DBConnection->query(SpecificationDAOqueries::getCategoriesByItemTypeIdQuery($itemTypeId));
+		$result = $this->DBConnection->query($this->getCategoriesByItemTypeIdQuery($itemTypeId));
 		$resultArray = [];
 		while ($row = $result->fetch())
 		{
@@ -84,7 +82,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 	public function getItemCategoriesByItemId(int $itemId): array
 	{
 		$categoriesList = [];
-		$queryResult = $this->DBConnection->query(SpecificationDAOqueries::getCategoriesByItemIdQuery($itemId));
+		$queryResult = $this->DBConnection->query($this->getCategoriesByItemIdQuery($itemId));
 		while ($row = $queryResult->fetch())
 		{
 			$categoryId = $row['CAT_ID'];
@@ -125,7 +123,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 
 	public function getTypes(): array
 	{
-		$queryResult = $this->DBConnection->query(SpecificationDAOqueries::getTypesQuery());
+		$queryResult = $this->DBConnection->query($this->getTypesQuery());
 		$typeList = [];
 		while ($row = $queryResult->fetch())
 		{
@@ -188,7 +186,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 
 	public function getCategoriesByTypes(): array
 	{
-		$queryResult = $this->DBConnection->query(SpecificationDAOqueries::getCategoriesByTypesIdQuery());
+		$queryResult = $this->DBConnection->query($this->getCategoriesByTypesIdQuery());
 		/** @var array<int,array<int,SpecificationCategory>> $categoriesList */
 		$categoriesList = [];
 		while ($row = $queryResult->fetch())
@@ -214,7 +212,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 
 	public function getCategoriesWithSpecifications(): array
 	{
-		$queryResult = $this->DBConnection->query(SpecificationDAOqueries::getCategoriesWithSpecQuery());
+		$queryResult = $this->DBConnection->query($this->getCategoriesWithSpecQuery());
 		$categoriesList = [];
 		while ($row = $queryResult->fetch())
 		{
@@ -234,11 +232,11 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 	public function addSpecificationsToItemById(int $itemId, array $specificationsList): void
 	{
 		$query = "INSERT INTO `up_item-spec` (ITEM_ID, SPEC_TYPE_ID,VALUE) VALUES (?,?,?);";
-		$prepair = $this->DBConnection->prepare($query);
+		$prepared = $this->DBConnection->prepare($query);
 		$data = $this->prepareSpecList($itemId, $specificationsList);
 		foreach ($data as $row)
 		{
-			$prepair->execute($row);
+			$prepared->execute($row);
 		}
 	}
 
@@ -339,7 +337,7 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 
 	public function getCategories(): array
 	{
-		$queryResult = $this->DBConnection->query(SpecificationDAOqueries::getCategoriesQuery());
+		$queryResult = $this->DBConnection->query($this->getCategoriesQuery());
 		$categoriesList = [];
 		while ($row = $queryResult->fetch())
 		{
@@ -403,5 +401,78 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 		return new Specification(
 			$row['SPEC_ID'], $row['SPEC_NAME'], $row['SPEC_ORDER'], $row['SPEC_VALUE']
 		);
+	}
+
+	private function getCategoriesWithValueByItemTypeIdQuery(int $itemTypeId): string
+	{
+		return "SELECT DISTINCT
+	SPEC_CATEGORY_ID as CAT_ID,
+    usc.NAME as CAT_NAME,
+    usc.DISPLAY_ORDER as CAT_ORDER,
+	ust.ID as SPEC_ID,
+	ust.NAME as  SPEC_NAME,
+	ust.DISPLAY_ORDER as SPEC_ORDER,
+	`ui-s`.VALUE as SPEC_VALUE,
+	COUNT(`ui-s`.VALUE) as SPEC_COUNT,
+    ITEM_TYPE_ID
+
+
+FROM up_item
+		INNER JOIN `up_item-spec` `ui-s` on up_item.ID = `ui-s`.ITEM_ID
+		INNER JOIN up_spec_type ust on `ui-s`.SPEC_TYPE_ID = ust.ID
+		INNER JOIN up_spec_category usc on ust.SPEC_CATEGORY_ID = usc.ID
+
+WHERE ITEM_TYPE_ID = {$itemTypeId}
+GROUP BY SPEC_VALUE";
+	}
+
+
+
+
+
+
+	private function getTypesQuery(): string
+	{
+		return "SELECT
+       upit.ID as TYPE_ID,
+       upit.NAME as TYPE_NAME
+		FROM up_item_type upit;";
+	}
+
+	private function getCategoriesByTypesIdQuery(): string
+	{
+		return "SELECT
+			usc.ID as CAT_ID,
+            usc.NAME as CAT_NAME,
+            usc.DISPLAY_ORDER as CAT_ORDER,
+            u.ID as SPEC_ID,
+            u.NAME as SPEC_NAME,
+            u.DISPLAY_ORDER as SPEC_ORDER,
+            ust.ITEM_TYPE_ID as TYPE_ID
+		FROM up_spec_template ust
+		INNER JOIN up_spec_type u on ust.SPEC_TYPE_ID = u.ID
+		INNER JOIN up_spec_category usc on u.SPEC_CATEGORY_ID = usc.ID;";
+	}
+
+	private function getCategoriesWithSpecQuery(): string
+	{
+		return "SELECT
+			usc.ID as CAT_ID,
+            usc.NAME as CAT_NAME,
+            usc.DISPLAY_ORDER as CAT_ORDER,
+            ust.ID as SPEC_ID,
+            ust.NAME as SPEC_NAME,
+            ust.DISPLAY_ORDER as SPEC_ORDER
+		FROM up_spec_type ust
+		INNER JOIN up_spec_category usc on ust.SPEC_CATEGORY_ID = usc.ID;";
+	}
+
+	private function getCategoriesQuery(): string
+	{
+		return "SELECT
+			usc.ID as CAT_ID,
+            usc.NAME as CAT_NAME,
+            usc.DISPLAY_ORDER as CAT_ORDER
+		FROM up_spec_category usc;";
 	}
 }

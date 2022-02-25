@@ -21,7 +21,10 @@ class CartController
 		$this->cartService = $cartService;
 	}
 
-	public function addItemToCart(Request $request)
+	/**
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 */
+	public function addItemToCart(Request $request): Response
 	{
 		if (!$this->validAddOrDeletePostQuery($request))
 		{
@@ -50,7 +53,10 @@ class CartController
 		);
 	}
 
-	public function deleteItemFromCart(Request $request)
+	/**
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 */
+	public function deleteItemFromCart(Request $request): Response
 	{
 		if (!$this->validAddOrDeletePostQuery($request))
 		{
@@ -65,7 +71,7 @@ class CartController
 		);
 	}
 
-	private function getErrorResponse(Request $request)
+	private function getErrorResponse(Request $request): Response
 	{
 		if  (!$request->containsPost(static::itemIdPostKey))
 		{
@@ -81,7 +87,7 @@ class CartController
 		throw new \RuntimeException('Error with this request doesnt found');
 	}
 
-	private function validAddOrDeletePostQuery(Request $request)
+	private function validAddOrDeletePostQuery(Request $request): bool
 	{
 		return $request->containsPost('item-id');
 	}

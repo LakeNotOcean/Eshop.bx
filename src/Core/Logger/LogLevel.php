@@ -14,4 +14,8 @@ class LogLevel extends Enum
 	public const Critical = 'critical';
 	public const Wtf = 'wtf';
 	public const Emergency = 'emergency';
+
+	public static function Emergency()
+	{
+	}
 }

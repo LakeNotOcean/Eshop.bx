@@ -21,8 +21,7 @@
 	width: 50%;
 }
 
-.search-count
-{
+.search-count {
 	margin-right: 20px;
 }
 
@@ -53,13 +52,13 @@
 	color: var(--color-font);
 }
 
-.user-list{
+.user-list {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
 }
 
-.user{
+.user {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
@@ -72,29 +71,29 @@
 
 }
 
-.user-body{
+.user-body {
 	flex-wrap: wrap;
 	display: flex;
 	flex-direction: row;
 }
 
-.user-info{
+.user-info {
 	margin: 5px;
 	white-space: nowrap;
 }
 
-.user-info label{
+.user-info label {
 	font-weight: bold;
 }
 
 
-.edit-button{
+.edit-button {
 	margin: 0;
 	width: 40px;
 	height: 30px;
 }
 
-.pencil{
+.pencil {
 	height: 100%;
 	width: 100%;
 }

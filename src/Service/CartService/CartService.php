@@ -43,7 +43,7 @@ class CartService implements CartServiceInterface
 		}
 	}
 
-	public function deleteItemFromCart(int $itemId)
+	public function deleteItemFromCart(int $itemId): void
 	{
 		if (in_array($itemId, $_SESSION[static::CART_SESSION_KEY], true))
 		{
@@ -52,7 +52,7 @@ class CartService implements CartServiceInterface
 		}
 	}
 
-	public function clearCart()
+	public function clearCart(): void
 	{
 		unset($_SESSION[static::CART_SESSION_KEY]);
 	}

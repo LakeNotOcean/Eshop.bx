@@ -25,8 +25,8 @@ use Up\Core\Router\URLResolver;
 		</form>
 	</div>
 	<div class="user-list">
-		<?
-		foreach ($users as $user) { ?>
+		<?php
+		foreach ($users as $user): ?>
 			<div class="user  card-outline" draggable="true" id=<?=htmlspecialchars($user->getLogin())?>>
 				<div class="user-body">
 					<div class="user-info">
@@ -45,7 +45,7 @@ use Up\Core\Router\URLResolver;
 						<label>Роль:</label> <?=htmlspecialchars($user->getRole()->getName())?>
 					</div>
 				</div>
-				<?if ($user->getRole()->getId() !== 1){?>
+				<?php if ($user->getRole()->getId() !== 1):?>
 				<div class="delete-button-section">
 					<a class="btn btn-normal edit-button" href="<?= \Up\Core\Router\URLResolver::resolve('user-info',["id"=>$user->getId()]) ?>"  id=<?=htmlspecialchars($user->getLogin())?>>
 						<svg class="pencil">
@@ -53,10 +53,10 @@ use Up\Core\Router\URLResolver;
 						</svg>
 					</a>
 				</div>
-				<?}?>
+				<?php endif;?>
 			</div>
-		<?
-		} ?>
+		<?php
+		endforeach; ?>
 	</div>
 	<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 	<?= $paginator ?>

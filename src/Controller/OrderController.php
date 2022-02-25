@@ -67,6 +67,7 @@ class OrderController
 
 	/**
 	 * @throws NoSuchQueryParameterException
+	 * @throws \Up\Core\Router\Error\ResolveException
 	 */
 	public function finishOrder(Request $request): Response
 	{
@@ -123,6 +124,9 @@ class OrderController
 		return Redirect::createResponseByURLName('my-orders');
 	}
 
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
 	public function getOrders(Request $request): Response
 	{
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
@@ -149,6 +153,9 @@ class OrderController
 		return (new Response())->withBodyHTML($page);
 	}
 
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
 	public function getMyOrders(Request $request): Response
 	{
 		$currentPage = $request->containsQuery('page') ? (int)$request->getQueriesByName('page') : 1;
@@ -170,6 +177,9 @@ class OrderController
 		return (new Response())->withBodyHTML($page);
 	}
 
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
 	public function changeOrderStatus(Request $request): Response
 	{
 		$orderId = $request->getPostParametersByName('order-id');
@@ -180,6 +190,9 @@ class OrderController
 		return (new Response())->withBodyHTML('');
 	}
 
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
 	public function deleteOrder(Request $request): Response
 	{
 		$orderId = $request->getPostParametersByName('order-id');
@@ -194,7 +207,7 @@ class OrderController
 		return date('Y-m-d H:i:s');
 	}
 
-	private function getUnsuccessedResponse()
+	private function getUnsuccessedResponse(): Response
 	{
 		return (new Response())->withStatus(409)->withBodyJSON(
 			[

@@ -2,17 +2,13 @@
 
 namespace Up\Middleware;
 
-use ReflectionException;
 use Up\Controller\UserController;
-use Up\Core\Enum\EnumException;
 use Up\Core\Message\Error\NoSuchQueryParameterException;
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\Middleware\AbstractMiddleware;
 use Up\Core\Router\Error\ResolveException;
 use Up\Core\Router\Error\RoutingException;
-use Up\Core\Router\Router;
-use Up\Core\TemplateProcessorInterface;
 use Up\Entity\User\UserEnum;
 use Up\Lib\Redirect;
 use Up\Lib\URLHelper;

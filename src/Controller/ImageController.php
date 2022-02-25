@@ -4,7 +4,6 @@ namespace Up\Controller;
 
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
-use Up\Core\TemplateProcessorInterface;
 use Up\Service\ImageService\ImageServiceInterface;
 
 class ImageController
