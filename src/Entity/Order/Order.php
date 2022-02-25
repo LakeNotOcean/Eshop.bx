@@ -7,7 +7,6 @@ use Up\Entity\Item;
 use Up\Entity\ItemDetail;
 use Up\Entity\User\User;
 
-
 class Order extends Entity
 {
 	protected $customer_name;
@@ -19,6 +18,7 @@ class Order extends Entity
 	protected $dateCreate;
 	protected $dateUpdate;
 	protected $user;
+	protected $statusNames;
 
 	public function __construct(string $customer_name, string $phone, string $email, string $comment)
 	{
@@ -26,6 +26,12 @@ class Order extends Entity
 		$this->phone = $phone;
 		$this->email = $email;
 		$this->comment = $comment;
+		$this->statusNames = [
+			OrderStatus::IN_PROCESSING()->getValue() => 'В обработке',
+			OrderStatus::DELIVERY()->getValue() => 'Ожидает доставки',
+			OrderStatus::DONE()->getValue() => 'Завершён',
+			OrderStatus::CANCELLED()->getValue() => 'Отменён'
+		];
 	}
 
 	/**
@@ -106,6 +112,14 @@ class Order extends Entity
 	public function setItems(array $items): void
 	{
 		$this->items = $items;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getStatusName(): string
+	{
+		return $this->statusNames[$this->status->getValue()] ?? 'undefined';
 	}
 
 	/**

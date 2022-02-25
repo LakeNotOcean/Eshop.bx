@@ -56,11 +56,11 @@
 				<div class="order-line">
 					<div class="order-label">Ваш комментарий:</div>
 					<div class="order-value"><?= htmlspecialchars($order->getComment())?></div>
-
 				</div>
+
 				<div class="order-line">
 					<div class="order-label">Статус заказа:</div>
-					<div class="order-value"><?=htmlspecialchars($order->getStatus())?></div>
+					<div class="order-value"><?=htmlspecialchars($order->getStatusName())?></div>
 				</div>
 			</div>
 		<?php endforeach;?>
