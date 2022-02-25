@@ -148,7 +148,7 @@ search-icon
 
 @media screen and (max-width: 900px)  {
 	.sign-up {
-		display: none;
+		display: none !important;
 	}
 	.sign-in {
 		margin: 0 5px !important;
