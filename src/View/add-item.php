@@ -57,9 +57,12 @@ use Up\Entity\ItemsTag;
 				<label for="item-tags" class="field">
 					<span class="label-title">Теги</span>
 					<span class="tags-container">
+						<?php if (isset($item)):?>
+							<?php foreach ($item->getTags() as $tag):?>
+								<span class="input-tag"><?= $tag->getName()?></span>
+							<?php endforeach;?>
+						<?php endif;?>
 						<input type="text" id="item-tags" name="item-tags" placeholder="Ввести тег"
-							   value="<?= isset($item) ? implode(',', array_map(function(ItemsTag $tag) {
-								   return $tag->getName();}, $item->getTags())) : '' ?>"
 							   autocomplete="off">
 					</span>
 				</label>
