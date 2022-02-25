@@ -7,6 +7,9 @@
 /** @var bool $isAuthenticated */
 /** @var \Up\Entity\User\User $user */
 
+use Up\Core\Router\URLResolver;
+use Up\Entity\User\UserEnum;
+use Up\Lib\CSRF\CSRF;
 use Up\Lib\FormatHelper\DateFormatterRu;
 use Up\Lib\FormatHelper\NumberFormatter;
 use Up\Lib\FormatHelper\WordEndingResolver;
@@ -18,7 +21,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 <link rel="stylesheet" href="/css/more-reviews.css">
 <link rel="stylesheet" href="/css/catalog.css">
 
-<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+<?= CSRF::getFormField() ?>
 <div class="opened-images" style="display: none;">
 	<div class="open-images-container">
 		<div class="open-images-header">
@@ -126,13 +129,13 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 						<?php if (!isset($isItemAdded) || !$isItemAdded): ?>
 							<div id="cart-add-item">
 								<input class="item-id" type="hidden" name="item-id" value="<?= $item->getId() ?>">
-								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+								<?= CSRF::getFormField() ?>
 								<div id="send-item-id" class="btn-buy">Добавить товар в корзину</div>
 							</div>
 						<?php else: ?>
 							<div id="cart-item-added">
 								<input class="item-id" type="hidden" name="item-id" value="<?= $item->getId() ?>">
-								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+								<?= CSRF::getFormField() ?>
 								<div id="send-item-id" class="btn-buy btn-item-added">Удалить товар из корзины</div>
 							</div>
 						<?php endif; ?>
@@ -183,27 +186,31 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 					</div>
 					<?php foreach ($reviews as $review): ?>
 					<div class="item-review">
-						<div class="item-review-photo">
-							<img src="/img/person.jpg" alt="person">
-						</div>
-						<div class="item-review-data">
-							<div class="item-review-name"><?= htmlspecialchars($review->getUser()->getName()) ?></div>
-							<div class="item-review-date"><?= DateFormatterRu::format($review->getDate())  ?></div>
+						<div class="item-review-left">
+							<div class="item-review-photo">
+								<img src="/img/person.jpg" alt="person">
+								<div class="item-review-data">
+									<div class="item-review-name"><?= htmlspecialchars($review->getUser()->getName()) ?></div>
+									<div class="item-review-date"><?= DateFormatterRu::format($review->getDate())  ?></div>
+								</div>
+							</div>
+							<div class="manage-review">
+								<?php if ($review->getUser()->getId() == $user->getId()):?>
+									<div class="your-review-msg">Это ваш отзыв</div>
+								<?php endif;?>
+								<?php if($user->getRole()->getName() == UserEnum::Admin()): ?>
+									<div class="btn btn-delete review-remove-btn">Удалить</div>
+									<input type="hidden" name="review_id" value="<?= $review->getId() ?>">
+								<?php endif; ?>
+							</div>
 						</div>
 						<div class="item-review-text">
 							<?= htmlspecialchars($review->getComment()) ?>
 						</div>
-						<?php if($review->getUser()->getId() == $user->getId()): ?>
-							<div class="your-review-msg">Это ваш отзыв</div>
-						<?php endif; ?>
-						<?php if($review->getUser()->getId() == $user->getId() || $user->getRole()->getName() == \Up\Entity\User\UserEnum::Admin()): ?>
-							<div class="review-remove-btn"></div>
-							<input type="hidden" name="review_id" value="<?= $review->getId() ?>">
-						<?php endif; ?>
 					</div>
 					<?php endforeach; ?>
 					<?php if($item->getAmountReviews() > 3): ?>
-					<a href="<?= \Up\Core\Router\URLResolver::resolve('more-reviews', ['id' => $item->getId()]) ?>">Посмотреть больше отзывов</a>
+					<a href="<?= URLResolver::resolve('more-reviews', ['id' => $item->getId()]) ?>">Посмотреть больше отзывов</a>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -215,7 +222,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				<?php elseif ($reviewIsWritten): ?>
 				<div>Вы уже оставляли отзыв к этому товару</div>
 				<?php else: ?>
-				<form class="review-send" action="<?= \Up\Core\Router\URLResolver::resolve('add-review') ?>" method="post">
+				<form class="review-send" action="<?= URLResolver::resolve('add-review') ?>" method="post">
 					<div class="rating-title">Оставьте отзыв о товаре:</div>
 					<div class="rating-container">
 						<div class="review_stars_wrap">
@@ -244,7 +251,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 						</div>
 					</div>
 					<textarea class="review-send-text" name="text_review" placeholder="Введите свой отзыв..."></textarea>
-					<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+					<?= CSRF::getFormField() ?>
 					<input name="item_id" type="hidden" value="<?= $item->getId() ?>">
 					<div class="btn btn-add">Отправить отзыв</div>
 				</form>
@@ -290,6 +297,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 <script src="/js/item/open-images.js"></script>
 <script src="/js/item/scroll-similar-items.js"></script>
 
+<script src="/js/lib/alert-dialog.js"></script>
 <script src="/js/lib/showPopup.js"></script>
 <script src="/js/add-to-favorites.js"></script>
 

@@ -1,25 +1,26 @@
-.card.item-card-my-reviews{
+.card.item-card-my-reviews {
 	margin: 15px 0;
+	padding: 10px;
 }
 
-.item.item-my-reviews{
-	margin-bottom: 0;
+.item.item-my-reviews {
+	margin-bottom: 5px;
 }
 
-.delimiter{
+.delimiter {
 	height: 1px;
-	background: black;
+	background: var(--color-separator);
 	margin: 0 100px 0 100px;
 }
 
-.review.review-my-reviews{
-	position: relative;
+.review.review-my-reviews {
+	padding: 10px 20px;
 }
 
-.title-my-reviews{
+.title-my-reviews {
 	display: flex;
 	font-size: 22px;
 	font-weight: bold;
 	justify-content: center;
-	margin: 20px 0;
+	margin: 30px 0 20px;
 }

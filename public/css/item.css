@@ -2,6 +2,7 @@
 @import "lib/card.css";
 @import "lib/popup.css";
 @import "lib/add-to-favorites.css";
+@import "lib/alert-dialog.css";
 
 main {
 	background: var(--color-main);
@@ -399,11 +400,21 @@ item-reviews
 	margin: 0 5px;
 }
 
+/*==========================
+item-review
+==========================*/
+
 .item-review {
 	display: flex;
-	padding: 15px 0;
+	margin: 15px 0;
 	justify-content: center;
 	position: relative;
+}
+
+.item-review-left {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .item-review-photo {
@@ -435,11 +446,23 @@ item-reviews
 }
 
 .item-review-text {
-	display: flex;
+	flex: 1;
 	align-items: center;
 	line-height: 1.5;
 	text-align: justify;
-	width: 80%;
+	min-width: 0;
+	max-width: 100%;
+	word-wrap: break-word;
+}
+
+.manage-review {
+	display: flex;
+	align-items: center;
+}
+
+.your-review-msg {
+	white-space: nowrap;
+	margin-right: 10px;
 }
 
 /*==========================
@@ -506,6 +529,10 @@ similar-item
 	display: flex;
 	justify-content: flex-end;
 	font-size: 18px;
+}
+
+.similar-item-cards-left-arrow::before, .similar-item-cards-right-arrow::before {
+	left: 5px;
 }
 
 .similar-item-cards-right-arrow {
