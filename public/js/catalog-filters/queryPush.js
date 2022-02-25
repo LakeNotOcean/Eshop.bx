@@ -27,9 +27,17 @@ let searchButton = document.querySelector('.search-field');
 let searchButtonIcon = document.querySelector('.search-icon');
 
 function searchListener(e) {
-		getSearchQuery(currentUrl);
-		currentUrl.searchParams.set("page","1");
-		window.location = currentUrl;
+	alert(currentUrl.pathname === "/admin/")
+		if (currentUrl.pathname === "/catalog" || currentUrl.pathname == "/admin/" || currentUrl.pathname === "/catalog/" || currentUrl.pathname === "/catalog")
+		{
+			getSearchQuery(currentUrl);
+			currentUrl.searchParams.set("page","1");
+			window.location = currentUrl;
+		}
+		else
+		{
+			window.location = "/catalog" + "?" +  "type=0&query" + '=' +  e.target.value;
+		}
 }
 
 searchButton.addEventListener("keydown", (e)=>{
