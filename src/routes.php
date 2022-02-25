@@ -70,7 +70,7 @@ $router->post('/admin/fastUpdateItem', [ItemController::class, 'updateCommonInfo
 $router->post('/admin/deleteImage/{positiveInt:id}', [ImageController::class, 'deleteImageById'], 'delete-image');
 
 $router->get('/admin/adminList',[UserController::class, 'adminListPage'],'admin-list');
-$router->post('/admin/adminList',[UserController::class, 'removeAdmin'],'remove-admin');
+$router->post('/admin/adminList',[UserController::class, 'removeAdmin'],'admin-list');
 $router->get('/admin/userList',[UserController::class, 'userListPage'],'user-list');
 $router->post('/admin/adminUpdateUser/{positiveInt:id}',[UserController::class, 'adminUpdateUser'],'admin-update-user');
 $router->get('/admin/userList/{positiveInt:id}',[UserController::class, 'userInfoPage'],'user-info');
@@ -88,5 +88,3 @@ $router->get('/api/v1/category/detail', [CategoryController::class, 'getCategori
 $router->get('/api/v1/categories', [CategoryController::class, 'getCategoriesJSON'], 'cat');
 $router->get('/api/v1/categoriesByType', [CategoryController::class, 'getCategoriesByItemTypeIdJSON'], 'categories-by-type');
 $router->get('/api/v1/categoriesByItem/{positiveInt:id}', [CategoryController::class, 'getCategoriesByItemIdJSON'], 'categories-by-item');
-
-$router->post('/test', [ReviewController::class, 'test'], 'test');

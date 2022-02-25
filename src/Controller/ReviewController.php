@@ -58,10 +58,4 @@ class ReviewController
 		$this->reviewService->deleteById($id, $request->getUser());
 		return (new Response())->withBodyHTML('');
 	}
-
-	public function test(Request $request): Response
-	{
-		var_dump($_POST);
-		return (new Response())->withBodyHTML('');
-	}
 }

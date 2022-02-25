@@ -21,7 +21,7 @@
 		<? foreach ($admins as $admin){
 			if ($admin->getLogin() !== $login){?>
 
-			<div class="admin  card-outline" draggable="true" id=<?=$admin->getLogin()?>>
+			<div class="admin  card-outline" draggable="true" id=<?= $admin->getLogin() ?>>
 				<div class="admin-body">
 					<div class="admin-info">
 						<label>ФИО:</label> <?=htmlspecialchars($admin->getFirstName())?>  <?=htmlspecialchars($admin->getSecondName())?>
