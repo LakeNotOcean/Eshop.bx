@@ -3,6 +3,7 @@
 @import "lib/popup.css";
 @import "lib/add-to-favorites.css";
 @import "lib/alert-dialog.css";
+@import "lib/review-stars.css";
 
 main {
 	background: var(--color-main);
@@ -311,7 +312,8 @@ item-reviews
 
 .rating-title {
 	font-weight: bold;
-	padding: 10px 0;
+	font-size: 16px;
+	margin: 15px 0;
 }
 
 @media screen and (max-width: 1150px)  {
@@ -463,6 +465,10 @@ item-review
 .your-review-msg {
 	white-space: nowrap;
 	margin-right: 10px;
+}
+
+.review-state-message {
+	margin: 15px 0;
 }
 
 /*==========================
