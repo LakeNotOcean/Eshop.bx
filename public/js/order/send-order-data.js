@@ -59,7 +59,7 @@ export async function sendOrderData(form, itemsInfo)
 	formData.append('comment', comment);
 
 	formData.append('items', JSON.stringify(itemsInfo));
-
+	let result;
 	await fetch(
 		'/finishOrder',
 		{
@@ -68,10 +68,9 @@ export async function sendOrderData(form, itemsInfo)
 		},
 	).then(
 		function(response) {
-			if (response.ok)
-			{
-				document.querySelector('body').innerHTML = response.body;
-			}
+			result = response;
 		}
 	)
+
+	return result;
 }

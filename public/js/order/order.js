@@ -9,9 +9,12 @@ const orderSummaryElement = document.querySelector('.order-summary');
 const ordersPriceText = orderHeaderInfoElement.textContent;
 
 const numbers = ordersPriceText.match(/\d+/g);
-let [itemsAmount, orderPrice] = numbers.map(num => parseInt(num));
-
-document.querySelector('input[type="submit"]').addEventListener('click', submitOrder);
+let [itemsAmount, orderPrice] = [0, 0];
+if (numbers !== null)
+{
+	[itemsAmount, orderPrice] = numbers.map(num => parseInt(num));
+	document.querySelector('input[type="submit"]').addEventListener('click', submitOrder);
+}
 
 let itemsInfo = [];
 
@@ -92,10 +95,14 @@ function getItemElementById(itemId)
 	return document.querySelector(`.order-item[value='${itemId}']`);
 }
 
-function submitOrder(event)
+async function submitOrder(event)
 {
 	let form = document.querySelector('.user-data');
-	sendOrderData(form, itemsInfo);
+	let response = await sendOrderData(form, itemsInfo);
+	if (response.redirect)
+	{
+		window.location.replace(response.url);
+	}
 }
 
 function getItemCountElement(itemId)
