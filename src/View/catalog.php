@@ -26,7 +26,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 		<?php if ($query === ''): ?>
 		Видеокарты: <?= $itemsAmount ?> <?= WordEndingResolver::resolve($itemsAmount, array('товар','товара','товаров')) ?>
 		<?php else: ?>
-		Результаты поиска по запросу "<?= $query ?>": <?= $itemsAmount ?> <?= WordEndingResolver::resolve($itemsAmount, array('товар','товара','товаров')) ?>
+		Результаты поиска по запросу "<?= htmlspecialchars($query) ?>": <?= $itemsAmount ?> <?= WordEndingResolver::resolve($itemsAmount, array('товар','товара','товаров')) ?>
 		<?php endif; ?>
 	</div>
 

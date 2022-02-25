@@ -41,7 +41,7 @@
 						<div class="order-item">
 							<div class="item-number"><?= $i ?>.</div>
 							<div class="item-title"><?= htmlspecialchars($purchased['item']->getTitle()) ?></div>
-							<div class="item-count"><?= $purchased['count'] . ' штук' ?></div>
+							<div class="item-count"><?= $purchased['count'] . ' ' . \Up\Lib\FormatHelper\WordEndingResolver::resolve($purchased['count'], ['штука', 'штуки', 'штук']) ?></div>
 							<div class="item-price"><?= $purchased['item']->getPrice() ?> ₽</div>
 							<div class="item-cost"><?= $purchased['count'] * $purchased['item']->getPrice() ?> ₽</div>
 						</div>
