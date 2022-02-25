@@ -47,7 +47,7 @@ function getIncreaseItemCountEventHandler(itemInfo, itemElement)
 	return function(event) {
 		orderPrice = orderPrice + itemInfo.price;
 		changeItemCount(itemInfo, 1);
-		updateAggregatedOrderData(itemsAmount++, orderPrice);
+		updateAggregatedOrderData(++itemsAmount, orderPrice);
 	};
 }
 
@@ -60,22 +60,24 @@ function getReduceItemCountEventHandler(itemInfo, itemElement)
 	return async function(event) {
 		if (itemInfo.count === 1)
 		{
-			itemsInfo = itemsInfo.filter(x => x.id !== itemInfo.id);
-			deleteItemElement(itemInfo.id);
-			orderPrice = orderPrice - itemInfo.price;
-			updateAggregatedOrderData(--itemsAmount, orderPrice);
-			deleteItemFromCart(itemInfo.id, document.querySelector('.user-data'));
-
-			if (itemsInfo.length === 0)
-			{
-				setEmptyOrderState();
-			}
+			alertDialogDelete('Удаление товара', 'Вы точно хотите удалить этот товар из коризны?',
+				() =>
+				{
+					itemsInfo = itemsInfo.filter(x => x.id !== itemInfo.id);
+					deleteItemElement(itemInfo.id);
+					orderPrice = orderPrice - itemInfo.price;
+					updateAggregatedOrderData(--itemsAmount, orderPrice);
+					deleteItemFromCart(itemInfo.id, document.querySelector('.user-data'));
+					if (itemsInfo.length === 0)
+					{
+						setEmptyOrderState();
+					}
+				});
 			return;
 		}
 		orderPrice = orderPrice - itemInfo.price;
 		changeItemCount(itemInfo, -1);
 		updateAggregatedOrderData(--itemsAmount, orderPrice);
-		console.log(itemInfo);
 	};
 }
 

@@ -96,6 +96,7 @@ if ($user->getRole()->getName() != UserEnum::Guest())
 	<?php endif; ?>
 </div>
 
+<script src="js/lib/alert-dialog.js"></script>
 <script src="/js/lib/wordProcessor.js" type="module"></script>
 <script src="/js/lib/showPopup.js"></script>
 <script src="/js/lib/phone-input.js"></script>

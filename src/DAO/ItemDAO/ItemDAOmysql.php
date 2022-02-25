@@ -188,7 +188,7 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 
 	public function getAmountPurchasedItems(int $userId): int
 	{
-		$statement = $this->dbConnection->prepare("SELECT COUNT(*) as COUNT
+		$statement = $this->dbConnection->prepare("SELECT COUNT(1) as COUNT
 														 FROM up_item ui
 														 INNER JOIN `up_order-item` `uo-i` on ui.ID = `uo-i`.ITEM_ID
 														 INNER JOIN up_order uo on `uo-i`.ORDER_ID = uo.ID AND uo.USER_ID=?;");
@@ -536,8 +536,6 @@ class ItemDAOmysql extends AbstractDAO implements ItemDAOInterface
 
 		return $result->fetch()['num_items'];
 	}
-
-
 
 	public function deactivateItem(int $id): void
 	{
