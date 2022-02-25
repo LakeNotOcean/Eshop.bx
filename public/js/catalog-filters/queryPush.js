@@ -4,6 +4,7 @@ let sortingButtons = document.querySelectorAll('.sorting-button');
 for (let sortingButton of sortingButtons)
 {
 	sortingButton.addEventListener('click', (e) => {
+		getTypeQuery(currentUrl);
 		getFilterQuery(currentUrl);
 		getSearchQuery(currentUrl);
 		currentUrl.searchParams.set('sorting', sortingButton.id);
