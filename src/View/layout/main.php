@@ -61,7 +61,7 @@ if (!isset($query))
 				<div class="nav-item-label">Товары</div>
 				<div class="menu-container">
 					<div class="menu">
-						<a class="menu-item" href="/admin/">Админский каталог</a>
+						<a class="menu-item" href="/admin/?type=1">Админский каталог</a>
 						<a class="menu-item" href="/admin/chooseItemType" id="/admin/addItem/">Добавить товар</a>
 						<a class="menu-item" href="/admin/addItemType">Добавить тип товара</a>
 						<a class="menu-item" href="/admin/addCategory">Добавить категорию</a>
