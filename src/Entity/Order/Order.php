@@ -177,7 +177,7 @@ class Order extends Entity
 		$cost = 0;
 		foreach ($this->items as $item)
 		{
-			$cost += $item['item']->getPrice();
+			$cost += $item['item']->getPrice() * $item['count'];
 		}
 
 		return $cost;
