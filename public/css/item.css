@@ -297,25 +297,6 @@ item-reviews
 	background: #aaa;
 }
 
-.review-send{
-	display: flex;
-	flex-direction: column;
-}
-
-.review-send-text{
-	resize: none;
-	min-height: 100px;
-	margin: 10px 0 10px 0;
-	padding: 5px;
-	font-family: 'Montserrat', sans-serif;
-}
-
-.rating-title {
-	font-weight: bold;
-	font-size: 18px;
-	margin: 10px 0 30px;
-}
-
 @media screen and (max-width: 1150px)  {
 	.item-main-header {
 		margin: 10px;
@@ -469,6 +450,31 @@ item-review
 
 .review-state-message {
 	margin: 15px 0;
+}
+
+/*==========================
+review-send
+==========================*/
+
+.review-send {
+	display: flex;
+	flex-direction: column;
+}
+
+.review-send-text {
+	resize: none;
+	min-height: 100px;
+	margin: 10px 0 10px 0;
+}
+
+.rating-title {
+	font-weight: bold;
+	font-size: 18px;
+	margin: 10px 0 20px;
+}
+
+.rating-container {
+	margin: 10px 0;
 }
 
 /*==========================
