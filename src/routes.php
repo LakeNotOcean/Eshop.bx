@@ -16,7 +16,7 @@ $router = Up\Core\Router\Router::getInstance();
 $router->get('/404', [CoreController::class, 'get404'], '404');
 
 //User
-$router->get('/catalog', [ItemController::class, 'getItems'], 'home');
+$router->get('/', [ItemController::class, 'getItems'], 'home');
 $router->get('/item/{positiveInt:id}', [ItemController::class, 'getItem'], 'item-detail');
 $router->get('/item/{positiveInt:id}/reviews', [ItemController::class, 'moreReviews'], 'more-reviews');
 $router->post('/reviewDelete/{positiveInt:id}', [ReviewController::class, 'deleteReview'], 'delete-review');
