@@ -1,7 +1,7 @@
 @import "lib/pagination.css";
 @import "lib/card.css";
 
-.container{
+.container {
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
@@ -10,9 +10,22 @@
 	min-height: calc(100vh - var(--nav-height));
 }
 
-.types-card{
+.types-card {
+	display: flex;
 	margin-top: 20px;
-	height: 30px;
 	padding: 5px;
-	max-height: 100%;
+}
+
+.types-card img {
+	width: 130px;
+	height: 130px;
+	object-fit: contain;
+}
+
+.type-name {
+	display: flex;
+	align-items: center;
+	margin-left: 10px;
+	font-size: 22px;
+	font-weight: 700;
 }

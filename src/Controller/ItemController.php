@@ -77,7 +77,14 @@ class ItemController
 	public function setTypeItem(Request $request): Response
 	{
 		$types = $this->itemService->getTypes();
-		$items = $this->itemService->getFirstItemsWithType();
+
+		$typesWithItems = [];
+		foreach ($types as $type) {
+			$typesWithItems[] = [
+				'item' => $this->itemService->getFirstItemOfType($type),
+				'type' => $type
+			];
+		}
 		$currentPage = 1;
 		$pagesAmount = 1;
 		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
@@ -85,7 +92,7 @@ class ItemController
 			'pagesAmount' => $pagesAmount,
 		]);
 		$page = $this->mainLayoutManager->render('change-type.php', [
-			'types' => $types,
+			'typesWithItems' => $typesWithItems,
 			'paginator' => $paginator,
 		]);
 

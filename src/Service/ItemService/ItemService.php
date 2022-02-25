@@ -9,6 +9,7 @@ use Up\DAO\TypeDAO\TypeDAOInterface;
 use Up\Entity\EntityArray;
 use Up\Entity\Item;
 use Up\Entity\ItemDetail;
+use Up\Entity\ItemType;
 use Up\Entity\UserItem;
 use Up\Service\ImageService\ImageServiceInterface;
 
@@ -121,13 +122,15 @@ class ItemService implements ItemServiceInterface
 		$this->itemDAO->removeFromFavorites($userId, $favoriteItemId);
 	}
 
-
 	public function getItemsByTypeID(array $limitOffset, int $typeID): array
 	{
 		return $this->itemDAO->getItemsByTypeID($limitOffset['offset'], $limitOffset['amountItems'], $typeID);
 	}
 
-
+	public function getFirstItemOfType(ItemType $itemType): Item
+	{
+		return $this->itemDAO->getFirstItemByTypeId($itemType->getId());
+	}
 
 	public function getItemsByQuery(array $limitOffset, string $searchQuery): array
 	{
