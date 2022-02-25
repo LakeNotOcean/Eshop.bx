@@ -182,7 +182,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	{
 		return "SELECT * FROM (SELECT ID FROM up_order uo
 				WHERE USER_ID = ?
-				ORDER BY uo.DATE_CREATE
+				ORDER BY uo.DATE_CREATE DESC 
 				LIMIT $offset, $amount) ids";
 	}
 

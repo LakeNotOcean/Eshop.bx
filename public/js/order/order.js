@@ -99,7 +99,7 @@ async function submitOrder(event)
 {
 	let form = document.querySelector('.user-data');
 	let response = await sendOrderData(form, itemsInfo);
-	if (response.redirect)
+	if (response.redirected)
 	{
 		window.location.replace(response.url);
 	}

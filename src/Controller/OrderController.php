@@ -163,7 +163,8 @@ class OrderController
 
 		$page = $this->mainLayoutManager->render('my-orders.php', [
 			'orders' => $orders,
-			'amount' => $ordersAmount
+			'amount' => $ordersAmount,
+			'paginator' => $paginator
 		]);
 
 		return (new Response())->withBodyHTML($page);

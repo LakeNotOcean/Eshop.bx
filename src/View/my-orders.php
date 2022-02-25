@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="/css/orders.css">
 
 <div class="container">
+	<div>Всего заказов: <?= $amount ?></div>
 	<div class="order-list">
 		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 		<?php foreach ($orders as $order):?>
