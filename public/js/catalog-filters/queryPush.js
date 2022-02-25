@@ -27,7 +27,6 @@ let searchButton = document.querySelector('.search-field');
 let searchButtonIcon = document.querySelector('.search-icon');
 
 function searchListener(e) {
-	alert(currentUrl.pathname === "/admin/")
 		if (currentUrl.pathname === "/catalog" || currentUrl.pathname == "/admin/" || currentUrl.pathname === "/catalog/" || currentUrl.pathname === "/catalog")
 		{
 			getSearchQuery(currentUrl);

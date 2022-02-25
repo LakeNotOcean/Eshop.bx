@@ -73,7 +73,7 @@
 				<select id="user-role">
 					<option disabled>Выберите роль</option>
 					<?php foreach ($roles as $role): ?>
-					<option <?php if ($user->getRole()->getName() === $role->getName()) { echo "selected";} ?> value=<?= $role->getId() ?>><?= $role->getName() ?></option>
+					<option <?php if ($user->getRole()->getName() == $role->getName()) { echo "selected";} ?> value=<?= $role->getId() ?>><?= $role->getName() ?></option>
 					<?php endforeach; ?>
 				</select>
 			</label>
@@ -81,7 +81,9 @@
 		</div>
 	</div>
 	<?php endif; ?>
-	<a class="btn btn-normal" href="<?= \Up\Core\Router\URLResolver::resolve('change-password') ?>">Сменить пароль</a>
+	<?php if (!isset($fromUserList)): ?>
+		<a class="btn btn-normal" href="<?= \Up\Core\Router\URLResolver::resolve('change-password') ?>">Сменить пароль</a>
+	<?php endif; ?>
 </div>
 
 <script src="/js/lib/showPopup.js"></script>
