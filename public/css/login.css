@@ -27,7 +27,8 @@
 }
 
 .label-title {
-	width: 50%;
+	width: 20%;
+	white-space: nowrap;
 }
 
 .input-error {

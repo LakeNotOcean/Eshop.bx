@@ -6,15 +6,18 @@ async function deleteReview(id, csrf){
 
 document.querySelectorAll('.review-remove-btn').forEach((btn) => {
 	btn.addEventListener('click', (e) => {
-		let review_id = btn.parentElement.querySelector('[name=review_id]').value
-		let csrf = document.querySelector('.token');
-		deleteReview(review_id, csrf).then((r) => {
-			if(r.ok){
-				showPopup('Отзыв успешно удален');
-				setTimeout(() => location.reload());
-			}
-			else
-				showPopup('Отзыв не удалось удалить');
-		});
+		alertDialogDelete('Удаление комментария',
+			'Вы уверены, что хотите удалить этот комментарий?', () => {
+				let review_id = btn.parentElement.querySelector('[name=review_id]').value
+				let csrf = document.querySelector('.token');
+				deleteReview(review_id, csrf).then((r) => {
+					if(r.ok){
+						showPopup('Отзыв успешно удален');
+						setTimeout(() => location.reload());
+					}
+					else
+						showPopup('Отзыв не удалось удалить');
+				});
+			})
 	});
 });

@@ -1,10 +1,12 @@
 <?php
 /** @var $paginator */
 
-/** @var array<\Up\Entity\Review> $reviews */
-/** @var array<\Up\Entity\UserItem> $items */
+/** @var array<Review> $reviews */
+/** @var array<UserItem> $items */
 
 use Up\Core\Router\URLResolver;
+use Up\Entity\Review;
+use Up\Entity\UserItem;
 use Up\Lib\FormatHelper\DateFormatterRu;
 use Up\Lib\FormatHelper\WordEndingResolver;
 
@@ -45,15 +47,13 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 						<div class="item-short-description">
 							<?= htmlspecialchars($item->getShortDescription()) ?>
 						</div>
-						<div class="item-other-footer">
-							<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
-						</div>
 					</div>
-					<?php
-					if (!$item->getIsActive()): ?>
+					<div class="item-other-footer">
+						<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
+					</div>
+					<?php if (!$item->getIsActive()): ?>
 						<div class="no-active"></div>
-					<?php
-					endif; ?>
+					<?php endif; ?>
 				</div>
 			</div>
 			<div class="delimiter"></div>
