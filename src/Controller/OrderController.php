@@ -96,10 +96,12 @@ class OrderController
 
 		foreach ($itemsData as $itemsDatum)
 		{
-			for ($i = 0; $i < $itemsDatum['count']; $i++)
-			{
-				$items[] = (new Item())->setId($itemsDatum['id']);
-			}
+			$itemId = $itemsDatum['id'];
+			$count = $itemsDatum['count'];
+			$items[$itemId] = [
+				'count' => $count,
+				'item' => (new Item())->setId($itemsDatum['id'])
+			];
 		}
 
 		$first_name = $request->getPostParametersByName('first-name');

@@ -43,7 +43,7 @@ if (!isset($query))
 <body>
 
 <nav>
-	<a href="/">
+	<a href="/" title="На главную">
 		<svg class="logo">
 			<use xlink:href="/img/sprites.svg#logo"></use>
 		</svg>

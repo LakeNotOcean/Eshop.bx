@@ -259,10 +259,15 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		$preparedStatement = $this->getInsertPrepareStatement(
 			'`up_order-item`',
 			['ORDER_ID', 'ITEM_ID', 'COUNT'],
-			count(array_unique(array_map(function($item) {return $item->getId();}, $items)))
+			count($items)
 		);
-		$data = $this->prepareOrderItems($orderId, $items);
-		$preparedStatement->execute(ArrayHelper::flatten($data, false));
+		$queryParams = [];
+		foreach ($items as $itemId => $itemWithCount) {
+			$queryParams[] = $orderId;
+			$queryParams[] = $itemId;
+			$queryParams[] = $itemWithCount['count'];
+		}
+		$preparedStatement->execute($queryParams);
 	}
 
 	public function updateOrderStatus(int $orderId, string $orderNewStatus): void
@@ -278,33 +283,4 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		$this->dbConnection->query($query);
 	}
 
-	/**
-	 * @param int $orderId
-	 * @param array $items
-	 *
-	 * @return array
-	 */
-	private function prepareOrderItems(int $orderId, array $items): array
-	{
-		$itemsCount = [];
-		foreach ($items as $item)
-		{
-			if (isset($itemsCount[$item->getId()]))
-			{
-				++$itemsCount[$item->getId()];
-			}
-			else
-			{
-				$itemsCount[$item->getId()] = 1;
-			}
-		}
-
-		$result = [];
-		foreach ($itemsCount as $itemId => $itemCount)
-		{
-			$result[] = [$orderId, $itemId, $itemCount];
-		}
-
-		return $result;
-	}
 }

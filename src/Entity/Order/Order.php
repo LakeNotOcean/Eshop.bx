@@ -99,7 +99,7 @@ class Order extends Entity
 	}
 
 	/**
-	 * @return array<array{count: int, item: ItemDetail}>
+	 * @return array<array{count: int, item: Item}>
 	 */
 	public function getItems(): array
 	{
@@ -107,7 +107,7 @@ class Order extends Entity
 	}
 
 	/**
-	 * @param array<array{count: int, item: ItemDetail}> $items
+	 * @param array<array{count: int, item: Item}> $items
 	 */
 	public function setItems(array $items): void
 	{
