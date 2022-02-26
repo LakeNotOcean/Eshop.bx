@@ -294,7 +294,7 @@ item-reviews
 }
 
 .btn-item-added {
-	background: #aaa;
+	background: var(--color-cart-remove);
 }
 
 @media screen and (max-width: 1150px)  {
