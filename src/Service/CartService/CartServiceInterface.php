@@ -14,5 +14,7 @@ interface CartServiceInterface
 
 	public function getItemsFromCart(): array;
 
+	public function getCartSize(): int;
+
 	public function isItemInCart(int $itemId): bool;
 }

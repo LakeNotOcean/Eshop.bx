@@ -65,6 +65,11 @@ class CartService implements CartServiceInterface
 		return $this->itemDAO->getItemsWithIds($this->getItemsIdsFromCart());
 	}
 
+	public function getCartSize(): int
+	{
+		return count($this->getItemsIdsFromCart());
+	}
+
 	public function isItemInCart(int $itemId): bool
 	{
 		return in_array($itemId, $this->getItemsIdsFromCart(), true);

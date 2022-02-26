@@ -4,22 +4,29 @@ namespace Up\LayoutManager;
 
 use Up\Core\Message\Request;
 use Up\Core\TemplateProcessorInterface;
+use Up\Service\CartService\CartServiceInterface;
 
 class MainLayoutManager implements LayoutManagerInterface
 {
 
 	protected $templateProcessor;
+	protected $cartService;
 	protected $request;
 	protected $query = '';
 	protected const path = 'layout/main.php';
 
 	/**
 	 * @param \Up\Core\TemplateProcessor $templateProcessor
+	 * @param \Up\Service\CartService\CartService $cartService
 	 * @param \Up\Core\Message\Request $request
 	 */
-	public function __construct(TemplateProcessorInterface $templateProcessor, Request $request)
+	public function __construct(
+		TemplateProcessorInterface $templateProcessor,
+		CartServiceInterface $cartService,
+		Request $request)
 	{
 		$this->templateProcessor = $templateProcessor;
+		$this->cartService = $cartService;
 		$this->request = $request;
 	}
 
@@ -41,7 +48,8 @@ class MainLayoutManager implements LayoutManagerInterface
 			'isAuthenticated' => $this->request->isAuthenticated(),
 			'isAdmin' => $this->request->isAdmin(),
 			'query' => $this->query,
-			'userName' => $this->request->getUser()->getName()
+			'userName' => $this->request->getUser()->getName(),
+			'cartSize' => $this->cartService->getCartSize()
 		];
 	}
 

@@ -221,7 +221,7 @@ class ItemController
 	{
 		if (!$request->isAuthenticated())
 		{
-			throw new RuntimeException('Пользователь не авторизовн');
+			throw new RuntimeException('Пользователь не авторизован');
 		}
 		$userId = $request->getUser()->getId();
 		$favoriteItemId = $request->getPostParametersByName('favorite-item-id');
@@ -238,7 +238,7 @@ class ItemController
 		$userId = $request->getUser()->getId();
 		if ($userId === 0)
 		{
-			throw new RuntimeException('Пользователь не авторизовн');
+			throw new RuntimeException('Пользователь не авторизован');
 		}
 		$favoriteItemId = $request->getPostParametersByName('favorite-item-id');
 		$this->itemService->removeFromFavorites($userId, $favoriteItemId);

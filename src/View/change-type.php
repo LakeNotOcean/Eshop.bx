@@ -12,7 +12,7 @@
 		foreach ($typesWithItems as $typesWithItem):
 			$item = $typesWithItem['item'];
 			$type = $typesWithItem['type']?>
-			<div class="types-card card-outline card-hover" id=<?= $type->getId()?>>
+			<div class="types-card card card-outline card-hover" id=<?= $type->getId()?>>
 				<div>
 					<picture>
 						<source srcset="<?='/' . $item->getMainImage()->getPath('medium', 'webp') ?>" type="image/webp">

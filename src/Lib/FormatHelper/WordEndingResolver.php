@@ -7,6 +7,7 @@ class WordEndingResolver
 	/**
 	 * @param int $number
 	 * @param array<string> $titles
+	 * @example resolve(42, ['товар', 'товара', 'товаров'])
 	 *
 	 * @return string
 	 */

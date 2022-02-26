@@ -48,7 +48,8 @@ class CartController
 		}
 		return (new Response())->withBodyJSON(
 			[
-				'success' => true
+				'success' => true,
+				'cartSize' => $this->cartService->getCartSize()
 			]
 		);
 	}
@@ -66,7 +67,8 @@ class CartController
 		$this->cartService->deleteItemFromCart($itemId);
 		return (new Response())->withBodyJSON(
 			[
-				'success' => true
+				'success' => true,
+				'cartSize' => $this->cartService->getCartSize()
 			]
 		);
 	}

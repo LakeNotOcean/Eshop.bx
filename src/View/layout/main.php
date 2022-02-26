@@ -1,6 +1,7 @@
 <?php
 /** @var string $content */
 /** @var bool $darkMode */
+/** @var int $cartSize */
 
 /** @var string $query */
 /** @var string $userName */
@@ -90,17 +91,18 @@ if (!isset($query))
 			</div>
 		</div>
 	<?php endif;?>
+	<div class="nav-item" id="userMenu">
+		<a href="<?= URLResolver::resolve('make-order') ?>">
+			<span class="cart <?= $cartSize === 0 ? 'empty-cart' : ''?>" data-cart-size="<?= $cartSize?>">
+				<svg class="cart-icon">
+				<use xlink:href="/img/sprites.svg#cart"></use>
+			</svg>
+			</span>
+			<span class="cart-label">Корзина</span>
+		</a>
+	</div>
 
 	<?php if ($isAuthenticated): ?>
-		<div class="nav-item" id="userMenu">
-			<a href="<?= URLResolver::resolve('make-order') ?>">
-				<svg class="cart">
-					<use xlink:href="/img/sprites.svg#cart"></use>
-				</svg>
-				<span class="nav-cart">Корзина</span>
-			</a>
-		</div>
-
 		<div class="nav-item" id="userMenu">
 			<div class="nav-item-label"><?= htmlspecialchars($userName) ?></div>
 			<div class="menu-container profile">
@@ -116,14 +118,6 @@ if (!isset($query))
 			</div>
 		</div>
 	<?php else: ?>
-		<div class="nav-item" id="userMenu">
-			<a href="<?= URLResolver::resolve('make-order') ?>">
-				<svg class="cart">
-					<use xlink:href="/img/sprites.svg#cart"></use>
-				</svg>
-				<span class="nav-cart">Корзина</span>
-			</a>
-		</div>
 		<a href="<?= URLResolver::resolve('login-user') ?>">
 			<div class="btn btn-normal sign-in">Войти</div>
 		</a>
@@ -157,4 +151,5 @@ if (!isset($query))
 </body>
 <script src="/js/catalog-filters/queryPush.js"></script>
 <script src="/js/catalog-filters/get-search-query.js"></script>
+<script src="/js/cart-size.js"></script>
 </html>

@@ -34,6 +34,7 @@ function deleteItemFromCartEventHandler(event)
 	{
 		if (jsonResponse.success)
 		{
+			updateCartSize(jsonResponse.cartSize);
 			setButtonToAddToCartStatement(form)
 		}
 		else
@@ -58,6 +59,7 @@ function addItemToCartEventHandler(event)
 		{
 			if (jsonBody.success)
 			{
+				updateCartSize(jsonBody.cartSize);
 				setButtonInAddedToCartStatement(form)
 			}
 			else
@@ -92,4 +94,8 @@ function setButtonInAddedToCartStatement(form)
 	sendItemIdButton.addEventListener('click', deleteItemFromCartEventHandler);
 	sendItemIdButton.textContent = 'Удалить товар из корзины';
 	form.appendChild(sendItemIdButton);
+}
+
+function updateCartSize(size) {
+	document.querySelector('.cart').setAttribute('data-cart-size', size);
 }
