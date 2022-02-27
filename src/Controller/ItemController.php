@@ -152,7 +152,7 @@ class ItemController
 			$sortingMethod
 		);
 
-		$price = $this->itemService->getItemsMinMaxPriceByItemTypes($typeIds);
+		$price = $this->itemService->getItemsMinMaxPriceByItemTypes($queryTypeId);
 		$itemsAmount = $this->itemService->getItemsAmountByFilters(
 			$query['query'],
 			$query['price'],

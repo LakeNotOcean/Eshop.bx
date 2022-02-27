@@ -21,9 +21,7 @@ interface ItemDAOInterface
 
 	public function getFirstItemsWithType(): array;
 
-	public function getItemsMinMaxPrice(): array;
-
-	public function getItemsMinMaxPriceByItemTypes(array $typeIds): array;
+	public function getItemsMinMaxPriceByItemTypes(int $typeIds): array;
 
 	public function getItemsByFilters(int $offset, int $amountItems, string $query, string $price, array $tags, array $specs, int $typeId, bool $deactivate_include, string $sortingMethod): array;
 
