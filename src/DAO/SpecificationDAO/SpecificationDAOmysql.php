@@ -240,55 +240,6 @@ class SpecificationDAOmysql implements SpecificationDAOInterface
 		}
 	}
 
-	/**
-	 * @param array<string> $categoryNames
-	 * @param array<string> $typeNames
-	 *
-	 * @return array<int,SpecificationCategory>
-	 */
-	public function getSpecificationCategoryByName(array $categoryNames, array $typeNames): array
-	{
-		$categories = [];
-		$result = $this->DBConnection->query($this->getSpecificationCategoryByNameQuery($categoryNames, $typeNames));
-		while ($row = $result->fetch())
-		{
-			if (!isset($categories[$row['C_ID']]))
-			{
-				$categories[$row['C_ID']] =  new SpecificationCategory($row['C_ID'], $row['C_NAME'], $row['C_DISPLAY_ORDER']);
-			}
-			if (!$categories[$row['C_ID']]->hasSpecification($row['T_ID']))
-			{
-				$categories[$row['C_ID']]->setSpecification(
-					new Specification($row['T_ID'], $row['T_NAME'], $row['T_DISPLAY_ORDER'])
-				);
-			}
-		}
-		return $categories;
-	}
-
-	private function getSpecificationCategoryByNameQuery(array $categoryNames, array $typeNames): string
-	{
-		$implodeC = implode(
-			',',
-			array_map(static function($str) {
-				return "'$str'";
-			}, $categoryNames)
-		);
-		$implodeT = implode(
-			',',
-			array_map(static function($str) {
-				return "'$str'";
-			}, $typeNames)
-		);
-		$whereInC = (empty($categoryNames) ? '' : "AND usc.ID IN ({$implodeC})");
-		$whereInT = (empty($typeNames) ? '' : "AND ust.ID IN ({$implodeT})");
-
-		return "SELECT usc.ID C_ID, usc.NAME C_NAME, usc.DISPLAY_ORDER C_DISPLAY_ORDER, ust.ID T_ID, 
-                        ust.NAME T_NAME, ust.DISPLAY_ORDER T_DISPLAY_ORDER
-				FROM up_spec_category usc
-				INNER JOIN up_spec_type ust on usc.ID = ust.SPEC_CATEGORY_ID {$whereInC} {$whereInT};";
-	}
-
 	private function getCategoriesByItemTypeIdQuery(int $itemTypeId): string
 	{
 		return "SELECT 
