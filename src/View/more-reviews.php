@@ -88,9 +88,12 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 			<?php if($review->getUser()->getId() == $user->getId()): ?>
 				<div class="your-review-msg">Это ваш отзыв</div>
 			<?php endif; ?>
-			<?php if($review->getUser()->getId() == $user->getId() || $user->getRole()->getName() == \Up\Entity\User\UserEnum::Admin()): ?>
-			<div class="review-remove-btn"></div>
-			<input type="hidden" name="review_id" value="<?= $review->getId() ?>">
+			<?php if($review->getUser()->getId() === $user->getId() || $user->getRole()->getName() == \Up\Entity\User\UserEnum::Admin()): ?>
+			<div class="delete-section">
+				<div class="btn btn-delete review-remove-btn review-remove-btn">Удалить</div>
+				<input type="hidden" name="review_id" value="<?= $review->getId() ?>">
+			</div>
+
 			<?php endif; ?>
 		</div>
 	<?php
@@ -98,6 +101,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 	<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 	<?= $paginator ?>
 </div>
+<script src="/js/lib/alert-dialog.js"></script>
 <script src="/js/lib/showPopup.js"></script>
 <script src="/js/review/delete-review.js"></script>
 <script src="/js/add-to-favorites.js"></script>

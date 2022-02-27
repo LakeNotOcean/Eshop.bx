@@ -197,7 +197,8 @@ class ReviewDAOmysql extends AbstractDAO implements ReviewDAOInterface
 				  INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID 
 				  INNER JOIN up_user uu on ur.USER_ID = uu.ID
 				  INNER JOIN up_role u on uu.ROLE_ID = u.ID
-				  LEFT JOIN `up_user-favorite_item` `uu-fi` on ui.ID = `uu-fi`.FAVORITE_ITEM_ID";
+				  LEFT JOIN `up_user-favorite_item` `uu-fi` on ui.ID = `uu-fi`.FAVORITE_ITEM_ID
+				  ORDER BY ur.DATE_CREATE DESC";
 		return $this->dbConnection->prepare($query);
 	}
 
@@ -232,7 +233,8 @@ class ReviewDAOmysql extends AbstractDAO implements ReviewDAOInterface
 				  INNER JOIN up_image_with_size uiws on uoi.ID = uiws.ORIGINAL_IMAGE_ID 
 				  INNER JOIN up_user uu on ur.USER_ID = uu.ID
 				  INNER JOIN up_role u on uu.ROLE_ID = u.ID
-				  LEFT JOIN `up_user-favorite_item` `uu-fi` on ui.ID = `uu-fi`.FAVORITE_ITEM_ID";
+				  LEFT JOIN `up_user-favorite_item` `uu-fi` on ui.ID = `uu-fi`.FAVORITE_ITEM_ID
+				  ORDER BY ur.DATE_CREATE DESC ";
 		return $this->dbConnection->prepare($query);
 	}
 
@@ -250,7 +252,7 @@ class ReviewDAOmysql extends AbstractDAO implements ReviewDAOInterface
 	{
 		return "SELECT * FROM(SELECT DISTINCT ID FROM up_review ur
 	                                   WHERE ur.{$whereColumnName} = ?
-	                                   ORDER BY ID
+	                                   ORDER BY ur.DATE_CREATE DESC 
 	                                   LIMIT {$offset}, {$amount}) ids";
 	}
 }

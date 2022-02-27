@@ -17,3 +17,7 @@
 .card.your-review-card {
 	background: rgba(255, 233, 177, 0.2);
 }
+
+.delete-section {
+	display: flex;
+}

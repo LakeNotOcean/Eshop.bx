@@ -959,15 +959,13 @@ WHERE COUNT = ";
 		}
 		if (!empty($newSpecs))
 		{
-			$query .= "
-INNER JOIN (select
-	ITEM_ID
-FROM
-(select
-	 ITEM_ID as ITEM_ID,
-	 COUNT(VALUE) as COUNT
- FROM `up_item-spec`
- WHERE ";
+			$query .=
+				"\nINNER JOIN (select ITEM_ID
+				   FROM
+					(select ITEM_ID as ITEM_ID,
+	 						COUNT(VALUE) as COUNT
+ 					FROM `up_item-spec`
+					WHERE ";
 			$where = [];
 			foreach ($newSpecs as $spec => $values)
 			{
