@@ -169,7 +169,7 @@ class UserController
 	 */
 	public function userListPage(Request $request): Response
 	{
-		$currentPage = ($request->containsQuery('page')) ? (int)$request->getQueriesByName('page') : 1;
+		$currentPage = ($request->containsQuery('page')) ? (int) $request->getQueriesByName('page') : 1;
 		$currentPage = ($currentPage > 0) ? $currentPage : 1;
 		$query = $request->getQueriesOrDefaultList(['query'=>'']);
 		$search = $query['query'];
@@ -258,7 +258,7 @@ class UserController
 	 */
 	public function adminListPage(Request $request): Response
 	{
-		$currentPage = ($request->containsQuery('page')) ? (int)$request->getQueriesByName('page') : 1;
+		$currentPage = ($request->containsQuery('page')) ? (int) $request->getQueriesByName('page') : 1;
 		$currentPage = ($currentPage > 0) ? $currentPage : 1;
 		$query = $request->getQueriesOrDefaultList(['query'=>'']);
 		$search = $query['query'];

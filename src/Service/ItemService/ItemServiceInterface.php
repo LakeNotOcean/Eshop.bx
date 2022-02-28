@@ -16,7 +16,7 @@ interface ItemServiceInterface
 
 	public function getItemsByTypeID(array $limitOffset, int $typeID): array;
 
-	public function getFirstItemOfType(ItemType $itemType): ?Item;
+	public function getFirstAvailableItemOfType(ItemType $itemType): ?Item;
 
 	public function getFavoriteItems(int $userId, array $limitOffset): array;
 
