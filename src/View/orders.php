@@ -26,7 +26,7 @@ use Up\Lib\FormatHelper\WordFormatter;
 				<option value="CANCELLED">Отменён</option>
 			</select>
 		</div>
-		<form action="<?= URLResolver::resolve('orders-admin') ?>" method="get" enctype="multipart/form-data" class="local-search">
+		<form action="<?= URLResolver::resolve('admin:orders') ?>" method="get" enctype="multipart/form-data" class="local-search">
 			<input type="text" id="query" name="query" class="search-field" placeholder="Поиск заказов"
 				   value="<?= htmlspecialchars($query)?>">
 			<div class="search-icon">

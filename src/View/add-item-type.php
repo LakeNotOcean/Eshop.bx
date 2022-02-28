@@ -8,7 +8,7 @@ use Up\Lib\CSRF\CSRF;
 
 <link rel="stylesheet" href="/css/add-item.css">
 <div class="container">
-	<form action="<?= URLResolver::resolve('add-item-type') ?>" method="post" enctype="multipart/form-data" class="form-add">
+	<form action="<?= URLResolver::resolve('admin:add-item-type') ?>" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="item-type" class="field">
 			<span class="label-title">Тип товара</span>
 			<input type="text" id="item-type" name="item-type" placeholder="Введите название типа товара" class="input"

@@ -8,7 +8,7 @@ use Up\Lib\CSRF\CSRF;
 
 <link rel="stylesheet" href="/css/add-item.css">
 <div class="container">
-	<form action="<?= URLResolver::resolve('add-category') ?>" method="post" enctype="multipart/form-data" class="form-add">
+	<form action="<?= URLResolver::resolve('admin:add-category') ?>" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="category" class="field">
 			<span class="label-title">Категория</span>
 			<input type="text" id="category" name="category" placeholder="Введите название категории" class="input"

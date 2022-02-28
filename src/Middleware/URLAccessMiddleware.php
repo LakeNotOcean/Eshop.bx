@@ -21,22 +21,22 @@ class URLAccessMiddleware extends AbstractMiddleware
 	 *     Сопоставляются названия путей и их права доступа. По умолчанию доступ - Guest
 	 */
 	private const accessConfig = [
-		'add-item' => UserEnum::Moderator,
-		'update-item' => UserEnum::Moderator,
-		'choose-item-type' => UserEnum::Moderator,
-		'add-item-type' => UserEnum::Moderator,
-		'add-category' => UserEnum::Moderator,
-		'add-specification' => UserEnum::Moderator,
-		'home-admin' => UserEnum::Moderator,
-		'delete-category' => UserEnum::Moderator,
-		'choose-category' => UserEnum::Moderator,
-		'delete-specification' => UserEnum::Moderator,
-		'edit-item' => UserEnum::Moderator,
-		'deactivate-item' => UserEnum::Moderator,
-		'fast-item-update' => UserEnum::Moderator,
-		'delete-image' => UserEnum::Moderator,
-		'edit-category' => UserEnum::Moderator,
-		'orders-admin' => UserEnum::Moderator,
+		'admin:add-item' => UserEnum::Moderator,
+		'admin:update-item' => UserEnum::Moderator,
+		'admin:choose-item-type' => UserEnum::Moderator,
+		'admin:add-item-type' => UserEnum::Moderator,
+		'admin:add-category' => UserEnum::Moderator,
+		'admin:add-specification' => UserEnum::Moderator,
+		'admin:home' => UserEnum::Moderator,
+		'admin:delete-category' => UserEnum::Moderator,
+		'admin:choose-category' => UserEnum::Moderator,
+		'admin:delete-specification' => UserEnum::Moderator,
+		'admin:edit-item' => UserEnum::Moderator,
+		'admin:deactivate-item' => UserEnum::Moderator,
+		'admin:fast-item-update' => UserEnum::Moderator,
+		'admin:delete-image' => UserEnum::Moderator,
+		'admin:edit-category' => UserEnum::Moderator,
+		'admin:orders' => UserEnum::Moderator,
 	];
 	private $userService;
 

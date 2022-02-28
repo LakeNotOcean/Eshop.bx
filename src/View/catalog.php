@@ -135,7 +135,7 @@ use Up\Lib\FormatHelper\WordFormatter;
 			foreach ($items as $item): ?>
 
 				<?php if ($isAdmin):?>
-				<form enctype="multipart/form-data" action="<?= URLResolver::resolve('fast-item-update') ?>" name="fast-update" method="post" class="item card card-hover">
+				<form enctype="multipart/form-data" action="<?= URLResolver::resolve('admin:fast-item-update') ?>" name="fast-update" method="post" class="item card card-hover">
 				<?php else:?>
 				<div class="item card card-hover">
 				<?php endif;?>
@@ -193,7 +193,7 @@ use Up\Lib\FormatHelper\WordFormatter;
 							<?php if ($isAdmin): ?>
 								<input name="item-sort_order" class="input display-order" type="number" value="<?= $item->getSortOrder() ?>">
 								<div class="admin-btn-container">
-									<a class="btn btn-normal" href="<?=URLResolver::resolve('edit-item', ['id' => $item->getId()])?>">Редактировать</a>
+									<a class="btn btn-normal" href="<?=URLResolver::resolve('admin:edit-item', ['id' => $item->getId()])?>">Редактировать</a>
 									<input type="submit" style="display: none">
 									<?php if ($item->getIsActive()): ?>
 										<a class="btn btn-deactivate">Скрыть</a>

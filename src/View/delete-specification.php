@@ -11,7 +11,7 @@ use Up\Lib\CSRF\CSRF;
 
 <link rel="stylesheet" href="/css/add-item.css">
 <div class="container">
-	<form action="<?= URLResolver::resolve('delete-specification') ?>" method="post" enctype="multipart/form-data" class="form-add">
+	<form action="<?= URLResolver::resolve('admin:delete-specification') ?>" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="category-id" class="field">
 			<input name="category-id" value="<?= $categoryId ?>" type="hidden">
 			<span class="label-title">Спецификация</span>

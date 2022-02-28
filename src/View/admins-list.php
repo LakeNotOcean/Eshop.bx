@@ -12,7 +12,7 @@ use Up\Core\Router\URLResolver;
 
 <div class="container">
 	<div class="admin-line">
-		<form action="<?= URLResolver::resolve('admin-list') ?>" method="get" enctype="multipart/form-data" class="local-search">
+		<form action="<?= URLResolver::resolve('admin:admin-list') ?>" method="get" enctype="multipart/form-data" class="local-search">
 			<input type="text" id="query" name="query" class="search-field" placeholder="Поиск администраторов"
 				   value="<?= htmlspecialchars($query)?>">
 			<div class="search-icon">

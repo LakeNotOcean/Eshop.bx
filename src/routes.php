@@ -7,8 +7,7 @@ use Up\Controller\ItemController;
 use Up\Controller\OrderController;
 use Up\Controller\ReviewController;
 use Up\Controller\UserController;
-use \Up\Controller\CategoryController;
-
+use Up\Controller\CategoryController;
 
 $router = Up\Core\Router\Router::getInstance();
 
@@ -23,7 +22,7 @@ $router->get('/item/{positiveInt:id}/reviews', [ItemController::class, 'moreRevi
 $router->post('/reviewDelete/{positiveInt:id}', [ReviewController::class, 'deleteReview'], 'delete-review');
 $router->post('/finishOrder', [OrderController::class, 'finishOrder'], 'finish-order');
 $router->post('/addItemToCart', [CartController::class, 'addItemToCart'], 'add-item-to-cart');
-$router->post('/deleteItemFromCart', [CartController::class, 'deleteItemFromCart'], 'delete-item-from-cart');
+$router->post('/deleteItemFromCart', [CartController::class, 'deleteItemFromCart'], 'admin:delete-item-from-cart');
 $router->get('/makeOrder', [OrderController::class, 'makeOrder'], 'make-order');
 
 $router->get('/register', [UserController::class, 'registerUserPage'], 'register-user');
@@ -46,45 +45,44 @@ $router->post('/removeFromFavorites', [ItemController::class, 'removeFromFavorit
 $router->get('/removeFromFavorites', [ItemController::class, 'removeFromFavorites'], 'remove-from-favorites');
 
 //Admin
-$router->get('/admin/addItem', [ItemController::class, 'addItem'], 'add-item');
-$router->get('/admin/updateItem',[ItemController::class, 'updateItemPage'],'update-item');
-$router->post('/admin/addItem', [ItemController::class, 'createNewItem'], 'add-item');
-$router->get('/admin/chooseItemType', [CategoryController::class, 'chooseItemType'], 'choose-item-type');
-$router->get('/admin/addItemType', [CategoryController::class, 'addItemType'], 'add-item-type');
-$router->post('/admin/addItemType', [CategoryController::class, 'addItemTypeAndSaveToDB'], 'add-item-type');
-$router->get('/admin/addCategory', [CategoryController::class, 'addCategory'], 'add-category');
-$router->post('/admin/addCategory', [CategoryController::class, 'addCategoryAndSaveToDB'], 'add-category');
-$router->get('/admin/addSpecification', [CategoryController::class, 'addSpecification'], 'add-specification');
-$router->post('/admin/addSpecification', [CategoryController::class, 'addSpecificationAndSaveToDB'], 'add-specification');
+$router->get('/admin/addItem', [ItemController::class, 'addItem'], 'admin:add-item');
+$router->get('/admin/updateItem',[ItemController::class, 'updateItemPage'],'admin:update-item');
+$router->post('/admin/addItem', [ItemController::class, 'createNewItem'], 'admin:add-item');
+$router->get('/admin/chooseItemType', [CategoryController::class, 'chooseItemType'], 'admin:choose-item-type');
+$router->get('/admin/addItemType', [CategoryController::class, 'addItemType'], 'admin:add-item-type');
+$router->post('/admin/addItemType', [CategoryController::class, 'addItemTypeAndSaveToDB'], 'admin:add-item-type');
+$router->get('/admin/addCategory', [CategoryController::class, 'addCategory'], 'admin:add-category');
+$router->post('/admin/addCategory', [CategoryController::class, 'addCategoryAndSaveToDB'], 'admin:add-category');
+$router->get('/admin/addSpecification', [CategoryController::class, 'addSpecification'], 'admin:add-specification');
+$router->post('/admin/addSpecification', [CategoryController::class, 'addSpecificationAndSaveToDB'], 'admin:add-specification');
 
-$router->get('/admin/', [ItemController::class, 'getItems'], 'home-admin');
-$router->get('/admin/deleteCategory', [CategoryController::class, 'deleteCategoryPage'], 'delete-category');
-$router->post('/admin/deleteCategory', [CategoryController::class, 'deleteCategory'], 'delete-category');
-$router->get('/admin/chooseCategory', [CategoryController::class, 'chooseCategoryToSpecDelete'], 'choose-category');
-$router->get('/admin/deleteSpec/{positiveInt:id}',[CategoryController::class, 'deleteSpecPage'],'delete-specification');
-$router->post('/admin/deleteSpecification', [CategoryController::class, 'deleteSpec'], 'delete-specification');
-$router->get('/admin/editItem/{positiveInt:id}', [ItemController::class, 'addItem'], 'edit-item');
-$router->post('/admin/deactivateItem/{positiveInt:id}', [ItemController::class, 'deactivateItem'], 'deactivate-item');
-$router->post('/admin/activateItem/{positiveInt:id}', [ItemController::class, 'activateItem'], 'activate-item');
-$router->post('/admin/deleteItem/{positiveInt:id}', [ItemController::class, 'realDeleteItem'], 'delete-item');
-$router->post('/admin/fastUpdateItem', [ItemController::class, 'updateCommonInfo'], 'fast-item-update');
-$router->post('/admin/deleteImage/{positiveInt:id}', [ImageController::class, 'deleteImageById'], 'delete-image');
+$router->get('/admin/', [ItemController::class, 'getItems'], 'admin:home');
+$router->get('/admin/deleteCategory', [CategoryController::class, 'deleteCategoryPage'], 'admin:delete-category');
+$router->post('/admin/deleteCategory', [CategoryController::class, 'deleteCategory'], 'admin:delete-category');
+$router->get('/admin/chooseCategory', [CategoryController::class, 'chooseCategoryToSpecDelete'], 'admin:choose-category');
+$router->get('/admin/deleteSpec/{positiveInt:id}',[CategoryController::class, 'deleteSpecPage'],'admin:delete-specification');
+$router->post('/admin/deleteSpecification', [CategoryController::class, 'deleteSpec'], 'admin:delete-specification');
+$router->get('/admin/editItem/{positiveInt:id}', [ItemController::class, 'addItem'], 'admin:edit-item');
+$router->post('/admin/deactivateItem/{positiveInt:id}', [ItemController::class, 'deactivateItem'], 'admin:deactivate-item');
+$router->post('/admin/activateItem/{positiveInt:id}', [ItemController::class, 'activateItem'], 'admin:activate-item');
+$router->post('/admin/deleteItem/{positiveInt:id}', [ItemController::class, 'realDeleteItem'], 'admin:delete-item');
+$router->post('/admin/fastUpdateItem', [ItemController::class, 'updateCommonInfo'], 'admin:fast-item-update');
+$router->post('/admin/deleteImage/{positiveInt:id}', [ImageController::class, 'deleteImageById'], 'admin:delete-image');
 
-$router->get('/admin/adminList',[UserController::class, 'adminListPage'],'admin-list');
-$router->post('/admin/adminList',[UserController::class, 'removeAdmin'],'admin-list');
-$router->get('/admin/userList',[UserController::class, 'userListPage'],'user-list');
-$router->post('/admin/adminUpdateUser/{positiveInt:id}',[UserController::class, 'adminUpdateUser'],'admin-update-user');
-$router->get('/admin/userList/{positiveInt:id}',[UserController::class, 'userInfoPage'],'user-info');
+$router->get('/admin/adminList',[UserController::class, 'adminListPage'],'admin:admin-list');
+$router->post('/admin/adminList',[UserController::class, 'removeAdmin'],'admin:admin-list');
+$router->get('/admin/userList',[UserController::class, 'userListPage'],'admin:user-list');
+$router->post('/admin/adminUpdateUser/{positiveInt:id}',[UserController::class, 'adminUpdateUser'],'admin:update-user');
+$router->get('/admin/userList/{positiveInt:id}',[UserController::class, 'userInfoPage'],'admin:user-info');
 
-$router->get('/admin/editCategory', [CategoryController::class, 'editCategoriesPage'], 'edit-category');
+$router->get('/admin/editCategory', [CategoryController::class, 'editCategoriesPage'], 'admin:edit-category');
 
-$router->get('/admin/', [ItemController::class, 'getItems'], 'home-admin');
-$router->get('/admin/getOrders', [OrderController::class, 'getOrders'], 'orders-admin');
-$router->post('/admin/changeOrderStatus', [OrderController::class, 'changeOrderStatus'], 'order-change-status');
-$router->post('/admin/deleteOrder', [OrderController::class, 'deleteOrder'], 'order-delete');
+$router->get('/admin/getOrders', [OrderController::class, 'getOrders'], 'admin:orders');
+$router->post('/admin/changeOrderStatus', [OrderController::class, 'changeOrderStatus'], 'admin:order-change-status');
+$router->post('/admin/deleteOrder', [OrderController::class, 'deleteOrder'], 'admin:order-delete');
 
 //API
-$router->get('/api/v1/category/detail', [CategoryController::class, 'getCategoriesWithSpecsJSON'], 'category-detail');
-$router->get('/api/v1/categories', [CategoryController::class, 'getCategoriesJSON'], 'cat');
-$router->get('/api/v1/categoriesByType', [CategoryController::class, 'getCategoriesByItemTypeIdJSON'], 'categories-by-type');
-$router->get('/api/v1/categoriesByItem/{positiveInt:id}', [CategoryController::class, 'getCategoriesByItemIdJSON'], 'categories-by-item');
+$router->get('/api/v1/category/detail', [CategoryController::class, 'getCategoriesWithSpecsJSON'], 'apiV1:category-detail');
+$router->get('/api/v1/categories', [CategoryController::class, 'getCategoriesJSON'], 'apiV1:categories');
+$router->get('/api/v1/categoriesByType', [CategoryController::class, 'getCategoriesByItemTypeIdJSON'], 'apiV1:categories-by-type');
+$router->get('/api/v1/categoriesByItem/{positiveInt:id}', [CategoryController::class, 'getCategoriesByItemIdJSON'], 'apiV1:categories-by-item');

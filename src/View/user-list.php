@@ -17,7 +17,7 @@ use Up\Lib\CSRF\CSRF;
 		<div class="search-count">
 			Найдено пользователей <?= $query !== '' ?  'по запросу ' . htmlspecialchars($query) : ''?>: <?= htmlspecialchars($userAmount)?>
 		</div>
-		<form action="<?= URLResolver::resolve('user-list')?>" method="get" enctype="multipart/form-data" class="local-search">
+		<form action="<?= URLResolver::resolve('admin:user-list')?>" method="get" enctype="multipart/form-data" class="local-search">
 			<input type="text" id="query" name="query" class="search-field" placeholder="Поиск пользователей"
 				   value="<?= htmlspecialchars($query) ?>">
 			<div class="search-icon">
@@ -47,7 +47,7 @@ use Up\Lib\CSRF\CSRF;
 				</div>
 				<?php if ($user->getRole()->getId() !== 1):?>
 				<div class="delete-button-section">
-					<a class="btn btn-normal edit-button" href="<?= URLResolver::resolve('user-info', ["id"=>$user->getId()]) ?>" id=<?=htmlspecialchars($user->getLogin())?>>
+					<a class="btn btn-normal edit-button" href="<?= URLResolver::resolve('admin:user-info', ["id"=>$user->getId()]) ?>" id=<?=htmlspecialchars($user->getLogin())?>>
 						<svg class="pencil">
 							<use xlink:href="/img/sprites.svg#pencil"></use>
 						</svg>
