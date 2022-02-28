@@ -17,7 +17,7 @@ use Up\Core\Router\URLResolver;
 use Up\Entity\Item;
 use Up\Lib\CSRF\CSRF;
 use Up\Lib\FormatHelper\NumberFormatter;
-use Up\Lib\FormatHelper\WordEndingResolver;
+use Up\Lib\FormatHelper\WordFormatter;
 
 ?>
 
@@ -25,9 +25,9 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 <div class="container">
 	<div class="search_result_count">
 		<?php if ($query === ''): ?>
-		Найдено: <?= $itemsAmount ?> <?= WordEndingResolver::resolve($itemsAmount, array('товар','товара','товаров')) ?>
+		Найдено: <?= $itemsAmount ?> <?= WordFormatter::getPlural($itemsAmount, array('товар', 'товара', 'товаров')) ?>
 		<?php else: ?>
-		Результаты поиска по запросу "<?= htmlspecialchars($query) ?>": <?= $itemsAmount ?> <?= WordEndingResolver::resolve($itemsAmount, array('товар','товара','товаров')) ?>
+		Результаты поиска по запросу "<?= htmlspecialchars($query) ?>": <?= $itemsAmount ?> <?= WordFormatter::getPlural($itemsAmount, array('товар', 'товара', 'товаров')) ?>
 		<?php endif; ?>
 	</div>
 
@@ -184,7 +184,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 									<div class="review-count">
 										<?= ($item->getAmountReviews() > 0) ?
 											"({$item->getAmountReviews()} "
-											. WordEndingResolver::resolve($item->getAmountReviews(), array('отзыв','отзыва','отзывов'))
+											. WordFormatter::getPlural($item->getAmountReviews(), array('отзыв', 'отзыва', 'отзывов'))
 											. ')'
 											: 'Отзывов пока нет.' ?>
 									</div>

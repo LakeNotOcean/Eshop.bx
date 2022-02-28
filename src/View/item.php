@@ -15,7 +15,7 @@ use Up\Entity\UserItem;
 use Up\Lib\CSRF\CSRF;
 use Up\Lib\FormatHelper\DateFormatterRu;
 use Up\Lib\FormatHelper\NumberFormatter;
-use Up\Lib\FormatHelper\WordEndingResolver;
+use Up\Lib\FormatHelper\WordFormatter;
 ?>
 
 <link rel="stylesheet" href="/css/item.css">
@@ -119,7 +119,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 								<div class="buy-reviews-separator">·</div>
 								<div class="buy-reviews-count"><?= ($item->getAmountReviews() > 0) ?
 										"({$item->getAmountReviews()} "
-										. WordEndingResolver::resolve($item->getAmountReviews(), array('отзыв','отзыва','отзывов'))
+										. WordFormatter::getPlural($item->getAmountReviews(), array('отзыв', 'отзыва', 'отзывов'))
 										. ')'
 										: 'нет отзывов' ?></div>
 							</div>
@@ -179,7 +179,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 							<div class="reviews-separator">·</div>
 							<div class="reviews-count"><?= ($item->getAmountReviews() > 0) ?
 									"({$item->getAmountReviews()} "
-									. WordEndingResolver::resolve($item->getAmountReviews(), array('отзыв','отзыва','отзывов'))
+									. WordFormatter::getPlural($item->getAmountReviews(), array('отзыв', 'отзыва', 'отзывов'))
 									. ')'
 									: 'нет отзывов' ?></div>
 						</div>

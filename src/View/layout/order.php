@@ -5,7 +5,7 @@
 /** @var int $orderSize */
 /** @var int $cost */
 
-use Up\Lib\WordProcessor\WordProcessor;
+use Up\Lib\FormatHelper\WordFormatter;
 
 ?>
 
@@ -42,7 +42,7 @@ use Up\Lib\WordProcessor\WordProcessor;
 	</a>
 	<?php if ($cost > 0): ?>
 	<div class="order-info-message">
-		Оформление заказа: <?= $orderSize ?> <?= WordProcessor::formatWord($orderSize, 'товар') ?> за <?= $cost ?> ₽
+		Оформление заказа: <?= $orderSize ?> <?= WordFormatter::getPlural($orderSize, ['товар', 'товара', 'товаров']) ?> за <?= $cost ?> ₽
 	</div>
 	<?php else: ?>
 	<div class="order-info-message">Ваша корзина пуста!</div>

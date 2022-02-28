@@ -1,13 +1,15 @@
 <?php
 
-/** @var array<\Up\Entity\Order\Order> $orders */
+/** @var array<Order> $orders */
 /** @var string $query */
 
 /** @var $paginator */
 
 use Up\Core\Router\URLResolver;
+use Up\Entity\Order\Order;
 use Up\Lib\CSRF\CSRF;
 use Up\Lib\FormatHelper\DateFormatterRu;
+use Up\Lib\FormatHelper\WordFormatter;
 
 ?>
 
@@ -58,11 +60,12 @@ use Up\Lib\FormatHelper\DateFormatterRu;
 					</div>
 					<?php
 					$i = 1;
-					foreach ($order->getItems() as $itemId => $purchased):?>
+					foreach ($order->getItems() as $itemId => $purchased):
+						$count = $purchased['count'];?>
 						<div class="order-item">
 							<div class="item-number"><?= $i ?>.</div>
 							<div class="item-title"><?= htmlspecialchars($purchased['item']->getTitle()) ?></div>
-							<div class="item-count"><?= $purchased['count'] . ' штук' ?></div>
+							<div class="item-count"><?= $count . ' ' . WordFormatter::getPlural($count, ['штука', 'штуки', 'штук']) ?></div>
 							<div class="item-price"><?= $purchased['item']->getPrice() ?> ₽</div>
 							<div class="item-cost"><?= $purchased['count'] * $purchased['item']->getPrice() ?> ₽</div>
 						</div>

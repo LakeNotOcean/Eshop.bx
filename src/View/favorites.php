@@ -1,11 +1,12 @@
 <?php
 
-/** @var array<\Up\Entity\UserItem> $favoriteItems */
+/** @var array<UserItem> $favoriteItems */
 /** @var $paginator */
 
 use Up\Core\Router\URLResolver;
+use Up\Entity\UserItem;
 use Up\Lib\CSRF\CSRF;
-use Up\Lib\FormatHelper\WordEndingResolver;
+use Up\Lib\FormatHelper\WordFormatter;
 
 ?>
 
@@ -61,7 +62,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 						<div class="review-count">
 							<?= ($item->getAmountReviews() > 0) ?
 								"({$item->getAmountReviews()} "
-								. WordEndingResolver::resolve($item->getAmountReviews(), array('отзыв','отзыва','отзывов'))
+								. WordFormatter::getPlural($item->getAmountReviews(), array('отзыв', 'отзыва', 'отзывов'))
 								. ')'
 								: 'Отзывов пока нет.' ?>
 						</div>
