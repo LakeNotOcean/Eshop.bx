@@ -175,7 +175,6 @@ class UserController
 		$search = $query['query'];
 		$itemsAmount = $this->userService->getAmountUserByQuery(0,$search);
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->usersInPage);
-		$currentPage = ($currentPage > $pagesAmount) ? $pagesAmount : $currentPage;
 		$userList = $this->userService->getUserListByQuery(Paginator::getLimitOffset($currentPage,$this->usersInPage),0,$search);
 
 		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
@@ -268,7 +267,6 @@ class UserController
 		$search = $query['query'];
 		$itemsAmount = $this->userService->getAmountUserByQuery(1,$search);
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->adminsInPage);
-		$currentPage = ($currentPage > $pagesAmount) ? $pagesAmount : $currentPage;
 		$adminList = $this->userService->getUserListByQuery(Paginator::getLimitOffset($currentPage,$this->adminsInPage),1,$search);
 
 		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
