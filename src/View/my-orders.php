@@ -1,9 +1,14 @@
 <?php
 
-/** @var array<\Up\Entity\Order\Order> $orders */
+/** @var array<Order> $orders */
 /** @var int $amount */
 
 /** @var $paginator */
+
+use Up\Entity\Order\Order;
+use Up\Lib\CSRF\CSRF;
+use Up\Lib\FormatHelper\DateFormatterRu;
+use Up\Lib\FormatHelper\WordFormatter;
 
 ?>
 
@@ -12,7 +17,7 @@
 <div class="container">
 	<div>Всего заказов: <?= $amount ?></div>
 	<div class="order-list">
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+		<?= CSRF::getFormField() ?>
 		<?php foreach ($orders as $order):?>
 			<div class="order card">
 				<div class="order-line">
@@ -29,7 +34,7 @@
 				</div>
 				<div class="order-line">
 					<div class="order-label">Дата заказа:</div>
-					<div class="order-value"><?= htmlspecialchars(\Up\Lib\FormatHelper\DateFormatterRu::format($order->getDateCreate()))?></div>
+					<div class="order-value"><?= htmlspecialchars(DateFormatterRu::format($order->getDateCreate()))?></div>
 				</div>
 				<div class="order-items">
 					<div class="order-line">
@@ -37,11 +42,12 @@
 					</div>
 					<?php
 					$i = 1;
-					foreach ($order->getItems() as $itemId => $purchased):?>
+					foreach ($order->getItems() as $itemId => $purchased):
+						$count = $purchased['count'];?>
 						<div class="order-item">
 							<div class="item-number"><?= $i ?>.</div>
 							<div class="item-title"><?= htmlspecialchars($purchased['item']->getTitle()) ?></div>
-							<div class="item-count"><?= $purchased['count'] . ' ' . \Up\Lib\FormatHelper\WordEndingResolver::resolve($purchased['count'], ['штука', 'штуки', 'штук']) ?></div>
+							<div class="item-count"><?= $count . ' ' . WordFormatter::getPlural($count, ['штука', 'штуки', 'штук']) ?></div>
 							<div class="item-price"><?= $purchased['item']->getPrice() ?> ₽</div>
 							<div class="item-cost"><?= $purchased['count'] * $purchased['item']->getPrice() ?> ₽</div>
 						</div>

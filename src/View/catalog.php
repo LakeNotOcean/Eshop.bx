@@ -15,8 +15,9 @@ $pref = '_big';
 
 use Up\Core\Router\URLResolver;
 use Up\Entity\Item;
+use Up\Lib\CSRF\CSRF;
 use Up\Lib\FormatHelper\NumberFormatter;
-use Up\Lib\FormatHelper\WordEndingResolver;
+use Up\Lib\FormatHelper\WordFormatter;
 
 ?>
 
@@ -24,9 +25,9 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 <div class="container">
 	<div class="search_result_count">
 		<?php if ($query === ''): ?>
-		Найдено: <?= $itemsAmount ?> <?= WordEndingResolver::resolve($itemsAmount, array('товар','товара','товаров')) ?>
+		Найдено: <?= $itemsAmount ?> <?= WordFormatter::getPlural($itemsAmount, array('товар', 'товара', 'товаров')) ?>
 		<?php else: ?>
-		Результаты поиска по запросу "<?= htmlspecialchars($query) ?>": <?= $itemsAmount ?> <?= WordEndingResolver::resolve($itemsAmount, array('товар','товара','товаров')) ?>
+		Результаты поиска по запросу "<?= htmlspecialchars($query) ?>": <?= $itemsAmount ?> <?= WordFormatter::getPlural($itemsAmount, array('товар', 'товара', 'товаров')) ?>
 		<?php endif; ?>
 	</div>
 
@@ -134,7 +135,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 			foreach ($items as $item): ?>
 
 				<?php if ($isAdmin):?>
-				<form enctype="multipart/form-data" action="/admin/fastUpdateItem" name="fast-update" method="post" class="item card card-hover">
+				<form enctype="multipart/form-data" action="<?= URLResolver::resolve('admin:fast-item-update') ?>" name="fast-update" method="post" class="item card card-hover">
 				<?php else:?>
 				<div class="item card card-hover">
 				<?php endif;?>
@@ -153,7 +154,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 								<a href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>" class="item-title">
 									<?= htmlspecialchars($item->getTitle()) ?>
 								</a>
-								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+								<?= CSRF::getFormField() ?>
 								<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
 									<svg class="add-to-favorites <?= $item->getIsFavorite() ? "favoriteActive" : ""?>">
 										<use xlink:href="/img/sprites.svg#heart"></use>
@@ -183,7 +184,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 									<div class="review-count">
 										<?= ($item->getAmountReviews() > 0) ?
 											"({$item->getAmountReviews()} "
-											. WordEndingResolver::resolve($item->getAmountReviews(), array('отзыв','отзыва','отзывов'))
+											. WordFormatter::getPlural($item->getAmountReviews(), array('отзыв', 'отзыва', 'отзывов'))
 											. ')'
 											: 'Отзывов пока нет.' ?>
 									</div>
@@ -192,7 +193,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 							<?php if ($isAdmin): ?>
 								<input name="item-sort_order" class="input display-order" type="number" value="<?= $item->getSortOrder() ?>">
 								<div class="admin-btn-container">
-									<a class="btn btn-normal" href="<?=URLResolver::resolve('edit-item', ['id' => $item->getId()])?>">Редактировать</a>
+									<a class="btn btn-normal" href="<?=URLResolver::resolve('admin:edit-item', ['id' => $item->getId()])?>">Редактировать</a>
 									<input type="submit" style="display: none">
 									<?php if ($item->getIsActive()): ?>
 										<a class="btn btn-deactivate">Скрыть</a>
@@ -202,7 +203,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 								</div>
 								<input name="item-price" class="input price" type="number" value="<?= htmlspecialchars($item->getPrice()) ?>">₽
 								<input name="item-id" value="<?= $item->getId() ?>" type="hidden" class="input">
-								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+								<?= CSRF::getFormField() ?>
 							<?php else: ?>
 								<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
 							<?php endif;?>

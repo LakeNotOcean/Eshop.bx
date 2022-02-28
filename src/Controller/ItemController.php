@@ -74,11 +74,11 @@ class ItemController
 	{
 		$query = $request->getQueriesOrDefaultList(
 			['page' => '1']);
-		$currentPage = ($query['page'] > 1) ? $query['page'] : 1;
+		$currentPage = ($query['page'] > 1) ? (int) $query['page'] : 1;
 		$types = $this->itemService->getTypes(Paginator::getLimitOffset($currentPage,$this->typesInPage));
 		$typesWithItems = [];
 		foreach ($types as $type) {
-			$item = $this->itemService->getFirstItemOfType($type);
+			$item = $this->itemService->getFirstAvailableItemOfType($type);
 			if (isset($item))
 			{
 				$typesWithItems[] = [
@@ -177,7 +177,7 @@ class ItemController
 				'price' => $price,
 				'tags' => $this->tagService->getTagsByItemType($queryTypeId),
 				'categories' => $this->itemService->getItemsCategoriesByItemType($queryTypeId),
-				'isAdmin' => ($request->getRouteName() === 'home-admin') ? $isAdmin : false,
+				'isAdmin' => ($request->getRouteName() === 'admin:home') ? $isAdmin : false,
 				'sortingMethod' => $query['sorting'],
 			]);
 
@@ -404,7 +404,7 @@ class ItemController
 			$this->imageService->addImages($imagesInfo, $item);
 		}
 
-		return Redirect::createResponseByURLName('edit-item', [], ['id' => $item->getId()]);
+		return Redirect::createResponseByURLName('admin:edit-item', [], ['id' => $item->getId()]);
 	}
 
 	/**
@@ -414,7 +414,7 @@ class ItemController
 	{
 		$this->itemService->realDeleteItem($id);
 
-		return Redirect::createResponseByURLName('home-admin');
+		return Redirect::createResponseByURLName('admin:home');
 	}
 
 	public function deactivateItem(Request $request, int $id): Response

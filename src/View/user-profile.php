@@ -3,6 +3,10 @@
 /** @var \Up\Entity\User\User $user */
 /** @var bool $fromUserList */
 /** @var array $roles */
+
+use Up\Core\Router\URLResolver;
+use Up\Lib\CSRF\CSRF;
+
 ?>
 
 <script src="/js/user/user-menu.js"></script>
@@ -10,7 +14,7 @@
 <link rel="stylesheet" href="/css/user-profile.css">
 
 <div class="container">
-	<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+	<?= CSRF::getFormField() ?>
 	<div class="main-title">Личная информация <?php if (isset($fromUserList)): ?>
 	пользователя <?= $user->getLogin()?></div>
 	<?php else: ?>
@@ -82,7 +86,7 @@
 	</div>
 	<?php endif; ?>
 	<?php if (!isset($fromUserList)): ?>
-		<a class="btn btn-normal" href="<?= \Up\Core\Router\URLResolver::resolve('change-password') ?>">Сменить пароль</a>
+		<a class="btn btn-normal" href="<?= URLResolver::resolve('change-password') ?>">Сменить пароль</a>
 	<?php endif; ?>
 </div>
 

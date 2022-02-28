@@ -1,18 +1,21 @@
 <?php
-/** @var \Up\Entity\UserItem $item */
+/** @var UserItem $item */
 /** @var array<UP\Entity\Item> $similarItems */
-/** @var array<\Up\Entity\Review> $reviews */
+/** @var array<Review> $reviews */
 /** @var bool $itemIsPurchased */
 /** @var bool $reviewIsWritten */
 /** @var bool $isAuthenticated */
-/** @var \Up\Entity\User\User $user */
+/** @var User $user */
 
 use Up\Core\Router\URLResolver;
+use Up\Entity\Review;
+use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
+use Up\Entity\UserItem;
 use Up\Lib\CSRF\CSRF;
 use Up\Lib\FormatHelper\DateFormatterRu;
 use Up\Lib\FormatHelper\NumberFormatter;
-use Up\Lib\FormatHelper\WordEndingResolver;
+use Up\Lib\FormatHelper\WordFormatter;
 ?>
 
 <link rel="stylesheet" href="/css/item.css">
@@ -116,7 +119,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 								<div class="buy-reviews-separator">·</div>
 								<div class="buy-reviews-count"><?= ($item->getAmountReviews() > 0) ?
 										"({$item->getAmountReviews()} "
-										. WordEndingResolver::resolve($item->getAmountReviews(), array('отзыв','отзыва','отзывов'))
+										. WordFormatter::getPlural($item->getAmountReviews(), array('отзыв', 'отзыва', 'отзывов'))
 										. ')'
 										: 'нет отзывов' ?></div>
 							</div>
@@ -176,7 +179,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 							<div class="reviews-separator">·</div>
 							<div class="reviews-count"><?= ($item->getAmountReviews() > 0) ?
 									"({$item->getAmountReviews()} "
-									. WordEndingResolver::resolve($item->getAmountReviews(), array('отзыв','отзыва','отзывов'))
+									. WordFormatter::getPlural($item->getAmountReviews(), array('отзыв', 'отзыва', 'отзывов'))
 									. ')'
 									: 'нет отзывов' ?></div>
 						</div>
@@ -220,7 +223,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 				<div class="review-state-message">Вы уже оставляли отзыв к этому товару</div>
 				<?php else: ?>
 				<form class="review-send" action="<?= URLResolver::resolve('add-review') ?>" method="post">
-					<div class="rating-title">Оставьте отзыв о товаре:</div>
+					<label for="text_review" class="rating-title">Оставьте отзыв о товаре:</label>
 					<div class="rating-container">
 						<div class="review_stars_wrap">
 							<span class="stars-group">
@@ -233,7 +236,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 							</span>
 						</div>
 					</div>
-					<textarea class="review-send-text" name="text_review" placeholder="Поделитесь Вашими впечатлениями о товаре"></textarea>
+					<textarea class="review-send-text" id="text_review" name="text_review" placeholder="Поделитесь Вашими впечатлениями о товаре"></textarea>
 					<?= CSRF::getFormField() ?>
 					<input name="item_id" type="hidden" value="<?= $item->getId() ?>">
 					<div class="errors-container"></div>

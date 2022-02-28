@@ -1,21 +1,24 @@
 <?php
 /** @var $paginator */
 
-/** @var array<\Up\Entity\Review> $reviews */
+/** @var array<Review> $reviews */
 
-/** @var \Up\Entity\ItemDetail $item */
-/** @var \Up\Entity\User\User $user */
+/** @var ItemDetail $item */
+/** @var User $user */
 
 use Up\Core\Router\URLResolver;
+use Up\Entity\ItemDetail;
+use Up\Entity\Review;
+use Up\Entity\User\User;
+use Up\Entity\User\UserEnum;
+use Up\Lib\CSRF\CSRF;
 use Up\Lib\FormatHelper\DateFormatterRu;
-use Up\Lib\FormatHelper\WordEndingResolver;
 
 ?>
 
 <link rel="stylesheet" href="/css/more-reviews.css">
 <link rel="stylesheet" href="/css/item.css">
 <link rel="stylesheet" href="/css/catalog.css">
-
 
 <div class="container">
 	<div class="more-reviews-title">
@@ -88,7 +91,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 			<?php if($review->getUser()->getId() == $user->getId()): ?>
 				<div class="your-review-msg">Это ваш отзыв</div>
 			<?php endif; ?>
-			<?php if($review->getUser()->getId() === $user->getId() || $user->getRole()->getName() == \Up\Entity\User\UserEnum::Admin()): ?>
+			<?php if($review->getUser()->getId() === $user->getId() || $user->getRole()->getName() == UserEnum::Admin()): ?>
 			<div class="delete-section">
 				<div class="btn btn-delete review-remove-btn review-remove-btn">Удалить</div>
 				<input type="hidden" name="review_id" value="<?= $review->getId() ?>">
@@ -98,9 +101,10 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 		</div>
 	<?php
 	endforeach; ?>
-	<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+	<?= CSRF::getFormField() ?>
 	<?= $paginator ?>
 </div>
+
 <script src="/js/lib/alert-dialog.js"></script>
 <script src="/js/lib/showPopup.js"></script>
 <script src="/js/review/delete-review.js"></script>

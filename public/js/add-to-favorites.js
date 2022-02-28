@@ -33,7 +33,6 @@ function addToFavorites(itemId, icon)
 		body: postBody
 	}).then((r) => {
 		if (r.ok) {
-			showPopup('Заказ удалён');
 			addFavoriteAllIcons(itemId);
 			showPopup('Товар добавлен в избранное');
 		} else {
@@ -54,7 +53,6 @@ function removeFromFavorites(itemId, icon)
 		body: postBody
 	}).then((r) => {
 		if (r.ok) {
-			showPopup('Заказ удалён');
 			removeFavoriteAllIcons(itemId);
 			showPopup('Товар удалён из избранного');
 		} else {

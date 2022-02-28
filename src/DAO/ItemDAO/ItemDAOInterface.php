@@ -15,7 +15,7 @@ interface ItemDAOInterface
 
 	public function getItemsByQuery(int $offset, int $amountItems, string $searchQuery): array;
 
-	public function getFirstItemByTypeId(int $typeId): ?Item;
+	public function getFirstActiveItemByTypeId(int $typeId): ?Item;
 
 	public function getSimilarItemById(int $id,int $similarAmount): array;
 

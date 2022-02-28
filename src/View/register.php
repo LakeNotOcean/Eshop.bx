@@ -1,6 +1,7 @@
 <?php
 
-use Up\Core\Router\URLResolver; ?>
+use Up\Core\Router\URLResolver;
+use Up\Lib\CSRF\CSRF; ?>
 
 <link rel="stylesheet" href="/css/login.css">
 <link rel="stylesheet" href="/css/register.css">
@@ -71,7 +72,7 @@ use Up\Core\Router\URLResolver; ?>
 				<span class="label-error" data-source="phone">Неверный формат телефона</span>
 			</div>
 		</div>
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+		<?= CSRF::getFormField() ?>
 		<input type="submit" id="submit" value="Зарегистрироваться" class="btn btn-normal input">
 	</form>
 	<div class="errors-container"></div>

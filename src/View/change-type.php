@@ -7,8 +7,7 @@
 
 <link rel="stylesheet" href="/css/change-type.css">
 <div class="container">
-		<?php
-		foreach ($typesWithItems as $typesWithItem):
+		<?php foreach ($typesWithItems as $typesWithItem):
 			$item = $typesWithItem['item'];
 			$type = $typesWithItem['type']?>
 			<div class="types-card card card-hover" id=<?= $type->getId()?>>

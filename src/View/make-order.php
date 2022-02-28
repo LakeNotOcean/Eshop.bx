@@ -8,7 +8,8 @@
 use Up\Entity\Item;
 use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
-use Up\Lib\WordProcessor\WordProcessor;
+use Up\Lib\CSRF\CSRF;
+use Up\Lib\FormatHelper\WordFormatter;
 
 $firstName = "";
 $secondName = "";
@@ -80,8 +81,8 @@ if ($user->getRole()->getName() != UserEnum::Guest())
 		<label for="comment" class="field">
 			<textarea name="comment" id="comment" rows="10" class="order-comment" placeholder="Комментарий к заказу"></textarea>
 		</label>
-		<div class="order-summary">Итого: <?= $orderSize ?> <?= WordProcessor::formatWord($orderSize, 'товар') ?> на сумму <?= $cost ?> ₽</div>
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+		<div class="order-summary">Итого: <?= $orderSize ?> <?= WordFormatter::getPlural($orderSize, ['товар', 'товара', 'товаров']) ?> на сумму <?= $cost ?> ₽</div>
+		<?= CSRF::getFormField() ?>
 		<input type="submit" value="Подтвердить" class="btn btn-normal input">
 	</div>
 	<div hidden class="cart-empty">
@@ -96,10 +97,10 @@ if ($user->getRole()->getName() != UserEnum::Guest())
 	<?php endif; ?>
 </div>
 
-<script src="js/lib/alert-dialog.js"></script>
+<script src="/js/lib/alert-dialog.js"></script>
 <script src="/js/lib/wordProcessor.js" type="module"></script>
 <script src="/js/lib/showPopup.js"></script>
 <script src="/js/lib/phone-input.js"></script>
 <script src="/js/csrf.js" type="module"></script>
-<script src="js/order/send-order-data.js" type="module"></script>
-<script src="js/order/order.js" type="module"></script>
+<script src="/js/order/send-order-data.js" type="module"></script>
+<script src="/js/order/order.js" type="module"></script>

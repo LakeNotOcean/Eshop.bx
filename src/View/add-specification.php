@@ -3,13 +3,15 @@
 
 /** @var bool $isNewSpecAdded */
 
+use Up\Core\Router\URLResolver;
 use Up\Entity\SpecificationCategory;
+use Up\Lib\CSRF\CSRF;
 
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
-<div class="form-container">
-	<form action="/admin/addSpecification" method="post" enctype="multipart/form-data" class="form-add">
+<div class="container">
+	<form action="<?= URLResolver::resolve('admin:add-specification') ?>" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="category-id" class="field">
 			<span class="label-title">Категория</span>
 			<select id="category-id" name="category-id" class="input-category">
@@ -29,7 +31,7 @@ use Up\Entity\SpecificationCategory;
 				   class="input">
 		</label>
 		<input type="submit" value="Сохранить спецификацию в базу данных" class="btn btn-normal input">
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+		<?= CSRF::getFormField() ?>
 	</form>
 	<?php
 	if ($isNewSpecAdded): ?>

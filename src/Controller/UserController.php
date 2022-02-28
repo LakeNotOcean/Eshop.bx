@@ -122,13 +122,12 @@ class UserController
 	 */
 	public function userListPage(Request $request): Response
 	{
-		$currentPage = ($request->containsQuery('page')) ? $request->getQueriesByName('page') : 1;
+		$currentPage = ($request->containsQuery('page')) ? (int) $request->getQueriesByName('page') : 1;
 		$currentPage = ($currentPage > 0) ? $currentPage : 1;
 		$query = $request->getQueriesOrDefaultList(['query'=>'']);
 		$search = $query['query'];
 		$itemsAmount = $this->userService->getAmountUserByQuery(0,$search);
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->usersInPage);
-		$currentPage = ($currentPage > $pagesAmount) ? $pagesAmount : $currentPage;
 		$userList = $this->userService->getUserListByQuery(Paginator::getLimitOffset($currentPage,$this->usersInPage),0,$search);
 
 		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
@@ -165,9 +164,6 @@ class UserController
 
 		return (new Response())->withBodyHTML($page);
 	}
-
-
-
 
 	/**
 	 * @throws \ReflectionException
@@ -215,13 +211,12 @@ class UserController
 	 */
 	public function adminListPage(Request $request): Response
 	{
-		$currentPage = ($request->containsQuery('page')) ? $request->getQueriesByName('page') : 1;
+		$currentPage = ($request->containsQuery('page')) ? (int) $request->getQueriesByName('page') : 1;
 		$currentPage = ($currentPage > 0) ? $currentPage : 1;
 		$query = $request->getQueriesOrDefaultList(['query'=>'']);
 		$search = $query['query'];
 		$itemsAmount = $this->userService->getAmountUserByQuery(1,$search);
 		$pagesAmount = Paginator::getPageCount($itemsAmount, $this->adminsInPage);
-		$currentPage = ($currentPage > $pagesAmount) ? $pagesAmount : $currentPage;
 		$adminList = $this->userService->getUserListByQuery(Paginator::getLimitOffset($currentPage,$this->adminsInPage),1,$search);
 
 		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [

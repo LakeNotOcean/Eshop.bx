@@ -7,8 +7,8 @@
 use Up\Core\Router\URLResolver;
 use Up\Entity\Review;
 use Up\Entity\UserItem;
+use Up\Lib\CSRF\CSRF;
 use Up\Lib\FormatHelper\DateFormatterRu;
-use Up\Lib\FormatHelper\WordEndingResolver;
 
 ?>
 
@@ -80,9 +80,10 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 			<?php endif; ?>
 		</div>
 	<?php endforeach; ?>
-	<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+	<?= CSRF::getFormField() ?>
 	<?= $paginator ?>
 </div>
+
 <script src="/js/lib/showPopup.js"></script>
 <script src="/js/lib/alert-dialog.js"></script>
 <script src="/js/review/delete-review.js"></script>

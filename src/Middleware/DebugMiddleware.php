@@ -8,19 +8,19 @@ use Up\Core\Message\Response;
 use Up\Core\Middleware\AbstractMiddleware;
 use Up\Core\Settings\Settings;
 use Up\Core\TemplateProcessorInterface;
-
+use Up\LayoutManager\MainLayoutManager;
 
 class DebugMiddleware extends AbstractMiddleware
 {
 
-	private $templateProcessor;
+	private $mainLayoutManager;
 
 	/**
-	 * @param \Up\Core\TemplateProcessor $templateProcessor
+	 * @param \Up\LayoutManager\MainLayoutManager $mainLayoutManager
 	 */
-	public function __construct(TemplateProcessorInterface $templateProcessor)
+	public function __construct(MainLayoutManager $mainLayoutManager)
 	{
-		$this->templateProcessor = $templateProcessor;
+		$this->mainLayoutManager = $mainLayoutManager;
 	}
 
 	public function __invoke(Request $request, ...$params): Response
@@ -34,10 +34,10 @@ class DebugMiddleware extends AbstractMiddleware
 			catch (Throwable $throwable)
 			{
 				return (new Response())->withStatus(418)->withBodyHTML(
-					$this->templateProcessor->render('debug.php', [
+					$this->mainLayoutManager->render('debug.php', [
 						'request' => $this->getRequestArray($request),
 						'exceptions' => $this->getExceptionTrace($throwable),
-					], 'layout/main.php', [])
+					])
 				);
 			}
 		}
