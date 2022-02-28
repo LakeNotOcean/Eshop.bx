@@ -3,14 +3,9 @@
 @import "lib/btn.css";
 
 .container {
-	flex: 1;
-	display: flex;
-	height: calc(100vh - var(--nav-height));
-	flex-direction: column;
+	max-width: 700px;
 	align-items: center;
 	justify-content: center;
-	max-width: 700px;
-	padding: 20px;
 }
 
 .register-fields {

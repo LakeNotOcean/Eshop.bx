@@ -3,7 +3,7 @@ function fixNode(node, prevNode) {
 
 	let navNode = document.querySelector('nav');
 	let navStyle = window.getComputedStyle(navNode);
-	let offset = parseInt(navStyle.height) + parseInt(prevNodeStyle.marginTop);
+	let offset = parseInt(navStyle.height) + parseInt(prevNodeStyle.marginTop) + parseInt(prevNodeStyle.marginBottom);
 
 	let y = prevNode.getBoundingClientRect().bottom - parseInt(navStyle.height) + window.scrollY;
 

@@ -4,7 +4,7 @@
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
-<div class="form-container">
+<div class="container">
 	<form action="/admin/addCategory" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="category" class="field">
 			<span class="label-title">Категория</span>

@@ -33,7 +33,7 @@
 		?>
 			<div class="method-name"><?= $methodName?></div>
 			<?php foreach ($method as $key => $value):
-			if (is_object($value))
+			if (is_object($value) || is_array($value))
 			{
 				echo "\"$key\" => ";
 				var_dump($value);

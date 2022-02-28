@@ -6,7 +6,7 @@ use Up\Entity\ItemsTag;
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
-<div class="form-container">
+<div class="container">
 	<form enctype="multipart/form-data" class="form-add">
 		<div class="main-fields-and-images">
 			<div class="main-fields">

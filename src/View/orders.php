@@ -20,8 +20,8 @@
 				<option value="CANCELLED">Отменён</option>
 			</select>
 		</div>
-		<form action="/admin/getOrders" method="get" enctype="multipart/form-data" class="search">
-			<input type="text" id="query" name="query" class="search-field" placeholder="Поиск по сайту"
+		<form action="/admin/getOrders" method="get" enctype="multipart/form-data" class="local-search">
+			<input type="text" id="query" name="query" class="search-field" placeholder="Поиск заказов"
 				   value="<?= htmlspecialchars($query)?>">
 			<div class="search-icon">
 				<div></div>

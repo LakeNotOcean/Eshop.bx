@@ -6,7 +6,7 @@ use Up\Entity\ItemType;
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
-<div class="form-container">
+<div class="container">
 	<form action="/admin/addItem" method="get" enctype="multipart/form-data" class="form-add">
 		<label for="item-type" class="field">
 			<span class="label-title">Тип товара</span>

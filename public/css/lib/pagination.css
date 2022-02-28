@@ -20,7 +20,7 @@
 }
 
 .navigation-page {
-	background-color: var(--color-main);
+	background: var(--color-main);
 	color: var(--color-font);
 	margin: 0 10px;
 	transition: .3s;
@@ -38,10 +38,9 @@
 }
 
 .navigation-active {
-	background-color: var(--color-font);
+	background: var(--color-font);
 	color: var(--color-main);
 }
-
 
 @media screen and (max-width: 1150px)  {
 	.navigation {

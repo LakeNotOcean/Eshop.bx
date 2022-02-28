@@ -1,5 +1,9 @@
 @import "lib/alert-dialog.css";
 
+main {
+	background: var(--color-background);
+}
+
 .card.item-card-my-reviews {
 	margin: 15px 0;
 	padding: 10px;

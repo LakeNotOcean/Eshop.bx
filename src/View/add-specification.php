@@ -8,7 +8,7 @@ use Up\Entity\SpecificationCategory;
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
-<div class="form-container">
+<div class="container">
 	<form action="/admin/addSpecification" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="category-id" class="field">
 			<span class="label-title">Категория</span>

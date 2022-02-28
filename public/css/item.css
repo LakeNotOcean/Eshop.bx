@@ -17,12 +17,6 @@ main {
 
 .container {
 	box-sizing: border-box;
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	padding: 0 50px;
-	max-width: 1300px;
-	width: 100%;
 }
 
 @media screen and (max-width: 1150px)  {
@@ -39,7 +33,7 @@ item-header
 .item-header {
 	display: flex;
 	justify-content: space-between;
-	padding: 30px 0;
+	margin-bottom: 30px;
 }
 
 .item-title {
@@ -144,7 +138,7 @@ scroll-menu
 }
 
 .scroll-menu-item:hover {
-	background-color: var(--color-secondary);
+	background: var(--color-secondary);
 }
 
 @media screen and (max-width: 1150px)  {
@@ -160,7 +154,6 @@ item-main-container
 .item-main-container {
 	flex: 1 0;
 	flex-direction: column;
-	margin-bottom: 70px;
 	margin-right: 20px;
 	max-width: calc(100% - 350px);
 	width: 100%;
@@ -247,7 +240,7 @@ item-main-buy
 }
 
 /*==========================
-item-reviews
+item-reviews-mini
 ==========================*/
 
 .buy-reviews {

@@ -9,7 +9,7 @@
 
 <div class="container">
 	<div class="admin-line">
-		<form action="/admin/adminList" method="get" enctype="multipart/form-data" class="search">
+		<form action="/admin/adminList" method="get" enctype="multipart/form-data" class="local-search">
 			<input type="text" id="query" name="query" class="search-field" placeholder="Поиск администраторов"
 				   value="<?= htmlspecialchars($query)?>">
 			<div class="search-icon">

@@ -4,7 +4,7 @@
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
-<div class="form-container">
+<div class="container">
 	<form action="/admin/addItemType" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="item-type" class="field">
 			<span class="label-title">Тип товара</span>
@@ -16,13 +16,11 @@
 			<div class="btn btn-add add-category">Добавить категорию</div>
 		</div>
 		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
-		<input type="submit" value="Сохранить тип товара в базу данных" class="btn-normal input">
+		<input type="submit" value="Сохранить тип товара в базу данных" class="btn btn-normal input">
 	</form>
-	<?php
-	if ($isNewItemTypeAdded): ?>
+	<?php if ($isNewItemTypeAdded): ?>
 		<div class="popup">Добавлен новый тип товара</div>
-	<?php
-	endif; ?>
+	<?php endif; ?>
 </div>
 
 <script src="/js/lib/popup-disappear.js"></script>

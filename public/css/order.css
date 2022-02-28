@@ -8,7 +8,7 @@ body {
 	--nav-height: 70px;
 	max-width: 100%;
 	overflow-x: hidden;
-	background-color: var(--color-main);
+	background: var(--color-main);
 }
 
 /*==========================
@@ -22,7 +22,7 @@ nav {
 	height: var(--nav-height);
 	display: flex;
 	align-items: center;
-	background-color: var(--color-main);
+	background: var(--color-main);
 	padding: 0 50px;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
@@ -48,4 +48,19 @@ main {
 	top: var(--nav-height);
 	z-index: -1;
 	background: var(--color-main);
+}
+
+.center {
+	display: flex;
+	justify-content: center;
+}
+
+.container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	padding: 30px 50px;
+	max-width: 1300px;
+	min-height: calc(100vh - var(--nav-height));
+	width: 100%;
 }

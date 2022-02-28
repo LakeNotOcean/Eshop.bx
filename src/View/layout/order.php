@@ -48,7 +48,9 @@ use Up\Lib\WordProcessor\WordProcessor;
 </nav>
 
 <main>
-	<?= $content ?>
+	<div class="center">
+		<?= $content ?>
+	</div>
 </main>
 
 </body>
