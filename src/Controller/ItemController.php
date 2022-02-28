@@ -74,7 +74,7 @@ class ItemController
 	{
 		$query = $request->getQueriesOrDefaultList(
 			['page' => '1']);
-		$currentPage = ($query['page'] > 1) ? $query['page'] : 1;
+		$currentPage = ($query['page'] > 1) ? (int) $query['page'] : 1;
 		$types = $this->itemService->getTypes(Paginator::getLimitOffset($currentPage,$this->typesInPage));
 		$typesWithItems = [];
 		foreach ($types as $type) {

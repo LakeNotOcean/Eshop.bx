@@ -163,7 +163,7 @@ class UserDAOmysql implements UserDAOInterface
 
 	public function getAmountUserByQuery(int $roleId,string $querySearch): int
 	{
-		$query = $this->getAmountUsersByQueryQuery($roleId);
+		$query = $this->getAmountUsersBySearchQuery($roleId);
 		$preparedQuery = $this->DBConnection->prepare($query);
 		$preparedQuery->execute(["%{$querySearch}%","%{$querySearch}%","%{$querySearch}%","%{$querySearch}%"]);
 		$row = $preparedQuery->fetch();
@@ -176,7 +176,7 @@ class UserDAOmysql implements UserDAOInterface
 	 */
 	public function getUserListByQuery(int $offset, int $amountItems, int $roleId, string $querySearch):array
 	{
-		$query = $this->getUserListByQueryQuery($roleId,$offset, $amountItems);
+		$query = $this->getUserListBySearchQuery($roleId,$offset, $amountItems);
 		$preparedQuery = $this->DBConnection->prepare($query);
 		$preparedQuery->execute(["%{$querySearch}%","%{$querySearch}%","%{$querySearch}%","%{$querySearch}%"]);
 		$resultList = [];
@@ -261,7 +261,7 @@ class UserDAOmysql implements UserDAOInterface
 		return $query;
 	}
 
-	private function getUserListByQueryQuery(int $roleId, int $offset, int $amountItems):string
+	private function getUserListBySearchQuery(int $roleId, int $offset, int $amountItems):string
 	{
 		$query = "WHERE (LOGIN LIKE ? OR EMAIL LIKE ? OR FIRST_NAME LIKE ? OR SECOND_NAME LIKE ?)";
 		$query = $this->getCommonUserQuery($query);
@@ -274,7 +274,7 @@ class UserDAOmysql implements UserDAOInterface
 		return $query;
 	}
 
-	private function getAmountUsersByQueryQuery(int $roleId): string
+	private function getAmountUsersBySearchQuery(int $roleId): string
 	{
 		$query = "SELECT
 		COUNT(*) as USERS_AMOUNT
