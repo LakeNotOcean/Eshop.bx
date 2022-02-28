@@ -3,13 +3,15 @@
 /** @var int $categoryId */
 /** @var bool $isSpecificationDeleted */
 
+use Up\Core\Router\URLResolver;
 use Up\Entity\Specification;
+use Up\Lib\CSRF\CSRF;
 
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
 <div class="container">
-	<form action="/admin/deleteSpecification" method="post" enctype="multipart/form-data" class="form-add">
+	<form action="<?= URLResolver::resolve('delete-specification') ?>" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="category-id" class="field">
 			<input name="category-id" value="<?= $categoryId ?>" type="hidden">
 			<span class="label-title">Спецификация</span>
@@ -22,14 +24,12 @@ use Up\Entity\Specification;
 			</select>
 		</label>
 		<input type="submit" value="Удалить выбранную спецификацию" class="btn btn-delete input">
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+		<?= CSRF::getFormField() ?>
 		<div>Внимание! Удаление спецификации приведет к ее удалению со всех товаров!</div>
 	</form>
-	<?php
-	if ($isSpecificationDeleted): ?>
+	<?php if ($isSpecificationDeleted): ?>
 		<div id="popup" class="popup">Спецификация удалена</div>
-	<?php
-	endif; ?>
+	<?php endif; ?>
 </div>
 
 <script src="/js/lib/popup-disappear.js"></script>

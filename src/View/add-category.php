@@ -1,11 +1,14 @@
 <?php
 /** @var bool $isNewCategoryAdded */
 
+use Up\Core\Router\URLResolver;
+use Up\Lib\CSRF\CSRF;
+
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
 <div class="container">
-	<form action="/admin/addCategory" method="post" enctype="multipart/form-data" class="form-add">
+	<form action="<?= URLResolver::resolve('add-category') ?>" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="category" class="field">
 			<span class="label-title">Категория</span>
 			<input type="text" id="category" name="category" placeholder="Введите название категории" class="input"
@@ -17,7 +20,7 @@
 				   class="input" autocomplete="off">
 		</label>
 		<input type="submit" value="Сохранить категорию в базу данных" class="btn btn-normal input">
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+		<?= CSRF::getFormField() ?>
 	</form>
 	<div id="popup" class="popup <?= !$isNewCategoryAdded ? 'hidden' : ''?>">Добавлена новая категория</div>
 </div>

@@ -1,9 +1,15 @@
+<?php
+
+use Up\Core\Router\URLResolver;
+use Up\Lib\CSRF\CSRF;
+
+?>
+
 <link rel="stylesheet" href="/css/change-password.css">
 
-
 <div class="container">
-	<form action="<?= \Up\Core\Router\URLResolver::resolve('change-password') ?>" method="post" enctype="multipart/form-data">
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+	<form action="<?= URLResolver::resolve('change-password') ?>" method="post" enctype="multipart/form-data">
+		<?= CSRF::getFormField() ?>
 		<div class="field">
 			<label class="label-title">Действующий пароль</label>
 			<input class="input" type="password" name="oldPassword">

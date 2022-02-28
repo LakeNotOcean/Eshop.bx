@@ -11,11 +11,9 @@ use Up\Entity\SpecificationCategory;
 		<label for="category-id" class="field">
 			<span class="label-title">Выберите категорию, в которой нужно удалить спецификацию</span>
 			<select id="category-id" name="category-id" class="input-category">
-				<?php
-				foreach ($categories as $category): ?>
+				<?php foreach ($categories as $category): ?>
 					<option value="<?= $category->getId() ?>"><?= htmlspecialchars($category->getName()) ?></option>
-				<?php
-				endforeach; ?>
+				<?php endforeach; ?>
 			</select>
 		</label>
 		<a class="btn btn-normal input">Выбрать категорию</a>

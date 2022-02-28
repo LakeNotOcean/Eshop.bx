@@ -1,9 +1,13 @@
 <?php
 
-/** @var array<\Up\Entity\Order\Order> $orders */
+/** @var array<Order> $orders */
 /** @var int $amount */
 
 /** @var $paginator */
+
+use Up\Entity\Order\Order;
+use Up\Lib\CSRF\CSRF;
+use Up\Lib\FormatHelper\DateFormatterRu;
 
 ?>
 
@@ -12,7 +16,7 @@
 <div class="container">
 	<div>Всего заказов: <?= $amount ?></div>
 	<div class="order-list">
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+		<?= CSRF::getFormField() ?>
 		<?php foreach ($orders as $order):?>
 			<div class="order card">
 				<div class="order-line">
@@ -29,7 +33,7 @@
 				</div>
 				<div class="order-line">
 					<div class="order-label">Дата заказа:</div>
-					<div class="order-value"><?= htmlspecialchars(\Up\Lib\FormatHelper\DateFormatterRu::format($order->getDateCreate()))?></div>
+					<div class="order-value"><?= htmlspecialchars(DateFormatterRu::format($order->getDateCreate()))?></div>
 				</div>
 				<div class="order-items">
 					<div class="order-line">

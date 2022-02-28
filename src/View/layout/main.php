@@ -62,13 +62,13 @@ if (!isset($query))
 				<div class="nav-item-label">Товары</div>
 				<div class="menu-container">
 					<div class="menu">
-						<a class="menu-item" href="/admin/?type=1">Админский каталог</a>
-						<a class="menu-item" href="/admin/chooseItemType" id="/admin/addItem/">Добавить товар</a>
-						<a class="menu-item" href="/admin/addItemType">Добавить тип товара</a>
-						<a class="menu-item" href="/admin/addCategory">Добавить категорию</a>
-						<a class="menu-item" href="/admin/addSpecification">Добавить спецификацию</a>
-						<a class="menu-item" href="/admin/deleteCategory">Удалить категорию</a>
-						<a class="menu-item" href="/admin/chooseCategory" id="/admin/deleteSpec/">Удалить спецификацию</a>
+						<a class="menu-item" href="<?= URLResolver::resolve('home-admin')?>?type=1">Админский каталог</a>
+						<a class="menu-item" href="<?= URLResolver::resolve('choose-item-type')?>" id="/admin/addItem/">Добавить товар</a>
+						<a class="menu-item" href="<?= URLResolver::resolve('add-item-type')?>">Добавить тип товара</a>
+						<a class="menu-item" href="<?= URLResolver::resolve('add-category')?>">Добавить категорию</a>
+						<a class="menu-item" href="<?= URLResolver::resolve('add-specification')?>">Добавить спецификацию</a>
+						<a class="menu-item" href="<?= URLResolver::resolve('delete-category')?>">Удалить категорию</a>
+						<a class="menu-item" href="<?= URLResolver::resolve('choose-category')?>" id="/admin/deleteSpec/">Удалить спецификацию</a>
 					</div>
 				</div>
 			</div>
@@ -76,7 +76,7 @@ if (!isset($query))
 				<div class="nav-item-label">Заказы</div>
 				<div class="menu-container">
 					<div class="menu">
-						<a class="menu-item" href="/admin/getOrders">Список заказов</a>
+						<a class="menu-item" href="<?= URLResolver::resolve('orders-admin')?>">Список заказов</a>
 					</div>
 				</div>
 			</div>
@@ -84,8 +84,8 @@ if (!isset($query))
 				<div class="nav-item-label">Администрирование</div>
 				<div class="menu-container">
 					<div class="menu">
-						<a class="menu-item" href="/admin/adminList">Список администраторов</a>
-						<a class="menu-item" href="/admin/userList">Список пользователей</a>
+						<a class="menu-item" href="<?= URLResolver::resolve('admin-list')?>">Список администраторов</a>
+						<a class="menu-item" href="<?= URLResolver::resolve('user-list')?>">Список пользователей</a>
 					</div>
 				</div>
 			</div>

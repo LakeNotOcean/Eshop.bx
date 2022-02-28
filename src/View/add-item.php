@@ -1,7 +1,7 @@
 <?php
 /** @var \Up\Entity\ItemDetail $item */
 
-use Up\Entity\ItemsTag;
+use Up\Lib\CSRF\CSRF;
 
 ?>
 
@@ -10,7 +10,7 @@ use Up\Entity\ItemsTag;
 	<form enctype="multipart/form-data" class="form-add">
 		<div class="main-fields-and-images">
 			<div class="main-fields">
-				<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+				<?= CSRF::getFormField() ?>
 				<?php if (isset($item)):?>
 					<input type="hidden" name="item-id" value="<?= $item->getId() ?> ">
 					<input type="hidden" name="item-type" value="<?= $item->getItemType()->getId() ?>">
@@ -133,6 +133,7 @@ use Up\Entity\ItemsTag;
 		<?php endif; ?>
 	</form>
 </div>
+
 <script src="/js/lib/showPopup.js"></script>
 <script src="/js/lib/alert-dialog.js"></script>
 <script src="/js/add-item/preview-images.js"></script>

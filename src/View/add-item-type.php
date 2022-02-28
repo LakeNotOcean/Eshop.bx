@@ -1,11 +1,14 @@
 <?php
 /** @var bool $isNewItemTypeAdded */
 
+use Up\Core\Router\URLResolver;
+use Up\Lib\CSRF\CSRF;
+
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
 <div class="container">
-	<form action="/admin/addItemType" method="post" enctype="multipart/form-data" class="form-add">
+	<form action="<?= URLResolver::resolve('add-item-type') ?>" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="item-type" class="field">
 			<span class="label-title">Тип товара</span>
 			<input type="text" id="item-type" name="item-type" placeholder="Введите название типа товара" class="input"
@@ -15,7 +18,7 @@
 			<div class="specifications-title">Характеристики</div>
 			<div class="btn btn-add add-category">Добавить категорию</div>
 		</div>
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+		<?= CSRF::getFormField() ?>
 		<input type="submit" value="Сохранить тип товара в базу данных" class="btn btn-normal input">
 	</form>
 	<?php if ($isNewItemTypeAdded): ?>

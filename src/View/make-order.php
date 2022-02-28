@@ -8,6 +8,7 @@
 use Up\Entity\Item;
 use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
+use Up\Lib\CSRF\CSRF;
 use Up\Lib\WordProcessor\WordProcessor;
 
 $firstName = "";
@@ -81,7 +82,7 @@ if ($user->getRole()->getName() != UserEnum::Guest())
 			<textarea name="comment" id="comment" rows="10" class="order-comment" placeholder="Комментарий к заказу"></textarea>
 		</label>
 		<div class="order-summary">Итого: <?= $orderSize ?> <?= WordProcessor::formatWord($orderSize, 'товар') ?> на сумму <?= $cost ?> ₽</div>
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+		<?= CSRF::getFormField() ?>
 		<input type="submit" value="Подтвердить" class="btn btn-normal input">
 	</div>
 	<div hidden class="cart-empty">

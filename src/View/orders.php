@@ -5,6 +5,10 @@
 
 /** @var $paginator */
 
+use Up\Core\Router\URLResolver;
+use Up\Lib\CSRF\CSRF;
+use Up\Lib\FormatHelper\DateFormatterRu;
+
 ?>
 
 <link rel="stylesheet" href="/css/orders.css">
@@ -20,7 +24,7 @@
 				<option value="CANCELLED">Отменён</option>
 			</select>
 		</div>
-		<form action="/admin/getOrders" method="get" enctype="multipart/form-data" class="local-search">
+		<form action="<?= URLResolver::resolve('orders-admin') ?>" method="get" enctype="multipart/form-data" class="local-search">
 			<input type="text" id="query" name="query" class="search-field" placeholder="Поиск заказов"
 				   value="<?= htmlspecialchars($query)?>">
 			<div class="search-icon">
@@ -29,7 +33,7 @@
 		</form>
 	</div>
 	<div class="order-list">
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+		<?= CSRF::getFormField() ?>
 		<?php foreach ($orders as $order):?>
 			<div class="order card">
 				<div class="order-line">
@@ -46,7 +50,7 @@
 				</div>
 				<div class="order-line">
 					<div class="order-label">Дата заказа:</div>
-					<div class="order-value"><?= htmlspecialchars(\Up\Lib\FormatHelper\DateFormatterRu::format($order->getDateCreate()))?></div>
+					<div class="order-value"><?= htmlspecialchars(DateFormatterRu::format($order->getDateCreate()))?></div>
 				</div>
 				<div class="order-items">
 					<div class="order-line">

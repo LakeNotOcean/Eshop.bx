@@ -41,7 +41,9 @@ use Up\Lib\WordProcessor\WordProcessor;
 		</svg>
 	</a>
 	<?php if ($cost > 0): ?>
-	<div class="order-info-message">Оформление заказа: <?= $orderSize ?> <?= WordProcessor::formatWord($orderSize, 'товар') ?> за <?= $cost ?> ₽</div>
+	<div class="order-info-message">
+		Оформление заказа: <?= $orderSize ?> <?= WordProcessor::formatWord($orderSize, 'товар') ?> за <?= $cost ?> ₽
+	</div>
 	<?php else: ?>
 	<div class="order-info-message">Ваша корзина пуста!</div>
 	<?php endif; ?>

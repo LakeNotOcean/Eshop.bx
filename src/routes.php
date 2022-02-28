@@ -76,7 +76,6 @@ $router->get('/admin/userList',[UserController::class, 'userListPage'],'user-lis
 $router->post('/admin/adminUpdateUser/{positiveInt:id}',[UserController::class, 'adminUpdateUser'],'admin-update-user');
 $router->get('/admin/userList/{positiveInt:id}',[UserController::class, 'userInfoPage'],'user-info');
 
-
 $router->get('/admin/editCategory', [CategoryController::class, 'editCategoriesPage'], 'edit-category');
 
 $router->get('/admin/', [ItemController::class, 'getItems'], 'home-admin');

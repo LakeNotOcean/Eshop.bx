@@ -15,6 +15,7 @@ $pref = '_big';
 
 use Up\Core\Router\URLResolver;
 use Up\Entity\Item;
+use Up\Lib\CSRF\CSRF;
 use Up\Lib\FormatHelper\NumberFormatter;
 use Up\Lib\FormatHelper\WordEndingResolver;
 
@@ -134,7 +135,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 			foreach ($items as $item): ?>
 
 				<?php if ($isAdmin):?>
-				<form enctype="multipart/form-data" action="/admin/fastUpdateItem" name="fast-update" method="post" class="item card card-hover">
+				<form enctype="multipart/form-data" action="<?= URLResolver::resolve('fast-item-update') ?>" name="fast-update" method="post" class="item card card-hover">
 				<?php else:?>
 				<div class="item card card-hover">
 				<?php endif;?>
@@ -153,7 +154,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 								<a href="<?= URLResolver::resolve('item-detail', ['id' => $item->getId()]) ?>" class="item-title">
 									<?= htmlspecialchars($item->getTitle()) ?>
 								</a>
-								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+								<?= CSRF::getFormField() ?>
 								<div class="btn-add-to-favorites" title="<?= $item->getId()?>">
 									<svg class="add-to-favorites <?= $item->getIsFavorite() ? "favoriteActive" : ""?>">
 										<use xlink:href="/img/sprites.svg#heart"></use>
@@ -202,7 +203,7 @@ use Up\Lib\FormatHelper\WordEndingResolver;
 								</div>
 								<input name="item-price" class="input price" type="number" value="<?= htmlspecialchars($item->getPrice()) ?>">₽
 								<input name="item-id" value="<?= $item->getId() ?>" type="hidden" class="input">
-								<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+								<?= CSRF::getFormField() ?>
 							<?php else: ?>
 								<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
 							<?php endif;?>

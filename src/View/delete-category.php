@@ -3,13 +3,15 @@
 
 /** @var bool $isCategoryDeleted */
 
+use Up\Core\Router\URLResolver;
 use Up\Entity\SpecificationCategory;
+use Up\Lib\CSRF\CSRF;
 
 ?>
 
 <link rel="stylesheet" href="/css/add-item.css">
 <div class="container">
-	<form action="/admin/deleteCategory" method="post" enctype="multipart/form-data" class="form-add">
+	<form action="<?= URLResolver::resolve('delete-category') ?>" method="post" enctype="multipart/form-data" class="form-add">
 		<label for="category-id" class="field">
 			<span class="label-title">Категория</span>
 			<select id="category-id" name="category-id" class="input-category">
@@ -21,7 +23,7 @@ use Up\Entity\SpecificationCategory;
 			</select>
 		</label>
 		<input type="submit" value="Удалить выбранную категорию" class="btn btn-delete input">
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+		<?= CSRF::getFormField() ?>
 		<div>Внимание! Удаление категории приведет к ее удалению со всех товаров!</div>
 	</form>
 	<?php

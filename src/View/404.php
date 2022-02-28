@@ -11,6 +11,10 @@ $particles = $random === 1;
 
 <div class="container"></div>
 
+<script>
+	let backgroundColor = getComputedStyle(document.body).getPropertyValue('--color-background');
+</script>
+
 <?php if ($tetris):?>
 	<script>
 		//region classes
@@ -184,7 +188,6 @@ $particles = $random === 1;
 		//endregion classes
 
 		//region init
-		let backgroundColor = getComputedStyle(document.body).getPropertyValue('--color-background');
 
 		let canvas = document.createElement('canvas');
 		let container = document.querySelector('.container');
@@ -450,7 +453,6 @@ $particles = $random === 1;
 <?php if ($particles):?>
 	<script>
 	//region init
-	let backgroundColor = getComputedStyle(document.body).getPropertyValue('--color-background');
 	let fontColor = getComputedStyle(document.body).getPropertyValue('--color-font');
 	let mouseX = 0;
 	let mouseY = 0;

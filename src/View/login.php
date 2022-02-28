@@ -4,6 +4,7 @@
 /** @var string $next */
 
 use Up\Core\Router\URLResolver;
+use Up\Lib\CSRF\CSRF;
 
 ?>
 
@@ -30,7 +31,7 @@ use Up\Core\Router\URLResolver;
 				<span class="label-error" data-source="password">Пароль должен состоять из не менее чем 5 символов латинского алфавита и цифр</span>
 			</div>
 		</div>
-		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+		<?= CSRF::getFormField() ?>
 		<input type="submit" id="submit" value="Войти" class="btn btn-normal input">
 	</form>
 	<div class="sign-in-title">Нет аккаунта?</div>

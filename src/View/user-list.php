@@ -6,6 +6,7 @@
 /** @var int $userAmount */
 
 use Up\Core\Router\URLResolver;
+use Up\Lib\CSRF\CSRF;
 
 ?>
 <link rel="stylesheet" href="/css/users-list.css">
@@ -25,8 +26,7 @@ use Up\Core\Router\URLResolver;
 		</form>
 	</div>
 	<div class="user-list">
-		<?php
-		foreach ($users as $user): ?>
+		<?php foreach ($users as $user): ?>
 			<div class="user  card-outline" draggable="true" id=<?=htmlspecialchars($user->getLogin())?>>
 				<div class="user-body">
 					<div class="user-info">
@@ -47,7 +47,7 @@ use Up\Core\Router\URLResolver;
 				</div>
 				<?php if ($user->getRole()->getId() !== 1):?>
 				<div class="delete-button-section">
-					<a class="btn btn-normal edit-button" href="<?= \Up\Core\Router\URLResolver::resolve('user-info',["id"=>$user->getId()]) ?>"  id=<?=htmlspecialchars($user->getLogin())?>>
+					<a class="btn btn-normal edit-button" href="<?= URLResolver::resolve('user-info', ["id"=>$user->getId()]) ?>" id=<?=htmlspecialchars($user->getLogin())?>>
 						<svg class="pencil">
 							<use xlink:href="/img/sprites.svg#pencil"></use>
 						</svg>
@@ -55,10 +55,9 @@ use Up\Core\Router\URLResolver;
 				</div>
 				<?php endif;?>
 			</div>
-		<?php
-		endforeach; ?>
+		<?php endforeach; ?>
 	</div>
-	<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+	<?= CSRF::getFormField() ?>
 	<?= $paginator ?>
 </div>
 <div class="token"></div>
