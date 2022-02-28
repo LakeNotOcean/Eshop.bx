@@ -19,7 +19,7 @@ use Up\Service\UserService\Error\UserServiceException;
 use Up\Validator\DataTypes;
 use Up\Validator\Validator;
 use Up\Service\UserService\UserServiceInterface;
-
+use Validator\ValidationException;
 
 class UserController
 {
@@ -54,31 +54,8 @@ class UserController
 		$password = $request->getPostParametersByName('password');
 		$firstName = $request->getPostParametersByName('firstName');
 		$secondName = $request->getPostParametersByName('secondName');
-
-		$errorString = Validator::validate($email, DataTypes::email());
-		$errorString .= Validator::validate($phone, DataTypes::phone());
-		$errorString .= Validator::validate($login, DataTypes::login());
-		$errorString .= Validator::validate($password, DataTypes::password());
-		$errorString .= Validator::validate($firstName, DataTypes::names());
-		$errorString .= Validator::validate($secondName, DataTypes::names());
-
-		if ($errorString !== '')
-		{
-			throw new Error($errorString);
-		}
 		$user = new User(0, $login, new UserRole(UserEnum::User()), $email, $phone, $firstName, $secondName);
-		try
-		{
-			$this->userService->registerUser($user, $password);
-		}
-		catch (Exception $e)
-		{
-			$page = $this->mainLayoutManager->render('register.php', []);
-			$response = new Response();
-			$response = $response->withStatus(409);
-
-			return $response->withBodyHTML($page);
-		}
+		$this->userService->registerUser($user, $password);
 
 		return Redirect::createResponseByURLName('home');
 	}
@@ -87,31 +64,7 @@ class UserController
 	{
 		$login = $request->getPostParametersByName('login');
 		$password = $request->getPostParametersByName('password');
-
-		$errorString = Validator::validate($login, DataTypes::login());
-		$errorString .= Validator::validate($password, DataTypes::password());
-
-		if ($errorString !== '')
-		{
-			return (new Response())->withStatus(409)->withBodyHTML(
-				$this->mainLayoutManager->render('login.php', [
-				'error' => $errorString
-			]));
-		}
-
-		try
-		{
-			$this->userService->authorizeUserByLogin($login, $password);
-		}
-		catch (UserServiceException $e)
-		{
-			$page = $this->mainLayoutManager->render('login.php', []);
-			$response = new Response();
-			$response = $response->withStatus(409);
-
-			return $response->withBodyHTML($page);
-		}
-
+		$this->userService->authorizeUserByLogin($login, $password);
 		if ($request->containsQuery(static::nextUrlQueryKeyword))
 		{
 			$next = $request->getQueriesByName(static::nextUrlQueryKeyword);

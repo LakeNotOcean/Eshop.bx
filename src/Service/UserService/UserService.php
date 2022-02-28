@@ -7,6 +7,9 @@ use Up\Entity\User\User;
 use Up\Entity\User\UserEnum;
 use Up\Entity\User\UserRole;
 use Up\Service\UserService\Error\UserServiceException;
+use Up\Validator\DataTypes;
+use Up\Validator\Validator;
+use Up\Validator\ValidationException;
 
 class UserService implements UserServiceInterface
 {
@@ -33,12 +36,36 @@ class UserService implements UserServiceInterface
 	 */
 	public function authorizeUserByLogin(string $login, string $password): void
 	{
+		$errors = $this->validateSignIn($login, $password);
+		if (!empty($errors))
+		{
+			throw new ValidationException('Validation failed', $errors);
+		}
+
 		if (!$this->userDAO->authenticateUser($login, $password))
 		{
-			throw new UserServiceException('Неверный логин и/или пароль ');
+			throw new UserServiceException('Неверный логин и/или пароль ', ['login' => ['Неверный логин и/или пароль'], 'password' => []]);
 		}
 		$user = $this->userDAO->getUserByLogin($login);
 		$this->addUserToSession($user);
+	}
+
+	private function validateSignIn(string $login, string $password): array
+	{
+		$fields = [
+			'login' => [$login, DataTypes::login(), "Ошибка в логине: "],
+			'password' => [$password, DataTypes::password(), "Ошибка в пароле: "],
+		];
+		$result = [];
+		foreach ($fields as $field => $vaildatorInfo)
+		{
+			$validateErrors = Validator::validate($vaildatorInfo[0], $vaildatorInfo[1]);
+			foreach ($validateErrors as $error)
+			{
+				$result[$field][] = $vaildatorInfo[2] . $error;
+			}
+		}
+		return $result;
 	}
 
 	/**
@@ -111,11 +138,51 @@ class UserService implements UserServiceInterface
 		return $this->userDAO->getAllRoles();
 	}
 
-	public function registerUser(user $user, string $password): User
+	public function registerUser(User $user, string $password): User
 	{
+		$errors = $this->validateUserInfo($user, $password);
+		if (!empty($errors))
+		{
+			throw new ValidationException('Validation failed', $errors);
+		}
 		$newUser = $this->userDAO->addUser($user, $password);
 		$this->addUserToSession($newUser);
 		return $newUser;
+	}
+
+	private function validateUserInfo(User $user, string $password): array
+	{
+		$fields = [
+			'email' => [$user->getEmail(), DataTypes::email(), "Ошибка в email: "],
+			'phone' => [$user->getPhone() ,DataTypes::phone(), "Ошибка в телефоне: "],
+			'login' => [$user->getLogin(), DataTypes::login(), "Ошибка в логине: "],
+			'password' => [$password, DataTypes::password(), "Ошибка в пароле: "],
+			'firstName' => [$user->getFirstName(), DataTypes::names(), "Ошибка в имени: "],
+			'secondName' => [$user->getSecondName(), DataTypes::names(), "Ошибка в фамилии: "],
+		];
+		$result = [];
+		foreach ($fields as $field => $vaildatorInfo)
+		{
+			$validateErrors = Validator::validate($vaildatorInfo[0], $vaildatorInfo[1]);
+			foreach ($validateErrors as $error)
+			{
+				$result[$field][] = $vaildatorInfo[2] . $error;
+			}
+		}
+		$notUnique = $this->userDAO->checkUniqueFields($user);
+		if ($notUnique['login'])
+		{
+			$result['login'][] = "Ошибка в логине: Пользователь с таким логином уже существует";
+		}
+		if($notUnique['email'])
+		{
+			$result['email'][] = "Ошибка в email: Пользователь с таким email уже существует";
+		}
+		if($notUnique['phone'])
+		{
+			$result['phone'][] = "Ошибка в телефоне: Пользователь с таким номером телефона уже существует";
+		}
+		return $result;
 	}
 
 	public function updateUser(User $user): void

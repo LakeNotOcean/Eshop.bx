@@ -2,7 +2,9 @@
 
 namespace Up\Service\ReviewService\Error;
 
-class ReviewException extends \Exception
+use Up\Core\Error\ExceptionWithMessagesForUser;
+
+class ReviewException extends ExceptionWithMessagesForUser
 {
 
 }

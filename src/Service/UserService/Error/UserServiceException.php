@@ -2,7 +2,9 @@
 
 namespace Up\Service\UserService\Error;
 
-class UserServiceException extends \Exception
+use Up\Core\Error\ExceptionWithMessagesForUser;
+
+class UserServiceException extends ExceptionWithMessagesForUser
 {
 
 }

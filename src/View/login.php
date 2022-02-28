@@ -31,6 +31,7 @@ use Up\Core\Router\URLResolver;
 			</div>
 		</div>
 		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
+		<div class="errors-container"></div>
 		<input type="submit" id="submit" value="Войти" class="btn btn-normal input">
 	</form>
 	<div class="sign-in-title">Нет аккаунта?</div>
@@ -38,6 +39,6 @@ use Up\Core\Router\URLResolver;
 		<div class="btn btn-normal sign-in">Зарегистрироваться</div>
 	</a>
 </div>
-
+<script src="/js/lib/send-simple-form.js"></script>
 <script src="/js/user/help-user.js" type="module"></script>
 <script src="/js/user/authorize-user.js" type="module"></script>

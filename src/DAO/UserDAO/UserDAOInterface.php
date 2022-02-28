@@ -24,6 +24,8 @@ interface UserDAOInterface
 
 	public function getUsersInfo(): array;
 
+	public function checkUniqueFields(User $user): array;
+
 	public function getAllRoles(): array;
 
 	public function getUserInfoById(int $userId): User;

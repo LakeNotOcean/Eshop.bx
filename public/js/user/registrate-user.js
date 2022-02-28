@@ -40,11 +40,6 @@ async function checkReg(e)
 {
 	let isSuccess = checkInputs(inputFields);
 	isSuccess = checkPasswords(isSuccess);
-	console.log(isSuccess);
-	if (!isSuccess)
-	{
-		e.preventDefault()
-	}
 }
 
 function checkPasswords(isSuccess = false)
@@ -73,7 +68,22 @@ function repeatPassword(firstPassword, secondPassword)
 {
 	return firstPassword === secondPassword;
 }
-
-document.getElementById('submit').addEventListener('click', (e) => {
-	checkReg(e).then();
-},false);
+let errorsContainer = document.querySelector('.errors-container');
+document.querySelector('.register-fields').addEventListener('submit', async (e) => {
+	e.preventDefault();
+	await checkReg(e);
+	sendSimpleForm(e.target, '/register', 'post').then(r =>{
+		if(r.redirected){
+			location.href = r.url;
+		}else{
+			r.json().then(json =>{
+				let errorCategories = printError(errorsContainer, json);
+				for(let category of errorCategories){
+					let input = document.querySelector('[name=' + category + ']');
+					input.classList.remove('success');
+					input.classList.add('error');
+				}
+			})
+		}
+	});
+});

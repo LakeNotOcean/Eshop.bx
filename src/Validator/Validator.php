@@ -42,11 +42,11 @@ class Validator
 	 * @param string|int $data
 	 * @param DataTypes $dataType
 	 *
-	 * @return string
+	 * @return array<string>
 	 */
-	public static function validate($data, DataTypes $dataType): string
+	public static function validate($data, DataTypes $dataType): array
 	{
-		$errorString = '';
+		$errors = [];
 		$rule = self::rules[$dataType->getKey()];
 		foreach ($rule as $method => $args)
 		{
@@ -55,18 +55,18 @@ class Validator
 			$result = call_user_func_array($classMethodName, $args);
 			if ($result !== '')
 			{
-				$errorString = $errorString.' '. $result;
+				$errors[] = $result;
 			}
 		}
 
-		return $errorString;
+		return $errors;
 	}
 
 	private static function emailFormat(string $data): string
 	{
 		if (!filter_var($data, FILTER_VALIDATE_EMAIL))
 		{
-			return "wrong email format";
+			return "Неправильный email формат";
 		}
 
 		return '';
@@ -74,9 +74,10 @@ class Validator
 
 	private static function maxLength(string $data, int $size): string
 	{
-		if (iconv_strlen($data) > $size)
+		$dataSize = iconv_strlen($data);
+		if ($dataSize > $size)
 		{
-			return 'length is too long';
+			return "Слишком много символов. Вы ввели: {$dataSize}. Необходимо: {$size}";
 		}
 
 		return '';
@@ -84,9 +85,10 @@ class Validator
 
 	private static function minLength(string $data, int $size): string
 	{
-		if (iconv_strlen($data) < $size)
+		$dataSize = iconv_strlen($data);
+		if ($dataSize < $size)
 		{
-			return 'length is too short';
+			return "Слишком мало символов. Вы ввели: {$dataSize}. Необходимо: {$size}";
 		}
 
 		return '';
@@ -97,7 +99,7 @@ class Validator
 		$template = "/^[a-zA-Z0-9]+$/u";
 		if (!preg_match($template, $data))
 		{
-			return "not only latin characters ";
+			return "Должны быть только латинские символы";
 		}
 
 		return "";
@@ -105,9 +107,9 @@ class Validator
 
 	private static function minMaxValueInt(int $data, int $minValue, int $maxValue): string
 	{
-		if ($data > $maxValue && $data < $maxValue)
+		if (!($data <= $maxValue && $data >= $minValue))
 		{
-			return "the number is not in the range ";
+			return "Число должно входить в промежуток от $minValue до $maxValue";
 		}
 
 		return "";
@@ -118,7 +120,7 @@ class Validator
 		$template = "/^(?:\p{Cyrillic}+|\p{Latin}+)$/u";
 		if (!preg_match($template, $data))
 		{
-			return "wrong name format ";
+			return "Неверный формат имени.";
 		}
 
 		return "";
@@ -128,7 +130,7 @@ class Validator
 	{
 		if (!is_numeric($data))
 		{
-			return "not a numeric";
+			return "Должно быть числом";
 		}
 
 		return "";
@@ -139,7 +141,7 @@ class Validator
 		$template = "/^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/u";
 		if (!preg_match($template, $data))
 		{
-			return "wrong phone format ";
+			return "Неверный фомат телефонного номера";
 		}
 
 		return "";

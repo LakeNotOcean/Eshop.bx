@@ -2,7 +2,6 @@
 
 namespace Up\Service\ReviewService;
 
-use Up\Core\Error\ValidationException;
 use Up\DAO\ReviewDAO\ReviewDAOInterface;
 use Up\Entity\Review;
 use Up\Entity\User\User;
@@ -12,6 +11,7 @@ use Up\Service\ItemService\ItemServiceInterface;
 use Up\Service\OrderService\OrderServiceInterface;
 use Up\Service\ReviewService\Error\ReviewException;
 use Up\Validator\DataTypes;
+use Up\Validator\ValidationException;
 use Up\Validator\Validator;
 
 class ReviewService implements ReviewServiceInterface
@@ -38,11 +38,10 @@ class ReviewService implements ReviewServiceInterface
 	 */
 	public function save(Review $reviewDetail): Review
 	{
-		$error = Validator::validate($reviewDetail->getRating(), DataTypes::rating());
-		$error .= Validator::validate($reviewDetail->getComment(), DataTypes::reviewText());
-		if($error !== '')
+		$errors = $this->validateReview($reviewDetail);
+		if(!empty($errors))
 		{
-			throw new ValidationException($error);
+			throw new ValidationException('Validation failed', $errors);
 		}
 		$userId = $reviewDetail->getUser()->getId();
 		$itemId = $reviewDetail->getItem()->getId();
@@ -51,10 +50,28 @@ class ReviewService implements ReviewServiceInterface
 
 		if (!$itemIsPurchased || $reviewIsWritten)
 		{
-			throw new ReviewException('Вы еще не купили товар или уже писали отзыв на этот товар');
+			throw new ReviewException('Failed to buy', ['item' => ['Вы еще не купили товар или уже оставляли отзыв']]);
 		}
 
 		return $this->reviewDAO->save($reviewDetail);
+	}
+
+	private function validateReview(Review $review): array
+	{
+		$fields = [
+			'rating' => [$review->getRating(), DataTypes::rating(), "Ошибка в оценке: "],
+			'text_review' => [$review->getComment(), DataTypes::reviewText(), "Ошибка в тексте отзыва: "],
+		];
+		$result = [];
+		foreach ($fields as $field => $vaildatorInfo)
+		{
+			$validateErrors = Validator::validate($vaildatorInfo[0], $vaildatorInfo[1]);
+			foreach ($validateErrors as $error)
+			{
+				$result[$field][] = $vaildatorInfo[2] . $error;
+			}
+		}
+		return $result;
 	}
 
 	/**

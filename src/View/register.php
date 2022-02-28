@@ -74,8 +74,10 @@ use Up\Core\Router\URLResolver; ?>
 		<?= \Up\Lib\CSRF\CSRF::getFormField() ?>
 		<input type="submit" id="submit" value="Зарегистрироваться" class="btn btn-normal input">
 	</form>
+	<div class="errors-container"></div>
 </div>
 
 <script src="/js/user/help-user.js" type="module"></script>
 <script src="/js/user/registrate-user.js" type="module"></script>
 <script src="/js/lib/phone-input.js"></script>
+<script src="/js/lib/send-simple-form.js"></script>

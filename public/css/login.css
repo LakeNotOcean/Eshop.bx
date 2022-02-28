@@ -1,6 +1,7 @@
 @import "lib/popup.css";
 @import "lib/input.css";
 @import "lib/btn.css";
+@import "errors-container.css";
 
 .container {
 	flex: 1;

@@ -118,6 +118,25 @@ class UserDAOmysql implements UserDAOInterface
 		return $this->getUsersList();
 	}
 
+	public function checkUniqueFields(User $user): array
+	{
+		$statement = $this->getCheckUniqueFieldsStatement();
+		$statement->execute([$user->getLogin(), $user->getEmail(), $user->getPhone()]);
+		$row = $statement->fetch();
+		$result['login'] = !((int)$row['login'] === 0);
+		$result['email'] = !((int)$row['email'] === 0);
+		$result['phone'] = !((int)$row['phone'] === 0);
+		return $result;
+	}
+
+	public function getCheckUniqueFieldsStatement(): \PDOStatement
+	{
+		$query = "SELECT SUM(uu.LOGIN = ?) login,
+                         SUM(uu.EMAIL = ?) email,
+                         SUM(uu.PHONE = ?) phone
+				  FROM up_user uu;";
+		return $this->DBConnection->prepare($query);
+	}
 
 	public function getAllRoles(): array
 	{

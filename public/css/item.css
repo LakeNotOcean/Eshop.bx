@@ -4,6 +4,7 @@
 @import "lib/add-to-favorites.css";
 @import "lib/alert-dialog.css";
 @import "lib/review-stars.css";
+@import "errors-container.css";
 
 main {
 	background: var(--color-main);
