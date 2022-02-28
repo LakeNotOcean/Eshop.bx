@@ -78,7 +78,7 @@ class ItemController
 		$types = $this->itemService->getTypes(Paginator::getLimitOffset($currentPage,$this->typesInPage));
 		$typesWithItems = [];
 		foreach ($types as $type) {
-			$item = $this->itemService->getFirstItemOfType($type);
+			$item = $this->itemService->getFirstAvailableItemOfType($type);
 			if (isset($item))
 			{
 				$typesWithItems[] = [
