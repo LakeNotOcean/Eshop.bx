@@ -33,7 +33,7 @@ class ItemController
 	protected $orderService;
 	protected $cartService;
 
-	protected $typesInPage = 3;
+	protected $typesInPage = 10;
 	protected $itemsInPage = 10;
 	protected $reviewsInMorePage = 10;
 	protected $reviewsInItemPage = 3;

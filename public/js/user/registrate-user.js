@@ -73,6 +73,7 @@ function repeatPassword(firstPassword, secondPassword)
 let errorsContainer = document.querySelector('.errors-container');
 document.querySelector('.register-fields').addEventListener('submit', async (e) => {
 	e.preventDefault();
+	errorsContainer.innerHTML = '';
 	if (await checkReg()) {
 		sendSimpleForm(e.target, '/register', 'post').then(r =>{
 			if(r.redirected){

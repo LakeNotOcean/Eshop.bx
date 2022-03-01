@@ -11,7 +11,6 @@ const inputFields = [
 	},
 ];
 
-
 async function checkReg(e)
 {
 	let isSuccess = checkInputs(inputFields);
@@ -26,6 +25,7 @@ async function checkReg(e)
 let errorsContainer = document.querySelector('.errors-container');
 document.querySelector('.register-fields').addEventListener('submit', async (e) => {
 	e.preventDefault();
+	errorsContainer.innerHTML = '';
 	if (await checkReg(e)) {
 		sendSimpleForm(e.target, '/login', 'post').then(r =>{
 			if(r.redirected){
