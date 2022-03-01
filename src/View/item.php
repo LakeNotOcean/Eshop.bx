@@ -126,12 +126,14 @@ use Up\Lib\FormatHelper\WordFormatter;
 						</a>
 					</div>
 					<div id="item-cart-container">
-						<?php if (!isset($isItemAdded) || !$isItemAdded): ?>
+						<?php if ((!isset($isItemAdded) || !$isItemAdded) && $item->getIsActive()): ?>
 							<div id="cart-add-item">
 								<input class="item-id" type="hidden" name="item-id" value="<?= $item->getId() ?>">
 								<?= CSRF::getFormField() ?>
 								<div id="send-item-id" class="btn-buy">Добавить товар в корзину</div>
 							</div>
+						<?php elseif ((!isset($isItemAdded) || !$isItemAdded) && !$item->getIsActive()): ?>
+						<div>Этот товар пока недоступен</div>
 						<?php else: ?>
 							<div id="cart-item-added">
 								<input class="item-id" type="hidden" name="item-id" value="<?= $item->getId() ?>">
