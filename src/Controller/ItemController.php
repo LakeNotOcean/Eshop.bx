@@ -96,7 +96,7 @@ class ItemController
 			'currentPage' => $currentPage,
 			'pagesAmount' => $pagesAmount,
 		]);
-		$page = $this->mainLayoutManager->render('change-type.php', [
+		$page = $this->mainLayoutManager->render('choose-item-type.php', [
 			'typesWithItems' => $typesWithItems,
 			'paginator' => $paginator,
 		]);

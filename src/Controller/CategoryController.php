@@ -33,7 +33,7 @@ class CategoryController
 	public function chooseItemType(Request $request): Response
 	{
 		$itemTypes = $this->specificationsService->getItemTypes();
-		$page = $this->mainLayoutManager->render('choose-item-type.php', [
+		$page = $this->mainLayoutManager->render('admin-choose-item-type.php', [
 			'itemTypes' => $itemTypes
 		]);
 
