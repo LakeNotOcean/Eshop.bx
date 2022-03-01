@@ -33,7 +33,7 @@ class CategoryController
 	public function chooseItemType(Request $request): Response
 	{
 		$itemTypes = $this->specificationsService->getItemTypes();
-		$page = $this->mainLayoutManager->render('admin-choose-item-type.php', [
+		$page = $this->mainLayoutManager->render('admin/admin-choose-item-type.php', [
 			'itemTypes' => $itemTypes
 		]);
 
@@ -43,7 +43,7 @@ class CategoryController
 	public function addItemType(Request $request): Response
 	{
 		$categories = $this->specificationsService->getCategoriesWithSpecifications();
-		$page = $this->mainLayoutManager->render('add-item-type.php', [
+		$page = $this->mainLayoutManager->render('admin/add-item-type.php', [
 			'categories' => $categories
 		]);
 
@@ -79,7 +79,7 @@ class CategoryController
 		}
 
 		$categories = $this->specificationsService->getCategoriesWithSpecifications();
-		$page = $this->mainLayoutManager->render('add-item-type.php', [
+		$page = $this->mainLayoutManager->render('admin/add-item-type.php', [
 			'categories' => $categories,
 			'message' => $message
 		]);
@@ -89,7 +89,7 @@ class CategoryController
 
 	public function addCategory(Request $request): Response
 	{
-		$page = $this->mainLayoutManager->render('add-category.php', []);
+		$page = $this->mainLayoutManager->render('admin/add-category.php', []);
 
 		return (new Response())->withBodyHTML($page);
 	}
@@ -115,7 +115,7 @@ class CategoryController
 			$message = 'Не заполнено название категории';
 		}
 
-		$page = $this->mainLayoutManager->render('add-category.php', [
+		$page = $this->mainLayoutManager->render('admin/add-category.php', [
 			'message' => $message
 		]);
 
@@ -125,7 +125,7 @@ class CategoryController
 	public function addSpecification(Request $request): Response
 	{
 		$categories = $this->specificationsService->getCategories();
-		$page = $this->mainLayoutManager->render('add-specification.php', [
+		$page = $this->mainLayoutManager->render('admin/add-specification.php', [
 			'categories' => $categories
 		]);
 
@@ -154,7 +154,7 @@ class CategoryController
 		}
 
 		$categories = $this->specificationsService->getCategories();
-		$page = $this->mainLayoutManager->render('add-specification.php', [
+		$page = $this->mainLayoutManager->render('admin/add-specification.php', [
 			'categories' => $categories,
 			'message' => $message
 		]);
@@ -196,7 +196,7 @@ class CategoryController
 	public function deleteCategoryPage(Request $request): Response
 	{
 		$categories = $this->specificationsService->getCategories();
-		$page = $this->mainLayoutManager->render('delete-category.php', [
+		$page = $this->mainLayoutManager->render('admin/delete-category.php', [
 			'categories' => $categories,
 			'isCategoryDeleted' => false
 		]);
@@ -212,7 +212,7 @@ class CategoryController
 		$id = $request->getPostParametersByName('category-id');
 		$this->specificationsService->deleteCategoryById($id);
 		$categories = $this->specificationsService->getCategories();
-		$page = $this->mainLayoutManager->render('delete-category.php', [
+		$page = $this->mainLayoutManager->render('admin/delete-category.php', [
 			'categories' => $categories,
 			'isCategoryDeleted' => true
 		]);
@@ -223,7 +223,7 @@ class CategoryController
 	public function chooseCategoryToSpecDelete(Request $request): Response
 	{
 		$categories = $this->specificationsService->getCategories();
-		$page = $this->mainLayoutManager->render('choose-category-specs-delete.php', [
+		$page = $this->mainLayoutManager->render('admin/choose-category-specs-delete.php', [
 			'categories' => $categories
 		]);
 
@@ -233,7 +233,7 @@ class CategoryController
 	public function deleteSpecPage(Request $request, int $id): Response
 	{
 		$specifications = $this->specificationsService->getSpecificationByCategoryId($id);
-		$page = $this->mainLayoutManager->render('delete-specification.php', [
+		$page = $this->mainLayoutManager->render('admin/delete-specification.php', [
 			'specifications' => $specifications,
 			'categoryId' => $id,
 			'isSpecificationDeleted' => false
@@ -251,7 +251,7 @@ class CategoryController
 		$categoryId = $request->getPostParametersByName('category-id');
 		$this->specificationsService->deleteSpecificationById($specId);
 		$specifications = $this->specificationsService->getSpecificationByCategoryId($categoryId);
-		$page = $this->mainLayoutManager->render('delete-specification.php', [
+		$page = $this->mainLayoutManager->render('admin/delete-specification.php', [
 			'specifications' => $specifications,
 			'categoryId' => $categoryId,
 			'isSpecificationDeleted' => true

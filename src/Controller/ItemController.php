@@ -96,7 +96,7 @@ class ItemController
 			'currentPage' => $currentPage,
 			'pagesAmount' => $pagesAmount,
 		]);
-		$page = $this->mainLayoutManager->render('choose-item-type.php', [
+		$page = $this->mainLayoutManager->render('user/choose-item-type.php', [
 			'typesWithItems' => $typesWithItems,
 			'paginator' => $paginator,
 		]);
@@ -207,7 +207,7 @@ class ItemController
 			'pagesAmount' => $pagesAmount,
 		]);
 
-		$page = $this->mainLayoutManager->render('favorites.php', [
+		$page = $this->mainLayoutManager->render('user/favorites.php', [
 			'favoriteItems' => $this->itemService->mapItemsToUserItems($userId, $favoriteItems),
 			'paginator' => $paginator,
 		]);
@@ -299,7 +299,7 @@ class ItemController
 		$items = $this->itemService->mapItemsToUserItems($userId, $items);
 		$itemsIds = array_values(array_map(function(Item $item){return $item->getId();}, $items));
 		$reviews = $this->reviewService->getUsersReviewsByItemIds($userId, $itemsIds);
-		$page = $this->mainLayoutManager->setQuery($query['query'])->render('my-purchased.php', [
+		$page = $this->mainLayoutManager->setQuery($query['query'])->render('user/my-purchased.php', [
 			'paginator' => $paginator,
 			'reviews' => $reviews,
 			'items' => $items
@@ -332,7 +332,7 @@ class ItemController
 
 	public function addItem(Request $request, int $id = 0): Response
 	{
-		$page = $this->mainLayoutManager->render('add-item.php', [
+		$page = $this->mainLayoutManager->render('admin/add-item.php', [
 			'item' => $id === 0 ? null : $this->itemService->getItemById($id)
 		]);
 
@@ -342,7 +342,7 @@ class ItemController
 	public function updateItemPage(Request $request, int $id): Response
 	{
 		$item = $this->itemService->getItemById($id);
-		$page = $this->mainLayoutManager->render('add-item.php', [
+		$page = $this->mainLayoutManager->render('admin/add-item.php', [
 			'item' => $item,
 		]);
 
