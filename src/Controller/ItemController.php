@@ -69,7 +69,9 @@ class ItemController
 		$this->cartService = $cartService;
 	}
 
-
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
 	public function setTypeItem(Request $request): Response
 	{
 		$query = $request->getQueriesOrDefaultList(
@@ -246,6 +248,9 @@ class ItemController
 		return (new Response())->withBodyHTML('');
 	}
 
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
 	public function moreReviews(Request $request, int $id): Response
 	{
 		$query = $request->getQueriesOrDefaultList(['page' => '1', 'query' => '']);
@@ -275,6 +280,9 @@ class ItemController
 		return (new Response())->withBodyHTML($page);
 	}
 
+	/**
+	 * @throws NoSuchQueryParameterException
+	 */
 	public function myPurchased(Request $request): Response
 	{
 		$query = $request->getQueriesOrDefaultList(['page' => '1', 'query' => '']);

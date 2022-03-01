@@ -12,7 +12,7 @@ class ExceptionWithMessagesForUser extends \Exception
 	protected $messagesForUser = [];
 	protected $status = 200;
 
-	public function __construct($message = "", $messagesForUser = [], $status = 200, $code = 0, Throwable $previous = null)
+	public function __construct($message = "", $messagesForUser = [], $status = 400, $code = 0, Throwable $previous = null)
 	{
 		$this->messagesForUser = $messagesForUser;
 		$this->status = $status;
