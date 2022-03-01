@@ -21,7 +21,7 @@ use Up\Lib\CSRF\CSRF;
 		<?= CSRF::getFormField() ?>
 		<input type="submit" value="Сохранить тип товара в базу данных" class="btn btn-normal input">
 	</form>
-	<?php if (isset($message)): ?>
+	<?php if (!empty($message)): ?>
 		<div class="popup"><?= htmlspecialchars($message)?></div>
 	<?php endif; ?>
 </div>

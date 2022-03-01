@@ -1,5 +1,5 @@
 <?php
-/** @var bool $isNewCategoryAdded */
+/** @var string $message */
 
 use Up\Core\Router\URLResolver;
 use Up\Lib\CSRF\CSRF;
@@ -22,7 +22,9 @@ use Up\Lib\CSRF\CSRF;
 		<input type="submit" value="Сохранить категорию в базу данных" class="btn btn-normal input">
 		<?= CSRF::getFormField() ?>
 	</form>
-	<div id="popup" class="popup <?= !$isNewCategoryAdded ? 'hidden' : ''?>">Добавлена новая категория</div>
+	<?php if (!empty($message)):?>
+		<div id="popup" class="popup"><?= htmlspecialchars($message)?></div>
+	<?php endif;?>
 </div>
 
 <script src="/js/lib/popup-disappear.js"></script>

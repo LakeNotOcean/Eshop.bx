@@ -55,37 +55,27 @@ class CategoryController
 	 */
 	public function addItemTypeAndSaveToDB(Request $request): Response
 	{
-		$message = '';
+		$itemTypeName = $request->getPostParametersByName('item-type');
+		$itemTypeName = trim($itemTypeName);
 
-		if ($request->containsPost('item-type'))
+		if ($request->containsPost('template-specs'))
 		{
-			$itemTypeName = $request->getPostParametersByName('item-type');
-			$itemTypeName = trim($itemTypeName);
+			$templateSpecs = $request->getPostParametersByName('template-specs');
 		}
-		else
+
+		if (!empty($templateSpecs) && !empty($itemTypeName))
 		{
-			$message = 'Не указано название типа товаров';
+			$this->specificationsService->addItemType($itemTypeName, $templateSpecs);
 		}
+
+		$message = '';
 		if (empty($itemTypeName))
 		{
 			$message = 'Не указано название типа товаров';
 		}
-
-		if (!empty($itemTypeName))
+		elseif (empty($templateSpecs))
 		{
-			if ($request->containsPost('template-specs'))
-			{
-				$templateSpecs = $request->getPostParametersByName('template-specs');
-			}
-			else
-			{
-				$message = 'Не выбраны спецификации типа товаров';
-			}
-		}
-
-		if (isset($itemTypeName, $templateSpecs))
-		{
-			$this->specificationsService->addItemType($itemTypeName, $templateSpecs);
+			$message = 'Не выбраны спецификации типа товаров';
 		}
 
 		$categories = $this->specificationsService->getCategoriesWithSpecifications();
@@ -99,9 +89,7 @@ class CategoryController
 
 	public function addCategory(Request $request): Response
 	{
-		$page = $this->mainLayoutManager->render('add-category.php', [
-			'isNewCategoryAdded' => false
-		]);
+		$page = $this->mainLayoutManager->render('add-category.php', []);
 
 		return (new Response())->withBodyHTML($page);
 	}
@@ -113,11 +101,22 @@ class CategoryController
 	public function addCategoryAndSaveToDB(Request $request): Response
 	{
 		$category = $request->getPostParametersByName('category');
-		$categoryOrder = $request->getPostParametersByName('category-order');
-		$newCategory = new SpecificationCategory(0, $category, $categoryOrder);
-		$this->specificationsService->addCategory($newCategory);
+		$category = trim($category);
+		$categoryOrder = (int) $request->getPostParametersByName('category-order');
+
+		$message = '';
+		if (!empty($category))
+		{
+			$newCategory = new SpecificationCategory(0, $category, $categoryOrder);
+			$this->specificationsService->addCategory($newCategory);
+		}
+		if (empty($category))
+		{
+			$message = 'Не заполнено название категории';
+		}
+
 		$page = $this->mainLayoutManager->render('add-category.php', [
-			'isNewCategoryAdded' => true
+			'message' => $message
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -127,8 +126,7 @@ class CategoryController
 	{
 		$categories = $this->specificationsService->getCategories();
 		$page = $this->mainLayoutManager->render('add-specification.php', [
-			'categories' => $categories,
-			'isNewSpecAdded' => false
+			'categories' => $categories
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -141,14 +139,24 @@ class CategoryController
 	{
 		$categoryId = $request->getPostParametersByName('category-id');
 		$specName = $request->getPostParametersByName('spec-name');
-		$specOrder = $request->getPostParametersByName('spec-order');
-		$newSpec = new Specification(0, $specName, $specOrder);
-		$this->specificationsService->addSpecification($categoryId, $newSpec);
+		$specName = trim($specName);
+		$specOrder = (int) $request->getPostParametersByName('spec-order');
+
+		$message = '';
+		if (!empty($specName))
+		{
+			$newSpec = new Specification(0, $specName, $specOrder);
+			$this->specificationsService->addSpecification($categoryId, $newSpec);
+		}
+		if (empty($specName))
+		{
+			$message = 'Не заполнено название спецификации';
+		}
 
 		$categories = $this->specificationsService->getCategories();
 		$page = $this->mainLayoutManager->render('add-specification.php', [
 			'categories' => $categories,
-			'isNewSpecAdded' => true
+			'message' => $message
 		]);
 
 		return (new Response())->withBodyHTML($page);
