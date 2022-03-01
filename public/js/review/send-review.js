@@ -4,7 +4,10 @@ if(formReview) {
 	if (btnAddReview) {
 		btnAddReview.addEventListener('click', () =>{
 			sendSimpleForm(formReview, '/addReview', 'post').then(r => {
-				r.json().then(json => printError(formReview.querySelector('.errors-container'), json));
+				if(r.redirected)
+					location.href = r.url;
+				else
+					r.json().then(json => printError(formReview.querySelector('.errors-container'), json));
 			});
 		});
 	}

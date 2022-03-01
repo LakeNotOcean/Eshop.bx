@@ -44,8 +44,7 @@ class CategoryController
 	{
 		$categories = $this->specificationsService->getCategoriesWithSpecifications();
 		$page = $this->mainLayoutManager->render('add-item-type.php', [
-			'categories' => $categories,
-			'isNewItemTypeAdded' => false
+			'categories' => $categories
 		]);
 
 		return (new Response())->withBodyHTML($page);
@@ -56,14 +55,43 @@ class CategoryController
 	 */
 	public function addItemTypeAndSaveToDB(Request $request): Response
 	{
-		$itemTypeName = $request->getPostParametersByName('item-type');
-		$templateSpecs = $request->getPostParametersByName('template-specs');
-		$this->specificationsService->addItemType($itemTypeName, $templateSpecs);
+		$message = '';
+
+		if ($request->containsPost('item-type'))
+		{
+			$itemTypeName = $request->getPostParametersByName('item-type');
+			$itemTypeName = trim($itemTypeName);
+		}
+		else
+		{
+			$message = 'Не указано название типа товаров';
+		}
+		if (empty($itemTypeName))
+		{
+			$message = 'Не указано название типа товаров';
+		}
+
+		if (!empty($itemTypeName))
+		{
+			if ($request->containsPost('template-specs'))
+			{
+				$templateSpecs = $request->getPostParametersByName('template-specs');
+			}
+			else
+			{
+				$message = 'Не выбраны спецификации типа товаров';
+			}
+		}
+
+		if (isset($itemTypeName, $templateSpecs))
+		{
+			$this->specificationsService->addItemType($itemTypeName, $templateSpecs);
+		}
 
 		$categories = $this->specificationsService->getCategoriesWithSpecifications();
 		$page = $this->mainLayoutManager->render('add-item-type.php', [
 			'categories' => $categories,
-			'isNewItemTypeAdded' => true
+			'message' => $message
 		]);
 
 		return (new Response())->withBodyHTML($page);

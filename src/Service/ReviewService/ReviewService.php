@@ -38,7 +38,10 @@ class ReviewService implements ReviewServiceInterface
 	 */
 	public function save(Review $reviewDetail): Review
 	{
-		$errors = $this->validateReview($reviewDetail);
+		$errors = Validator::validateFields([
+												'rating' => [$reviewDetail->getRating(), DataTypes::rating(), "Ошибка в оценке: "],
+												'text_review' => [$reviewDetail->getComment(), DataTypes::reviewText(), "Ошибка в тексте отзыва: "],
+											]);
 		if(!empty($errors))
 		{
 			throw new ValidationException('Validation failed', $errors);
@@ -54,24 +57,6 @@ class ReviewService implements ReviewServiceInterface
 		}
 
 		return $this->reviewDAO->save($reviewDetail);
-	}
-
-	private function validateReview(Review $review): array
-	{
-		$fields = [
-			'rating' => [$review->getRating(), DataTypes::rating(), "Ошибка в оценке: "],
-			'text_review' => [$review->getComment(), DataTypes::reviewText(), "Ошибка в тексте отзыва: "],
-		];
-		$result = [];
-		foreach ($fields as $field => $vaildatorInfo)
-		{
-			$validateErrors = Validator::validate($vaildatorInfo[0], $vaildatorInfo[1]);
-			foreach ($validateErrors as $error)
-			{
-				$result[$field][] = $vaildatorInfo[2] . $error;
-			}
-		}
-		return $result;
 	}
 
 	/**

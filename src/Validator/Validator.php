@@ -62,6 +62,35 @@ class Validator
 		return $errors;
 	}
 
+	/**
+	 * @param array<string, array> $fields массив соответствий групп ошибок и массивов (0)поля, (1)правила валдиации, (2)префикс ошибки при выводе
+	 * $fields = [
+	 * 		'errorGroup1' => [field, (DataTypes), errorTextPrefix],
+	 * 		'errorGroup2' => [field, (DataTypes), errorTextPrefix]
+	 * ]
+	 * example:
+	 * $fields = [
+	 * 		'rating' => [$review->getRating(), DataTypes::rating(), "Ошибка в оценке: "],
+	 * 		'text_review' => [$review->getComment(), DataTypes::reviewText(), "Ошибка в тексте отзыва: "],
+	 * ];
+	 *
+	 * @return array
+	 *
+	 */
+	public static function validateFields(array $fields): array
+	{
+		$result = [];
+		foreach ($fields as $field => $vaildatorInfo)
+		{
+			$validateErrors = Validator::validate($vaildatorInfo[0], $vaildatorInfo[1]);
+			foreach ($validateErrors as $error)
+			{
+				$result[$field][] = $vaildatorInfo[2] . $error;
+			}
+		}
+		return $result;
+	}
+
 	private static function emailFormat(string $data): string
 	{
 		if (!filter_var($data, FILTER_VALIDATE_EMAIL))
