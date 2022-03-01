@@ -39,7 +39,6 @@ class TypeDAOmysql implements TypeDAOInterface
 		return $types;
 	}
 
-
 	public function getTypes(int $offset, int $amountItems):array
 	{
 		$query = $this->getTypesQuery($offset,$amountItems);
@@ -66,7 +65,6 @@ class TypeDAOmysql implements TypeDAOInterface
 		LIMIT {$offset}, {$amountItems} ";
 		return $query;
 	}
-
 
 	private function getTypeIdBySearchQuery(): string
 	{

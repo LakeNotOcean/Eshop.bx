@@ -77,7 +77,7 @@ class ItemController
 		$query = $request->getQueriesOrDefaultList(
 			['page' => '1']);
 		$currentPage = ($query['page'] > 1) ? (int) $query['page'] : 1;
-		$types = $this->itemService->getTypes(Paginator::getLimitOffset($currentPage,$this->typesInPage));
+		$types = $this->itemService->getTypes(Paginator::getLimitOffset($currentPage, $this->typesInPage));
 		$typesWithItems = [];
 		foreach ($types as $type) {
 			$item = $this->itemService->getFirstAvailableItemOfType($type);
@@ -91,7 +91,7 @@ class ItemController
 		}
 
 		$typesAmount = $this->itemService->getTypesAmount();
-		$pagesAmount = Paginator::getPageCount($typesAmount,$this->typesInPage);
+		$pagesAmount = Paginator::getPageCount($typesAmount, $this->typesInPage);
 		$paginator = $this->templateProcessor->renderTemplate('block/paginator.php', [
 			'currentPage' => $currentPage,
 			'pagesAmount' => $pagesAmount,
