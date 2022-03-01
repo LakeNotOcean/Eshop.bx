@@ -40,6 +40,7 @@ class ReviewController
 	 * @throws \Up\Core\Router\Error\ResolveException
 	 * @throws \Up\Core\Error\ValidationException
 	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 * @throws \Up\Validator\ValidationException
 	 */
 	public function saveReview(Request $request): Response
 	{

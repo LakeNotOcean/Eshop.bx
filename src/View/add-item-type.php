@@ -1,5 +1,5 @@
 <?php
-/** @var bool $isNewItemTypeAdded */
+/** @var string $message */
 
 use Up\Core\Router\URLResolver;
 use Up\Lib\CSRF\CSRF;
@@ -21,8 +21,8 @@ use Up\Lib\CSRF\CSRF;
 		<?= CSRF::getFormField() ?>
 		<input type="submit" value="Сохранить тип товара в базу данных" class="btn btn-normal input">
 	</form>
-	<?php if ($isNewItemTypeAdded): ?>
-		<div class="popup">Добавлен новый тип товара</div>
+	<?php if (!empty($message)): ?>
+		<div class="popup"><?= htmlspecialchars($message)?></div>
 	<?php endif; ?>
 </div>
 
