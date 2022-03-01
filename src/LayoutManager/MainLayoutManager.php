@@ -46,7 +46,7 @@ class MainLayoutManager implements LayoutManagerInterface
 		return [
 			'darkMode' => $this->getDarkMode(),
 			'isAuthenticated' => $this->request->isAuthenticated(),
-			'isAdmin' => $this->request->isAdmin(),
+			'role' => $this->request->getUser()->getRole()->getName(),
 			'query' => $this->query,
 			'userName' => $this->request->getUser()->getName(),
 			'cartSize' => $this->cartService->getCartSize()

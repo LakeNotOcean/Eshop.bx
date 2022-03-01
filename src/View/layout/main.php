@@ -5,10 +5,11 @@
 
 /** @var string $query */
 /** @var string $userName */
-/** @var bool $isAdmin */
+/** @var UserEnum $role */
 /** @var bool $isAuthenticated */
 
 use Up\Core\Router\URLResolver;
+use Up\Entity\User\UserEnum;
 
 if (!isset($query))
 {
@@ -56,7 +57,7 @@ if (!isset($query))
 		</div>
 	</div>
 
-	<?php if ($isAdmin): ?>
+	<?php if ($role == UserEnum::Moderator() || $role == UserEnum::Admin()): ?>
 		<div class="nav-bar">
 			<div class="nav-item">
 				<div class="nav-item-label">Товары</div>
@@ -80,6 +81,7 @@ if (!isset($query))
 					</div>
 				</div>
 			</div>
+			<?php if ($role == UserEnum::Admin()): ?>
 			<div class="nav-item">
 				<div class="nav-item-label">Администрирование</div>
 				<div class="menu-container">
@@ -89,6 +91,7 @@ if (!isset($query))
 					</div>
 				</div>
 			</div>
+			<?php endif;?>
 		</div>
 	<?php endif;?>
 	<div class="nav-item" id="userMenu">
