@@ -61,7 +61,7 @@ class UserController
 		$user = new User(0, $login, new UserRole(UserEnum::User()), $email, $phone, $firstName, $secondName);
 		$this->userService->registerUser($user, $password);
 
-		return Redirect::createResponseByURLName('home');
+		return Redirect::createResponseByURLName('set-type-item');
 	}
 
 	/**
@@ -83,7 +83,7 @@ class UserController
 			}
 		}
 
-		return Redirect::createResponseByURLName('home');
+		return Redirect::createResponseByURLName('set-type-item');
 	}
 
 	/**
@@ -288,7 +288,7 @@ class UserController
 	public function logout(Request $request)
 	{
 		$this->userService->removeUserFromSession();
-		return Redirect::createResponseByURLName('home');
+		return Redirect::createResponseByURLName('set-type-item');
 	}
 
 	/**

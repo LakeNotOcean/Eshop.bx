@@ -1,6 +1,13 @@
 @import "lib/pagination.css";
 @import "lib/card.css";
 
+.types-header {
+	padding: 20px;
+	font-weight: bold;
+	font-size: 20px;
+	text-align: center;
+}
+
 .types-card {
 	display: flex;
 	margin-top: 10px;
