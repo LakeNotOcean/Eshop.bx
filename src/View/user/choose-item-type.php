@@ -7,6 +7,7 @@
 
 <link rel="stylesheet" href="/css/change-type.css">
 <div class="container">
+	<h1 class="types-header">Добро пожаловать в лучший интернет-магазин электроники EShop!</h1>
 	<?php foreach ($typesWithItems as $typesWithItem):
 		$item = $typesWithItem['item'];
 		$type = $typesWithItem['type']?>
