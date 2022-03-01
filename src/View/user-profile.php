@@ -44,7 +44,7 @@ use Up\Lib\CSRF\CSRF;
 			<div class="user-info-name">Телефон</div>
 			<div class="btn-change">Редактировать</div>
 		</div>
-		<div class="user-info-value user-phone"><?= $user->getPhone() ?></div>
+		<div class="user-info-value user-phone"><?= htmlspecialchars($user->getPhone()) ?></div>
 		<div class="user-info-change gone">
 			<label>
 				<input id="user-phone" type="tel" class="input" placeholder="Телефон" value="<?= $user->getPhone()?>">
@@ -57,7 +57,7 @@ use Up\Lib\CSRF\CSRF;
 			<div class="user-info-name">E-mail</div>
 			<div class="btn-change">Редактировать</div>
 		</div>
-		<div class="user-info-value user-email"><?= $user->getEmail()?></div>
+		<div class="user-info-value user-email"><?= htmlspecialchars($user->getEmail())?></div>
 		<div class="user-info-change gone">
 			<label>
 				<input id="user-email" type="email" class="input" placeholder="E-mail" value="<?= $user->getEmail()?>">

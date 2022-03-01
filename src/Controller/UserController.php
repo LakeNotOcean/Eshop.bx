@@ -2,8 +2,7 @@
 
 namespace Up\Controller;
 
-use Error;
-use Exception;
+
 use Up\Core\Message\Request;
 use Up\Core\Message\Response;
 use Up\Core\Router\Error\ResolveException;
@@ -45,6 +44,11 @@ class UserController
 		$this->userService = $userService;
 	}
 
+	/**
+	 * @throws \Up\Validator\ValidationException
+	 * @throws ResolveException
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 */
 	public function registerUser(Request $request): Response
 	{
 		$login = $request->getPostParametersByName('login');
@@ -60,6 +64,11 @@ class UserController
 		return Redirect::createResponseByURLName('home');
 	}
 
+	/**
+	 * @throws UserServiceException
+	 * @throws ResolveException
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 */
 	public function loginUser(Request $request): Response
 	{
 		$login = $request->getPostParametersByName('login');
@@ -77,6 +86,9 @@ class UserController
 		return Redirect::createResponseByURLName('home');
 	}
 
+	/**
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 */
 	public function loginUserPage(Request $request): Response
 	{
 		$nextUrlParam = '';
@@ -184,12 +196,16 @@ class UserController
 			$secondName = $request->getPostParametersByName('user-second-name');
 			$user->setSecondName($secondName);
 		}
-		if ($request->containsPost('user-phone'))
+		if ($request->containsPost('user-phone')
+			&& Validator::validate($request->getPostParametersByName('user-email'), new DataTypes("phone")))
 		{
 			$phone = $request->getPostParametersByName('user-phone');
 			$user->setPhone($phone);
 		}
-		if ($request->containsPost('user-email'))
+		if (
+			$request->containsPost('user-email')
+			&& Validator::validate($request->getPostParametersByName('user-email'), new DataTypes("email"))
+		)
 		{
 			$email = $request->getPostParametersByName('user-email');
 			$user->setEmail($email);
@@ -208,6 +224,7 @@ class UserController
 
 	/**
 	 * @throws UserServiceException
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
 	 */
 	public function adminListPage(Request $request): Response
 	{
@@ -274,6 +291,9 @@ class UserController
 		return Redirect::createResponseByURLName('home');
 	}
 
+	/**
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 */
 	public function updateUser(Request $request): Response
 	{
 		$firstName = $request->getUser()->getFirstName();
@@ -293,7 +313,10 @@ class UserController
 		{
 			$phone = $request->getPostParametersByName('user-phone');
 		}
-		if ($request->containsPost('user-email'))
+		if (
+			$request->containsPost('user-email')
+			&& preg_match("/^[^@\s]+@[^@\s]+\.[^@\s]+$/", $request->getPostParametersByName('user-email'))
+		)
 		{
 			$email = $request->getPostParametersByName('user-email');
 		}
@@ -309,14 +332,18 @@ class UserController
 		return (new Response())->withBodyHTML('');
 	}
 
-	public function changePasswordPage(Request $request)
+	public function changePasswordPage(Request $request): Response
 	{
 		return (new Response())->withBodyHTML(
 			$this->mainLayoutManager->render('change-password.php', [])
 		);
 	}
 
-	public function changePassword(Request $request)
+	/**
+	 * @throws ResolveException
+	 * @throws \Up\Core\Message\Error\NoSuchQueryParameterException
+	 */
+	public function changePassword(Request $request): Response
 	{
 		if (!(
 			$request->containsPost('oldPassword') ||
