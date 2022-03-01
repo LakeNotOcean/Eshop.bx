@@ -36,7 +36,10 @@ class UserService implements UserServiceInterface
 	 */
 	public function authorizeUserByLogin(string $login, string $password): void
 	{
-		$errors = $this->validateSignIn($login, $password);
+		$errors = Validator::validateFields([
+												'login' => [$login, DataTypes::login(), "Ошибка в логине: "],
+												'password' => [$password, DataTypes::password(), "Ошибка в пароле: "],
+											]);
 		if (!empty($errors))
 		{
 			throw new ValidationException('Validation failed', $errors);
@@ -48,24 +51,6 @@ class UserService implements UserServiceInterface
 		}
 		$user = $this->userDAO->getUserByLogin($login);
 		$this->addUserToSession($user);
-	}
-
-	private function validateSignIn(string $login, string $password): array
-	{
-		$fields = [
-			'login' => [$login, DataTypes::login(), "Ошибка в логине: "],
-			'password' => [$password, DataTypes::password(), "Ошибка в пароле: "],
-		];
-		$result = [];
-		foreach ($fields as $field => $vaildatorInfo)
-		{
-			$validateErrors = Validator::validate($vaildatorInfo[0], $vaildatorInfo[1]);
-			foreach ($validateErrors as $error)
-			{
-				$result[$field][] = $vaildatorInfo[2] . $error;
-			}
-		}
-		return $result;
 	}
 
 	/**
@@ -152,23 +137,14 @@ class UserService implements UserServiceInterface
 
 	private function validateUserInfo(User $user, string $password): array
 	{
-		$fields = [
-			'email' => [$user->getEmail(), DataTypes::email(), "Ошибка в email: "],
-			'phone' => [$user->getPhone() ,DataTypes::phone(), "Ошибка в телефоне: "],
-			'login' => [$user->getLogin(), DataTypes::login(), "Ошибка в логине: "],
-			'password' => [$password, DataTypes::password(), "Ошибка в пароле: "],
-			'firstName' => [$user->getFirstName(), DataTypes::names(), "Ошибка в имени: "],
-			'secondName' => [$user->getSecondName(), DataTypes::names(), "Ошибка в фамилии: "],
-		];
-		$result = [];
-		foreach ($fields as $field => $vaildatorInfo)
-		{
-			$validateErrors = Validator::validate($vaildatorInfo[0], $vaildatorInfo[1]);
-			foreach ($validateErrors as $error)
-			{
-				$result[$field][] = $vaildatorInfo[2] . $error;
-			}
-		}
+		$result = Validator::validateFields([
+												'email' => [$user->getEmail(), DataTypes::email(), "Ошибка в email: "],
+												'phone' => [$user->getPhone() ,DataTypes::phone(), "Ошибка в телефоне: "],
+												'login' => [$user->getLogin(), DataTypes::login(), "Ошибка в логине: "],
+												'password' => [$password, DataTypes::password(), "Ошибка в пароле: "],
+												'firstName' => [$user->getFirstName(), DataTypes::names(), "Ошибка в имени: "],
+												'secondName' => [$user->getSecondName(), DataTypes::names(), "Ошибка в фамилии: "],
+											]);
 		$notUnique = $this->userDAO->checkUniqueFields($user);
 		if ($notUnique['login'])
 		{
