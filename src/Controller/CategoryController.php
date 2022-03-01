@@ -68,7 +68,7 @@ class CategoryController
 			$this->specificationsService->addItemType($itemTypeName, $templateSpecs);
 		}
 
-		$message = '';
+		$message = 'Тип товара добавлен';
 		if (empty($itemTypeName))
 		{
 			$message = 'Не указано название типа товаров';
@@ -104,7 +104,7 @@ class CategoryController
 		$category = trim($category);
 		$categoryOrder = (int) $request->getPostParametersByName('category-order');
 
-		$message = '';
+		$message = 'Категория добавлена';
 		if (!empty($category))
 		{
 			$newCategory = new SpecificationCategory(0, $category, $categoryOrder);
@@ -142,7 +142,7 @@ class CategoryController
 		$specName = trim($specName);
 		$specOrder = (int) $request->getPostParametersByName('spec-order');
 
-		$message = '';
+		$message = 'Спецификация добавлена';
 		if (!empty($specName))
 		{
 			$newSpec = new Specification(0, $specName, $specOrder);
