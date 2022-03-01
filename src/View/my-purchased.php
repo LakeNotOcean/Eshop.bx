@@ -51,6 +51,7 @@ use Up\Lib\FormatHelper\DateFormatterRu;
 						<div class="price"><?= htmlspecialchars($item->getPrice()) ?> ₽</div>
 					</div>
 					<?php if (!$item->getIsActive()): ?>
+						<div>Этот товар уже недоступен</div>
 						<div class="no-active"></div>
 					<?php endif; ?>
 				</div>
