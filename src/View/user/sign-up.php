@@ -67,7 +67,7 @@ use Up\Lib\CSRF\CSRF; ?>
 			<span class="label-title">Контактный телефон</span>
 			<div class="input-error">
 				<label for="phone" class="field">
-					<input type="tel" class="input" id="phone" name="phone" placeholder="Контактный телефон" required/>
+					<input type="tel" pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}" class="input" id="phone" name="phone" placeholder="Контактный телефон" required/>
 				</label>
 				<span class="label-error" data-source="phone">Неверный формат телефона</span>
 			</div>

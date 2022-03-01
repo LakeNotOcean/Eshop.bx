@@ -57,7 +57,7 @@ class OrderController
 		$items = $this->cartService->getItemsFromCart();
 		$page = $this->orderLayoutManager
 			->setOrderItems($items)
-			->render('make-order.php', [
+			->render('user/make-order.php', [
 			'items' => $items,
 			'user' => $request->getUser()
 		]);
@@ -146,7 +146,7 @@ class OrderController
 			'pagesAmount' => $pagesAmount,
 		]);
 
-		$page = $this->mainLayoutManager->render('orders.php', [
+		$page = $this->mainLayoutManager->render('admin/orders.php', [
 			'orders' => $orders,
 			'paginator' => $paginator,
 			'query' => $query,
@@ -170,7 +170,7 @@ class OrderController
 			'pagesAmount' => $pagesAmount,
 		]);
 
-		$page = $this->mainLayoutManager->render('my-orders.php', [
+		$page = $this->mainLayoutManager->render('user/my-orders.php', [
 			'orders' => $orders,
 			'amount' => $ordersAmount,
 			'paginator' => $paginator

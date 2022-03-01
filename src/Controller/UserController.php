@@ -102,7 +102,7 @@ class UserController
 			$nextUrlParam = '?' . static::nextUrlQueryKeyword . '=' . $nextUrlParam;
 		}
 
-		$page = $this->mainLayoutManager->render('login.php', [
+		$page = $this->mainLayoutManager->render('user/sign-in.php', [
 			'state' => 'process',
 			'next' => $nextUrlParam
 		]);
@@ -112,7 +112,7 @@ class UserController
 
 	public function registerUserPage(Request $request): Response
 	{
-		$page = $this->mainLayoutManager->render('register.php', [
+		$page = $this->mainLayoutManager->render('user/sign-up.php', [
 			'state' => 'process'
 		]);
 
@@ -147,7 +147,7 @@ class UserController
 			'pagesAmount' => $pagesAmount,
 		]);
 
-		$page = $this->mainLayoutManager->render('user-list.php', [
+		$page = $this->mainLayoutManager->render('admin/user-list.php', [
 			'userAmount' => $itemsAmount,
 			'paginator' => $paginator,
 			'users' => $userList,
@@ -241,7 +241,7 @@ class UserController
 			'pagesAmount' => $pagesAmount,
 		]);
 
-		$page = $this->mainLayoutManager->render('admins-list.php', [
+		$page = $this->mainLayoutManager->render('admin/admins-list.php', [
 			'paginator' => $paginator,
 			'admins' => $adminList,
 			'query' => $search,
@@ -335,7 +335,7 @@ class UserController
 	public function changePasswordPage(Request $request): Response
 	{
 		return (new Response())->withBodyHTML(
-			$this->mainLayoutManager->render('change-password.php', [])
+			$this->mainLayoutManager->render('user/change-password.php', [])
 		);
 	}
 
@@ -380,7 +380,7 @@ class UserController
 		if (!empty($validationErrors))
 		{
 			return (new Response())->withBodyHTML(
-				$this->mainLayoutManager->render('change-password.php', [
+				$this->mainLayoutManager->render('user/change-password.php', [
 					'errors' => $validationErrors
 				])
 			);

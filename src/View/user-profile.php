@@ -15,11 +15,11 @@ use Up\Lib\CSRF\CSRF;
 
 <div class="container">
 	<?= CSRF::getFormField() ?>
-	<div class="main-title">Личная информация <?php if (isset($fromUserList)): ?>
-	пользователя <?= $user->getLogin()?></div>
-	<?php else: ?>
-</div>
-<?php endif; ?>
+	<div class="main-title">Личная информация
+		<?php if (isset($fromUserList)): ?>
+			пользователя <?= $user->getLogin()?>
+		<?php endif; ?>
+	</div>
 	<div class="user-info user-id" id=<?= $user->getId() ?>>
 		<div class="user-info-header">
 			<div class="user-info-name">Имя</div>
@@ -47,7 +47,7 @@ use Up\Lib\CSRF\CSRF;
 		<div class="user-info-value user-phone"><?= htmlspecialchars($user->getPhone()) ?></div>
 		<div class="user-info-change gone">
 			<label>
-				<input id="user-phone" type="tel" class="input" placeholder="Телефон" value="<?= $user->getPhone()?>">
+				<input id="user-phone" type="tel" pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}" class="input" placeholder="Телефон" value="<?= $user->getPhone()?>">
 			</label>
 			<div class="btn btn-normal btn-save">Сохранить</div>
 		</div>
