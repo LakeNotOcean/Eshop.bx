@@ -37,6 +37,12 @@ class URLAccessMiddleware extends AbstractMiddleware
 		'admin:delete-image' => UserEnum::Moderator,
 		'admin:edit-category' => UserEnum::Moderator,
 		'admin:orders' => UserEnum::Moderator,
+		'admin:admin-list' => UserEnum::Admin ,
+		'admin:user-list' => UserEnum::Admin,
+		'admin:update-user' => UserEnum::Admin,
+		'admin:user-info' => UserEnum::Moderator,
+		'admin:order-change-status' => UserEnum::Moderator,
+		'admin:order-delete' => UserEnum::Moderator
 	];
 	private $userService;
 

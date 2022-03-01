@@ -1,7 +1,7 @@
 <?php
 /** @var array<SpecificationCategory> $categories */
 
-/** @var bool $isNewSpecAdded */
+/** @var string $message */
 
 use Up\Core\Router\URLResolver;
 use Up\Entity\SpecificationCategory;
@@ -33,11 +33,9 @@ use Up\Lib\CSRF\CSRF;
 		<input type="submit" value="Сохранить спецификацию в базу данных" class="btn btn-normal input">
 		<?= CSRF::getFormField() ?>
 	</form>
-	<?php
-	if ($isNewSpecAdded): ?>
-		<div id="popup" class="popup">Добавлена новая спецификация</div>
-	<?php
-	endif; ?>
+	<?php if (!empty($message)):?>
+		<div id="popup" class="popup"><?= htmlspecialchars($message)?></div>
+	<?php endif;?>
 </div>
 
 <script src="/js/lib/popup-disappear.js"></script>

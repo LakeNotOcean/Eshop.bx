@@ -7,6 +7,12 @@ main {
 .card.item-card-my-reviews {
 	margin: 15px 0;
 	padding: 10px;
+	position: relative;
+}
+
+.card.item-card-my-reviews:hover .no-active {
+	opacity: 0;
+	pointer-events: none;
 }
 
 .item.item-my-reviews {

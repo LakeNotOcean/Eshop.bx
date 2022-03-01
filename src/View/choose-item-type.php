@@ -1,23 +1,28 @@
 <?php
-/** @var array<ItemType> $itemTypes */
 
-use Up\Core\Router\URLResolver;
-use Up\Entity\ItemType;
+/** @var array $typesWithItems */
+/** @var string $paginator */
 
 ?>
 
-<link rel="stylesheet" href="/css/add-item.css">
+<link rel="stylesheet" href="/css/change-type.css">
 <div class="container">
-	<form action="<?= URLResolver::resolve('admin:add-item') ?>" method="get" enctype="multipart/form-data" class="form-add">
-		<label for="item-type" class="field">
-			<span class="label-title">Тип товара</span>
-			<select id="type-data" id="item-type" name="item-type">
-				<?php foreach ($itemTypes as $itemType): ?>
-					<option value="<?= $itemType->getId() ?>"><?= htmlspecialchars($itemType->getName()) ?></option>
-				<?php endforeach; ?>
-			</select>
-			<a href="<?= URLResolver::resolve('admin:add-item-type') ?>" class="btn btn-normal">Добавить тип</a>
-		</label>
-		<input type="submit" value="Далее" class="btn btn-normal input">
-	</form>
+	<?php foreach ($typesWithItems as $typesWithItem):
+		$item = $typesWithItem['item'];
+		$type = $typesWithItem['type']?>
+		<div class="types-card card card-hover" id=<?= $type->getId()?>>
+			<div>
+				<picture>
+					<source srcset="<?= '/' . $item->getMainImage()->getPath('medium', 'webp')?>" type="image/webp">
+					<img src=" <?= '/'.$item->getMainImage()->getPath('medium', 'jpeg')?>" alt="item-main-image" class="main-image">
+				</picture>
+			</div>
+			<div class="type-name">
+				<?= htmlspecialchars($type->getName())?>
+			</div>
+		</div>
+	<?php endforeach;?>
+	<?=$paginator?>
 </div>
+
+<script src="/js/change-type/change-type.js"></script>

@@ -6,21 +6,23 @@ const btnAddedClass = 'btn-item-added';
 let form = document.getElementById('item-cart-container');
 let itemInput = form.querySelector('.item-id');
 let sendItemIdButton = form.querySelector('#send-item-id');
-
-let csrf = getCSRFFromForm(form);
-let itemId = parseInt(itemInput.getAttribute('value'), 10);
-
 let formBody = new FormData();
-formBody.append(csrf.name, csrf.value);
-formBody.append(itemIdPostKey, itemId.toString(10))
+let csrf;
+let itemId;
+if(sendItemIdButton !== null){
+	csrf = getCSRFFromForm(form);
+	itemId = parseInt(itemInput.getAttribute('value'), 10);
+	formBody.append(csrf.name, csrf.value);
+	formBody.append(itemIdPostKey, itemId.toString(10))
 
-if (form.querySelector('#cart-add-item') !== null)
-{
-	sendItemIdButton.addEventListener('click', addItemToCartEventHandler);
-}
-else
-{
-	sendItemIdButton.addEventListener('click', deleteItemFromCartEventHandler)
+	if (form.querySelector('#cart-add-item') !== null)
+	{
+		sendItemIdButton.addEventListener('click', addItemToCartEventHandler);
+	}
+	else
+	{
+		sendItemIdButton.addEventListener('click', deleteItemFromCartEventHandler)
+	}
 }
 
 function deleteItemFromCartEventHandler(event)
