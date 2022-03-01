@@ -344,7 +344,10 @@ class UserController
 
 		if (!empty($passwordValidationError))
 		{
-			$validationErrors[] = 'Проблемы нового пароля: ' . $passwordValidationError;
+			foreach ($passwordValidationError as $error)
+			{
+				$validationErrors[] = 'Проблемы нового пароля: ' . $error;
+			}
 		}
 
 		if (!empty($validationErrors))
