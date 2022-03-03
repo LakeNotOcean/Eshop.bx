@@ -35,7 +35,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 		$orders = [];
 		while ($row = $preparedStatement->fetch())
 		{
-			$order = new Order($row['CUSTOMER_NAME'], $row['PHONE'], $row['EMAIL'], $row['COMMENT']);
+			$order = new Order($row['CUSTOMER_FIRST_NAME'], $row['CUSTOMER_SECOND_NAME'], $row['PHONE'], $row['EMAIL'], $row['COMMENT']);
 			$order->setId($row['ID']);
 			$order->setStatus(OrderStatus::from($row['STATUS']));
 			$order->setDateCreate(\DateTime::createFromFormat('Y-m-d H:i:s', $row['DATE_CREATE']));
@@ -130,9 +130,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 
 	private function mapOrderCommonInfo($row): Order
 	{
-		$fullName = $row['o_customer_name'];
-
-		$order = new Order($row['o_customer_name'], $row['o_phone'], $row['o_email'], $row['o_comment']);
+		$order = new Order($row['o_customer_first_name'], $row['o_customer_second_name'], $row['o_phone'], $row['o_email'], $row['o_comment']);
 		$order->setDateCreate(\DateTime::createFromFormat('Y-m-d H:i:s', $row['o_date_create']));
 		$order->setDateUpdate(\DateTime::createFromFormat('Y-m-d H:i:s', $row['o_date_update']));
 		$order->setStatus(OrderStatus::from($row['o_status']));
@@ -143,7 +141,8 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	private function getSelectOrdersByUserIdStatement(string $ids): \PDOStatement
 	{
 		$query = "SELECT uo.ID o_id,
-                  uo.CUSTOMER_NAME o_customer_name,
+                  uo.CUSTOMER_FIRST_NAME o_customer_first_name,
+                  uo.CUSTOMER_SECOND_NAME o_customer_second_name,
                   uo.STATUS o_status,
                   uo.PHONE o_phone,
                   uo.EMAIL o_email,
@@ -200,7 +199,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	private function getOrdersQuery(int $offset, int $amountItems): string
 	{
 		return "SELECT * FROM up_order 
-				WHERE STATUS = ? and CUSTOMER_NAME like ? 
+				WHERE STATUS = ? and concat(CUSTOMER_FIRST_NAME, CUSTOMER_SECOND_NAME) like ? 
 				ORDER BY DATE_UPDATE
 				LIMIT {$offset}, {$amountItems};";
 	}
@@ -217,7 +216,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	{
 		return "
 			SELECT count(ID) AS orders_count FROM up_order 
-			WHERE STATUS = ? and CUSTOMER_NAME like ?";
+			WHERE STATUS = ? and concat(CUSTOMER_FIRST_NAME, CUSTOMER_SECOND_NAME) like ?";
 	}
 
 	/**
@@ -229,7 +228,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	{
 		$preparedStatement = $this->getInsertPrepareStatement(
 			'up_order',
-			['CUSTOMER_NAME', 'PHONE', 'EMAIL', 'COMMENT', 'STATUS', 'DATE_CREATE', 'DATE_UPDATE', 'USER_ID']
+			['CUSTOMER_FIRST_NAME', 'CUSTOMER_SECOND_NAME', 'PHONE', 'EMAIL', 'COMMENT', 'STATUS', 'DATE_CREATE', 'DATE_UPDATE', 'USER_ID']
 		);
 		$preparedStatement->execute($this->prepareOrder($order));
 		return $this->dbConnection->lastInsertId();
@@ -239,7 +238,8 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	{
 		$userId = $order->getUser()->getId();
 		return [
-			$order->getCustomerFullName(),
+			$order->getCustomerFirstName(),
+			$order->getCustomerSecondName(),
 			$order->getPhone(),
 			$order->getEmail(),
 			$order->getComment(),

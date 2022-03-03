@@ -109,12 +109,12 @@ async function submitOrder(event)
 
 	let validationErrors = validateFields([
 		{
-			fieldName: 'first-name',
+			fieldName: 'firstName',
 			validatorName: validators.names,
 			data: firstName,
 		},
 		{
-			fieldName: 'second-name',
+			fieldName: 'secondNname',
 			validatorName: validators.names,
 			data: secondName,
 		},
@@ -139,11 +139,23 @@ async function submitOrder(event)
 	{
 		await sendOrderData(form, itemsInfo).then(
 			response => {
-				console.log(response);
+				if (response.redirected)
+				{
+					window.location.href = response.url;
+				}
+				else if (!response.ok)
+				{
+					response.json().then(
+						json => {
+							showValidationErrors(json, errorsContainerElement);
+						}
+					)
+				}
+				else {
+					console.error(`Что-то пошло координально не так!`);
+				}
 			},
-		).catch(reason => {
-			console.log(reason);
-		});
+		)
 	}
 }
 
@@ -172,8 +184,8 @@ function changeItemCount(itemInfo, delta)
 function showValidationErrors(errors, errorsPlace)
 {
 	const fieldNameToRepresentedName = {
-		'first-name': 'Имя',
-		'second-name': 'Фамилия',
+		'firstName': 'Имя',
+		'secondName': 'Фамилия',
 		'phone': 'Телефон',
 		'email': 'E-mail'
 	};
