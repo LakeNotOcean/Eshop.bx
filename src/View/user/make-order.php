@@ -80,8 +80,9 @@ if ($user->getRole()->getName() != UserEnum::Guest())
 			</label>
 		</div>
 		<label for="comment" class="field">
-			<textarea name="comment" id="comment" rows="10" class="order-comment" placeholder="Комментарий к заказу"></textarea>
+			<textarea autofocus name="comment" id="comment" rows="10" class="order-comment" placeholder="Комментарий к заказу"></textarea>
 		</label>
+		<div class="errors-container"></div>
 		<div class="order-summary">Итого: <?= $orderSize ?> <?= WordFormatter::getPlural($orderSize, ['товар', 'товара', 'товаров']) ?> на сумму <?= $cost ?> ₽</div>
 		<?= CSRF::getFormField() ?>
 		<input type="submit" value="Подтвердить" class="btn btn-normal input">
@@ -98,6 +99,7 @@ if ($user->getRole()->getName() != UserEnum::Guest())
 	<?php endif; ?>
 </div>
 
+<script src="/js/lib/validators.js" type="module"></script>
 <script src="/js/lib/alert-dialog.js"></script>
 <script src="/js/lib/wordProcessor.js" type="module"></script>
 <script src="/js/lib/showPopup.js"></script>

@@ -1,5 +1,6 @@
 import { wordEndingResolver } from '../lib/wordProcessor.js';
 import { deleteItemFromCart, sendOrderData } from './send-order-data.js';
+import { validateFields, validators } from '../lib/validators.js';
 
 const orderItems = document.querySelectorAll('.order-item');
 
@@ -100,10 +101,49 @@ function getItemElementById(itemId)
 async function submitOrder(event)
 {
 	let form = document.querySelector('.user-data');
-	let response = await sendOrderData(form, itemsInfo);
-	if (response.redirected)
+
+	const firstName = form.querySelector('#first-name').value;
+	const secondName = form.querySelector('#second-name').value;
+	const phone = form.querySelector('#phone').value;
+	const email = form.querySelector('#email').value;
+
+	let validationErrors = validateFields([
+		{
+			fieldName: 'first-name',
+			validatorName: validators.names,
+			data: firstName,
+		},
+		{
+			fieldName: 'second-name',
+			validatorName: validators.names,
+			data: secondName,
+		},
+		{
+			fieldName: 'phone',
+			validatorName: validators.phone,
+			data: phone,
+		},
+		{
+			fieldName: 'email',
+			validatorName: validators.email,
+			data: email,
+		}
+	]);
+
+	const errorsContainerElement = form.querySelector('.errors-container');
+	if (validationErrors.length !== 0)
 	{
-		window.location.replace(response.url);
+		showValidationErrors(validationErrors, errorsContainerElement);
+	}
+	else
+	{
+		await sendOrderData(form, itemsInfo).then(
+			response => {
+				console.log(response);
+			},
+		).catch(reason => {
+			console.log(reason);
+		});
 	}
 }
 
@@ -122,6 +162,35 @@ function changeItemCount(itemInfo, delta)
 	let countElement = getItemCountElement(itemInfo.id);
 	itemInfo.count += delta;
 	countElement.textContent = (parseInt(countElement.textContent) + delta).toString();
+}
+
+/**
+ *
+ * @param {{fieldName: string, errors: string[]}[]} errors
+ * @param {Element} errorsPlace
+ */
+function showValidationErrors(errors, errorsPlace)
+{
+	const fieldNameToRepresentedName = {
+		'first-name': 'Имя',
+		'second-name': 'Фамилия',
+		'phone': 'Телефон',
+		'email': 'E-mail'
+	};
+	errorsPlace.innerHTML = '';
+	errors.forEach(
+		(errorByField) => {
+			errorByField.errors.forEach(
+				(error) => {
+					let errorInfoNode = document.createElement('p');
+					errorInfoNode.classList.add('error-text');
+					errorInfoNode.textContent = fieldNameToRepresentedName[errorByField.fieldName] + ': ' + error;
+
+					errorsPlace.appendChild(errorInfoNode);
+				}
+			)
+		}
+	);
 }
 
 /**

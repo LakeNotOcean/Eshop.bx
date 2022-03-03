@@ -71,6 +71,16 @@ order-items
 	width: fit-content;
 }
 
+.errors-container {
+	margin: 10px 15px;
+}
+
+.error-text {
+	margin-top: 8px;
+	color: red;
+	font: inherit;
+	font-size: 15px;
+}
 /*==========================
 customer-data
 ==========================*/

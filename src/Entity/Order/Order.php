@@ -9,7 +9,8 @@ use Up\Entity\User\User;
 
 class Order extends Entity
 {
-	protected $customer_name;
+	protected $customerSecondName;
+	protected $customerFirstName;
 	protected $phone;
 	protected $email;
 	protected $comment;
@@ -20,9 +21,10 @@ class Order extends Entity
 	protected $user;
 	protected $statusNames;
 
-	public function __construct(string $customer_name, string $phone, string $email, string $comment)
+	public function __construct(string $customerFirstName, string $customerSecondName, string $phone, string $email, string $comment)
 	{
-		$this->customer_name = $customer_name;
+		$this->customerFirstName = $customerFirstName;
+		$this->customerSecondName = $customerSecondName;
 		$this->phone = $phone;
 		$this->email = $email;
 		$this->comment = $comment;
@@ -37,17 +39,18 @@ class Order extends Entity
 	/**
 	 * @return string
 	 */
-	public function getCustomerName(): string
+	public function getCustomerSecondName(): string
 	{
-		return $this->customer_name;
+		return $this->customerSecondName;
 	}
 
-	/**
-	 * @param string $customer_name
-	 */
-	public function setCustomerName(string $customer_name): void
+	public function getCustomerFullName(): string
 	{
-		$this->customer_name = $customer_name;
+		if (empty($this->getCustomerSecondName()))
+		{
+			return $this->getCustomerFirstName();
+		}
+		return $this->getCustomerFirstName() . ' ' . $this->getCustomerSecondName();
 	}
 
 	/**
@@ -216,6 +219,30 @@ class Order extends Entity
 	public function getItem(int $itemId): Item
 	{
 		return $this->items[$itemId]['item'];
+	}
+
+	/**
+	 * @param string $customerSecondName
+	 */
+	public function setCustomerSecondName(string $customerSecondName): void
+	{
+		$this->customerSecondName = $customerSecondName;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCustomerFirstName(): string
+	{
+		return $this->customerFirstName;
+	}
+
+	/**
+	 * @param string $customerFirstName
+	 */
+	public function setCustomerFirstName(string $customerFirstName): void
+	{
+		$this->customerFirstName = $customerFirstName;
 	}
 
 }

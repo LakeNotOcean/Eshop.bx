@@ -37,7 +37,7 @@ export async function deleteItemFromCart(itemId, form)
  * @param {Element} form
  * @param {{count: number, id: number}[]} itemsInfo
  */
-export async function sendOrderData(form, itemsInfo)
+export function sendOrderData(form, itemsInfo)
 {
 	let formData = new FormData();
 
@@ -59,18 +59,10 @@ export async function sendOrderData(form, itemsInfo)
 	formData.append('comment', comment);
 
 	formData.append('items', JSON.stringify(itemsInfo));
-	let result;
-	await fetch(
+	return fetch(
 		'/finishOrder',
 		{
 			method: 'post',
 			body: formData
-		},
-	).then(
-		function(response) {
-			result = response;
-		}
-	)
-
-	return result;
+		})
 }

@@ -130,6 +130,8 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 
 	private function mapOrderCommonInfo($row): Order
 	{
+		$fullName = $row['o_customer_name'];
+
 		$order = new Order($row['o_customer_name'], $row['o_phone'], $row['o_email'], $row['o_comment']);
 		$order->setDateCreate(\DateTime::createFromFormat('Y-m-d H:i:s', $row['o_date_create']));
 		$order->setDateUpdate(\DateTime::createFromFormat('Y-m-d H:i:s', $row['o_date_update']));
@@ -237,7 +239,7 @@ class OrderDAOmysql extends AbstractDAO implements OrderDAOInterface
 	{
 		$userId = $order->getUser()->getId();
 		return [
-			$order->getCustomerName(),
+			$order->getCustomerFullName(),
 			$order->getPhone(),
 			$order->getEmail(),
 			$order->getComment(),

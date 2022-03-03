@@ -40,7 +40,7 @@ use Up\Lib\FormatHelper\WordFormatter;
 			<div class="order card">
 				<div class="order-line">
 					<div class="order-label">Имя покупателя:</div>
-					<div class="order-value"><?= htmlspecialchars($order->getCustomerName()) ?></div>
+					<div class="order-value"><?= htmlspecialchars($order->getCustomerFullName()) ?></div>
 				</div>
 				<div class="order-line">
 					<div class="order-label">Телефон покупателя:</div>

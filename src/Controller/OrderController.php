@@ -106,13 +106,11 @@ class OrderController
 
 		$first_name = $request->getPostParametersByName('first-name');
 		$second_name = $request->getPostParametersByName('second-name');
-
-		$customerName = $first_name . ' ' . $second_name;
 		$phone = $request->getPostParametersByName('phone');
 		$email = $request->getPostParametersByName('email');
 		$comment = $request->getPostParametersByName('comment');
 
-		$order = new Order($customerName, $phone, $email, $comment);
+		$order = new Order($first_name, $second_name, $phone, $email, $comment);
 		$order->setStatus(OrderStatus::IN_PROCESSING());
 		$now = $this->getDatetime();
 		$order->setDateCreate(\DateTime::createFromFormat('Y-m-d H:i:s', $now));

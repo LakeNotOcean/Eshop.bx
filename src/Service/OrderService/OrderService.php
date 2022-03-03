@@ -7,6 +7,9 @@ use Up\DAO\OrderDAO\OrderDAOInterface;
 use Up\Entity\Order\Order;
 use Up\Entity\Order\OrderStatus;
 use Up\Service\ItemService\ItemServiceInterface;
+use Up\Validator\DataTypes;
+use Up\Validator\ValidationException;
+use Up\Validator\Validator;
 
 class OrderService implements OrderServiceInterface
 {
@@ -52,8 +55,24 @@ class OrderService implements OrderServiceInterface
 		return $this->orderDAO->getAmountOrdersByUserId($userId);
 	}
 
+	/**
+	 * @throws ValidationException
+	 */
 	public function saveOrder(Order $order): void
 	{
+		$errors = Validator::validateFields(
+			[
+				'firstName' => [$order->getCustomerFirstName(), DataTypes::names(), 'Ошибки в имени: '],
+				'secondName' => [$order->getCustomerSecondName(), DataTypes::names(), 'Ошибки в фамилии: '],
+				'email' => [$order->getEmail(), DataTypes::email(), 'Ошибки в email: '],
+				'phone' => [$order->getPhone(), DataTypes::phone(), 'Ошибки в телефоне: ']
+			]
+		);
+
+		if (!empty($errors))
+		{
+			throw new ValidationException('Validation failed', $errors);
+		}
 		$orderId = $this->orderDAO->addOrder($order);
 		$this->orderDAO->addOrderItems($orderId, $order->getItems());
 	}
