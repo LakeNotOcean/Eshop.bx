@@ -9,6 +9,7 @@ use Up\Core\TemplateProcessorInterface;
 use Up\Entity\Item;
 use Up\Entity\Order\Order;
 use Up\Entity\Order\OrderStatus;
+use Up\Entity\User\UserEnum;
 use Up\LayoutManager\MainLayoutManager;
 use Up\LayoutManager\OrderLayoutManager;
 use Up\Lib\Paginator\Paginator;
@@ -120,8 +121,12 @@ class OrderController
 
 		$this->orderService->saveOrder($order);
 		$this->cartService->clearCart();
+		if ($request->getUser()->getRole()->getName()->getValue() !== UserEnum::Guest)
+		{
+			return Redirect::createResponseByURLName('my-orders');
+		}
 
-		return Redirect::createResponseByURLName('my-orders');
+		return Redirect::createResponseByURLName('home');
 	}
 
 	/**
