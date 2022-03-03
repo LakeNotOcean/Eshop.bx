@@ -147,7 +147,17 @@ async function submitOrder(event)
 				{
 					response.json().then(
 						json => {
-							showValidationErrors(json, errorsContainerElement);
+							let preparedError = [];
+							for (let field in json)
+							{
+								preparedError.push(
+									{
+										fieldName: field,
+										errors: json[field]
+									}
+								)
+							}
+							showValidationErrors(preparedError, errorsContainerElement);
 						}
 					)
 				}

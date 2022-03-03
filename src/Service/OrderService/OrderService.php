@@ -62,10 +62,10 @@ class OrderService implements OrderServiceInterface
 	{
 		$errors = Validator::validateFields(
 			[
-				'firstName' => [$order->getCustomerFirstName(), DataTypes::names(), 'Ошибки в имени: '],
-				'secondName' => [$order->getCustomerSecondName(), DataTypes::names(), 'Ошибки в фамилии: '],
-				'email' => [$order->getEmail(), DataTypes::email(), 'Ошибки в email: '],
-				'phone' => [$order->getPhone(), DataTypes::phone(), 'Ошибки в телефоне: ']
+				'firstName' => [$order->getCustomerFirstName(), DataTypes::names(), ''],
+				'secondName' => [$order->getCustomerSecondName(), DataTypes::names(), ''],
+				'email' => [$order->getEmail(), DataTypes::email(), ''],
+				'phone' => [$order->getPhone(), DataTypes::phone(), '']
 			]
 		);
 
